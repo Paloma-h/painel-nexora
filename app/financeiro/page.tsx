@@ -78,7 +78,6 @@ export default function FinanceiroPage() {
           </div>
           <button onClick={openNew} className="px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white rounded-lg text-sm font-semibold transition-all">+ Novo Lançamento</button>
         </div>
-
         <div className="grid grid-cols-3 gap-4 mb-6">
           <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4">
             <p className="text-emerald-400/60 text-xs mb-1">Receitas</p>
@@ -93,12 +92,11 @@ export default function FinanceiroPage() {
             <p className={`${saldo >= 0 ? 'text-violet-400' : 'text-red-400'} font-black text-xl`}>R$ {saldo.toLocaleString('pt-BR', {minimumFractionDigits:2})}</p>
           </div>
         </div>
-
         {loading ? <p className="text-white/40 text-center py-10">Carregando...</p> : (
           <div className="space-y-2">
             {transactions.length === 0 && <p className="text-white/30 text-center py-10">Nenhum lançamento ainda!</p>}
             {transactions.map(t => (
-              <div key={t.id} className="flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/8 transition-all">
+              <div key={t.id} className="flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10 transition-all">
                 <div className={`w-2 h-8 rounded-full flex-shrink-0 ${t.type === 'receita' ? 'bg-emerald-400' : 'bg-red-400'}`} />
                 <div className="flex-1 min-w-0">
                   <p className="text-white text-sm font-medium truncate">{t.title}</p>
@@ -115,7 +113,6 @@ export default function FinanceiroPage() {
           </div>
         )}
       </div>
-
       {showForm && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-sm">
           <div className="min-h-full flex items-start justify-center p-4 pt-10">

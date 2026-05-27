@@ -86,12 +86,11 @@ export default function AgendaPage() {
           </div>
           <button onClick={() => setShowForm(true)} className="px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white rounded-lg text-sm font-semibold transition-all">+ Nova Tarefa</button>
         </div>
-
         {loading ? <p className="text-white/40 text-center py-10">Carregando...</p> : (
           <div className="space-y-2">
             {pending.length === 0 && <p className="text-white/30 text-center py-10">Nenhuma tarefa pendente!</p>}
             {pending.map(t => (
-              <div key={t.id} className="flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/8 transition-all">
+              <div key={t.id} className="flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10 transition-all">
                 <div className={`w-3 h-3 rounded-full flex-shrink-0 ${t.priority === 'CRITICAL' ? 'bg-red-400' : t.priority === 'HIGH' ? 'bg-orange-400' : t.priority === 'MEDIUM' ? 'bg-amber-400' : 'bg-green-400'}`} />
                 <div className="flex-1 min-w-0">
                   <p className="text-white text-sm font-medium truncate">{t.title}</p>
@@ -108,7 +107,6 @@ export default function AgendaPage() {
           </div>
         )}
       </div>
-
       {showForm && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-sm">
           <div className="min-h-full flex items-start justify-center p-4 pt-10">

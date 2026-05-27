@@ -74,12 +74,11 @@ export default function CRMPage() {
           </div>
           <button onClick={openNew} className="px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white rounded-lg text-sm font-semibold transition-all">+ Novo Lead</button>
         </div>
-
         {loading ? <p className="text-white/40 text-center py-10">Carregando...</p> : (
           <div className="space-y-2">
             {leads.length === 0 && <p className="text-white/30 text-center py-10">Nenhum lead ainda!</p>}
             {leads.map(l => (
-              <div key={l.id} className="flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/8 transition-all">
+              <div key={l.id} className="flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10 transition-all">
                 <div className="w-10 h-10 rounded-full bg-violet-600 flex items-center justify-center text-white font-bold flex-shrink-0">{l.name.charAt(0).toUpperCase()}</div>
                 <div className="flex-1 min-w-0">
                   <p className="text-white text-sm font-medium truncate">{l.name}</p>
@@ -96,7 +95,6 @@ export default function CRMPage() {
           </div>
         )}
       </div>
-
       {showForm && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-sm">
           <div className="min-h-full flex items-start justify-center p-4 pt-10">
