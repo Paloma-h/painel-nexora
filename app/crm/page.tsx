@@ -7,7 +7,10 @@ import { useRouter } from 'next/navigation'
 
 const USER_ID = 'paloma'
 const STATUSES = ['Prospecção', 'Contato', 'Negociando', 'Ganho', 'Perdido']
-const EMPTY = { name: '', email: '', phone: '', company: '', status: 'Prospecção', value: '', notes: '', next_followup: '', followup_notes: '' }
+const SOURCES = ['Indicação', 'Facebook', 'TikTok', 'Instagram', 'Outra pessoa', 'Outro']
+const RELATIONS = ['Cônjuge', 'Filho(a)', 'Mãe', 'Pai', 'Irmão/Irmã', 'Amigo(a)', 'Outro']
+const EMPTY_LEAD = { name:'', email:'', phone:'', whatsapp:'', phone2:'', phone2_name:'', phone2_relation:'', company:'', address:'', status:'Prospecção', value:'', notes:'', next_followup:'', followup_notes:'', source:'Indicação', children_count:'0', children_ages:'', difficulties:'', purchase_date:'', pots_bought:'0', product:'' }
+const EMPTY_CLIENT = { name:'', email:'', phone:'', whatsapp:'', phone2:'', phone2_name:'', phone2_relation:'', address:'', children_count:'0', children_ages:'', difficulties:'', source:'Indicação', product:'', purchase_date:'', pots_bought:'0', notes:'', status:'Ativo' }
 
 function Sidebar() {
   const path = usePathname()
@@ -16,10 +19,10 @@ function Sidebar() {
   return (
     <div style={{width:'160px',background:'#0d0d1a',borderRight:'1px solid rgba(255,255,255,0.06)',display:'flex',flexDirection:'column',padding:'20px 12px',flexShrink:0,minHeight:'100vh'}}>
       <div style={{color:'#7c6ff7',fontWeight:700,fontSize:'16px',marginBottom:'28px',padding:'0 4px'}}>NEXORA</div>
-      <Link href="/dashboard" style={{display:'block',padding:'9px 12px',borderRadius:'10px',fontSize:'13px',color:path==='/dashboard'?'#a89ff7':'rgba(255,255,255,0.35)',background:path==='/dashboard'?'rgba(91,80,214,0.2)':'transparent',marginBottom:'2px',textDecoration:'none'}}>Dashboard</Link>
-      <Link href="/agenda" style={{display:'block',padding:'9px 12px',borderRadius:'10px',fontSize:'13px',color:path==='/agenda'?'#a89ff7':'rgba(255,255,255,0.35)',background:path==='/agenda'?'rgba(91,80,214,0.2)':'transparent',marginBottom:'2px',textDecoration:'none'}}>Agenda</Link>
+      <Link href="/dashboard" style={{display:'block',padding:'9px 12px',borderRadius:'10px',fontSize:'13px',color:path==='/dashboard'?'#a89ff7':'rgba(255,255,255,0.35)',background:path==='/dashboard'?'rgba(91,80,214,0.2)':'transparent',marginBottom:'2px',textDecoration:'none',fontWeight:path==='/dashboard'?500:400}}>Dashboard</Link>
+      <Link href="/agenda" style={{display:'block',padding:'9px 12px',borderRadius:'10px',fontSize:'13px',color:path==='/agenda'?'#a89ff7':'rgba(255,255,255,0.35)',background:path==='/agenda'?'rgba(91,80,214,0.2)':'transparent',marginBottom:'2px',textDecoration:'none',fontWeight:path==='/agenda'?500:400}}>Agenda</Link>
       <Link href="/crm" style={{display:'block',padding:'9px 12px',borderRadius:'10px',fontSize:'13px',color:path==='/crm'?'#a89ff7':'rgba(255,255,255,0.35)',background:path==='/crm'?'rgba(91,80,214,0.2)':'transparent',marginBottom:'2px',textDecoration:'none',fontWeight:path==='/crm'?500:400}}>CRM</Link>
-      <Link href="/financeiro" style={{display:'block',padding:'9px 12px',borderRadius:'10px',fontSize:'13px',color:path==='/financeiro'?'#a89ff7':'rgba(255,255,255,0.35)',background:path==='/financeiro'?'rgba(91,80,214,0.2)':'transparent',marginBottom:'2px',textDecoration:'none'}}>Financeiro</Link>
+      <Link href="/financeiro" style={{display:'block',padding:'9px 12px',borderRadius:'10px',fontSize:'13px',color:path==='/financeiro'?'#a89ff7':'rgba(255,255,255,0.35)',background:path==='/financeiro'?'rgba(91,80,214,0.2)':'transparent',marginBottom:'2px',textDecoration:'none',fontWeight:path==='/financeiro'?500:400}}>Financeiro</Link>
       <div style={{marginTop:'auto'}}>
         <button onClick={logout} style={{display:'block',width:'100%',padding:'9px 12px',borderRadius:'10px',fontSize:'12px',color:'rgba(255,255,255,0.2)',background:'transparent',border:'none',textAlign:'left',cursor:'pointer'}}>Sair</button>
       </div>
@@ -27,139 +30,355 @@ function Sidebar() {
   )
 }
 
+const inp: any = {width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'9px 12px',color:'#fff',fontSize:'13px',outline:'none',boxSizing:'border-box'}
+const sel: any = {width:'100%',background:'#13131f',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'9px 12px',color:'#fff',fontSize:'13px',outline:'none'}
+const sourceColor: any = {'Indicação':'#7c6ff7','Facebook':'#4267B2','TikTok':'#e05252','Instagram':'#e08c42','Outra pessoa':'#4caf7d','Outro':'#888'}
+
+function Sec({title}:{title:string}) {
+  return <div style={{fontSize:'10px',color:'rgba(255,255,255,0.25)',textTransform:'uppercase',letterSpacing:'1px',marginTop:'16px',marginBottom:'8px',paddingBottom:'6px',borderBottom:'1px solid rgba(255,255,255,0.06)'}}>{title}</div>
+}
+function Fld({label,children}:{label:string,children:any}) {
+  return <div><label style={{fontSize:'11px',color:'rgba(255,255,255,0.3)',display:'block',marginBottom:'4px'}}>{label}</label>{children}</div>
+}
+
 export default function CRMPage() {
+  const [tab, setTab] = useState('leads')
   const [leads, setLeads] = useState<any[]>([])
+  const [clients, setClients] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-  const [showForm, setShowForm] = useState(false)
+  const [showForm, setShowForm] = useState('')
   const [editing, setEditing] = useState<any>(null)
-  const [form, setForm] = useState(EMPTY)
+  const [leadForm, setLeadForm] = useState(EMPTY_LEAD)
+  const [clientForm, setClientForm] = useState(EMPTY_CLIENT)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+  const [search, setSearch] = useState('')
+  const [filterStatus, setFilterStatus] = useState('Todos')
 
   useEffect(() => { load() }, [])
 
   async function load() {
     setLoading(true)
-    const { data } = await supabase.from('leads').select('*').eq('user_id', USER_ID).order('created_at', {ascending:false})
-    setLeads(data || [])
+    const [l, c] = await Promise.all([
+      supabase.from('leads').select('*').eq('user_id', USER_ID).order('created_at', {ascending:false}),
+      supabase.from('clients').select('*').eq('user_id', USER_ID).order('created_at', {ascending:false})
+    ])
+    setLeads(l.data || [])
+    setClients(c.data || [])
     setLoading(false)
   }
 
-  function exportCSV() {
-    const headers = ['Nome','Email','Telefone','WhatsApp','Empresa','Endereço','Status','Valor','Origem','Produto','Data Compra','Potes','Follow-up','Notas']
-    const rows = leads.map((l:any) => [l.name,l.email||'',l.phone||'',l.whatsapp||'',l.company||'',l.address||'',l.status||'',l.value||0,l.source||'',l.product||'',l.purchase_date||'',l.pots_bought||0,l.next_followup||'',l.notes||''])
-    const csv = [headers,...rows].map((r:any) => r.map((v:any) => `"${v}"`).join(',')).join('\n')
-    const blob = new Blob([csv],{type:'text/csv'})
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href=url; a.download='crm-nexora.csv'; a.click()
-  }
-
-  async function importCSV(e: any) {
-    const file = e.target.files[0]
-    if (!file) return
-    const text = await file.text()
-    const lines = text.split('\n').slice(1).filter((l:string) => l.trim())
-    let count = 0
-    for (const line of lines) {
-      const cols = line.split(',').map((c:string) => c.replace(/"/g,'').trim())
-      if (!cols[0]) continue
-      await supabase.from('leads').insert({id:crypto.randomUUID(),name:cols[0],email:cols[1]||null,phone:cols[2]||null,whatsapp:cols[3]||null,company:cols[4]||null,address:cols[5]||null,status:cols[6]||'Prospecção',value:parseFloat(cols[7])||0,source:cols[8]||'Indicação',product:cols[9]||null,purchase_date:cols[10]||null,pots_bought:parseInt(cols[11])||0,next_followup:cols[12]||null,notes:cols[13]||null,user_id:USER_ID})
-      count++
-    }
-    alert(`${count} leads importados!`)
-    load()
-  }
-  function openNew() { setEditing(null); setForm(EMPTY); setError(''); setShowForm(true) }
-  function openEdit(lead: any) {
+  function openNewLead() { setEditing(null); setLeadForm(EMPTY_LEAD); setError(''); setShowForm('lead') }
+  function openEditLead(lead: any) {
     setEditing(lead)
-    setForm({name:lead.name,email:lead.email||'',phone:lead.phone||'',company:lead.company||'',status:lead.status,value:lead.value?.toString()||'',notes:lead.notes||'',next_followup:lead.next_followup||'',followup_notes:lead.followup_notes||''})
-    setError(''); setShowForm(true)
+    setLeadForm({name:lead.name||'',email:lead.email||'',phone:lead.phone||'',whatsapp:lead.whatsapp||'',phone2:lead.phone2||'',phone2_name:lead.phone2_name||'',phone2_relation:lead.phone2_relation||'',company:lead.company||'',address:lead.address||'',status:lead.status||'Prospecção',value:lead.value?.toString()||'',notes:lead.notes||'',next_followup:lead.next_followup||'',followup_notes:lead.followup_notes||'',source:lead.source||'Indicação',children_count:lead.children_count?.toString()||'0',children_ages:lead.children_ages||'',difficulties:lead.difficulties||'',purchase_date:lead.purchase_date||'',pots_bought:lead.pots_bought?.toString()||'0',product:lead.product||''})
+    setError(''); setShowForm('lead')
   }
 
-  async function save() {
-    if (!form.name.trim()) return
+  async function saveLead() {
+    if (!leadForm.name.trim()) return
     setSaving(true); setError('')
-    const data: any = {name:form.name.trim(),email:form.email||null,phone:form.phone||null,company:form.company||null,status:form.status,value:form.value?parseFloat(form.value):0,notes:form.notes||null,next_followup:form.next_followup||null,followup_notes:form.followup_notes||null,user_id:USER_ID}
+    const data: any = {name:leadForm.name.trim(),email:leadForm.email||null,phone:leadForm.phone||null,whatsapp:leadForm.whatsapp||null,phone2:leadForm.phone2||null,phone2_name:leadForm.phone2_name||null,phone2_relation:leadForm.phone2_relation||null,company:leadForm.company||null,address:leadForm.address||null,status:leadForm.status,value:leadForm.value?parseFloat(leadForm.value):0,notes:leadForm.notes||null,next_followup:leadForm.next_followup||null,followup_notes:leadForm.followup_notes||null,source:leadForm.source,children_count:parseInt(leadForm.children_count)||0,children_ages:leadForm.children_ages||null,difficulties:leadForm.difficulties||null,purchase_date:leadForm.purchase_date||null,pots_bought:parseInt(leadForm.pots_bought)||0,product:leadForm.product||null,user_id:USER_ID}
     const { error } = editing ? await supabase.from('leads').update(data).eq('id', editing.id) : await supabase.from('leads').insert({...data,id:crypto.randomUUID()})
     if (error) { setError(error.message); setSaving(false); return }
-    if (form.next_followup && !editing) {
-      await supabase.from('tasks').insert({id:crypto.randomUUID(),title:`Follow-up: ${form.name.trim()}`,date:form.next_followup,notes:form.followup_notes||null,type:'task',status:'PENDING',priority:'HIGH',category:'trabalho',user_id:USER_ID})
+    if (leadForm.next_followup && !editing) {
+      await supabase.from('tasks').insert({id:crypto.randomUUID(),title:`Follow-up: ${leadForm.name.trim()}`,date:leadForm.next_followup,notes:leadForm.followup_notes||null,type:'task',status:'PENDING',priority:'HIGH',category:'trabalho',user_id:USER_ID})
     }
-    setShowForm(false); setSaving(false); load()
+    if (leadForm.status === 'Ganho') {
+      const existing = await supabase.from('clients').select('id').eq('user_id', USER_ID).eq('name', leadForm.name.trim())
+      if (!existing.data || existing.data.length === 0) {
+        await supabase.from('clients').insert({id:crypto.randomUUID(),name:leadForm.name.trim(),email:leadForm.email||null,phone:leadForm.phone||null,whatsapp:leadForm.whatsapp||null,phone2:leadForm.phone2||null,phone2_name:leadForm.phone2_name||null,phone2_relation:leadForm.phone2_relation||null,address:leadForm.address||null,children_count:parseInt(leadForm.children_count)||0,children_ages:leadForm.children_ages||null,difficulties:leadForm.difficulties||null,source:leadForm.source,product:leadForm.product||null,purchase_date:leadForm.purchase_date||null,pots_bought:parseInt(leadForm.pots_bought)||0,notes:leadForm.notes||null,status:'Ativo',user_id:USER_ID})
+      }
+    }
+    setShowForm(''); setSaving(false); load()
   }
 
-  async function remove(id: string) {
+  async function removeLead(id: string) {
     if (!confirm('Excluir este lead?')) return
     await supabase.from('leads').delete().eq('id', id); load()
   }
 
+  function openNewClient() { setEditing(null); setClientForm(EMPTY_CLIENT); setError(''); setShowForm('client') }
+  function openEditClient(c: any) {
+    setEditing(c)
+    setClientForm({name:c.name||'',email:c.email||'',phone:c.phone||'',whatsapp:c.whatsapp||'',phone2:c.phone2||'',phone2_name:c.phone2_name||'',phone2_relation:c.phone2_relation||'',address:c.address||'',children_count:c.children_count?.toString()||'0',children_ages:c.children_ages||'',difficulties:c.difficulties||'',source:c.source||'Indicação',product:c.product||'',purchase_date:c.purchase_date||'',pots_bought:c.pots_bought?.toString()||'0',notes:c.notes||'',status:c.status||'Ativo'})
+    setError(''); setShowForm('client')
+  }
+
+  async function saveClient() {
+    if (!clientForm.name.trim()) return
+    setSaving(true); setError('')
+    const data: any = {name:clientForm.name.trim(),email:clientForm.email||null,phone:clientForm.phone||null,whatsapp:clientForm.whatsapp||null,phone2:clientForm.phone2||null,phone2_name:clientForm.phone2_name||null,phone2_relation:clientForm.phone2_relation||null,address:clientForm.address||null,children_count:parseInt(clientForm.children_count)||0,children_ages:clientForm.children_ages||null,difficulties:clientForm.difficulties||null,source:clientForm.source,product:clientForm.product||null,purchase_date:clientForm.purchase_date||null,pots_bought:parseInt(clientForm.pots_bought)||0,notes:clientForm.notes||null,status:clientForm.status,user_id:USER_ID}
+    const { error } = editing ? await supabase.from('clients').update(data).eq('id', editing.id) : await supabase.from('clients').insert({...data,id:crypto.randomUUID()})
+    if (error) { setError(error.message); setSaving(false); return }
+    setShowForm(''); setSaving(false); load()
+  }
+
+  async function removeClient(id: string) {
+    if (!confirm('Excluir este cliente?')) return
+    await supabase.from('clients').delete().eq('id', id); load()
+  }
+
+  function exportLeads() {
+    const headers = ['Nome','Email','Telefone','WhatsApp','Status','Valor','Origem','Produto','Follow-up','Notas']
+    const rows = leads.map(l => [l.name,l.email||'',l.phone||'',l.whatsapp||'',l.status||'',l.value||0,l.source||'',l.product||'',l.next_followup||'',l.notes||''])
+    const csv = [headers,...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n')
+    const blob = new Blob([csv],{type:'text/csv'})
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a'); a.href=url; a.download='leads-nexora.csv'; a.click()
+  }
+
+  function exportClients() {
+    const headers = ['Nome','Email','Telefone','WhatsApp','Produto','Data Compra','Potes','Origem','Status','Notas']
+    const rows = clients.map(c => [c.name,c.email||'',c.phone||'',c.whatsapp||'',c.product||'',c.purchase_date||'',c.pots_bought||0,c.source||'',c.status||'',c.notes||''])
+    const csv = [headers,...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n')
+    const blob = new Blob([csv],{type:'text/csv'})
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a'); a.href=url; a.download='clientes-nexora.csv'; a.click()
+  }
+
+  function daysLeft(c: any) {
+    if (!c.purchase_date || !c.pots_bought) return null
+    const end = new Date(c.purchase_date)
+    end.setDate(end.getDate() + c.pots_bought * 30)
+    return Math.ceil((end.getTime() - new Date().getTime()) / (1000*60*60*24))
+  }
+
+  const filteredLeads = leads.filter(l => {
+    const ms = l.name.toLowerCase().includes(search.toLowerCase()) || (l.phone||'').includes(search)
+    const mf = filterStatus === 'Todos' || l.status === filterStatus
+    return ms && mf
+  })
+
+  const filteredClients = clients.filter(c => c.name.toLowerCase().includes(search.toLowerCase()) || (c.phone||'').includes(search))
+
   return (
     <div style={{display:'flex',minHeight:'100vh',background:'#0a0a0f',fontFamily:'system-ui,sans-serif'}}>
       <Sidebar />
-      <div style={{flex:1,padding:'32px',overflowY:'auto'}}>
-        <div style={{maxWidth:'800px',margin:'0 auto'}}>
-          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'24px'}}>
-            <div>
-              <h1 style={{color:'#fff',fontSize:'22px',fontWeight:700}}>CRM</h1>
-              <p style={{color:'rgba(255,255,255,0.3)',fontSize:'12px',marginTop:'2px'}}>{leads.length} leads</p>
-            </div>
-            <div style={{display:'flex',gap:'8px'}}><label style={{padding:'8px 14px',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',color:'rgba(255,255,255,0.5)',fontSize:'13px',cursor:'pointer'}}>Importar CSV<input type='file' accept='.csv' onChange={importCSV} style={{display:'none'}} /></label><button onClick={exportCSV} style={{padding:'8px 14px',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',color:'rgba(255,255,255,0.5)',fontSize:'13px',cursor:'pointer'}}>Exportar CSV</button><button onClick={openNew} style={{padding:'8px 16px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#fff',fontSize:'13px',fontWeight:600,cursor:'pointer'}}>+ Novo Lead</button></div>
-          </div>
-          {loading ? <p style={{color:'rgba(255,255,255,0.3)',textAlign:'center',padding:'40px'}}>Carregando...</p> : (
-            <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
-              {leads.length===0 && <p style={{color:'rgba(255,255,255,0.2)',textAlign:'center',padding:'40px'}}>Nenhum lead ainda!</p>}
-              {leads.map(l => (
-                <div key={l.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'14px 16px',borderRadius:'12px',background:'rgba(255,255,255,0.04)',border:'1px solid rgba(255,255,255,0.08)'}}>
-                  <div style={{width:'38px',height:'38px',borderRadius:'50%',background:'rgba(91,80,214,0.3)',display:'flex',alignItems:'center',justifyContent:'center',color:'#a89ff7',fontWeight:700,fontSize:'14px',flexShrink:0}}>{l.name.charAt(0).toUpperCase()}</div>
-                  <div style={{flex:1,minWidth:0}}>
-                    <p style={{color:'#fff',fontSize:'13px',fontWeight:500}}>{l.name}</p>
-                    <div style={{display:'flex',gap:'8px',marginTop:'2px'}}>
-                      {l.company && <span style={{color:'rgba(255,255,255,0.3)',fontSize:'11px'}}>{l.company}</span>}
-                      {l.value>0 && <span style={{color:'#4caf7d',fontSize:'11px'}}>R$ {l.value.toLocaleString('pt-BR')}</span>}
-                      {l.next_followup && <span style={{color:'rgba(91,80,214,0.8)',fontSize:'11px'}}>Follow-up: {new Date(l.next_followup+'T12:00:00').toLocaleDateString('pt-BR')}</span>}
-                    </div>
+      <div style={{flex:1,display:'flex',flexDirection:'column',overflowY:'auto'}}>
+        <div style={{background:'#0d0d1a',borderBottom:'1px solid rgba(255,255,255,0.06)',padding:'0 28px',display:'flex',gap:'4px',alignItems:'center',flexShrink:0}}>
+          <button onClick={()=>setTab('leads')} style={{padding:'14px 16px',background:'transparent',border:'none',borderBottom:`2px solid ${tab==='leads'?'#7c6ff7':'transparent'}`,color:tab==='leads'?'#a89ff7':'rgba(255,255,255,0.35)',fontSize:'13px',cursor:'pointer',fontWeight:tab==='leads'?600:400}}>Leads {leads.length>0&&<span style={{background:'rgba(91,80,214,0.2)',color:'#a89ff7',borderRadius:'10px',padding:'1px 7px',fontSize:'11px',marginLeft:'4px'}}>{leads.length}</span>}</button>
+          <button onClick={()=>setTab('clients')} style={{padding:'14px 16px',background:'transparent',border:'none',borderBottom:`2px solid ${tab==='clients'?'#7c6ff7':'transparent'}`,color:tab==='clients'?'#a89ff7':'rgba(255,255,255,0.35)',fontSize:'13px',cursor:'pointer',fontWeight:tab==='clients'?600:400}}>Clientes {clients.length>0&&<span style={{background:'rgba(76,175,125,0.15)',color:'#4caf7d',borderRadius:'10px',padding:'1px 7px',fontSize:'11px',marginLeft:'4px'}}>{clients.length}</span>}</button>
+        </div>
+
+        <div style={{flex:1,padding:'28px 32px',overflowY:'auto'}}>
+          <div style={{maxWidth:'900px',margin:'0 auto'}}>
+
+            {tab==='leads' && (
+              <div>
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}}>
+                  <div>
+                    <h1 style={{color:'#fff',fontSize:'20px',fontWeight:700}}>Leads</h1>
+                    <p style={{color:'rgba(255,255,255,0.3)',fontSize:'12px',marginTop:'2px'}}>{leads.length} contatos em prospecção</p>
                   </div>
-                  <span style={{fontSize:'11px',padding:'3px 10px',borderRadius:'6px',background:l.status==='Ganho'?'rgba(76,175,125,0.15)':l.status==='Perdido'?'rgba(224,82,82,0.15)':'rgba(255,255,255,0.08)',color:l.status==='Ganho'?'#4caf7d':l.status==='Perdido'?'#e05252':'rgba(255,255,255,0.4)',fontWeight:500}}>{l.status}</span>
-                  <button onClick={() => openEdit(l)} style={{padding:'6px 10px',background:'rgba(255,255,255,0.05)',border:'none',borderRadius:'8px',color:'rgba(255,255,255,0.4)',fontSize:'12px',cursor:'pointer'}}>✎</button>
-                  <button onClick={() => remove(l.id)} style={{padding:'6px 10px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'8px',color:'#e05252',fontSize:'12px',cursor:'pointer'}}>✕</button>
+                  <div style={{display:'flex',gap:'8px'}}>
+                    <button onClick={exportLeads} style={{padding:'7px 12px',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',color:'rgba(255,255,255,0.5)',fontSize:'12px',cursor:'pointer'}}>Exportar CSV</button>
+                    <button onClick={openNewLead} style={{padding:'7px 14px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#fff',fontSize:'13px',fontWeight:600,cursor:'pointer'}}>+ Novo Lead</button>
+                  </div>
                 </div>
-              ))}
-            </div>
-          )}
+                <div style={{display:'flex',gap:'10px',marginBottom:'16px'}}>
+                  <input placeholder="Buscar..." value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1,background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.08)',borderRadius:'10px',padding:'8px 12px',color:'#fff',fontSize:'13px',outline:'none'}} />
+                  <select value={filterStatus} onChange={e=>setFilterStatus(e.target.value)} style={{...sel,width:'auto',padding:'8px 12px',fontSize:'12px'}}>
+                    <option value="Todos">Todos</option>
+                    {STATUSES.map(s=><option key={s} value={s}>{s}</option>)}
+                  </select>
+                </div>
+                {loading?<p style={{color:'rgba(255,255,255,0.3)',textAlign:'center',padding:'40px'}}>Carregando...</p>:(
+                  <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
+                    {filteredLeads.length===0&&<p style={{color:'rgba(255,255,255,0.2)',textAlign:'center',padding:'40px'}}>Nenhum lead encontrado</p>}
+                    {filteredLeads.map(l=>(
+                      <div key={l.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'13px 15px',borderRadius:'12px',background:'rgba(255,255,255,0.04)',border:'1px solid rgba(255,255,255,0.07)',cursor:'pointer'}} onClick={()=>openEditLead(l)}>
+                        <div style={{width:'38px',height:'38px',borderRadius:'50%',background:'rgba(91,80,214,0.25)',display:'flex',alignItems:'center',justifyContent:'center',color:'#a89ff7',fontWeight:700,fontSize:'14px',flexShrink:0}}>{l.name.charAt(0).toUpperCase()}</div>
+                        <div style={{flex:1,minWidth:0}}>
+                          <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
+                            <p style={{color:'#fff',fontSize:'13px',fontWeight:500}}>{l.name}</p>
+                            {l.source&&<span style={{fontSize:'10px',padding:'1px 7px',borderRadius:'5px',background:`${sourceColor[l.source]}22`,color:sourceColor[l.source]}}>{l.source}</span>}
+                            {l.product&&<span style={{fontSize:'10px',padding:'1px 7px',borderRadius:'5px',background:'rgba(255,255,255,0.06)',color:'rgba(255,255,255,0.4)'}}>{l.product}</span>}
+                          </div>
+                          <div style={{display:'flex',gap:'8px',marginTop:'2px',flexWrap:'wrap'}}>
+                            {l.phone&&<span style={{color:'rgba(255,255,255,0.3)',fontSize:'11px'}}>{l.phone}</span>}
+                            {l.value>0&&<span style={{color:'#4caf7d',fontSize:'11px'}}>R$ {l.value.toLocaleString('pt-BR')}</span>}
+                            {l.next_followup&&<span style={{color:'rgba(91,80,214,0.8)',fontSize:'11px'}}>Follow-up: {new Date(l.next_followup+'T12:00:00').toLocaleDateString('pt-BR')}</span>}
+                          </div>
+                        </div>
+                        <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
+                          {l.whatsapp&&<a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'7px',color:'#25d366',fontSize:'11px',textDecoration:'none',fontWeight:600}}>WA</a>}
+                          <span style={{fontSize:'11px',padding:'3px 9px',borderRadius:'6px',background:l.status==='Ganho'?'rgba(76,175,125,0.15)':l.status==='Perdido'?'rgba(224,82,82,0.15)':'rgba(255,255,255,0.08)',color:l.status==='Ganho'?'#4caf7d':l.status==='Perdido'?'#e05252':'rgba(255,255,255,0.4)',fontWeight:500}}>{l.status}</span>
+                          <button onClick={e=>{e.stopPropagation();removeLead(l.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'11px',cursor:'pointer'}}>✕</button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {tab==='clients' && (
+              <div>
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}}>
+                  <div>
+                    <h1 style={{color:'#fff',fontSize:'20px',fontWeight:700}}>Clientes</h1>
+                    <p style={{color:'rgba(255,255,255,0.3)',fontSize:'12px',marginTop:'2px'}}>{clients.length} clientes cadastrados</p>
+                  </div>
+                  <div style={{display:'flex',gap:'8px'}}>
+                    <button onClick={exportClients} style={{padding:'7px 12px',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',color:'rgba(255,255,255,0.5)',fontSize:'12px',cursor:'pointer'}}>Exportar CSV</button>
+                    <button onClick={openNewClient} style={{padding:'7px 14px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#fff',fontSize:'13px',fontWeight:600,cursor:'pointer'}}>+ Novo Cliente</button>
+                  </div>
+                </div>
+                <input placeholder="Buscar cliente..." value={search} onChange={e=>setSearch(e.target.value)} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.08)',borderRadius:'10px',padding:'8px 12px',color:'#fff',fontSize:'13px',outline:'none',marginBottom:'16px',boxSizing:'border-box'}} />
+                {loading?<p style={{color:'rgba(255,255,255,0.3)',textAlign:'center',padding:'40px'}}>Carregando...</p>:(
+                  <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
+                    {filteredClients.length===0&&<p style={{color:'rgba(255,255,255,0.2)',textAlign:'center',padding:'40px'}}>Nenhum cliente encontrado</p>}
+                    {filteredClients.map(c=>{
+                      const days = daysLeft(c)
+                      const isLow = days!==null&&days<=10
+                      const isOver = days!==null&&days<=0
+                      return (
+                        <div key={c.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'13px 15px',borderRadius:'12px',background:'rgba(255,255,255,0.04)',border:`1px solid ${isOver?'rgba(224,82,82,0.3)':isLow?'rgba(224,82,82,0.15)':'rgba(255,255,255,0.07)'}`,cursor:'pointer'}} onClick={()=>openEditClient(c)}>
+                          <div style={{width:'38px',height:'38px',borderRadius:'50%',background:'rgba(76,175,125,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'#4caf7d',fontWeight:700,fontSize:'14px',flexShrink:0}}>{c.name.charAt(0).toUpperCase()}</div>
+                          <div style={{flex:1,minWidth:0}}>
+                            <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
+                              <p style={{color:'#fff',fontSize:'13px',fontWeight:500}}>{c.name}</p>
+                              {c.source&&<span style={{fontSize:'10px',padding:'1px 7px',borderRadius:'5px',background:`${sourceColor[c.source]}22`,color:sourceColor[c.source]}}>{c.source}</span>}
+                              {c.product&&<span style={{fontSize:'10px',padding:'1px 7px',borderRadius:'5px',background:'rgba(76,175,125,0.1)',color:'#4caf7d'}}>{c.product}</span>}
+                            </div>
+                            <div style={{display:'flex',gap:'8px',marginTop:'2px',flexWrap:'wrap'}}>
+                              {c.phone&&<span style={{color:'rgba(255,255,255,0.3)',fontSize:'11px'}}>{c.phone}</span>}
+                              {c.pots_bought>0&&<span style={{color:'rgba(255,255,255,0.3)',fontSize:'11px'}}>{c.pots_bought} potes</span>}
+                              {days!==null&&<span style={{color:isOver?'#e05252':isLow?'#e08c42':'rgba(255,255,255,0.3)',fontSize:'11px',fontWeight:isLow?600:400}}>{isOver?'Potes acabaram!':isLow?`⚠ ${days} dias`:days+' dias'}</span>}
+                            </div>
+                          </div>
+                          <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
+                            {c.whatsapp&&<a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'7px',color:'#25d366',fontSize:'11px',textDecoration:'none',fontWeight:600}}>WA</a>}
+                            <span style={{fontSize:'11px',padding:'3px 9px',borderRadius:'6px',background:c.status==='Ativo'?'rgba(76,175,125,0.15)':'rgba(255,255,255,0.08)',color:c.status==='Ativo'?'#4caf7d':'rgba(255,255,255,0.4)',fontWeight:500}}>{c.status}</span>
+                            <button onClick={e=>{e.stopPropagation();removeClient(c.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'11px',cursor:'pointer'}}>✕</button>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-      {showForm && (
-        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.75)',backdropFilter:'blur(4px)',zIndex:50,display:'flex',alignItems:'center',justifyContent:'center',padding:'16px'}}>
-          <div style={{width:'100%',maxWidth:'460px',background:'#13131f',borderRadius:'16px',padding:'24px',border:'1px solid rgba(255,255,255,0.1)',maxHeight:'90vh',overflowY:'auto'}}>
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
+
+      {showForm==='lead' && (
+        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',backdropFilter:'blur(4px)',zIndex:50,overflowY:'auto',display:'flex',justifyContent:'center',padding:'20px'}}>
+          <div style={{width:'100%',maxWidth:'560px',background:'#13131f',borderRadius:'16px',padding:'24px',border:'1px solid rgba(255,255,255,0.1)',height:'fit-content'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'4px'}}>
               <h2 style={{color:'#fff',fontSize:'16px',fontWeight:600}}>{editing?'Editar Lead':'Novo Lead'}</h2>
-              <button onClick={() => setShowForm(false)} style={{background:'none',border:'none',color:'rgba(255,255,255,0.3)',cursor:'pointer',fontSize:'18px'}}>✕</button>
+              <button onClick={()=>setShowForm('')} style={{background:'none',border:'none',color:'rgba(255,255,255,0.3)',cursor:'pointer',fontSize:'18px'}}>✕</button>
             </div>
+            <Sec title="Informações básicas" />
             <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
-              <input placeholder="Nome *" value={form.name} onChange={e => setForm(f=>({...f,name:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'13px',outline:'none'}} />
-              <input placeholder="Email" value={form.email} onChange={e => setForm(f=>({...f,email:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'13px',outline:'none'}} />
-              <input placeholder="Telefone" value={form.phone} onChange={e => setForm(f=>({...f,phone:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'13px',outline:'none'}} />
-              <input placeholder="Empresa" value={form.company} onChange={e => setForm(f=>({...f,company:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'13px',outline:'none'}} />
-              <input placeholder="Valor (R$)" type="number" value={form.value} onChange={e => setForm(f=>({...f,value:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'13px',outline:'none'}} />
-              <div>
-                <label style={{fontSize:'11px',color:'rgba(255,255,255,0.3)',display:'block',marginBottom:'4px'}}>Status</label>
-                <select value={form.status} onChange={e => setForm(f=>({...f,status:e.target.value}))} style={{width:'100%',background:'#13131f',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'13px',outline:'none'}}>
-                  {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
-                </select>
+              <input placeholder="Nome *" value={leadForm.name} onChange={e=>setLeadForm(f=>({...f,name:e.target.value}))} style={inp} />
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
+                <Fld label="Telefone"><input placeholder="(00) 00000-0000" value={leadForm.phone} onChange={e=>setLeadForm(f=>({...f,phone:e.target.value}))} style={inp} /></Fld>
+                <Fld label="WhatsApp"><input placeholder="(00) 00000-0000" value={leadForm.whatsapp} onChange={e=>setLeadForm(f=>({...f,whatsapp:e.target.value}))} style={inp} /></Fld>
               </div>
-              <div style={{background:'rgba(91,80,214,0.05)',borderRadius:'10px',padding:'12px',border:'1px solid rgba(91,80,214,0.15)'}}>
-                <label style={{fontSize:'11px',color:'rgba(255,255,255,0.3)',display:'block',marginBottom:'4px'}}>Data do follow-up</label>
-                <input type="date" value={form.next_followup} onChange={e => setForm(f=>({...f,next_followup:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'8px',padding:'8px 12px',color:'#fff',fontSize:'13px',outline:'none',colorScheme:'dark'}} />
-                <input placeholder="Observação" value={form.followup_notes} onChange={e => setForm(f=>({...f,followup_notes:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'8px',padding:'8px 12px',color:'#fff',fontSize:'13px',outline:'none',marginTop:'8px'}} />
-                <p style={{fontSize:'10px',color:'rgba(91,80,214,0.6)',marginTop:'6px'}}>Aparece automaticamente na agenda</p>
+              <input placeholder="Email" value={leadForm.email} onChange={e=>setLeadForm(f=>({...f,email:e.target.value}))} style={inp} />
+              <input placeholder="Endereço" value={leadForm.address} onChange={e=>setLeadForm(f=>({...f,address:e.target.value}))} style={inp} />
+            </div>
+            <Sec title="Contato secundário" />
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'8px'}}>
+              <Fld label="Telefone 2"><input placeholder="(00) 00000-0000" value={leadForm.phone2} onChange={e=>setLeadForm(f=>({...f,phone2:e.target.value}))} style={inp} /></Fld>
+              <Fld label="Nome"><input value={leadForm.phone2_name} onChange={e=>setLeadForm(f=>({...f,phone2_name:e.target.value}))} style={inp} /></Fld>
+              <Fld label="Parentesco"><select value={leadForm.phone2_relation} onChange={e=>setLeadForm(f=>({...f,phone2_relation:e.target.value}))} style={sel}><option value="">Selecione</option>{RELATIONS.map(r=><option key={r} value={r}>{r}</option>)}</select></Fld>
+            </div>
+            <Sec title="Perfil familiar" />
+            <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
+                <Fld label="Qtd. filhos"><input type="number" min="0" value={leadForm.children_count} onChange={e=>setLeadForm(f=>({...f,children_count:e.target.value}))} style={inp} /></Fld>
+                <Fld label="Idades"><input placeholder="Ex: 3, 7 anos" value={leadForm.children_ages} onChange={e=>setLeadForm(f=>({...f,children_ages:e.target.value}))} style={inp} /></Fld>
               </div>
-              <textarea placeholder="Notas" value={form.notes} onChange={e => setForm(f=>({...f,notes:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'13px',outline:'none',resize:'none',height:'64px'}} />
-              {error && <p style={{color:'#e05252',fontSize:'12px',background:'rgba(224,82,82,0.1)',borderRadius:'8px',padding:'8px 12px'}}>{error}</p>}
-              <div style={{display:'flex',gap:'8px',marginTop:'4px'}}>
-                <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'10px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#fff',fontSize:'13px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-                <button onClick={() => setShowForm(false)} style={{padding:'10px 16px',background:'transparent',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',color:'rgba(255,255,255,0.4)',fontSize:'13px',cursor:'pointer'}}>Cancelar</button>
+              <Fld label="Dificuldades"><textarea placeholder="Ex: cansaço, falta de foco..." value={leadForm.difficulties} onChange={e=>setLeadForm(f=>({...f,difficulties:e.target.value}))} style={{...inp,resize:'none',height:'60px'}} /></Fld>
+            </div>
+            <Sec title="Origem" />
+            <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'6px'}}>
+              {SOURCES.map(s=><button key={s} onClick={()=>setLeadForm(f=>({...f,source:s}))} style={{padding:'8px 4px',borderRadius:'8px',border:`1px solid ${leadForm.source===s?sourceColor[s]:'rgba(255,255,255,0.08)'}`,background:leadForm.source===s?`${sourceColor[s]}22`:'transparent',color:leadForm.source===s?sourceColor[s]:'rgba(255,255,255,0.35)',fontSize:'12px',cursor:'pointer',fontWeight:leadForm.source===s?600:400}}>{s}</button>)}
+            </div>
+            <Sec title="Produto e venda" />
+            <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'8px'}}>
+                <Fld label="Produto"><input placeholder="Suplemento" value={leadForm.product} onChange={e=>setLeadForm(f=>({...f,product:e.target.value}))} style={inp} /></Fld>
+                <Fld label="Data compra"><input type="date" value={leadForm.purchase_date} onChange={e=>setLeadForm(f=>({...f,purchase_date:e.target.value}))} style={{...inp,colorScheme:'dark'}} /></Fld>
+                <Fld label="Qtd. potes"><input type="number" min="0" value={leadForm.pots_bought} onChange={e=>setLeadForm(f=>({...f,pots_bought:e.target.value}))} style={inp} /></Fld>
               </div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
+                <Fld label="Valor (R$)"><input type="number" value={leadForm.value} onChange={e=>setLeadForm(f=>({...f,value:e.target.value}))} style={inp} /></Fld>
+                <Fld label="Status"><select value={leadForm.status} onChange={e=>setLeadForm(f=>({...f,status:e.target.value}))} style={sel}>{STATUSES.map(s=><option key={s} value={s}>{s}</option>)}</select></Fld>
+              </div>
+              {leadForm.status==='Ganho'&&<p style={{fontSize:'11px',color:'rgba(76,175,125,0.7)',background:'rgba(76,175,125,0.08)',borderRadius:'8px',padding:'8px 12px'}}>✓ Este lead será automaticamente adicionado como Cliente</p>}
+            </div>
+            <Sec title="Follow-up" />
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
+              <Fld label="Data"><input type="date" value={leadForm.next_followup} onChange={e=>setLeadForm(f=>({...f,next_followup:e.target.value}))} style={{...inp,colorScheme:'dark'}} /></Fld>
+              <Fld label="Observação"><input placeholder="O que falar?" value={leadForm.followup_notes} onChange={e=>setLeadForm(f=>({...f,followup_notes:e.target.value}))} style={inp} /></Fld>
+            </div>
+            <Sec title="Notas" />
+            <textarea placeholder="Observações gerais..." value={leadForm.notes} onChange={e=>setLeadForm(f=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'64px'}} />
+            {error&&<p style={{color:'#e05252',fontSize:'12px',background:'rgba(224,82,82,0.1)',borderRadius:'8px',padding:'8px 12px',marginTop:'10px'}}>{error}</p>}
+            <div style={{display:'flex',gap:'8px',marginTop:'16px'}}>
+              <button onClick={saveLead} disabled={!leadForm.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#fff',fontSize:'13px',fontWeight:600,cursor:'pointer',opacity:!leadForm.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
+              <button onClick={()=>setShowForm('')} style={{padding:'11px 16px',background:'transparent',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',color:'rgba(255,255,255,0.4)',fontSize:'13px',cursor:'pointer'}}>Cancelar</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showForm==='client' && (
+        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',backdropFilter:'blur(4px)',zIndex:50,overflowY:'auto',display:'flex',justifyContent:'center',padding:'20px'}}>
+          <div style={{width:'100%',maxWidth:'560px',background:'#13131f',borderRadius:'16px',padding:'24px',border:'1px solid rgba(255,255,255,0.1)',height:'fit-content'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'4px'}}>
+              <h2 style={{color:'#fff',fontSize:'16px',fontWeight:600}}>{editing?'Editar Cliente':'Novo Cliente'}</h2>
+              <button onClick={()=>setShowForm('')} style={{background:'none',border:'none',color:'rgba(255,255,255,0.3)',cursor:'pointer',fontSize:'18px'}}>✕</button>
+            </div>
+            <Sec title="Informações básicas" />
+            <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
+              <input placeholder="Nome completo *" value={clientForm.name} onChange={e=>setClientForm(f=>({...f,name:e.target.value}))} style={inp} />
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
+                <Fld label="Telefone"><input placeholder="(00) 00000-0000" value={clientForm.phone} onChange={e=>setClientForm(f=>({...f,phone:e.target.value}))} style={inp} /></Fld>
+                <Fld label="WhatsApp"><input placeholder="(00) 00000-0000" value={clientForm.whatsapp} onChange={e=>setClientForm(f=>({...f,whatsapp:e.target.value}))} style={inp} /></Fld>
+              </div>
+              <input placeholder="Email" value={clientForm.email} onChange={e=>setClientForm(f=>({...f,email:e.target.value}))} style={inp} />
+              <input placeholder="Endereço" value={clientForm.address} onChange={e=>setClientForm(f=>({...f,address:e.target.value}))} style={inp} />
+            </div>
+            <Sec title="Contato secundário" />
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'8px'}}>
+              <Fld label="Telefone 2"><input value={clientForm.phone2} onChange={e=>setClientForm(f=>({...f,phone2:e.target.value}))} style={inp} /></Fld>
+              <Fld label="Nome"><input value={clientForm.phone2_name} onChange={e=>setClientForm(f=>({...f,phone2_name:e.target.value}))} style={inp} /></Fld>
+              <Fld label="Parentesco"><select value={clientForm.phone2_relation} onChange={e=>setClientForm(f=>({...f,phone2_relation:e.target.value}))} style={sel}><option value="">Selecione</option>{RELATIONS.map(r=><option key={r} value={r}>{r}</option>)}</select></Fld>
+            </div>
+            <Sec title="Perfil familiar" />
+            <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
+                <Fld label="Qtd. filhos"><input type="number" min="0" value={clientForm.children_count} onChange={e=>setClientForm(f=>({...f,children_count:e.target.value}))} style={inp} /></Fld>
+                <Fld label="Idades"><input placeholder="Ex: 3, 7 anos" value={clientForm.children_ages} onChange={e=>setClientForm(f=>({...f,children_ages:e.target.value}))} style={inp} /></Fld>
+              </div>
+              <Fld label="Dificuldades"><textarea value={clientForm.difficulties} onChange={e=>setClientForm(f=>({...f,difficulties:e.target.value}))} style={{...inp,resize:'none',height:'60px'}} /></Fld>
+            </div>
+            <Sec title="Origem" />
+            <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'6px'}}>
+              {SOURCES.map(s=><button key={s} onClick={()=>setClientForm(f=>({...f,source:s}))} style={{padding:'8px 4px',borderRadius:'8px',border:`1px solid ${clientForm.source===s?sourceColor[s]:'rgba(255,255,255,0.08)'}`,background:clientForm.source===s?`${sourceColor[s]}22`:'transparent',color:clientForm.source===s?sourceColor[s]:'rgba(255,255,255,0.35)',fontSize:'12px',cursor:'pointer',fontWeight:clientForm.source===s?600:400}}>{s}</button>)}
+            </div>
+            <Sec title="Compra" />
+            <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'8px'}}>
+                <Fld label="Produto"><input placeholder="Suplemento" value={clientForm.product} onChange={e=>setClientForm(f=>({...f,product:e.target.value}))} style={inp} /></Fld>
+                <Fld label="Data compra"><input type="date" value={clientForm.purchase_date} onChange={e=>setClientForm(f=>({...f,purchase_date:e.target.value}))} style={{...inp,colorScheme:'dark'}} /></Fld>
+                <Fld label="Qtd. potes"><input type="number" min="0" value={clientForm.pots_bought} onChange={e=>setClientForm(f=>({...f,pots_bought:e.target.value}))} style={inp} /></Fld>
+              </div>
+              {clientForm.purchase_date&&parseInt(clientForm.pots_bought)>0&&<p style={{fontSize:'11px',color:'rgba(91,80,214,0.7)',background:'rgba(91,80,214,0.08)',borderRadius:'8px',padding:'8px 12px'}}>Potes terminam em: {new Date(new Date(clientForm.purchase_date).getTime()+parseInt(clientForm.pots_bought)*30*24*60*60*1000).toLocaleDateString('pt-BR')}</p>}
+              <Fld label="Status"><select value={clientForm.status} onChange={e=>setClientForm(f=>({...f,status:e.target.value}))} style={sel}><option value="Ativo">Ativo</option><option value="Inativo">Inativo</option><option value="Recompra">Recompra</option></select></Fld>
+            </div>
+            <Sec title="Notas" />
+            <textarea value={clientForm.notes} onChange={e=>setClientForm(f=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'64px'}} />
+            {error&&<p style={{color:'#e05252',fontSize:'12px',background:'rgba(224,82,82,0.1)',borderRadius:'8px',padding:'8px 12px',marginTop:'10px'}}>{error}</p>}
+            <div style={{display:'flex',gap:'8px',marginTop:'16px'}}>
+              <button onClick={saveClient} disabled={!clientForm.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#fff',fontSize:'13px',fontWeight:600,cursor:'pointer',opacity:!clientForm.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
+              <button onClick={()=>setShowForm('')} style={{padding:'11px 16px',background:'transparent',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',color:'rgba(255,255,255,0.4)',fontSize:'13px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>
