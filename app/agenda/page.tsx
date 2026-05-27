@@ -39,6 +39,7 @@ export default function AgendaPage() {
   const [editingTask, setEditingTask] = useState<any>(null)
   const [taskForm, setTaskForm] = useState({title:'',time:'',notes:'',priority:'MEDIUM',is_recurring:false,recurrence:'monthly',amount:'',financial_type:'despesa',financial_category:'outros',has_financial:false})
   const [saving, setSaving] = useState(false)
+  const [viewingDay, setViewingDay] = useState<number|null>(null)
   const [showPendForm, setShowPendForm] = useState(false)
   const [editingPend, setEditingPend] = useState<any>(null)
   const [pendForm, setPendForm] = useState({title:'',priority:'MEDIUM'})
@@ -189,7 +190,7 @@ export default function AgendaPage() {
             const isToday = day===today.getDate()&&month===today.getMonth()&&year===today.getFullYear()
             const dayTasks = getTasksForDay(day)
             return (
-              <div key={day} onClick={() => openDayForm(day)} style={{minHeight:'90px',borderRadius:'8px',padding:'6px',background:isToday?'rgba(91,80,214,0.12)':'rgba(255,255,255,0.02)',border:isToday?'1px solid rgba(91,80,214,0.35)':'1px solid rgba(255,255,255,0.05)',cursor:'pointer'}}>
+              <div key={day} onClick={() => { const dt = getTasksForDay(day); if(dt.length > 0){ setViewingDay(day) } else { openDayForm(day) } }} style={{minHeight:'90px',borderRadius:'8px',padding:'6px',background:isToday?'rgba(91,80,214,0.12)':'rgba(255,255,255,0.02)',border:isToday?'1px solid rgba(91,80,214,0.35)':'1px solid rgba(255,255,255,0.05)',cursor:'pointer'}}>
                 <div style={{fontSize:'11px',color:isToday?'#a89ff7':'rgba(255,255,255,0.4)',fontWeight:isToday?700:400}}>{day}</div>
                 <div style={{marginTop:'3px'}}>
                   {dayTasks.map((t:any) => (
@@ -204,6 +205,33 @@ export default function AgendaPage() {
           })}
         </div>
       </div>
+
+      {viewingDay && (
+        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.75)',backdropFilter:'blur(4px)',zIndex:50,display:'flex',alignItems:'center',justifyContent:'center',padding:'16px'}}>
+          <div style={{width:'100%',maxWidth:'480px',background:'#13131f',borderRadius:'16px',padding:'24px',border:'1px solid rgba(255,255,255,0.1)',maxHeight:'80vh',display:'flex',flexDirection:'column'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}}>
+              <h2 style={{color:'#fff',fontSize:'16px',fontWeight:600}}>Dia {viewingDay} de {MONTHS[month]}</h2>
+              <div style={{display:'flex',gap:'8px'}}>
+                <button onClick={() => { setViewingDay(null); openDayForm(viewingDay) }} style={{padding:'6px 12px',background:'#5b50d6',border:'none',borderRadius:'8px',color:'#fff',fontSize:'12px',cursor:'pointer',fontWeight:600}}>+ Nova tarefa</button>
+                <button onClick={() => setViewingDay(null)} style={{background:'none',border:'none',color:'rgba(255,255,255,0.3)',cursor:'pointer',fontSize:'18px'}}>✕</button>
+              </div>
+            </div>
+            <div style={{overflowY:'auto',display:'flex',flexDirection:'column',gap:'6px'}}>
+              {getTasksForDay(viewingDay).map((t:any) => (
+                <div key={t.id} onClick={() => { setViewingDay(null); openEditTask(t) }} style={{display:'flex',alignItems:'center',gap:'10px',padding:'10px 12px',borderRadius:'10px',background:'rgba(255,255,255,0.04)',border:1px solid 22,cursor:'pointer'}}>
+                  <div style={{width:'8px',height:'8px',borderRadius:'50%',background:priorityColor[t.priority],flexShrink:0}}/>
+                  <div style={{flex:1,minWidth:0}}>
+                    <p style={{color:t.status===DONE?'rgba(255,255,255,0.3)':'#fff',fontSize:'13px',fontWeight:500,textDecoration:t.status===DONE?'line-through':'none'}}>{t.title}</p>
+                    {t.time&&<p style={{color:'rgba(255,255,255,0.3)',fontSize:'11px',marginTop:'2px'}}>{t.time}</p>}
+                    {t.notes&&<p style={{color:'rgba(255,255,255,0.25)',fontSize:'11px',marginTop:'2px'}}>{t.notes}</p>}
+                  </div>
+                  <span style={{fontSize:'10px',padding:'2px 8px',borderRadius:'5px',background:t.status===DONE?'rgba(76,175,125,0.1)':'rgba(255,255,255,0.06)',color:t.status===DONE?'#4caf7d':'rgba(255,255,255,0.3)'}}>{t.status===DONE?'Concluída':t.priority}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {showPendForm && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.75)',backdropFilter:'blur(4px)',zIndex:50,display:'flex',alignItems:'center',justifyContent:'center',padding:'16px'}}>
