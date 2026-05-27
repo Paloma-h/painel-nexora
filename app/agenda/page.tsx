@@ -35,11 +35,11 @@ export default function AgendaPage() {
   const [pendencias, setPendencias] = useState<any[]>([])
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDay, setSelectedDay] = useState<number|null>(null)
+  const [viewingDay, setViewingDay] = useState<number|null>(null)
   const [showTaskForm, setShowTaskForm] = useState(false)
   const [editingTask, setEditingTask] = useState<any>(null)
   const [taskForm, setTaskForm] = useState({title:'',time:'',notes:'',priority:'MEDIUM',is_recurring:false,recurrence:'monthly',amount:'',financial_type:'despesa',financial_category:'outros',has_financial:false})
   const [saving, setSaving] = useState(false)
-  const [viewingDay, setViewingDay] = useState<number|null>(null)
   const [showPendForm, setShowPendForm] = useState(false)
   const [editingPend, setEditingPend] = useState<any>(null)
   const [pendForm, setPendForm] = useState({title:'',priority:'MEDIUM'})
@@ -109,15 +109,11 @@ export default function AgendaPage() {
   }
 
   function openNewPend() {
-    setEditingPend(null)
-    setPendForm({title:'',priority:'MEDIUM'})
-    setShowPendForm(true)
+    setEditingPend(null); setPendForm({title:'',priority:'MEDIUM'}); setShowPendForm(true)
   }
 
   function openEditPend(p: any) {
-    setEditingPend(p)
-    setPendForm({title:p.title,priority:p.priority||'MEDIUM'})
-    setShowPendForm(true)
+    setEditingPend(p); setPendForm({title:p.title,priority:p.priority||'MEDIUM'}); setShowPendForm(true)
   }
 
   async function savePend() {
@@ -190,7 +186,7 @@ export default function AgendaPage() {
             const isToday = day===today.getDate()&&month===today.getMonth()&&year===today.getFullYear()
             const dayTasks = getTasksForDay(day)
             return (
-              <div key={day} onClick={() => { const dt = getTasksForDay(day); if(dt.length > 0){ setViewingDay(day) } else { openDayForm(day) } }} style={{minHeight:'90px',borderRadius:'8px',padding:'6px',background:isToday?'rgba(91,80,214,0.12)':'rgba(255,255,255,0.02)',border:isToday?'1px solid rgba(91,80,214,0.35)':'1px solid rgba(255,255,255,0.05)',cursor:'pointer'}}>
+              <div key={day} onClick={() => { if(dayTasks.length > 0){ setViewingDay(day) } else { openDayForm(day) } }} style={{minHeight:'90px',borderRadius:'8px',padding:'6px',background:isToday?'rgba(91,80,214,0.12)':'rgba(255,255,255,0.02)',border:isToday?'1px solid rgba(91,80,214,0.35)':'1px solid rgba(255,255,255,0.05)',cursor:'pointer'}}>
                 <div style={{fontSize:'11px',color:isToday?'#a89ff7':'rgba(255,255,255,0.4)',fontWeight:isToday?700:400}}>{day}</div>
                 <div style={{marginTop:'3px'}}>
                   {dayTasks.map((t:any) => (
@@ -198,7 +194,6 @@ export default function AgendaPage() {
                       {t.time&&<span style={{color:'rgba(255,255,255,0.3)',marginRight:'3px'}}>{t.time}</span>}{t.title}
                     </div>
                   ))}
-                  {dayTasks.length>4&&<div style={{fontSize:'9px',color:'rgba(255,255,255,0.25)',paddingLeft:'4px'}}>+{dayTasks.length-3} mais</div>}
                 </div>
               </div>
             )
@@ -218,14 +213,14 @@ export default function AgendaPage() {
             </div>
             <div style={{overflowY:'auto',display:'flex',flexDirection:'column',gap:'6px'}}>
               {getTasksForDay(viewingDay).map((t:any) => (
-                <div key={t.id} onClick={() => { setViewingDay(null); openEditTask(t) }} style={{display:'flex',alignItems:'center',gap:'10px',padding:'10px 12px',borderRadius:'10px',background:'rgba(255,255,255,0.04)',border:1px solid 22,cursor:'pointer'}}>
+                <div key={t.id} onClick={() => { setViewingDay(null); openEditTask(t) }} style={{display:'flex',alignItems:'center',gap:'10px',padding:'10px 12px',borderRadius:'10px',background:'rgba(255,255,255,0.04)',border:`1px solid ${priorityColor[t.priority]}22`,cursor:'pointer'}}>
                   <div style={{width:'8px',height:'8px',borderRadius:'50%',background:priorityColor[t.priority],flexShrink:0}}/>
                   <div style={{flex:1,minWidth:0}}>
-                    <p style={{color:t.status===DONE?'rgba(255,255,255,0.3)':'#fff',fontSize:'13px',fontWeight:500,textDecoration:t.status===DONE?'line-through':'none'}}>{t.title}</p>
+                    <p style={{color:t.status==='DONE'?'rgba(255,255,255,0.3)':'#fff',fontSize:'13px',fontWeight:500,textDecoration:t.status==='DONE'?'line-through':'none'}}>{t.title}</p>
                     {t.time&&<p style={{color:'rgba(255,255,255,0.3)',fontSize:'11px',marginTop:'2px'}}>{t.time}</p>}
                     {t.notes&&<p style={{color:'rgba(255,255,255,0.25)',fontSize:'11px',marginTop:'2px'}}>{t.notes}</p>}
                   </div>
-                  <span style={{fontSize:'10px',padding:'2px 8px',borderRadius:'5px',background:t.status===DONE?'rgba(76,175,125,0.1)':'rgba(255,255,255,0.06)',color:t.status===DONE?'#4caf7d':'rgba(255,255,255,0.3)'}}>{t.status===DONE?'Concluída':t.priority}</span>
+                  <span style={{fontSize:'10px',padding:'2px 8px',borderRadius:'5px',background:t.status==='DONE'?'rgba(76,175,125,0.1)':'rgba(255,255,255,0.06)',color:t.status==='DONE'?'#4caf7d':'rgba(255,255,255,0.3)'}}>{t.status==='DONE'?'Concluída':t.priority}</span>
                 </div>
               ))}
             </div>
