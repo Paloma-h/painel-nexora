@@ -157,7 +157,7 @@ export default function AgendaPage() {
             {pendencias.map((p:any) => (
               <div key={p.id} style={{display:'flex',alignItems:'center',gap:'6px',padding:'7px 8px',borderRadius:'8px',background:'rgba(255,255,255,0.03)',border:`1px solid ${p.status==='DONE'?'rgba(255,255,255,0.04)':PRIO_COLOR[p.priority||'MEDIUM']+'22'}`}}>
                 <div onClick={() => completePend(p.id)} style={{width:'14px',height:'14px',borderRadius:'4px',border:p.status==='DONE'?'none':'1px solid rgba(255,255,255,0.15)',background:p.status==='DONE'?'#5b50d6':'transparent',flexShrink:0,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'9px',color:'#fff'}}>{p.status==='DONE'?'✓':''}</div>
-                <div style={{flex:1,fontSize:'11px',color:p.status==='DONE'?'rgba(255,255,255,0.2)':'rgba(255,255,255,0.7)',textDecoration:p.status==='DONE'?'line-through':'none',lineHeight:1.3}}>{p.title}</div>
+                <div style={{flex:1,fontSize:'11px',color:p.status==='DONE'?'rgba(255,255,255,0.2)':'rgba(255,255,255,0.7)',textDecoration:p.status==='DONE'?'line-through':'none',lineHeight:1.3,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',minWidth:0}}>{p.title}</div>
                 <div style={{width:'6px',height:'6px',borderRadius:'50%',background:PRIO_COLOR[p.priority||'MEDIUM'],flexShrink:0}}/>
                 <button onClick={() => openEditPend(p)} style={{background:'none',border:'none',color:'rgba(255,255,255,0.25)',cursor:'pointer',fontSize:'11px',padding:'0',lineHeight:1}}>✎</button>
                 <button onClick={() => deletePend(p.id)} style={{background:'none',border:'none',color:'rgba(224,82,82,0.4)',cursor:'pointer',fontSize:'11px',padding:'0',lineHeight:1}}>✕</button>
