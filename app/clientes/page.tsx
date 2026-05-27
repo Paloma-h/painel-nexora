@@ -118,7 +118,7 @@ export default function ClientesPage() {
     const file = e.target.files[0]
     if (!file) return
     const text = await file.text()
-    const lines = text.split('\n').slice(1).filter(l => l.trim())
+    const lines = text.split('\n').slice(1).filter((l:string) => l.trim())
     let count = 0
     for (const line of lines) {
       const cols = line.split(',').map((c:string) => c.replace(/"/g,'').trim())
