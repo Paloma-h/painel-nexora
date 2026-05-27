@@ -45,6 +45,31 @@ export default function CRMPage() {
     setLoading(false)
   }
 
+  function exportCSV() {
+    const headers = ['Nome','Email','Telefone','WhatsApp','Empresa','Endereço','Status','Valor','Origem','Produto','Data Compra','Potes','Follow-up','Notas']
+    const rows = leads.map((l:any) => [l.name,l.email||'',l.phone||'',l.whatsapp||'',l.company||'',l.address||'',l.status||'',l.value||0,l.source||'',l.product||'',l.purchase_date||'',l.pots_bought||0,l.next_followup||'',l.notes||''])
+    const csv = [headers,...rows].map((r:any) => r.map((v:any) => `"${v}"`).join(',')).join('\n')
+    const blob = new Blob([csv],{type:'text/csv'})
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href=url; a.download='crm-nexora.csv'; a.click()
+  }
+
+  async function importCSV(e: any) {
+    const file = e.target.files[0]
+    if (!file) return
+    const text = await file.text()
+    const lines = text.split('\n').slice(1).filter((l:string) => l.trim())
+    let count = 0
+    for (const line of lines) {
+      const cols = line.split(',').map((c:string) => c.replace(/"/g,'').trim())
+      if (!cols[0]) continue
+      await supabase.from('leads').insert({id:crypto.randomUUID(),name:cols[0],email:cols[1]||null,phone:cols[2]||null,whatsapp:cols[3]||null,company:cols[4]||null,address:cols[5]||null,status:cols[6]||'Prospecção',value:parseFloat(cols[7])||0,source:cols[8]||'Indicação',product:cols[9]||null,purchase_date:cols[10]||null,pots_bought:parseInt(cols[11])||0,next_followup:cols[12]||null,notes:cols[13]||null,user_id:USER_ID})
+      count++
+    }
+    alert(`${count} leads importados!`)
+    load()
+  }
   function openNew() { setEditing(null); setForm(EMPTY); setError(''); setShowForm(true) }
   function openEdit(lead: any) {
     setEditing(lead)
@@ -79,7 +104,7 @@ export default function CRMPage() {
               <h1 style={{color:'#fff',fontSize:'22px',fontWeight:700}}>CRM</h1>
               <p style={{color:'rgba(255,255,255,0.3)',fontSize:'12px',marginTop:'2px'}}>{leads.length} leads</p>
             </div>
-            <button onClick={openNew} style={{padding:'8px 16px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#fff',fontSize:'13px',fontWeight:600,cursor:'pointer'}}>+ Novo Lead</button>
+            <div style={{display:'flex',gap:'8px'}}><label style={{padding:'8px 14px',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',color:'rgba(255,255,255,0.5)',fontSize:'13px',cursor:'pointer'}}>Importar CSV<input type='file' accept='.csv' onChange={importCSV} style={{display:'none'}} /></label><button onClick={exportCSV} style={{padding:'8px 14px',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',color:'rgba(255,255,255,0.5)',fontSize:'13px',cursor:'pointer'}}>Exportar CSV</button><button onClick={openNew} style={{padding:'8px 16px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#fff',fontSize:'13px',fontWeight:600,cursor:'pointer'}}>+ Novo Lead</button></div>
           </div>
           {loading ? <p style={{color:'rgba(255,255,255,0.3)',textAlign:'center',padding:'40px'}}>Carregando...</p> : (
             <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
