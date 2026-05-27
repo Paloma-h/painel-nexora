@@ -1,152 +1,313 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const USER_ID = 'paloma'
-const PRIORITIES = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW']
 const CATEGORIES = ['geral', 'trabalho', 'saude', 'pessoal', 'financeiro', 'familia']
-const EMPTY = { title: '', description: '', date: '', time: '', priority: 'MEDIUM', category: 'geral' }
+const FINANCIAL_CATEGORIES = ['alimentação', 'transporte', 'saúde', 'educação', 'lazer', 'moradia', 'trabalho', 'outros']
+const DAYS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
+const MONTHS = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
 
-function Nav() {
+function Sidebar() {
   const path = usePathname()
-  const links = [{ href: '/agenda', label: 'Agenda' }, { href: '/crm', label: 'CRM' }, { href: '/financeiro', label: 'Financeiro' }]
+  const router = useRouter()
+  async function logout() {
+    await supabase.auth.signOut()
+    router.push('/login')
+  }
   return (
-    <nav className="flex gap-2 p-4 border-b border-white/10 bg-[#0d0d1a]">
-      <span className="text-violet-400 font-black mr-4">NEXORA</span>
-      {links.map(l => (
-        <Link key={l.href} href={l.href} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${path === l.href ? 'bg-violet-600 text-white' : 'text-white/50 hover:text-white hover:bg-white/10'}`}>{l.label}</Link>
-      ))}
-    </nav>
+    <div style={{width:'160px',background:'#0d0d1a',borderRight:'1px solid rgba(255,255,255,0.06)',display:'flex',flexDirection:'column',padding:'20px 12px',flexShrink:0,minHeight:'100vh'}}>
+      <div style={{color:'#7c6ff7',fontWeight:700,fontSize:'16px',marginBottom:'28px',padding:'0 4px'}}>NEXORA</div>
+      <Link href="/agenda" style={{display:'block',padding:'9px 12px',borderRadius:'10px',fontSize:'13px',color: path==='/agenda' ? '#a89ff7' : 'rgba(255,255,255,0.35)',background: path==='/agenda' ? 'rgba(91,80,214,0.2)' : 'transparent',marginBottom:'2px',textDecoration:'none',fontWeight: path==='/agenda' ? 500 : 400}}>Agenda</Link>
+      <Link href="/crm" style={{display:'block',padding:'9px 12px',borderRadius:'10px',fontSize:'13px',color: path==='/crm' ? '#a89ff7' : 'rgba(255,255,255,0.35)',background: path==='/crm' ? 'rgba(91,80,214,0.2)' : 'transparent',marginBottom:'2px',textDecoration:'none',fontWeight: path==='/crm' ? 500 : 400}}>CRM</Link>
+      <Link href="/financeiro" style={{display:'block',padding:'9px 12px',borderRadius:'10px',fontSize:'13px',color: path==='/financeiro' ? '#a89ff7' : 'rgba(255,255,255,0.35)',background: path==='/financeiro' ? 'rgba(91,80,214,0.2)' : 'transparent',marginBottom:'2px',textDecoration:'none',fontWeight: path==='/financeiro' ? 500 : 400}}>Financeiro</Link>
+      <div style={{marginTop:'auto'}}>
+        <button onClick={logout} style={{display:'block',width:'100%',padding:'9px 12px',borderRadius:'10px',fontSize:'12px',color:'rgba(255,255,255,0.2)',background:'transparent',border:'none',textAlign:'left',cursor:'pointer'}}>Sair</button>
+      </div>
+    </div>
   )
 }
 
 export default function AgendaPage() {
   const [tasks, setTasks] = useState<any[]>([])
+  const [pendencias, setPendencias] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-  const [showForm, setShowForm] = useState(false)
-  const [form, setForm] = useState(EMPTY)
+  const [currentDate, setCurrentDate] = useState(new Date())
+  const [selectedDay, setSelectedDay] = useState<number|null>(null)
+  const [showTaskForm, setShowTaskForm] = useState(false)
+  const [showPendenciaForm, setShowPendenciaForm] = useState(false)
+  const [editingTask, setEditingTask] = useState<any>(null)
+  const [taskForm, setTaskForm] = useState({title:'',time:'',notes:'',priority:'MEDIUM',category:'geral',is_recurring:false,recurrence:'monthly',amount:'',financial_type:'despesa',financial_category:'outros',has_financial:false})
+  const [pendenciaText, setPendenciaText] = useState('')
   const [saving, setSaving] = useState(false)
-  const [error, setError] = useState('')
 
   useEffect(() => { load() }, [])
 
   async function load() {
     setLoading(true)
-    const { data, error } = await supabase.from('tasks').select('*').eq('user_id', USER_ID).order('created_at', { ascending: false })
-    if (error) console.error(error)
-    setTasks(data || [])
+    const { data } = await supabase.from('tasks').select('*').eq('user_id', USER_ID).order('created_at', { ascending: false })
+    const all = data || []
+    setTasks(all.filter((t:any) => t.type !== 'pendencia'))
+    setPendencias(all.filter((t:any) => t.type === 'pendencia'))
     setLoading(false)
   }
 
-  async function save() {
-    if (!form.title.trim()) return
+  const year = currentDate.getFullYear()
+  const month = currentDate.getMonth()
+  const firstDay = new Date(year, month, 1).getDay()
+  const daysInMonth = new Date(year, month + 1, 0).getDate()
+  const today = new Date()
+
+  function getTasksForDay(day: number) {
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`
+    return tasks.filter((t:any) => t.date === dateStr)
+  }
+
+  function openDayForm(day: number) {
+    setSelectedDay(day)
+    setEditingTask(null)
+    setTaskForm({title:'',time:'',notes:'',priority:'MEDIUM',category:'geral',is_recurring:false,recurrence:'monthly',amount:'',financial_type:'despesa',financial_category:'outros',has_financial:false})
+    setShowTaskForm(true)
+  }
+
+  function openEditTask(task: any) {
+    setEditingTask(task)
+    setSelectedDay(parseInt(task.date?.split('-')[2]))
+    setTaskForm({
+      title: task.title || '',
+      time: task.time || '',
+      notes: task.notes || '',
+      priority: task.priority || 'MEDIUM',
+      category: task.category || 'geral',
+      is_recurring: task.is_recurring || false,
+      recurrence: task.recurrence || 'monthly',
+      amount: task.amount?.toString() || '',
+      financial_type: task.financial_type || 'despesa',
+      financial_category: task.financial_category || 'outros',
+      has_financial: !!task.amount
+    })
+    setShowTaskForm(true)
+  }
+
+  async function saveTask() {
+    if (!taskForm.title.trim() || !selectedDay) return
     setSaving(true)
-    setError('')
-    const { error } = await supabase.from('tasks').insert({
-      id: crypto.randomUUID(),
-      title: form.title.trim(),
-      description: form.description || null,
-      date: form.date || null,
-      time: form.time || null,
-      priority: form.priority,
-      category: form.category,
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(selectedDay).padStart(2,'0')}`
+    const data: any = {
+      title: taskForm.title.trim(),
+      date: dateStr,
+      time: taskForm.time || null,
+      notes: taskForm.notes || null,
+      priority: taskForm.priority,
+      category: taskForm.category,
+      type: 'task',
+      is_recurring: taskForm.is_recurring,
+      recurrence: taskForm.is_recurring ? taskForm.recurrence : null,
       status: 'PENDING',
       user_id: USER_ID,
-    })
-    if (error) { setError(error.message); setSaving(false); return }
-    setForm(EMPTY)
-    setShowForm(false)
+    }
+    if (taskForm.has_financial && taskForm.amount) {
+      data.amount = parseFloat(taskForm.amount)
+      data.financial_type = taskForm.financial_type
+      data.financial_category = taskForm.financial_category
+    }
+    if (editingTask) {
+      await supabase.from('tasks').update(data).eq('id', editingTask.id)
+    } else {
+      data.id = crypto.randomUUID()
+      await supabase.from('tasks').insert(data)
+      if (taskForm.has_financial && taskForm.amount) {
+        await supabase.from('transactions').insert({
+          id: crypto.randomUUID(),
+          title: taskForm.title.trim(),
+          amount: parseFloat(taskForm.amount),
+          type: taskForm.financial_type,
+          category: taskForm.financial_category,
+          date: dateStr,
+          notes: taskForm.notes || null,
+          is_recurring: taskForm.is_recurring,
+          recurrence: taskForm.is_recurring ? taskForm.recurrence : null,
+          task_id: data.id,
+          user_id: USER_ID,
+        })
+      }
+    }
+    setShowTaskForm(false)
     setSaving(false)
     load()
   }
 
-  async function complete(id: string) {
+  async function deleteTask(id: string) {
+    if (!confirm('Apagar esta tarefa?')) return
+    await supabase.from('tasks').delete().eq('id', id)
+    setShowTaskForm(false)
+    load()
+  }
+
+  async function completeTask(id: string) {
     await supabase.from('tasks').update({ status: 'DONE' }).eq('id', id)
     load()
   }
 
-  async function remove(id: string) {
+  async function savePendencia() {
+    if (!pendenciaText.trim()) return
+    await supabase.from('tasks').insert({ id: crypto.randomUUID(), title: pendenciaText.trim(), type: 'pendencia', status: 'PENDING', user_id: USER_ID })
+    setPendenciaText('')
+    setShowPendenciaForm(false)
+    load()
+  }
+
+  async function completePendencia(id: string) {
+    await supabase.from('tasks').update({ status: 'DONE' }).eq('id', id)
+    load()
+  }
+
+  async function deletePendencia(id: string) {
     await supabase.from('tasks').delete().eq('id', id)
     load()
   }
 
-  const pending = tasks.filter(t => t.status !== 'DONE')
-  const done = tasks.filter(t => t.status === 'DONE')
+  const priorityColor: any = { CRITICAL: '#e05252', HIGH: '#e08c42', MEDIUM: '#d4b84a', LOW: '#4caf7d' }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f]">
-      <Nav />
-      <div className="max-w-3xl mx-auto p-6">
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h1 className="text-2xl font-black text-white">Agenda</h1>
-            <p className="text-white/40 text-sm">{pending.length} pendentes · {done.length} concluídas</p>
-          </div>
-          <button onClick={() => setShowForm(true)} className="px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white rounded-lg text-sm font-semibold transition-all">+ Nova Tarefa</button>
+    <div style={{display:'flex',minHeight:'100vh',background:'#0a0a0f',fontFamily:'system-ui,sans-serif'}}>
+      <Sidebar />
+
+      <div style={{width:'200px',borderRight:'1px solid rgba(255,255,255,0.06)',padding:'24px 16px',display:'flex',flexDirection:'column',gap:'16px',background:'#0d0d1a',overflowY:'auto'}}>
+        <div>
+          <div style={{color:'#7c6ff7',fontSize:'20px',fontWeight:900}}>{MONTHS[month].toUpperCase()}</div>
+          <div style={{color:'#fff',fontSize:'40px',fontWeight:900,lineHeight:1}}>{today.getDate()}</div>
+          <div style={{color:'rgba(255,255,255,0.3)',fontSize:'11px',marginTop:'4px'}}>{year} · {DAYS[today.getDay()]}</div>
         </div>
-        {loading ? <p className="text-white/40 text-center py-10">Carregando...</p> : (
-          <div className="space-y-2">
-            {pending.length === 0 && <p className="text-white/30 text-center py-10">Nenhuma tarefa pendente!</p>}
-            {pending.map(t => (
-              <div key={t.id} className="flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10 transition-all">
-                <div className={`w-3 h-3 rounded-full flex-shrink-0 ${t.priority === 'CRITICAL' ? 'bg-red-400' : t.priority === 'HIGH' ? 'bg-orange-400' : t.priority === 'MEDIUM' ? 'bg-amber-400' : 'bg-green-400'}`} />
-                <div className="flex-1 min-w-0">
-                  <p className="text-white text-sm font-medium truncate">{t.title}</p>
-                  <div className="flex gap-2 mt-0.5">
-                    {t.date && <span className="text-white/30 text-xs">{new Date(t.date + 'T12:00:00').toLocaleDateString('pt-BR')}</span>}
-                    <span className="text-white/20 text-xs">{t.category}</span>
-                  </div>
-                </div>
-                <span className="text-xs px-2 py-0.5 rounded bg-white/10 text-white/50">{t.priority}</span>
-                <button onClick={() => complete(t.id)} className="p-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-400 text-xs transition-all">✓</button>
-                <button onClick={() => remove(t.id)} className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/30 text-red-400 text-xs transition-all">✕</button>
+        <div style={{height:'1px',background:'rgba(255,255,255,0.06)'}}/>
+        <div>
+          <div style={{fontSize:'10px',color:'rgba(255,255,255,0.2)',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'10px'}}>Pendências</div>
+          <div style={{display:'flex',flexDirection:'column',gap:'6px',maxHeight:'320px',overflowY:'auto'}}>
+            {pendencias.map((p:any) => (
+              <div key={p.id} style={{display:'flex',alignItems:'flex-start',gap:'8px'}}>
+                <div onClick={() => completePendencia(p.id)} style={{width:'14px',height:'14px',borderRadius:'4px',border: p.status==='DONE' ? 'none' : '1px solid rgba(255,255,255,0.2)',background: p.status==='DONE' ? '#5b50d6' : 'transparent',flexShrink:0,marginTop:'1px',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'9px',color:'#fff'}}>{p.status==='DONE'?'✓':''}</div>
+                <div style={{flex:1,fontSize:'12px',color: p.status==='DONE' ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.6)',textDecoration: p.status==='DONE' ? 'line-through' : 'none',lineHeight:1.4}}>{p.title}</div>
+                <div onClick={() => deletePendencia(p.id)} style={{color:'rgba(255,255,255,0.15)',cursor:'pointer',fontSize:'11px',flexShrink:0}}>✕</div>
               </div>
             ))}
           </div>
-        )}
+          {showPendenciaForm ? (
+            <div style={{marginTop:'8px'}}>
+              <input autoFocus value={pendenciaText} onChange={e => setPendenciaText(e.target.value)} onKeyDown={e => { if(e.key==='Enter') savePendencia(); if(e.key==='Escape') setShowPendenciaForm(false) }} placeholder="Nova pendência..." style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(91,80,214,0.4)',borderRadius:'8px',padding:'6px 8px',color:'#fff',fontSize:'12px',outline:'none'}} />
+            </div>
+          ) : (
+            <div onClick={() => setShowPendenciaForm(true)} style={{fontSize:'11px',color:'rgba(91,80,214,0.6)',marginTop:'10px',paddingTop:'8px',borderTop:'1px solid rgba(255,255,255,0.05)',cursor:'pointer'}}>+ pendência</div>
+          )}
+        </div>
       </div>
-      {showForm && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-sm">
-          <div className="min-h-full flex items-start justify-center p-4 pt-10">
-            <div className="w-full max-w-md bg-[#13131f] rounded-2xl p-6 border border-white/10">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="font-bold text-white">Nova Tarefa</h2>
-                <button onClick={() => setShowForm(false)} className="text-white/30 hover:text-white">✕</button>
+
+      <div style={{flex:1,padding:'24px',overflowY:'auto'}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
+          <div style={{color:'#fff',fontSize:'18px',fontWeight:600}}>{MONTHS[month]} {year}</div>
+          <div style={{display:'flex',gap:'6px'}}>
+            <button onClick={() => setCurrentDate(new Date(year, month-1, 1))} style={{width:'28px',height:'28px',borderRadius:'8px',background:'rgba(255,255,255,0.05)',border:'none',color:'rgba(255,255,255,0.5)',cursor:'pointer',fontSize:'14px'}}>‹</button>
+            <button onClick={() => setCurrentDate(new Date())} style={{padding:'0 12px',height:'28px',borderRadius:'8px',background:'rgba(91,80,214,0.15)',border:'none',color:'#a89ff7',cursor:'pointer',fontSize:'11px'}}>Hoje</button>
+            <button onClick={() => setCurrentDate(new Date(year, month+1, 1))} style={{width:'28px',height:'28px',borderRadius:'8px',background:'rgba(255,255,255,0.05)',border:'none',color:'rgba(255,255,255,0.5)',cursor:'pointer',fontSize:'14px'}}>›</button>
+          </div>
+        </div>
+
+        <div style={{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:'2px',marginBottom:'4px'}}>
+          {DAYS.map(d => <div key={d} style={{textAlign:'center',fontSize:'10px',color:'rgba(255,255,255,0.2)',padding:'4px 0',textTransform:'uppercase'}}>{d}</div>)}
+        </div>
+
+        <div style={{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:'3px'}}>
+          {Array(firstDay).fill(null).map((_,i) => <div key={'e'+i}/>)}
+          {Array(daysInMonth).fill(null).map((_,i) => {
+            const day = i+1
+            const isToday = day===today.getDate() && month===today.getMonth() && year===today.getFullYear()
+            const dayTasks = getTasksForDay(day)
+            const hasOverdue = dayTasks.some((t:any) => t.status!=='DONE' && new Date(t.date) < today)
+            return (
+              <div key={day} onClick={() => openDayForm(day)} style={{minHeight:'70px',borderRadius:'8px',padding:'6px',background: isToday ? 'rgba(91,80,214,0.12)' : 'rgba(255,255,255,0.02)',border: isToday ? '1px solid rgba(91,80,214,0.35)' : '1px solid rgba(255,255,255,0.05)',cursor:'pointer',position:'relative'}}>
+                <div style={{fontSize:'11px',color: isToday ? '#a89ff7' : 'rgba(255,255,255,0.4)',fontWeight: isToday ? 700 : 400}}>{day}</div>
+                <div style={{display:'flex',gap:'2px',flexWrap:'wrap',marginTop:'4px'}}>
+                  {dayTasks.slice(0,3).map((t:any) => (
+                    <div key={t.id} onClick={e => { e.stopPropagation(); openEditTask(t) }} style={{width:'100%',fontSize:'9px',color: t.status==='DONE' ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.7)',background: t.status==='DONE' ? 'rgba(255,255,255,0.03)' : `${priorityColor[t.priority]}22`,borderLeft:`2px solid ${t.status==='DONE' ? 'rgba(255,255,255,0.1)' : priorityColor[t.priority]}`,borderRadius:'0 4px 4px 0',padding:'2px 4px',marginBottom:'1px',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis',textDecoration: t.status==='DONE' ? 'line-through' : 'none'}}>
+                      {t.time && <span style={{color:'rgba(255,255,255,0.3)',marginRight:'3px'}}>{t.time}</span>}{t.title}
+                    </div>
+                  ))}
+                  {dayTasks.length > 3 && <div style={{fontSize:'9px',color:'rgba(255,255,255,0.3)'}}>+{dayTasks.length-3}</div>}
+                </div>
               </div>
-              <div className="space-y-3">
-                <input placeholder="Título *" value={form.title} onChange={e => setForm(f => ({...f, title: e.target.value}))} className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-violet-500" />
-                <textarea placeholder="Descrição" value={form.description} onChange={e => setForm(f => ({...f, description: e.target.value}))} className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-violet-500 resize-none h-16" />
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="text-xs text-white/30 block mb-1">Data</label>
-                    <input type="date" value={form.date} onChange={e => setForm(f => ({...f, date: e.target.value}))} className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white text-sm outline-none focus:border-violet-500" style={{colorScheme:'dark'}} />
-                  </div>
-                  <div>
-                    <label className="text-xs text-white/30 block mb-1">Hora</label>
-                    <input type="time" value={form.time} onChange={e => setForm(f => ({...f, time: e.target.value}))} className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white text-sm outline-none focus:border-violet-500" style={{colorScheme:'dark'}} />
-                  </div>
-                  <div>
-                    <label className="text-xs text-white/30 block mb-1">Prioridade</label>
-                    <select value={form.priority} onChange={e => setForm(f => ({...f, priority: e.target.value}))} className="w-full bg-[#13131f] border border-white/10 rounded-xl px-3 py-2 text-white text-sm outline-none focus:border-violet-500">
-                      {PRIORITIES.map(p => <option key={p} value={p}>{p}</option>)}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-xs text-white/30 block mb-1">Categoria</label>
-                    <select value={form.category} onChange={e => setForm(f => ({...f, category: e.target.value}))} className="w-full bg-[#13131f] border border-white/10 rounded-xl px-3 py-2 text-white text-sm outline-none focus:border-violet-500">
-                      {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
-                    </select>
-                  </div>
+            )
+          })}
+        </div>
+      </div>
+
+      {showTaskForm && (
+        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.7)',backdropFilter:'blur(4px)',zIndex:50,display:'flex',alignItems:'center',justifyContent:'center',padding:'16px'}}>
+          <div style={{width:'100%',maxWidth:'440px',background:'#13131f',borderRadius:'16px',padding:'24px',border:'1px solid rgba(255,255,255,0.1)'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
+              <h2 style={{color:'#fff',fontSize:'16px',fontWeight:600}}>{editingTask ? 'Editar tarefa' : `Tarefa — dia ${selectedDay}`}</h2>
+              <button onClick={() => setShowTaskForm(false)} style={{background:'none',border:'none',color:'rgba(255,255,255,0.3)',cursor:'pointer',fontSize:'18px'}}>✕</button>
+            </div>
+            <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
+              <input placeholder="Título *" value={taskForm.title} onChange={e => setTaskForm(f=>({...f,title:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'13px',outline:'none'}} />
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
+                <div>
+                  <div style={{fontSize:'11px',color:'rgba(255,255,255,0.3)',marginBottom:'4px'}}>Horário</div>
+                  <input type="time" value={taskForm.time} onChange={e => setTaskForm(f=>({...f,time:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'8px 12px',color:'#fff',fontSize:'13px',outline:'none',colorScheme:'dark'}} />
                 </div>
-                {error && <p className="text-red-400 text-xs bg-red-500/10 border border-red-500/20 rounded-xl px-3 py-2">{error}</p>}
-                <div className="flex gap-3 pt-1">
-                  <button onClick={save} disabled={!form.title.trim() || saving} className="flex-1 py-2.5 bg-violet-600 hover:bg-violet-500 disabled:opacity-40 text-white rounded-xl text-sm font-semibold transition-all">
-                    {saving ? 'Salvando...' : 'Salvar'}
-                  </button>
-                  <button onClick={() => { setShowForm(false); setError('') }} className="px-4 py-2.5 border border-white/10 text-white/40 hover:text-white rounded-xl text-sm transition-all">Cancelar</button>
+                <div>
+                  <div style={{fontSize:'11px',color:'rgba(255,255,255,0.3)',marginBottom:'4px'}}>Prioridade</div>
+                  <select value={taskForm.priority} onChange={e => setTaskForm(f=>({...f,priority:e.target.value}))} style={{width:'100%',background:'#13131f',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'8px 12px',color:'#fff',fontSize:'13px',outline:'none'}}>
+                    <option value="CRITICAL">Crítica</option>
+                    <option value="HIGH">Alta</option>
+                    <option value="MEDIUM">Média</option>
+                    <option value="LOW">Baixa</option>
+                  </select>
                 </div>
+              </div>
+              <textarea placeholder="Observações" value={taskForm.notes} onChange={e => setTaskForm(f=>({...f,notes:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'13px',outline:'none',resize:'none',height:'64px'}} />
+
+              <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
+                <input type="checkbox" id="recurring" checked={taskForm.is_recurring} onChange={e => setTaskForm(f=>({...f,is_recurring:e.target.checked}))} style={{cursor:'pointer'}} />
+                <label htmlFor="recurring" style={{fontSize:'12px',color:'rgba(255,255,255,0.5)',cursor:'pointer'}}>Recorrente</label>
+                {taskForm.is_recurring && (
+                  <select value={taskForm.recurrence} onChange={e => setTaskForm(f=>({...f,recurrence:e.target.value}))} style={{marginLeft:'8px',background:'#13131f',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'8px',padding:'4px 8px',color:'#fff',fontSize:'12px',outline:'none'}}>
+                    <option value="daily">Diário</option>
+                    <option value="weekly">Semanal</option>
+                    <option value="monthly">Mensal</option>
+                  </select>
+                )}
+              </div>
+
+              <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
+                <input type="checkbox" id="financial" checked={taskForm.has_financial} onChange={e => setTaskForm(f=>({...f,has_financial:e.target.checked}))} style={{cursor:'pointer'}} />
+                <label htmlFor="financial" style={{fontSize:'12px',color:'rgba(255,255,255,0.5)',cursor:'pointer'}}>Lançar no financeiro</label>
+              </div>
+
+              {taskForm.has_financial && (
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'8px',background:'rgba(91,80,214,0.05)',borderRadius:'10px',padding:'12px',border:'1px solid rgba(91,80,214,0.15)'}}>
+                  <input placeholder="Valor R$" type="number" value={taskForm.amount} onChange={e => setTaskForm(f=>({...f,amount:e.target.value}))} style={{background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'8px',padding:'7px 10px',color:'#fff',fontSize:'12px',outline:'none'}} />
+                  <select value={taskForm.financial_type} onChange={e => setTaskForm(f=>({...f,financial_type:e.target.value}))} style={{background:'#13131f',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'8px',padding:'7px 10px',color:'#fff',fontSize:'12px',outline:'none'}}>
+                    <option value="despesa">Despesa</option>
+                    <option value="receita">Receita</option>
+                  </select>
+                  <select value={taskForm.financial_category} onChange={e => setTaskForm(f=>({...f,financial_category:e.target.value}))} style={{background:'#13131f',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'8px',padding:'7px 10px',color:'#fff',fontSize:'12px',outline:'none'}}>
+                    {FINANCIAL_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                </div>
+              )}
+
+              <div style={{display:'flex',gap:'8px',marginTop:'4px'}}>
+                <button onClick={saveTask} disabled={!taskForm.title.trim() || saving} style={{flex:1,padding:'10px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#fff',fontSize:'13px',fontWeight:600,cursor:'pointer',opacity: !taskForm.title.trim() || saving ? 0.4 : 1}}>
+                  {saving ? 'Salvando...' : 'Salvar'}
+                </button>
+                {editingTask && (
+                  <button onClick={() => completeTask(editingTask.id)} style={{padding:'10px 14px',background:'rgba(76,175,125,0.15)',border:'1px solid rgba(76,175,125,0.3)',borderRadius:'10px',color:'#4caf7d',fontSize:'13px',cursor:'pointer'}}>✓ Concluir</button>
+                )}
+                {editingTask && (
+                  <button onClick={() => deleteTask(editingTask.id)} style={{padding:'10px 14px',background:'rgba(224,82,82,0.1)',border:'1px solid rgba(224,82,82,0.2)',borderRadius:'10px',color:'#e05252',fontSize:'13px',cursor:'pointer'}}>Apagar</button>
+                )}
               </div>
             </div>
           </div>
