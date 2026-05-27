@@ -3,21 +3,27 @@ import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 const USER_ID = 'paloma'
 const STATUSES = ['Prospecção', 'Contato', 'Negociando', 'Ganho', 'Perdido']
-const EMPTY = { name: '', email: '', phone: '', company: '', status: 'Prospecção', value: '', notes: '' }
+const EMPTY = { name: '', email: '', phone: '', company: '', status: 'Prospecção', value: '', notes: '', next_followup: '', followup_notes: '' }
 
-function Nav() {
+function Sidebar() {
   const path = usePathname()
-  const links = [{ href: '/agenda', label: 'Agenda' }, { href: '/crm', label: 'CRM' }, { href: '/financeiro', label: 'Financeiro' }]
+  const router = useRouter()
+  async function logout() { await supabase.auth.signOut(); router.push('/login') }
   return (
-    <nav className="flex gap-2 p-4 border-b border-white/10 bg-[#0d0d1a]">
-      <span className="text-violet-400 font-black mr-4">NEXORA</span>
-      {links.map(l => (
-        <Link key={l.href} href={l.href} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${path === l.href ? 'bg-violet-600 text-white' : 'text-white/50 hover:text-white hover:bg-white/10'}`}>{l.label}</Link>
-      ))}
-    </nav>
+    <div style={{width:'160px',background:'#0d0d1a',borderRight:'1px solid rgba(255,255,255,0.06)',display:'flex',flexDirection:'column',padding:'20px 12px',flexShrink:0,minHeight:'100vh'}}>
+      <div style={{color:'#7c6ff7',fontWeight:700,fontSize:'16px',marginBottom:'28px',padding:'0 4px'}}>NEXORA</div>
+      <Link href="/dashboard" style={{display:'block',padding:'9px 12px',borderRadius:'10px',fontSize:'13px',color:path==='/dashboard'?'#a89ff7':'rgba(255,255,255,0.35)',background:path==='/dashboard'?'rgba(91,80,214,0.2)':'transparent',marginBottom:'2px',textDecoration:'none'}}>Dashboard</Link>
+      <Link href="/agenda" style={{display:'block',padding:'9px 12px',borderRadius:'10px',fontSize:'13px',color:path==='/agenda'?'#a89ff7':'rgba(255,255,255,0.35)',background:path==='/agenda'?'rgba(91,80,214,0.2)':'transparent',marginBottom:'2px',textDecoration:'none'}}>Agenda</Link>
+      <Link href="/crm" style={{display:'block',padding:'9px 12px',borderRadius:'10px',fontSize:'13px',color:path==='/crm'?'#a89ff7':'rgba(255,255,255,0.35)',background:path==='/crm'?'rgba(91,80,214,0.2)':'transparent',marginBottom:'2px',textDecoration:'none',fontWeight:path==='/crm'?500:400}}>CRM</Link>
+      <Link href="/financeiro" style={{display:'block',padding:'9px 12px',borderRadius:'10px',fontSize:'13px',color:path==='/financeiro'?'#a89ff7':'rgba(255,255,255,0.35)',background:path==='/financeiro'?'rgba(91,80,214,0.2)':'transparent',marginBottom:'2px',textDecoration:'none'}}>Financeiro</Link>
+      <div style={{marginTop:'auto'}}>
+        <button onClick={logout} style={{display:'block',width:'100%',padding:'9px 12px',borderRadius:'10px',fontSize:'12px',color:'rgba(255,255,255,0.2)',background:'transparent',border:'none',textAlign:'left',cursor:'pointer'}}>Sair</button>
+      </div>
+    </div>
   )
 }
 
@@ -34,95 +40,100 @@ export default function CRMPage() {
 
   async function load() {
     setLoading(true)
-    const { data, error } = await supabase.from('leads').select('*').eq('user_id', USER_ID).order('created_at', { ascending: false })
-    if (error) console.error(error)
+    const { data } = await supabase.from('leads').select('*').eq('user_id', USER_ID).order('created_at', {ascending:false})
     setLeads(data || [])
     setLoading(false)
   }
 
   function openNew() { setEditing(null); setForm(EMPTY); setError(''); setShowForm(true) }
-  function openEdit(lead: any) { setEditing(lead); setForm({ name: lead.name, email: lead.email || '', phone: lead.phone || '', company: lead.company || '', status: lead.status, value: lead.value?.toString() || '', notes: lead.notes || '' }); setError(''); setShowForm(true) }
+  function openEdit(lead: any) {
+    setEditing(lead)
+    setForm({name:lead.name,email:lead.email||'',phone:lead.phone||'',company:lead.company||'',status:lead.status,value:lead.value?.toString()||'',notes:lead.notes||'',next_followup:lead.next_followup||'',followup_notes:lead.followup_notes||''})
+    setError(''); setShowForm(true)
+  }
 
   async function save() {
     if (!form.name.trim()) return
-    setSaving(true)
-    setError('')
-    const data = { name: form.name.trim(), email: form.email || null, phone: form.phone || null, company: form.company || null, status: form.status, value: form.value ? parseFloat(form.value) : 0, notes: form.notes || null, user_id: USER_ID }
-    const { error } = editing
-      ? await supabase.from('leads').update(data).eq('id', editing.id)
-      : await supabase.from('leads').insert({ ...data, id: crypto.randomUUID() })
+    setSaving(true); setError('')
+    const data: any = {name:form.name.trim(),email:form.email||null,phone:form.phone||null,company:form.company||null,status:form.status,value:form.value?parseFloat(form.value):0,notes:form.notes||null,next_followup:form.next_followup||null,followup_notes:form.followup_notes||null,user_id:USER_ID}
+    const { error } = editing ? await supabase.from('leads').update(data).eq('id', editing.id) : await supabase.from('leads').insert({...data,id:crypto.randomUUID()})
     if (error) { setError(error.message); setSaving(false); return }
-    setShowForm(false)
-    setSaving(false)
-    load()
+    if (form.next_followup && !editing) {
+      await supabase.from('tasks').insert({id:crypto.randomUUID(),title:`Follow-up: ${form.name.trim()}`,date:form.next_followup,notes:form.followup_notes||null,type:'task',status:'PENDING',priority:'HIGH',category:'trabalho',user_id:USER_ID})
+    }
+    setShowForm(false); setSaving(false); load()
   }
 
   async function remove(id: string) {
     if (!confirm('Excluir este lead?')) return
-    await supabase.from('leads').delete().eq('id', id)
-    load()
+    await supabase.from('leads').delete().eq('id', id); load()
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f]">
-      <Nav />
-      <div className="max-w-4xl mx-auto p-6">
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h1 className="text-2xl font-black text-white">CRM</h1>
-            <p className="text-white/40 text-sm">{leads.length} leads</p>
+    <div style={{display:'flex',minHeight:'100vh',background:'#0a0a0f',fontFamily:'system-ui,sans-serif'}}>
+      <Sidebar />
+      <div style={{flex:1,padding:'32px',overflowY:'auto'}}>
+        <div style={{maxWidth:'800px',margin:'0 auto'}}>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'24px'}}>
+            <div>
+              <h1 style={{color:'#fff',fontSize:'22px',fontWeight:700}}>CRM</h1>
+              <p style={{color:'rgba(255,255,255,0.3)',fontSize:'12px',marginTop:'2px'}}>{leads.length} leads</p>
+            </div>
+            <button onClick={openNew} style={{padding:'8px 16px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#fff',fontSize:'13px',fontWeight:600,cursor:'pointer'}}>+ Novo Lead</button>
           </div>
-          <button onClick={openNew} className="px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white rounded-lg text-sm font-semibold transition-all">+ Novo Lead</button>
-        </div>
-        {loading ? <p className="text-white/40 text-center py-10">Carregando...</p> : (
-          <div className="space-y-2">
-            {leads.length === 0 && <p className="text-white/30 text-center py-10">Nenhum lead ainda!</p>}
-            {leads.map(l => (
-              <div key={l.id} className="flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10 transition-all">
-                <div className="w-10 h-10 rounded-full bg-violet-600 flex items-center justify-center text-white font-bold flex-shrink-0">{l.name.charAt(0).toUpperCase()}</div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-white text-sm font-medium truncate">{l.name}</p>
-                  <div className="flex gap-2 mt-0.5">
-                    {l.company && <span className="text-white/30 text-xs">{l.company}</span>}
-                    {l.value > 0 && <span className="text-emerald-400 text-xs">R$ {l.value.toLocaleString('pt-BR')}</span>}
+          {loading ? <p style={{color:'rgba(255,255,255,0.3)',textAlign:'center',padding:'40px'}}>Carregando...</p> : (
+            <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
+              {leads.length===0 && <p style={{color:'rgba(255,255,255,0.2)',textAlign:'center',padding:'40px'}}>Nenhum lead ainda!</p>}
+              {leads.map(l => (
+                <div key={l.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'14px 16px',borderRadius:'12px',background:'rgba(255,255,255,0.04)',border:'1px solid rgba(255,255,255,0.08)'}}>
+                  <div style={{width:'38px',height:'38px',borderRadius:'50%',background:'rgba(91,80,214,0.3)',display:'flex',alignItems:'center',justifyContent:'center',color:'#a89ff7',fontWeight:700,fontSize:'14px',flexShrink:0}}>{l.name.charAt(0).toUpperCase()}</div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <p style={{color:'#fff',fontSize:'13px',fontWeight:500}}>{l.name}</p>
+                    <div style={{display:'flex',gap:'8px',marginTop:'2px'}}>
+                      {l.company && <span style={{color:'rgba(255,255,255,0.3)',fontSize:'11px'}}>{l.company}</span>}
+                      {l.value>0 && <span style={{color:'#4caf7d',fontSize:'11px'}}>R$ {l.value.toLocaleString('pt-BR')}</span>}
+                      {l.next_followup && <span style={{color:'rgba(91,80,214,0.8)',fontSize:'11px'}}>Follow-up: {new Date(l.next_followup+'T12:00:00').toLocaleDateString('pt-BR')}</span>}
+                    </div>
                   </div>
+                  <span style={{fontSize:'11px',padding:'3px 10px',borderRadius:'6px',background:l.status==='Ganho'?'rgba(76,175,125,0.15)':l.status==='Perdido'?'rgba(224,82,82,0.15)':'rgba(255,255,255,0.08)',color:l.status==='Ganho'?'#4caf7d':l.status==='Perdido'?'#e05252':'rgba(255,255,255,0.4)',fontWeight:500}}>{l.status}</span>
+                  <button onClick={() => openEdit(l)} style={{padding:'6px 10px',background:'rgba(255,255,255,0.05)',border:'none',borderRadius:'8px',color:'rgba(255,255,255,0.4)',fontSize:'12px',cursor:'pointer'}}>✎</button>
+                  <button onClick={() => remove(l.id)} style={{padding:'6px 10px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'8px',color:'#e05252',fontSize:'12px',cursor:'pointer'}}>✕</button>
                 </div>
-                <span className={`text-xs px-2 py-0.5 rounded font-medium ${l.status === 'Ganho' ? 'bg-emerald-500/20 text-emerald-400' : l.status === 'Perdido' ? 'bg-red-500/20 text-red-400' : 'bg-white/10 text-white/50'}`}>{l.status}</span>
-                <button onClick={() => openEdit(l)} className="p-1.5 rounded-lg bg-white/5 hover:bg-white/15 text-white/40 hover:text-white text-xs transition-all">✎</button>
-                <button onClick={() => remove(l.id)} className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/30 text-red-400 text-xs transition-all">✕</button>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
+        </div>
       </div>
       {showForm && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-sm">
-          <div className="min-h-full flex items-start justify-center p-4 pt-10">
-            <div className="w-full max-w-md bg-[#13131f] rounded-2xl p-6 border border-white/10">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="font-bold text-white">{editing ? 'Editar Lead' : 'Novo Lead'}</h2>
-                <button onClick={() => setShowForm(false)} className="text-white/30 hover:text-white">✕</button>
+        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.75)',backdropFilter:'blur(4px)',zIndex:50,display:'flex',alignItems:'center',justifyContent:'center',padding:'16px'}}>
+          <div style={{width:'100%',maxWidth:'460px',background:'#13131f',borderRadius:'16px',padding:'24px',border:'1px solid rgba(255,255,255,0.1)',maxHeight:'90vh',overflowY:'auto'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
+              <h2 style={{color:'#fff',fontSize:'16px',fontWeight:600}}>{editing?'Editar Lead':'Novo Lead'}</h2>
+              <button onClick={() => setShowForm(false)} style={{background:'none',border:'none',color:'rgba(255,255,255,0.3)',cursor:'pointer',fontSize:'18px'}}>✕</button>
+            </div>
+            <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
+              <input placeholder="Nome *" value={form.name} onChange={e => setForm(f=>({...f,name:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'13px',outline:'none'}} />
+              <input placeholder="Email" value={form.email} onChange={e => setForm(f=>({...f,email:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'13px',outline:'none'}} />
+              <input placeholder="Telefone" value={form.phone} onChange={e => setForm(f=>({...f,phone:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'13px',outline:'none'}} />
+              <input placeholder="Empresa" value={form.company} onChange={e => setForm(f=>({...f,company:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'13px',outline:'none'}} />
+              <input placeholder="Valor (R$)" type="number" value={form.value} onChange={e => setForm(f=>({...f,value:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'13px',outline:'none'}} />
+              <div>
+                <label style={{fontSize:'11px',color:'rgba(255,255,255,0.3)',display:'block',marginBottom:'4px'}}>Status</label>
+                <select value={form.status} onChange={e => setForm(f=>({...f,status:e.target.value}))} style={{width:'100%',background:'#13131f',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'13px',outline:'none'}}>
+                  {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
               </div>
-              <div className="space-y-3">
-                <input placeholder="Nome *" value={form.name} onChange={e => setForm(f => ({...f, name: e.target.value}))} className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-violet-500" />
-                <input placeholder="Email" value={form.email} onChange={e => setForm(f => ({...f, email: e.target.value}))} className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-violet-500" />
-                <input placeholder="Telefone" value={form.phone} onChange={e => setForm(f => ({...f, phone: e.target.value}))} className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-violet-500" />
-                <input placeholder="Empresa" value={form.company} onChange={e => setForm(f => ({...f, company: e.target.value}))} className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-violet-500" />
-                <input placeholder="Valor (R$)" type="number" value={form.value} onChange={e => setForm(f => ({...f, value: e.target.value}))} className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-violet-500" />
-                <div>
-                  <label className="text-xs text-white/30 block mb-1">Status</label>
-                  <select value={form.status} onChange={e => setForm(f => ({...f, status: e.target.value}))} className="w-full bg-[#13131f] border border-white/10 rounded-xl px-3 py-2 text-white text-sm outline-none focus:border-violet-500">
-                    {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
-                  </select>
-                </div>
-                <textarea placeholder="Notas" value={form.notes} onChange={e => setForm(f => ({...f, notes: e.target.value}))} className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm outline-none focus:border-violet-500 resize-none h-16" />
-                {error && <p className="text-red-400 text-xs bg-red-500/10 border border-red-500/20 rounded-xl px-3 py-2">{error}</p>}
-                <div className="flex gap-3 pt-1">
-                  <button onClick={save} disabled={!form.name.trim() || saving} className="flex-1 py-2.5 bg-violet-600 hover:bg-violet-500 disabled:opacity-40 text-white rounded-xl text-sm font-semibold transition-all">
-                    {saving ? 'Salvando...' : 'Salvar'}
-                  </button>
-                  <button onClick={() => setShowForm(false)} className="px-4 py-2.5 border border-white/10 text-white/40 hover:text-white rounded-xl text-sm transition-all">Cancelar</button>
-                </div>
+              <div style={{background:'rgba(91,80,214,0.05)',borderRadius:'10px',padding:'12px',border:'1px solid rgba(91,80,214,0.15)'}}>
+                <label style={{fontSize:'11px',color:'rgba(255,255,255,0.3)',display:'block',marginBottom:'4px'}}>Data do follow-up</label>
+                <input type="date" value={form.next_followup} onChange={e => setForm(f=>({...f,next_followup:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'8px',padding:'8px 12px',color:'#fff',fontSize:'13px',outline:'none',colorScheme:'dark'}} />
+                <input placeholder="Observação" value={form.followup_notes} onChange={e => setForm(f=>({...f,followup_notes:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'8px',padding:'8px 12px',color:'#fff',fontSize:'13px',outline:'none',marginTop:'8px'}} />
+                <p style={{fontSize:'10px',color:'rgba(91,80,214,0.6)',marginTop:'6px'}}>Aparece automaticamente na agenda</p>
+              </div>
+              <textarea placeholder="Notas" value={form.notes} onChange={e => setForm(f=>({...f,notes:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'13px',outline:'none',resize:'none',height:'64px'}} />
+              {error && <p style={{color:'#e05252',fontSize:'12px',background:'rgba(224,82,82,0.1)',borderRadius:'8px',padding:'8px 12px'}}>{error}</p>}
+              <div style={{display:'flex',gap:'8px',marginTop:'4px'}}>
+                <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'10px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#fff',fontSize:'13px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
+                <button onClick={() => setShowForm(false)} style={{padding:'10px 16px',background:'transparent',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',color:'rgba(255,255,255,0.4)',fontSize:'13px',cursor:'pointer'}}>Cancelar</button>
               </div>
             </div>
           </div>
