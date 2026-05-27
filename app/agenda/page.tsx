@@ -189,15 +189,15 @@ export default function AgendaPage() {
             const isToday = day===today.getDate()&&month===today.getMonth()&&year===today.getFullYear()
             const dayTasks = getTasksForDay(day)
             return (
-              <div key={day} onClick={() => openDayForm(day)} style={{minHeight:'70px',borderRadius:'8px',padding:'6px',background:isToday?'rgba(91,80,214,0.12)':'rgba(255,255,255,0.02)',border:isToday?'1px solid rgba(91,80,214,0.35)':'1px solid rgba(255,255,255,0.05)',cursor:'pointer'}}>
+              <div key={day} onClick={() => openDayForm(day)} style={{minHeight:'90px',borderRadius:'8px',padding:'6px',background:isToday?'rgba(91,80,214,0.12)':'rgba(255,255,255,0.02)',border:isToday?'1px solid rgba(91,80,214,0.35)':'1px solid rgba(255,255,255,0.05)',cursor:'pointer'}}>
                 <div style={{fontSize:'11px',color:isToday?'#a89ff7':'rgba(255,255,255,0.4)',fontWeight:isToday?700:400}}>{day}</div>
                 <div style={{marginTop:'3px'}}>
-                  {dayTasks.slice(0,3).map((t:any) => (
+                  {dayTasks.slice(0,4).map((t:any) => (
                     <div key={t.id} onClick={e => {e.stopPropagation();openEditTask(t)}} style={{width:'100%',fontSize:'9px',color:t.status==='DONE'?'rgba(255,255,255,0.2)':'rgba(255,255,255,0.75)',background:`${priorityColor[t.priority]}18`,borderLeft:`2px solid ${t.status==='DONE'?'rgba(255,255,255,0.1)':priorityColor[t.priority]}`,borderRadius:'0 3px 3px 0',padding:'2px 4px',marginBottom:'2px',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis',textDecoration:t.status==='DONE'?'line-through':'none'}}>
                       {t.time&&<span style={{color:'rgba(255,255,255,0.3)',marginRight:'3px'}}>{t.time}</span>}{t.title}
                     </div>
                   ))}
-                  {dayTasks.length>3&&<div style={{fontSize:'9px',color:'rgba(255,255,255,0.25)',paddingLeft:'4px'}}>+{dayTasks.length-3} mais</div>}
+                  {dayTasks.length>4&&<div style={{fontSize:'9px',color:'rgba(255,255,255,0.25)',paddingLeft:'4px'}}>+{dayTasks.length-3} mais</div>}
                 </div>
               </div>
             )
