@@ -36,7 +36,6 @@ function Sidebar() {
 
 export default function AgendaPage() {
   const [tasks, setTasks] = useState<any[]>([])
-  const [pendencias, setPendencias] = useState<any[]>([])
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDay, setSelectedDay] = useState<number|null>(null)
   const [viewingDay, setViewingDay] = useState<number|null>(null)
@@ -44,9 +43,6 @@ export default function AgendaPage() {
   const [editingTask, setEditingTask] = useState<any>(null)
   const [taskForm, setTaskForm] = useState({title:'',time:'',notes:'',priority:'MEDIUM',is_recurring:false,recurrence:'monthly',amount:'',financial_type:'despesa',financial_category:'outros',has_financial:false})
   const [saving, setSaving] = useState(false)
-  const [showPendForm, setShowPendForm] = useState(false)
-  const [editingPend, setEditingPend] = useState<any>(null)
-  const [pendForm, setPendForm] = useState({title:'',priority:'MEDIUM'})
 
   useEffect(() => { load() }, [])
 
@@ -54,7 +50,6 @@ export default function AgendaPage() {
     const { data } = await supabase.from('tasks').select('*').eq('user_id', USER_ID).order('created_at', {ascending:false})
     const all = data || []
     setTasks(all.filter((t:any) => t.type !== 'pendencia'))
-    setPendencias(all.filter((t:any) => t.type === 'pendencia'))
   }
 
   const year = currentDate.getFullYear()
@@ -156,62 +151,11 @@ export default function AgendaPage() {
     load()
   }
 
-  function openNewPend() {
-    setEditingPend(null); setPendForm({title:'',priority:'MEDIUM'}); setShowPendForm(true)
-  }
-
-  function openEditPend(p: any) {
-    setEditingPend(p); setPendForm({title:p.title,priority:p.priority||'MEDIUM'}); setShowPendForm(true)
-  }
-
-  async function savePend() {
-    if (!pendForm.title.trim()) return
-    setSaving(true)
-    if (editingPend) {
-      await supabase.from('tasks').update({title:pendForm.title.trim(),priority:pendForm.priority}).eq('id', editingPend.id)
-    } else {
-      await supabase.from('tasks').insert({id:crypto.randomUUID(),title:pendForm.title.trim(),priority:pendForm.priority,type:'pendencia',status:'PENDING',user_id:USER_ID})
-    }
-    setShowPendForm(false); setSaving(false); load()
-  }
-
-  async function deletePend(id: string) {
-    await supabase.from('tasks').delete().eq('id', id); load()
-  }
-
-  async function completePend(id: string) {
-    await supabase.from('tasks').update({status:'DONE'}).eq('id', id); load()
-  }
-
   const priorityColor: any = {CRITICAL:'#e05252',HIGH:'#e05252',MEDIUM:'#d4b84a',LOW:'#4caf7d'}
 
   return (
     <div style={{display:'flex',minHeight:'100vh',background:'#0a0a0f',fontFamily:'system-ui,sans-serif'}}>
       <Sidebar />
-
-      <div style={{width:'210px',borderRight:'1px solid rgba(255,255,255,0.06)',padding:'24px 14px',display:'flex',flexDirection:'column',gap:'16px',background:'#0d0d1a',overflowY:'auto'}}>
-        <div>
-          <div style={{color:'#7c6ff7',fontSize:'20px',fontWeight:900}}>{MONTHS[today.getMonth()].toUpperCase()}</div>
-          <div style={{color:'#fff',fontSize:'40px',fontWeight:900,lineHeight:1}}>{today.getDate()}</div>
-          <div style={{color:'rgba(255,255,255,0.3)',fontSize:'11px',marginTop:'4px'}}>{today.getFullYear()} · {DAYS[today.getDay()]}</div>
-        </div>
-        <div style={{height:'1px',background:'rgba(255,255,255,0.06)'}}/>
-        <div style={{flex:1}}>
-          <div style={{fontSize:'10px',color:'rgba(255,255,255,0.2)',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'10px'}}>Pendências</div>
-          <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
-            {pendencias.map((p:any) => (
-              <div key={p.id} style={{display:'flex',alignItems:'center',gap:'6px',padding:'7px 8px',borderRadius:'8px',background:'rgba(255,255,255,0.03)',border:`1px solid ${p.status==='DONE'?'rgba(255,255,255,0.04)':PRIO_COLOR[p.priority||'MEDIUM']+'22'}`}}>
-                <div onClick={() => completePend(p.id)} style={{width:'14px',height:'14px',borderRadius:'4px',border:p.status==='DONE'?'none':'1px solid rgba(255,255,255,0.15)',background:p.status==='DONE'?'#5b50d6':'transparent',flexShrink:0,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'9px',color:'#fff'}}>{p.status==='DONE'?'✓':''}</div>
-                <div style={{flex:1,fontSize:'11px',color:p.status==='DONE'?'rgba(255,255,255,0.2)':'rgba(255,255,255,0.7)',textDecoration:p.status==='DONE'?'line-through':'none',lineHeight:1.3,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',minWidth:0}}>{p.title}</div>
-                <div style={{width:'6px',height:'6px',borderRadius:'50%',background:PRIO_COLOR[p.priority||'MEDIUM'],flexShrink:0}}/>
-                <button onClick={() => openEditPend(p)} style={{background:'none',border:'none',color:'rgba(255,255,255,0.25)',cursor:'pointer',fontSize:'11px',padding:'0',lineHeight:1}}>✎</button>
-                <button onClick={() => deletePend(p.id)} style={{background:'none',border:'none',color:'rgba(224,82,82,0.4)',cursor:'pointer',fontSize:'11px',padding:'0',lineHeight:1}}>✕</button>
-              </div>
-            ))}
-          </div>
-          <div onClick={openNewPend} style={{fontSize:'11px',color:'rgba(91,80,214,0.6)',marginTop:'10px',paddingTop:'8px',borderTop:'1px solid rgba(255,255,255,0.05)',cursor:'pointer'}}>+ pendência</div>
-        </div>
-      </div>
 
       <div style={{flex:1,padding:'24px',overflowY:'auto'}}>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
@@ -271,34 +215,6 @@ export default function AgendaPage() {
                   <span style={{fontSize:'10px',padding:'2px 8px',borderRadius:'5px',background:t.status==='DONE'?'rgba(76,175,125,0.1)':'rgba(255,255,255,0.06)',color:t.status==='DONE'?'#4caf7d':'rgba(255,255,255,0.3)'}}>{t.status==='DONE'?'Concluída':t.priority}</span>
                 </div>
               ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {showPendForm && (
-        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.75)',backdropFilter:'blur(4px)',zIndex:50,display:'flex',alignItems:'center',justifyContent:'center',padding:'16px'}}>
-          <div style={{width:'100%',maxWidth:'360px',background:'#13131f',borderRadius:'16px',padding:'24px',border:'1px solid rgba(255,255,255,0.1)'}}>
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}}>
-              <h2 style={{color:'#fff',fontSize:'15px',fontWeight:600}}>{editingPend?'Editar pendência':'Nova pendência'}</h2>
-              <button onClick={() => setShowPendForm(false)} style={{background:'none',border:'none',color:'rgba(255,255,255,0.3)',cursor:'pointer',fontSize:'18px'}}>✕</button>
-            </div>
-            <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
-              <input autoFocus placeholder="Descrição *" value={pendForm.title} onChange={e => setPendForm(f=>({...f,title:e.target.value}))} onKeyDown={e => e.key==='Enter' && savePend()} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'13px',outline:'none'}} />
-              <div>
-                <div style={{fontSize:'11px',color:'rgba(255,255,255,0.3)',marginBottom:'6px'}}>Prioridade</div>
-                <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'6px'}}>
-                  {(['CRITICAL','HIGH','MEDIUM','LOW'] as const).map(p => (
-                    <button key={p} onClick={() => setPendForm(f=>({...f,priority:p}))} style={{padding:'7px 4px',borderRadius:'8px',border:`1px solid ${pendForm.priority===p?PRIO_COLOR[p]:'rgba(255,255,255,0.08)'}`,background:pendForm.priority===p?`${PRIO_COLOR[p]}22`:'transparent',color:pendForm.priority===p?PRIO_COLOR[p]:'rgba(255,255,255,0.3)',fontSize:'11px',cursor:'pointer',fontWeight:pendForm.priority===p?600:400}}>
-                      {PRIO_LABEL[p]}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div style={{display:'flex',gap:'8px',marginTop:'4px'}}>
-                <button onClick={savePend} disabled={!pendForm.title.trim()||saving} style={{flex:1,padding:'10px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#fff',fontSize:'13px',fontWeight:600,cursor:'pointer',opacity:!pendForm.title.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-                {editingPend && <button onClick={() => {deletePend(editingPend.id);setShowPendForm(false)}} style={{padding:'10px 14px',background:'rgba(224,82,82,0.1)',border:'1px solid rgba(224,82,82,0.2)',borderRadius:'10px',color:'#e05252',fontSize:'13px',cursor:'pointer'}}>Apagar</button>}
-              </div>
             </div>
           </div>
         </div>
