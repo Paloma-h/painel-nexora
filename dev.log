@@ -1,0 +1,32 @@
+
+> painel-nexora@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 4.7s
+ ○ Compiling / ...
+ ✓ Compiled / in 3.9s (488 modules)
+ GET / 307 in 4200ms
+ ✓ Compiled in 373ms (234 modules)
+ ✓ Compiled in 825ms (234 modules)
+ ✓ Compiled in 276ms (234 modules)
+ ✓ Compiled in 229ms (234 modules)
+ ✓ Compiled in 142ms (234 modules)
+ ✓ Compiled in 163ms (234 modules)
+ ✓ Compiled in 152ms (234 modules)
+ ✓ Compiled in 224ms (234 modules)
+ ✓ Compiled in 212ms (234 modules)
+ ✓ Compiled in 1049ms (234 modules)
+ ✓ Compiled in 683ms (234 modules)
+ ✓ Compiled in 238ms (234 modules)
+ ✓ Compiled in 178ms (234 modules)
+ ✓ Compiled in 163ms (234 modules)
+ ✓ Compiled in 138ms (234 modules)
+ ✓ Compiled in 144ms (234 modules)
+ ✓ Compiled in 198ms (234 modules)
+ ✓ Compiled in 181ms (234 modules)
+ ✓ Compiled in 205ms (234 modules)

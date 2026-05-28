@@ -23,6 +23,7 @@ function Sidebar() {
       {link('/crm','CRM')}
       {link('/financeiro','Financeiro')}
       <div style={{borderTop:'1px solid rgba(255,255,255,0.06)',margin:'10px 0'}}/>
+      {link('/projetos','Projetos')}
       {link('/saude','Saúde')}
       {link('/educacao','Educação')}
       <div style={{marginTop:'auto'}}>
