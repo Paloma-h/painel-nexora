@@ -52,8 +52,8 @@ input::placeholder, textarea::placeholder {
   cursor: pointer;
   position: relative;
   user-select: none;
-  border: 1px solid rgba(255, 255, 255, 0.055);
-  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
   width: 100%;
   text-align: left;
 }
