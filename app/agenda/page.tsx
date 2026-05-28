@@ -106,7 +106,7 @@ export default function AgendaPage() {
   }
 
   async function completeTask(id: string) {
-    const task = tasks.find((t:any) => t.id === id)
+    const {data: task} = await supabase.from('tasks').select('*').eq('id',id).single()
     await supabase.from('tasks').update({status:'DONE'}).eq('id', id)
     if (task) {
       if (task.is_recurring && task.recurrence && task.date) {
