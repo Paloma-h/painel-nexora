@@ -4,11 +4,11 @@ import { usePathname, useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import {
   LayoutDashboard,
-  CalendarDays,
+  Calendar,
   Zap,
   Users,
-  Wallet,
-  FolderOpen,
+  DollarSign,
+  Folder,
   Heart,
   BookOpen,
   LogOut,
@@ -16,10 +16,10 @@ import {
 
 const NAV_MAIN = [
   { href: '/dashboard',  label: 'Dashboard',  Icon: LayoutDashboard },
-  { href: '/agenda',     label: 'Agenda',      Icon: CalendarDays    },
+  { href: '/agenda',     label: 'Agenda',      Icon: Calendar        },
   { href: '/pendencias', label: 'Pendências',  Icon: Zap             },
   { href: '/crm',        label: 'CRM',         Icon: Users           },
-  { href: '/financeiro', label: 'Financeiro',  Icon: Wallet          },
+  { href: '/financeiro', label: 'Financeiro',  Icon: DollarSign      },
 ]
 
 const NAV_PERSONAL = [
