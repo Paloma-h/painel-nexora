@@ -4,34 +4,11 @@ import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
+import Sidebar from '@/components/Sidebar'
 
 const USER_ID = 'paloma'
 
-function Sidebar() {
-  const path = usePathname()
-  const router = useRouter()
-  async function logout() { await supabase.auth.signOut(); router.push('/login') }
-  const link = (href: string, label: string) => (
-    <Link href={href} style={{display:'block',padding:'9px 12px',borderRadius:'10px',fontSize:'13px',color:path===href?'#a89ff7':'rgba(255,255,255,0.35)',background:path===href?'rgba(91,80,214,0.2)':'transparent',marginBottom:'2px',textDecoration:'none',fontWeight:path===href?500:400}}>{label}</Link>
-  )
-  return (
-    <div style={{width:'160px',background:'#0d0d1a',borderRight:'1px solid rgba(255,255,255,0.06)',display:'flex',flexDirection:'column',padding:'20px 12px',flexShrink:0,minHeight:'100vh'}}>
-      <div style={{color:'#7c6ff7',fontWeight:700,fontSize:'16px',marginBottom:'28px',padding:'0 4px'}}>NEXORA</div>
-      {link('/dashboard','Dashboard')}
-      {link('/agenda','Agenda')}
-      {link('/pendencias','Pendências')}
-      {link('/crm','CRM')}
-      {link('/financeiro','Financeiro')}
-      <div style={{borderTop:'1px solid rgba(255,255,255,0.06)',margin:'10px 0'}}/>
-      {link('/projetos','Projetos')}
-      {link('/saude','Saúde')}
-      {link('/educacao','Educação')}
-      <div style={{marginTop:'auto'}}>
-        <button onClick={logout} style={{display:'block',width:'100%',padding:'9px 12px',borderRadius:'10px',fontSize:'12px',color:'rgba(255,255,255,0.2)',background:'transparent',border:'none',textAlign:'left',cursor:'pointer'}}>Sair</button>
-      </div>
-    </div>
-  )
-}
+
 
 export default function DashboardPage() {
   const [tasks, setTasks] = useState<any[]>([])
