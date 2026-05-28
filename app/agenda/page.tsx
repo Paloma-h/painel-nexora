@@ -100,7 +100,7 @@ export default function AgendaPage() {
           if (taskForm.recurrence === 'monthly') d.setMonth(d.getMonth() + i)
           else if (taskForm.recurrence === 'weekly') d.setDate(d.getDate() + (7 * i))
           else if (taskForm.recurrence === 'daily') d.setDate(d.getDate() + i)
-          const occ = {id:crypto.randomUUID(),title:taskForm.title.trim(),date:d.toISOString().split('T')[0],time:taskForm.time||null,notes:taskForm.notes||null,priority:taskForm.priority,type:'task',is_recurring:true,recurrence:taskForm.recurrence,status:'PENDING',user_id:'paloma'}
+          const occ: any = {id:crypto.randomUUID(),title:taskForm.title.trim(),date:d.toISOString().split('T')[0],time:taskForm.time||null,notes:taskForm.notes||null,priority:taskForm.priority,type:'task',is_recurring:true,recurrence:taskForm.recurrence,status:'PENDING',user_id:'paloma'}
           if (taskForm.has_financial && taskForm.amount) { occ.amount=parseFloat(taskForm.amount);occ.financial_type=taskForm.financial_type;occ.financial_category=taskForm.financial_category }
           occurrences.push(occ)
         }
