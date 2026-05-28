@@ -85,31 +85,31 @@ export default function DashboardPage() {
   )
 
   return (
-    <div style={{display:'flex',minHeight:'100vh',background:'#0a0a0f',fontFamily:'system-ui,sans-serif'}}>
+    <div style={{display:'flex',minHeight:'100vh',background:'#08080f',fontFamily:'system-ui,sans-serif'}}>
       <Sidebar />
-      <div style={{flex:1,padding:'32px',overflowY:'auto'}}>
+      <div style={{flex:1,padding:'36px 40px',overflowY:'auto'}}>
         <div style={{maxWidth:'960px',margin:'0 auto'}}>
 
           {/* Cabeçalho */}
-          <div style={{marginBottom:'28px'}}>
-            <h1 style={{color:'#fff',fontSize:'22px',fontWeight:700}}>Dashboard</h1>
-            <p style={{color:'rgba(255,255,255,0.3)',fontSize:'13px',marginTop:'4px'}}>{dias[today.getDay()]}, {today.getDate()} de {meses[today.getMonth()]} de {today.getFullYear()}</p>
+          <div style={{marginBottom:'32px'}}>
+            <h1 style={{color:'#ffffff',fontSize:'24px',fontWeight:700,letterSpacing:'-0.3px'}}>Dashboard</h1>
+            <p style={{color:'rgba(255,255,255,0.25)',fontSize:'13px',marginTop:'5px'}}>{dias[today.getDay()]}, {today.getDate()} de {meses[today.getMonth()]} de {today.getFullYear()}</p>
           </div>
 
           {/* KPIs */}
-          <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'12px',marginBottom:'28px'}}>
-            <div style={{background:'rgba(255,255,255,0.03)',border:'1px solid rgba(255,255,255,0.07)',borderRadius:'12px',padding:'16px'}}>
-              <p style={{color:'rgba(255,255,255,0.3)',fontSize:'11px',marginBottom:'6px'}}>Tarefas hoje</p>
-              <p style={{color:'#fff',fontSize:'28px',fontWeight:700}}>{todayTasks.length}</p>
-              {doneTasks.length > 0 && <p style={{color:'rgba(76,175,125,0.6)',fontSize:'11px',marginTop:'4px'}}>{doneTasks.length} concluída{doneTasks.length>1?'s':''}</p>}
+          <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'14px',marginBottom:'32px'}}>
+            <div style={{background:'linear-gradient(135deg,rgba(91,80,214,0.12) 0%,rgba(255,255,255,0.03) 100%)',border:'1px solid rgba(91,80,214,0.2)',borderRadius:'14px',padding:'20px'}}>
+              <p style={{color:'rgba(168,159,247,0.6)',fontSize:'11px',fontWeight:600,letterSpacing:'0.5px',textTransform:'uppercase',marginBottom:'8px'}}>Tarefas hoje</p>
+              <p style={{color:'#fff',fontSize:'32px',fontWeight:700,lineHeight:1}}>{todayTasks.length}</p>
+              {doneTasks.length > 0 && <p style={{color:'rgba(76,175,125,0.7)',fontSize:'12px',marginTop:'6px'}}>✓ {doneTasks.length} concluída{doneTasks.length>1?'s':''}</p>}
             </div>
-            <div style={{background:overdueTasks.length>0?'rgba(224,82,82,0.06)':'rgba(255,255,255,0.03)',border:`1px solid ${overdueTasks.length>0?'rgba(224,82,82,0.15)':'rgba(255,255,255,0.07)'}`,borderRadius:'12px',padding:'16px'}}>
-              <p style={{color:overdueTasks.length>0?'rgba(224,82,82,0.6)':'rgba(255,255,255,0.3)',fontSize:'11px',marginBottom:'6px'}}>Atrasadas</p>
-              <p style={{color:overdueTasks.length>0?'#e05252':'rgba(255,255,255,0.4)',fontSize:'28px',fontWeight:700}}>{overdueTasks.length}</p>
+            <div style={{background:overdueTasks.length>0?'linear-gradient(135deg,rgba(224,82,82,0.1) 0%,rgba(255,255,255,0.02) 100%)':'linear-gradient(135deg,rgba(255,255,255,0.04) 0%,rgba(255,255,255,0.02) 100%)',border:`1px solid ${overdueTasks.length>0?'rgba(224,82,82,0.25)':'rgba(255,255,255,0.08)'}`,borderRadius:'14px',padding:'20px'}}>
+              <p style={{color:overdueTasks.length>0?'rgba(224,82,82,0.7)':'rgba(255,255,255,0.3)',fontSize:'11px',fontWeight:600,letterSpacing:'0.5px',textTransform:'uppercase',marginBottom:'8px'}}>Atrasadas</p>
+              <p style={{color:overdueTasks.length>0?'#ff6b6b':'rgba(255,255,255,0.4)',fontSize:'32px',fontWeight:700,lineHeight:1}}>{overdueTasks.length}</p>
             </div>
-            <div style={{background:todayFollowups.length>0?'rgba(91,80,214,0.08)':'rgba(255,255,255,0.03)',border:`1px solid ${todayFollowups.length>0?'rgba(91,80,214,0.2)':'rgba(255,255,255,0.07)'}`,borderRadius:'12px',padding:'16px'}}>
-              <p style={{color:todayFollowups.length>0?'rgba(168,159,247,0.7)':'rgba(255,255,255,0.3)',fontSize:'11px',marginBottom:'6px'}}>Follow-ups hoje</p>
-              <p style={{color:todayFollowups.length>0?'#a89ff7':'rgba(255,255,255,0.4)',fontSize:'28px',fontWeight:700}}>{todayFollowups.length}</p>
+            <div style={{background:todayFollowups.length>0?'linear-gradient(135deg,rgba(124,111,247,0.1) 0%,rgba(255,255,255,0.02) 100%)':'linear-gradient(135deg,rgba(255,255,255,0.04) 0%,rgba(255,255,255,0.02) 100%)',border:`1px solid ${todayFollowups.length>0?'rgba(124,111,247,0.25)':'rgba(255,255,255,0.08)'}`,borderRadius:'14px',padding:'20px'}}>
+              <p style={{color:todayFollowups.length>0?'rgba(168,159,247,0.7)':'rgba(255,255,255,0.3)',fontSize:'11px',fontWeight:600,letterSpacing:'0.5px',textTransform:'uppercase',marginBottom:'8px'}}>Follow-ups hoje</p>
+              <p style={{color:todayFollowups.length>0?'#c4bcff':'rgba(255,255,255,0.4)',fontSize:'32px',fontWeight:700,lineHeight:1}}>{todayFollowups.length}</p>
             </div>
           </div>
 
@@ -251,20 +251,6 @@ export default function DashboardPage() {
                 </div>
               )}
 
-              {/* Link rápido para módulos */}
-              <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
-                <SectionTitle label="Acesso rápido" />
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'6px'}}>
-                  {[
-                    {href:'/saude',label:'💪 Saúde',color:'rgba(76,175,125,0.08)',border:'rgba(76,175,125,0.15)'},
-                    {href:'/educacao',label:'📚 Educação',color:'rgba(91,80,214,0.08)',border:'rgba(91,80,214,0.15)'},
-                    {href:'/crm',label:'👥 CRM',color:'rgba(168,159,247,0.06)',border:'rgba(168,159,247,0.12)'},
-                    {href:'/financeiro',label:'💰 Financeiro',color:'rgba(212,184,74,0.06)',border:'rgba(212,184,74,0.12)'},
-                  ].map(item => (
-                    <Link key={item.href} href={item.href} style={{display:'block',padding:'12px',borderRadius:'10px',background:item.color,border:`1px solid ${item.border}`,color:'rgba(255,255,255,0.6)',fontSize:'12px',textDecoration:'none',textAlign:'center',fontWeight:500}}>{item.label}</Link>
-                  ))}
-                </div>
-              </div>
             </div>
           </div>
         </div>
