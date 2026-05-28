@@ -93,6 +93,19 @@ export default function AgendaPage() {
     } else {
       data.id = crypto.randomUUID()
       await supabase.from('tasks').insert(data)
+      if (taskForm.is_recurring && taskForm.recurrence) {
+        const occurrences = []
+        for (let i = 1; i <= 12; i++) {
+          const d = new Date(dateStr + 'T12:00:00')
+          if (taskForm.recurrence === 'monthly') d.setMonth(d.getMonth() + i)
+          else if (taskForm.recurrence === 'weekly') d.setDate(d.getDate() + (7 * i))
+          else if (taskForm.recurrence === 'daily') d.setDate(d.getDate() + i)
+          const occ = {id:crypto.randomUUID(),title:taskForm.title.trim(),date:d.toISOString().split('T')[0],time:taskForm.time||null,notes:taskForm.notes||null,priority:taskForm.priority,type:'task',is_recurring:true,recurrence:taskForm.recurrence,status:'PENDING',user_id:'paloma'}
+          if (taskForm.has_financial && taskForm.amount) { occ.amount=parseFloat(taskForm.amount);occ.financial_type=taskForm.financial_type;occ.financial_category=taskForm.financial_category }
+          occurrences.push(occ)
+        }
+        await supabase.from('tasks').insert(occurrences)
+      }
       if (taskForm.has_financial && taskForm.amount) {
         await supabase.from('transactions').insert({id:crypto.randomUUID(),title:taskForm.title.trim(),amount:parseFloat(taskForm.amount),type:taskForm.financial_type,category:taskForm.financial_category,date:dateStr,notes:taskForm.notes||null,is_recurring:taskForm.is_recurring,recurrence:taskForm.is_recurring?taskForm.recurrence:null,task_id:data.id,user_id:USER_ID})
       }

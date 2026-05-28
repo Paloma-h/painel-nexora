@@ -1,25 +1,6 @@
 ﻿const fs = require('fs')
-let c = fs.readFileSync('app/agenda/page.tsx', 'utf8')
-c = c.replace(
-  `async function completeTask(id: string) {
-    await supabase.from('tasks').update({status:'DONE'}).eq('id', id); load()
-  }`,
-  `async function completeTask(id: string) {
-    const task = tasks.find((t:any) => t.id === id)
-    await supabase.from('tasks').update({status:'DONE'}).eq('id', id)
-    if (task?.is_recurring && task?.recurrence && task?.date) {
-      const d = new Date(task.date + 'T12:00:00')
-      if (task.recurrence === 'monthly') d.setMonth(d.getMonth() + 1)
-      else if (task.recurrence === 'weekly') d.setDate(d.getDate() + 7)
-      else d.setDate(d.getDate() + 1)
-      await supabase.from('tasks').insert({id:crypto.randomUUID(),title:task.title,date:d.toISOString().split('T')[0],time:task.time||null,priority:task.priority,category:task.category,type:'task',status:'PENDING',is_recurring:true,recurrence:task.recurrence,amount:task.amount||null,financial_type:task.financial_type||null,financial_category:task.financial_category||null,notes:task.notes||null,user_id:USER_ID})
-    }
-    if (task?.amount && task?.financial_type) {
-      const ex = await supabase.from('transactions').select('id').eq('task_id', id).single()
-      if (!ex.data) await supabase.from('transactions').insert({id:crypto.randomUUID(),title:task.title,amount:parseFloat(task.amount),type:task.financial_type,category:task.financial_category||'outros',date:task.date||new Date().toISOString().split('T')[0],notes:task.notes||null,task_id:id,user_id:USER_ID})
-    }
-    load()
-  }`
-)
-fs.writeFileSync('app/agenda/page.tsx', c)
-console.log('OK')
+const content = fs.readFileSync('app/agenda/page.tsx', 'utf8')
+const oldInsert = "data.id = crypto.randomUUID()\n      await supabase.from('tasks').insert(data)"
+const newInsert = "data.id = crypto.randomUUID()\n      await supabase.from('tasks').insert(data)\n      if (taskForm.is_recurring && taskForm.recurrence) {\n        const occurrences = []\n        for (let i = 1; i <= 12; i++) {\n          const d = new Date(dateStr + 'T12:00:00')\n          if (taskForm.recurrence === 'monthly') d.setMonth(d.getMonth() + i)\n          else if (taskForm.recurrence === 'weekly') d.setDate(d.getDate() + (7 * i))\n          else if (taskForm.recurrence === 'daily') d.setDate(d.getDate() + i)\n          const occ = {id:crypto.randomUUID(),title:taskForm.title.trim(),date:d.toISOString().split('T')[0],time:taskForm.time||null,notes:taskForm.notes||null,priority:taskForm.priority,type:'task',is_recurring:true,recurrence:taskForm.recurrence,status:'PENDING',user_id:'paloma'}\n          if (taskForm.has_financial && taskForm.amount) { occ.amount=parseFloat(taskForm.amount);occ.financial_type=taskForm.financial_type;occ.financial_category=taskForm.financial_category }\n          occurrences.push(occ)\n        }\n        await supabase.from('tasks').insert(occurrences)\n      }"
+fs.writeFileSync('app/agenda/page.tsx', content.replace(oldInsert, newInsert))
+console.log('Pronto!')
