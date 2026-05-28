@@ -8,7 +8,7 @@ import {
   Zap,
   Users,
   DollarSign,
-  Folder,
+  FolderOpen,
   Heart,
   BookOpen,
   LogOut,
