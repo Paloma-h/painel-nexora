@@ -96,6 +96,12 @@ export default function CRMPage() {
     if (leadForm.next_followup && !editing) {
       await supabase.from('tasks').insert({id:crypto.randomUUID(),title:`Follow-up: ${leadForm.name.trim()}`,date:leadForm.next_followup,notes:leadForm.followup_notes||null,type:'task',status:'PENDING',priority:'HIGH',category:'trabalho',user_id:USER_ID})
     }
+    if (leadForm.status === 'Ganho' && leadForm.value && parseFloat(leadForm.value) > 0) {
+      const confirmFinanceiro = window.confirm(Deseja registrar R\$  de  no Financeiro?)
+      if (confirmFinanceiro) {
+        await supabase.from('transactions').insert({id:crypto.randomUUID(),title:Venda: ,amount:parseFloat(leadForm.value),type:'receita',category:'trabalho',date:leadForm.purchase_date||new Date().toISOString().split('T')[0],notes:Origem: CRM,user_id:USER_ID})
+      }
+    }
     if (leadForm.status === 'Ganho') {
       const existing = await supabase.from('clients').select('id').eq('user_id', USER_ID).eq('name', leadForm.name.trim())
       if (!existing.data || existing.data.length === 0) {
