@@ -10,7 +10,7 @@ const USER_ID = 'paloma'
 const STATUSES = ['Prospecção', 'Contato', 'Negociando', 'Ganho', 'Perdido']
 const SOURCES = ['Indicação', 'Facebook', 'TikTok', 'Instagram', 'Outra pessoa', 'Outro']
 const RELATIONS = ['Cônjuge', 'Filho(a)', 'Mãe', 'Pai', 'Irmão/Irmã', 'Amigo(a)', 'Outro']
-const EMPTY_LEAD = { name:'', email:'', phone:'', whatsapp:'', phone2:'', phone2_name:'', phone2_relation:'', company:'', address:'', status:'Prospecção', value:'', notes:'', next_followup:'', followup_notes:'', source:'Indicação', children_count:'0', children_ages:'', difficulties:'', purchase_date:'', pots_bought:'0', product:'' }
+const EMPTY_LEAD = { commission:'', name:'', email:'', phone:'', whatsapp:'', phone2:'', phone2_name:'', phone2_relation:'', company:'', address:'', status:'Prospecção', value:'', notes:'', next_followup:'', followup_notes:'', source:'Indicação', children_count:'0', children_ages:'', difficulties:'', purchase_date:'', pots_bought:'0', product:'' }
 const EMPTY_CLIENT = { name:'', email:'', phone:'', whatsapp:'', phone2:'', phone2_name:'', phone2_relation:'', address:'', children_count:'0', children_ages:'', difficulties:'', source:'Indicação', product:'', purchase_date:'', pots_bought:'0', notes:'', status:'Ativo' }
 const EMPTY_FORNECEDOR = { name:'', company:'', category:'', product:'', phone:'', whatsapp:'', email:'', instagram:'', notes:'' }
 const FORN_CATS = ['Suplementos','Embalagens','Gráfica','Marketing','Tecnologia','Logística','Alimentos','Serviços','Outro']
@@ -83,7 +83,7 @@ export default function CRMPage() {
   function openNewLead() { setEditing(null); setLeadForm(EMPTY_LEAD); setError(''); setShowForm('lead') }
   function openEditLead(lead: any) {
     setEditing(lead)
-    setLeadForm({name:lead.name||'',email:lead.email||'',phone:lead.phone||'',whatsapp:lead.whatsapp||'',phone2:lead.phone2||'',phone2_name:lead.phone2_name||'',phone2_relation:lead.phone2_relation||'',company:lead.company||'',address:lead.address||'',status:lead.status||'Prospecção',value:lead.value?.toString()||'',notes:lead.notes||'',next_followup:lead.next_followup||'',followup_notes:lead.followup_notes||'',source:lead.source||'Indicação',children_count:lead.children_count?.toString()||'0',children_ages:lead.children_ages||'',difficulties:lead.difficulties||'',purchase_date:lead.purchase_date||'',pots_bought:lead.pots_bought?.toString()||'0',product:lead.product||''})
+    setLeadForm({name:lead.name||'',email:lead.email||'',phone:lead.phone||'',whatsapp:lead.whatsapp||'',phone2:lead.phone2||'',phone2_name:lead.phone2_name||'',phone2_relation:lead.phone2_relation||'',company:lead.company||'',address:lead.address||'',status:lead.status||'Prospecção',value:lead.value?.toString()||'',notes:lead.notes||'',next_followup:lead.next_followup||'',followup_notes:lead.followup_notes||'',source:lead.source||'Indicação',children_count:lead.children_count?.toString()||'0',children_ages:lead.children_ages||'',difficulties:lead.difficulties||'',purchase_date:lead.purchase_date||'',pots_bought:lead.pots_bought?.toString()||'0',product:lead.product||'',commission:lead.commission?.toString()||''})
     setError(''); setShowForm('lead')
   }
 
@@ -99,7 +99,7 @@ export default function CRMPage() {
     if (leadForm.status === 'Ganho' && leadForm.value && parseFloat(leadForm.value) > 0) {
       const confirmFinanceiro = window.confirm(Deseja registrar R\$  de  no Financeiro?)
       if (confirmFinanceiro) {
-        await supabase.from('transactions').insert({id:crypto.randomUUID(),title:Venda: ,amount:parseFloat(leadForm.value),type:'receita',category:'trabalho',date:leadForm.purchase_date||new Date().toISOString().split('T')[0],notes:Origem: CRM,user_id:USER_ID})
+        await supabase.from('transactions').insert({id:crypto.randomUUID(),title:Venda: ,amount:parseFloat(leadForm.commission||leadForm.value),type:'receita',category:'trabalho',date:leadForm.purchase_date||new Date().toISOString().split('T')[0],notes:Origem: CRM,user_id:USER_ID})
       }
     }
     if (leadForm.status === 'Ganho') {
@@ -394,7 +394,7 @@ export default function CRMPage() {
                 <Fld label="Qtd. potes"><input type="number" min="0" value={leadForm.pots_bought} onChange={e=>setLeadForm(f=>({...f,pots_bought:e.target.value}))} style={inp} /></Fld>
               </div>
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
-                <Fld label="Valor (R$)"><input type="number" value={leadForm.value} onChange={e=>setLeadForm(f=>({...f,value:e.target.value}))} style={inp} /></Fld>
+                <Fld label="Valor total kit (R$)"><input type="number" value={leadForm.value} onChange={e=>setLeadForm(f=>({...f,value:e.target.value}))} style={inp} /></Fld>
                 <Fld label="Status"><select value={leadForm.status} onChange={e=>setLeadForm(f=>({...f,status:e.target.value}))} style={sel}>{STATUSES.map(s=><option key={s} value={s}>{s}</option>)}</select></Fld>
               </div>
               {leadForm.status==='Ganho'&&<p style={{fontSize:'11px',color:'rgba(76,175,125,0.7)',background:'rgba(76,175,125,0.08)',borderRadius:'8px',padding:'8px 12px'}}>✓ Este lead será automaticamente adicionado como Cliente</p>}
@@ -473,3 +473,9 @@ export default function CRMPage() {
     </div>
   )
 }
+
+
+
+
+
+
