@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
@@ -7,19 +7,19 @@ import { useRouter } from 'next/navigation'
 import Sidebar from '@/components/Sidebar'
 
 const USER_ID = 'paloma'
-const STATUSES = ['ProspecÃ§Ã£o', 'Contato', 'Negociando', 'Ganho', 'Perdido']
-const SOURCES = ['IndicaÃ§Ã£o', 'Facebook', 'TikTok', 'Instagram', 'Outra pessoa', 'Outro']
-const RELATIONS = ['CÃ´njuge', 'Filho(a)', 'MÃ£e', 'Pai', 'IrmÃ£o/IrmÃ£', 'Amigo(a)', 'Outro']
-const EMPTY_LEAD = { commission:'', name:'', email:'', phone:'', whatsapp:'', phone2:'', phone2_name:'', phone2_relation:'', company:'', address:'', status:'ProspecÃ§Ã£o', value:'', notes:'', next_followup:'', followup_notes:'', source:'IndicaÃ§Ã£o', children_count:'0', children_ages:'', difficulties:'', purchase_date:'', pots_bought:'0', product:'' }
-const EMPTY_CLIENT = { name:'', email:'', phone:'', whatsapp:'', phone2:'', phone2_name:'', phone2_relation:'', address:'', children_count:'0', children_ages:'', difficulties:'', source:'IndicaÃ§Ã£o', product:'', purchase_date:'', pots_bought:'0', notes:'', status:'Ativo' }
+const STATUSES = ['Prospecção', 'Contato', 'Negociando', 'Ganho', 'Perdido']
+const SOURCES = ['Indicação', 'Facebook', 'TikTok', 'Instagram', 'Outra pessoa', 'Outro']
+const RELATIONS = ['Cônjuge', 'Filho(a)', 'Mãe', 'Pai', 'Irmão/Irmã', 'Amigo(a)', 'Outro']
+const EMPTY_LEAD = { commission:'', name:'', email:'', phone:'', whatsapp:'', phone2:'', phone2_name:'', phone2_relation:'', company:'', address:'', status:'Prospecção', value:'', notes:'', next_followup:'', followup_notes:'', source:'Indicação', children_count:'0', children_ages:'', difficulties:'', purchase_date:'', pots_bought:'0', product:'' }
+const EMPTY_CLIENT = { name:'', email:'', phone:'', whatsapp:'', phone2:'', phone2_name:'', phone2_relation:'', address:'', children_count:'0', children_ages:'', difficulties:'', source:'Indicação', product:'', purchase_date:'', pots_bought:'0', notes:'', status:'Ativo' }
 const EMPTY_FORNECEDOR = { name:'', company:'', category:'', product:'', phone:'', whatsapp:'', email:'', instagram:'', notes:'' }
-const FORN_CATS = ['Suplementos','Embalagens','GrÃ¡fica','Marketing','Tecnologia','LogÃ­stica','Alimentos','ServiÃ§os','Outro']
+const FORN_CATS = ['Suplementos','Embalagens','Gráfica','Marketing','Tecnologia','Logística','Alimentos','Serviços','Outro']
 
 
 
 const inp: any = {width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'9px 12px',color:'#fff',fontSize:'13px',outline:'none',boxSizing:'border-box'}
 const sel: any = {width:'100%',background:'#13131f',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'9px 12px',color:'#fff',fontSize:'13px',outline:'none'}
-const sourceColor: any = {'IndicaÃ§Ã£o':'#7c6ff7','Facebook':'#4267B2','TikTok':'#e05252','Instagram':'#e08c42','Outra pessoa':'#4caf7d','Outro':'#888'}
+const sourceColor: any = {'Indicação':'#7c6ff7','Facebook':'#4267B2','TikTok':'#e05252','Instagram':'#e08c42','Outra pessoa':'#4caf7d','Outro':'#888'}
 
 function Sec({title}:{title:string}) {
   return <div style={{fontSize:'10px',color:'rgba(255,255,255,0.25)',textTransform:'uppercase',letterSpacing:'1px',marginTop:'16px',marginBottom:'8px',paddingBottom:'6px',borderBottom:'1px solid rgba(255,255,255,0.06)'}}>{title}</div>
@@ -83,7 +83,7 @@ export default function CRMPage() {
   function openNewLead() { setEditing(null); setLeadForm(EMPTY_LEAD); setError(''); setShowForm('lead') }
   function openEditLead(lead: any) {
     setEditing(lead)
-    setLeadForm({name:lead.name||'',email:lead.email||'',phone:lead.phone||'',whatsapp:lead.whatsapp||'',phone2:lead.phone2||'',phone2_name:lead.phone2_name||'',phone2_relation:lead.phone2_relation||'',company:lead.company||'',address:lead.address||'',status:lead.status||'ProspecÃ§Ã£o',value:lead.value?.toString()||'',notes:lead.notes||'',next_followup:lead.next_followup||'',followup_notes:lead.followup_notes||'',source:lead.source||'IndicaÃ§Ã£o',children_count:lead.children_count?.toString()||'0',children_ages:lead.children_ages||'',difficulties:lead.difficulties||'',purchase_date:lead.purchase_date||'',pots_bought:lead.pots_bought?.toString()||'0',product:lead.product||'',commission:lead.commission?.toString()||''})
+    setLeadForm({name:lead.name||'',email:lead.email||'',phone:lead.phone||'',whatsapp:lead.whatsapp||'',phone2:lead.phone2||'',phone2_name:lead.phone2_name||'',phone2_relation:lead.phone2_relation||'',company:lead.company||'',address:lead.address||'',status:lead.status||'Prospecção',value:lead.value?.toString()||'',notes:lead.notes||'',next_followup:lead.next_followup||'',followup_notes:lead.followup_notes||'',source:lead.source||'Indicação',children_count:lead.children_count?.toString()||'0',children_ages:lead.children_ages||'',difficulties:lead.difficulties||'',purchase_date:lead.purchase_date||'',pots_bought:lead.pots_bought?.toString()||'0',product:lead.product||'',commission:lead.commission?.toString()||''})
     setError(''); setShowForm('lead')
   }
 
@@ -119,7 +119,7 @@ export default function CRMPage() {
   function openNewClient() { setEditing(null); setClientForm(EMPTY_CLIENT); setError(''); setShowForm('client') }
   function openEditClient(c: any) {
     setEditing(c)
-    setClientForm({name:c.name||'',email:c.email||'',phone:c.phone||'',whatsapp:c.whatsapp||'',phone2:c.phone2||'',phone2_name:c.phone2_name||'',phone2_relation:c.phone2_relation||'',address:c.address||'',children_count:c.children_count?.toString()||'0',children_ages:c.children_ages||'',difficulties:c.difficulties||'',source:c.source||'IndicaÃ§Ã£o',product:c.product||'',purchase_date:c.purchase_date||'',pots_bought:c.pots_bought?.toString()||'0',notes:c.notes||'',status:c.status||'Ativo'})
+    setClientForm({name:c.name||'',email:c.email||'',phone:c.phone||'',whatsapp:c.whatsapp||'',phone2:c.phone2||'',phone2_name:c.phone2_name||'',phone2_relation:c.phone2_relation||'',address:c.address||'',children_count:c.children_count?.toString()||'0',children_ages:c.children_ages||'',difficulties:c.difficulties||'',source:c.source||'Indicação',product:c.product||'',purchase_date:c.purchase_date||'',pots_bought:c.pots_bought?.toString()||'0',notes:c.notes||'',status:c.status||'Ativo'})
     setError(''); setShowForm('client')
   }
 
@@ -188,7 +188,7 @@ export default function CRMPage() {
                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}}>
                   <div>
                     <h1 style={{color:'#fff',fontSize:'20px',fontWeight:700}}>Leads</h1>
-                    <p style={{color:'rgba(255,255,255,0.3)',fontSize:'12px',marginTop:'2px'}}>{leads.length} contatos em prospecÃ§Ã£o</p>
+                    <p style={{color:'rgba(255,255,255,0.3)',fontSize:'12px',marginTop:'2px'}}>{leads.length} contatos em prospecção</p>
                   </div>
                   <div style={{display:'flex',gap:'8px'}}>
                     <button onClick={exportLeads} style={{padding:'7px 12px',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',color:'rgba(255,255,255,0.5)',fontSize:'12px',cursor:'pointer'}}>Exportar CSV</button>
@@ -224,7 +224,7 @@ export default function CRMPage() {
                         <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
                           {l.whatsapp&&<a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'7px',color:'#25d366',fontSize:'11px',textDecoration:'none',fontWeight:600}}>WA</a>}
                           <span style={{fontSize:'11px',padding:'3px 9px',borderRadius:'6px',background:l.status==='Ganho'?'rgba(76,175,125,0.15)':l.status==='Perdido'?'rgba(224,82,82,0.15)':'rgba(255,255,255,0.08)',color:l.status==='Ganho'?'#4caf7d':l.status==='Perdido'?'#e05252':'rgba(255,255,255,0.4)',fontWeight:500}}>{l.status}</span>
-                          <button onClick={e=>{e.stopPropagation();removeLead(l.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'11px',cursor:'pointer'}}>âœ•</button>
+                          <button onClick={e=>{e.stopPropagation();removeLead(l.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'11px',cursor:'pointer'}}>✕</button>
                         </div>
                       </div>
                     ))}
@@ -265,13 +265,13 @@ export default function CRMPage() {
                             <div style={{display:'flex',gap:'8px',marginTop:'2px',flexWrap:'wrap'}}>
                               {c.phone&&<span style={{color:'rgba(255,255,255,0.3)',fontSize:'11px'}}>{c.phone}</span>}
                               {c.pots_bought>0&&<span style={{color:'rgba(255,255,255,0.3)',fontSize:'11px'}}>{c.pots_bought} potes</span>}
-                              {days!==null&&<span style={{color:isOver?'#e05252':isLow?'#e08c42':'rgba(255,255,255,0.3)',fontSize:'11px',fontWeight:isLow?600:400}}>{isOver?'Potes acabaram!':isLow?`âš  ${days} dias`:days+' dias'}</span>}
+                              {days!==null&&<span style={{color:isOver?'#e05252':isLow?'#e08c42':'rgba(255,255,255,0.3)',fontSize:'11px',fontWeight:isLow?600:400}}>{isOver?'Potes acabaram!':isLow?`⚠ ${days} dias`:days+' dias'}</span>}
                             </div>
                           </div>
                           <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
                             {c.whatsapp&&<a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'7px',color:'#25d366',fontSize:'11px',textDecoration:'none',fontWeight:600}}>WA</a>}
                             <span style={{fontSize:'11px',padding:'3px 9px',borderRadius:'6px',background:c.status==='Ativo'?'rgba(76,175,125,0.15)':'rgba(255,255,255,0.08)',color:c.status==='Ativo'?'#4caf7d':'rgba(255,255,255,0.4)',fontWeight:500}}>{c.status}</span>
-                            <button onClick={e=>{e.stopPropagation();removeClient(c.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'11px',cursor:'pointer'}}>âœ•</button>
+                            <button onClick={e=>{e.stopPropagation();removeClient(c.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'11px',cursor:'pointer'}}>✕</button>
                           </div>
                         </div>
                       )
@@ -303,13 +303,13 @@ export default function CRMPage() {
                             {f.category&&<span style={{fontSize:'10px',padding:'1px 7px',borderRadius:'5px',background:'rgba(224,140,66,0.15)',color:'#e08c42'}}>{f.category}</span>}
                           </div>
                           <div style={{display:'flex',gap:'8px',marginTop:'2px',flexWrap:'wrap'}}>
-                            {f.product&&<span style={{color:'rgba(255,255,255,0.3)',fontSize:'11px'}}>ðŸ“¦ {f.product}</span>}
-                            {f.phone&&<span style={{color:'rgba(255,255,255,0.3)',fontSize:'11px'}}>ðŸ“ž {f.phone}</span>}
+                            {f.product&&<span style={{color:'rgba(255,255,255,0.3)',fontSize:'11px'}}>📦 {f.product}</span>}
+                            {f.phone&&<span style={{color:'rgba(255,255,255,0.3)',fontSize:'11px'}}>📞 {f.phone}</span>}
                           </div>
                         </div>
                         <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
                           {f.whatsapp&&<a href={`https://wa.me/55${f.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'7px',color:'#25d366',fontSize:'11px',textDecoration:'none',fontWeight:600}}>WA</a>}
-                          <button onClick={e=>{e.stopPropagation();removeForn(f.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'11px',cursor:'pointer'}}>âœ•</button>
+                          <button onClick={e=>{e.stopPropagation();removeForn(f.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'11px',cursor:'pointer'}}>✕</button>
                         </div>
                       </div>
                     ))}
@@ -326,7 +326,7 @@ export default function CRMPage() {
           <div style={{width:'100%',maxWidth:'480px',background:'#13131f',borderRadius:'16px',padding:'24px',border:'1px solid rgba(255,255,255,0.1)',height:'fit-content'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
               <h2 style={{color:'#fff',fontSize:'16px',fontWeight:600}}>{editing?'Editar Fornecedor':'Novo Fornecedor'}</h2>
-              <button onClick={()=>setShowForm('')} style={{background:'none',border:'none',color:'rgba(255,255,255,0.3)',cursor:'pointer',fontSize:'18px'}}>âœ•</button>
+              <button onClick={()=>setShowForm('')} style={{background:'none',border:'none',color:'rgba(255,255,255,0.3)',cursor:'pointer',fontSize:'18px'}}>✕</button>
             </div>
             <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
               <input placeholder="Nome do contato *" value={fornForm.name} onChange={e=>setFornForm(f=>({...f,name:e.target.value}))} style={inp} />
@@ -334,14 +334,14 @@ export default function CRMPage() {
                 <div><label style={{fontSize:'11px',color:'rgba(255,255,255,0.3)',display:'block',marginBottom:'4px'}}>Empresa</label><input placeholder="Nome da empresa" value={fornForm.company} onChange={e=>setFornForm(f=>({...f,company:e.target.value}))} style={inp} /></div>
                 <div><label style={{fontSize:'11px',color:'rgba(255,255,255,0.3)',display:'block',marginBottom:'4px'}}>Categoria</label><select value={fornForm.category} onChange={e=>setFornForm(f=>({...f,category:e.target.value}))} style={sel}><option value="">Selecione</option>{FORN_CATS.map(c=><option key={c}>{c}</option>)}</select></div>
               </div>
-              <input placeholder="Produto / ServiÃ§o oferecido" value={fornForm.product} onChange={e=>setFornForm(f=>({...f,product:e.target.value}))} style={inp} />
+              <input placeholder="Produto / Serviço oferecido" value={fornForm.product} onChange={e=>setFornForm(f=>({...f,product:e.target.value}))} style={inp} />
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
                 <div><label style={{fontSize:'11px',color:'rgba(255,255,255,0.3)',display:'block',marginBottom:'4px'}}>Telefone</label><input placeholder="(00) 00000-0000" value={fornForm.phone} onChange={e=>setFornForm(f=>({...f,phone:e.target.value}))} style={inp} /></div>
                 <div><label style={{fontSize:'11px',color:'rgba(255,255,255,0.3)',display:'block',marginBottom:'4px'}}>WhatsApp</label><input placeholder="(00) 00000-0000" value={fornForm.whatsapp} onChange={e=>setFornForm(f=>({...f,whatsapp:e.target.value}))} style={inp} /></div>
               </div>
               <input placeholder="E-mail" value={fornForm.email} onChange={e=>setFornForm(f=>({...f,email:e.target.value}))} style={inp} />
               <input placeholder="Instagram (@)" value={fornForm.instagram} onChange={e=>setFornForm(f=>({...f,instagram:e.target.value}))} style={inp} />
-              <textarea placeholder="ObservaÃ§Ãµes, condiÃ§Ãµes, preÃ§os..." value={fornForm.notes} onChange={e=>setFornForm(f=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'70px'}} />
+              <textarea placeholder="Observações, condições, preços..." value={fornForm.notes} onChange={e=>setFornForm(f=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'70px'}} />
             </div>
             {error&&<p style={{color:'#e05252',fontSize:'12px',background:'rgba(224,82,82,0.1)',borderRadius:'8px',padding:'8px 12px',marginTop:'10px'}}>{error}</p>}
             <div style={{display:'flex',gap:'8px',marginTop:'16px'}}>
@@ -357,9 +357,9 @@ export default function CRMPage() {
           <div style={{width:'100%',maxWidth:'560px',background:'#13131f',borderRadius:'16px',padding:'24px',border:'1px solid rgba(255,255,255,0.1)',height:'fit-content'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'4px'}}>
               <h2 style={{color:'#fff',fontSize:'16px',fontWeight:600}}>{editing?'Editar Lead':'Novo Lead'}</h2>
-              <button onClick={()=>setShowForm('')} style={{background:'none',border:'none',color:'rgba(255,255,255,0.3)',cursor:'pointer',fontSize:'18px'}}>âœ•</button>
+              <button onClick={()=>setShowForm('')} style={{background:'none',border:'none',color:'rgba(255,255,255,0.3)',cursor:'pointer',fontSize:'18px'}}>✕</button>
             </div>
-            <Sec title="InformaÃ§Ãµes bÃ¡sicas" />
+            <Sec title="Informações básicas" />
             <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
               <input placeholder="Nome *" value={leadForm.name} onChange={e=>setLeadForm(f=>({...f,name:e.target.value}))} style={inp} />
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
@@ -367,9 +367,9 @@ export default function CRMPage() {
                 <Fld label="WhatsApp"><input placeholder="(00) 00000-0000" value={leadForm.whatsapp} onChange={e=>setLeadForm(f=>({...f,whatsapp:e.target.value}))} style={inp} /></Fld>
               </div>
               <input placeholder="Email" value={leadForm.email} onChange={e=>setLeadForm(f=>({...f,email:e.target.value}))} style={inp} />
-              <input placeholder="EndereÃ§o" value={leadForm.address} onChange={e=>setLeadForm(f=>({...f,address:e.target.value}))} style={inp} />
+              <input placeholder="Endereço" value={leadForm.address} onChange={e=>setLeadForm(f=>({...f,address:e.target.value}))} style={inp} />
             </div>
-            <Sec title="Contato secundÃ¡rio" />
+            <Sec title="Contato secundário" />
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'8px'}}>
               <Fld label="Telefone 2"><input placeholder="(00) 00000-0000" value={leadForm.phone2} onChange={e=>setLeadForm(f=>({...f,phone2:e.target.value}))} style={inp} /></Fld>
               <Fld label="Nome"><input value={leadForm.phone2_name} onChange={e=>setLeadForm(f=>({...f,phone2_name:e.target.value}))} style={inp} /></Fld>
@@ -381,7 +381,7 @@ export default function CRMPage() {
                 <Fld label="Qtd. filhos"><input type="number" min="0" value={leadForm.children_count} onChange={e=>setLeadForm(f=>({...f,children_count:e.target.value}))} style={inp} /></Fld>
                 <Fld label="Idades"><input placeholder="Ex: 3, 7 anos" value={leadForm.children_ages} onChange={e=>setLeadForm(f=>({...f,children_ages:e.target.value}))} style={inp} /></Fld>
               </div>
-              <Fld label="Dificuldades"><textarea placeholder="Ex: cansaÃ§o, falta de foco..." value={leadForm.difficulties} onChange={e=>setLeadForm(f=>({...f,difficulties:e.target.value}))} style={{...inp,resize:'none',height:'60px'}} /></Fld>
+              <Fld label="Dificuldades"><textarea placeholder="Ex: cansaço, falta de foco..." value={leadForm.difficulties} onChange={e=>setLeadForm(f=>({...f,difficulties:e.target.value}))} style={{...inp,resize:'none',height:'60px'}} /></Fld>
             </div>
             <Sec title="Origem" />
             <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'6px'}}>
@@ -398,15 +398,15 @@ export default function CRMPage() {
                 <Fld label="Valor total kit (R$)"><input type="number" value={leadForm.value} onChange={e=>setLeadForm(f=>({...f,value:e.target.value}))} style={inp} /></Fld>
                 <Fld label="Status"><select value={leadForm.status} onChange={e=>setLeadForm(f=>({...f,status:e.target.value}))} style={sel}>{STATUSES.map(s=><option key={s} value={s}>{s}</option>)}</select></Fld>
               </div>
-              {leadForm.status==='Ganho'&&<p style={{fontSize:'11px',color:'rgba(76,175,125,0.7)',background:'rgba(76,175,125,0.08)',borderRadius:'8px',padding:'8px 12px'}}>âœ“ Este lead serÃ¡ automaticamente adicionado como Cliente</p>}
+              {leadForm.status==='Ganho'&&<p style={{fontSize:'11px',color:'rgba(76,175,125,0.7)',background:'rgba(76,175,125,0.08)',borderRadius:'8px',padding:'8px 12px'}}>✓ Este lead será automaticamente adicionado como Cliente</p>}
             </div>
             <Sec title="Follow-up" />
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
               <Fld label="Data"><input type="date" value={leadForm.next_followup} onChange={e=>setLeadForm(f=>({...f,next_followup:e.target.value}))} style={{...inp,colorScheme:'dark'}} /></Fld>
-              <Fld label="ObservaÃ§Ã£o"><input placeholder="O que falar?" value={leadForm.followup_notes} onChange={e=>setLeadForm(f=>({...f,followup_notes:e.target.value}))} style={inp} /></Fld>
+              <Fld label="Observação"><input placeholder="O que falar?" value={leadForm.followup_notes} onChange={e=>setLeadForm(f=>({...f,followup_notes:e.target.value}))} style={inp} /></Fld>
             </div>
             <Sec title="Notas" />
-            <textarea placeholder="ObservaÃ§Ãµes gerais..." value={leadForm.notes} onChange={e=>setLeadForm(f=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'64px'}} />
+            <textarea placeholder="Observações gerais..." value={leadForm.notes} onChange={e=>setLeadForm(f=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'64px'}} />
             {error&&<p style={{color:'#e05252',fontSize:'12px',background:'rgba(224,82,82,0.1)',borderRadius:'8px',padding:'8px 12px',marginTop:'10px'}}>{error}</p>}
             <div style={{display:'flex',gap:'8px',marginTop:'16px'}}>
               <button onClick={saveLead} disabled={!leadForm.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#fff',fontSize:'13px',fontWeight:600,cursor:'pointer',opacity:!leadForm.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
@@ -421,9 +421,9 @@ export default function CRMPage() {
           <div style={{width:'100%',maxWidth:'560px',background:'#13131f',borderRadius:'16px',padding:'24px',border:'1px solid rgba(255,255,255,0.1)',height:'fit-content'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'4px'}}>
               <h2 style={{color:'#fff',fontSize:'16px',fontWeight:600}}>{editing?'Editar Cliente':'Novo Cliente'}</h2>
-              <button onClick={()=>setShowForm('')} style={{background:'none',border:'none',color:'rgba(255,255,255,0.3)',cursor:'pointer',fontSize:'18px'}}>âœ•</button>
+              <button onClick={()=>setShowForm('')} style={{background:'none',border:'none',color:'rgba(255,255,255,0.3)',cursor:'pointer',fontSize:'18px'}}>✕</button>
             </div>
-            <Sec title="InformaÃ§Ãµes bÃ¡sicas" />
+            <Sec title="Informações básicas" />
             <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
               <input placeholder="Nome completo *" value={clientForm.name} onChange={e=>setClientForm(f=>({...f,name:e.target.value}))} style={inp} />
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
@@ -431,9 +431,9 @@ export default function CRMPage() {
                 <Fld label="WhatsApp"><input placeholder="(00) 00000-0000" value={clientForm.whatsapp} onChange={e=>setClientForm(f=>({...f,whatsapp:e.target.value}))} style={inp} /></Fld>
               </div>
               <input placeholder="Email" value={clientForm.email} onChange={e=>setClientForm(f=>({...f,email:e.target.value}))} style={inp} />
-              <input placeholder="EndereÃ§o" value={clientForm.address} onChange={e=>setClientForm(f=>({...f,address:e.target.value}))} style={inp} />
+              <input placeholder="Endereço" value={clientForm.address} onChange={e=>setClientForm(f=>({...f,address:e.target.value}))} style={inp} />
             </div>
-            <Sec title="Contato secundÃ¡rio" />
+            <Sec title="Contato secundário" />
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'8px'}}>
               <Fld label="Telefone 2"><input value={clientForm.phone2} onChange={e=>setClientForm(f=>({...f,phone2:e.target.value}))} style={inp} /></Fld>
               <Fld label="Nome"><input value={clientForm.phone2_name} onChange={e=>setClientForm(f=>({...f,phone2_name:e.target.value}))} style={inp} /></Fld>
@@ -474,6 +474,7 @@ export default function CRMPage() {
     </div>
   )
 }
+
 
 
 
