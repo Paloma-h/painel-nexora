@@ -118,7 +118,7 @@ export default function DadosPage() {
   const [campos, setCampos] = useState<{label:string,value:string}[]>([{label:'',value:''}])
   const [notas, setNotas] = useState('')
 
-  useEffect(() => { load() }, [pessoa, categoria])
+  useEffect(() => { load() }, [pessoa, categoria]) // eslint-disable-line react-hooks/exhaustive-deps
 
   async function load() {
     setLoading(true)
@@ -260,7 +260,7 @@ export default function DadosPage() {
             <div style={{ textAlign: 'center', padding: '60px 0' }}>
               <p style={{ fontSize: '40px', marginBottom: '12px' }}>📋</p>
               <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '14px' }}>Nenhum registro ainda</p>
-              <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '12px', marginTop: '4px' }}>Clique em "+ Adicionar" para começar</p>
+              <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '12px', marginTop: '4px' }}>Clique em &quot;+ Adicionar&quot; para começar</p>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
