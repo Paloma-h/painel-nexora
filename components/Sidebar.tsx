@@ -52,7 +52,7 @@ export default function Sidebar() {
   }
 
   const initials = userEmail ? userEmail.charAt(0).toUpperCase() : 'P'
-  const displayName = userEmail ? userEmail.split('@')[0] : 'Paloma'
+  const displayName = 'Paloma'
 
   function NavItem({ href, label, Icon }: { href: string; label: string; Icon: any }) {
     const active = path === href
