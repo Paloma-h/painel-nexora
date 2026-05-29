@@ -38,11 +38,11 @@ const NAV_PERSONAL = [
 export default function Sidebar() {
   const path = usePathname()
   const router = useRouter()
-  const [userEmail, setUserEmail] = useState<string>('')
+
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
-      if (data?.user?.email) setUserEmail(data.user.email)
+
     })
   }, [])
 
@@ -51,8 +51,8 @@ export default function Sidebar() {
     router.push('/login')
   }
 
-  const initials = userEmail ? userEmail.charAt(0).toUpperCase() : 'P'
-  const displayName = 'Paloma'
+
+
 
   function NavItem({ href, label, Icon }: { href: string; label: string; Icon: any }) {
     const active = path === href
@@ -136,17 +136,17 @@ export default function Sidebar() {
 
       {/* ── Perfil + Logout ──────────────────── */}
       <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: '14px', marginTop: '8px' }}>
-        {/* Avatar + nome */}
+
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 10px', borderRadius: '10px', background: 'rgba(255,255,255,0.04)', marginBottom: '8px' }}>
           <div style={{
             width: '32px', height: '32px', borderRadius: '50%',
             background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             color: '#fff', fontWeight: 700, fontSize: '14px', flexShrink: 0,
-          }}>{initials}</div>
+
           <div style={{ minWidth: 0 }}>
             
-            <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: '10px' }}>Premium</p>
+
           </div>
         </div>
 
