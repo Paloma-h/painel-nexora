@@ -60,13 +60,11 @@ export default function Sidebar() {
         fontSize: '13px',
         fontWeight: active ? 600 : 400,
         color: active ? '#ffffff' : 'rgba(255,255,255,0.4)',
-        background: active
-          ? 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)'
-          : 'transparent',
+        background: active ? '#7c3aed' : 'transparent',
         textDecoration: 'none',
         marginBottom: '3px',
         transition: 'all 0.15s ease',
-        boxShadow: active ? '0 4px 18px rgba(139,92,246,0.5)' : 'none',
+        boxShadow: active ? '0 0 0 1px #9333ea, 0 4px 24px rgba(124,58,237,0.7)' : 'none',
         border: active ? 'none' : '1px solid rgba(255,255,255,0.06)',
       }}>
         <Icon
@@ -82,7 +80,7 @@ export default function Sidebar() {
   return (
     <aside style={{
       width: '210px',
-      background: 'linear-gradient(180deg, #0d0d1c 0%, #0a0a14 100%)',
+      background: '#0f0f18',
       borderRight: '1px solid rgba(255,255,255,0.055)',
       display: 'flex',
       flexDirection: 'column',
