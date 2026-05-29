@@ -97,9 +97,9 @@ export default function CRMPage() {
       await supabase.from('tasks').insert({id:crypto.randomUUID(),title:`Follow-up: ${leadForm.name.trim()}`,date:leadForm.next_followup,notes:leadForm.followup_notes||null,type:'task',status:'PENDING',priority:'HIGH',category:'trabalho',user_id:USER_ID})
     }
     if (leadForm.status === 'Ganho' && leadForm.value && parseFloat(leadForm.value) > 0) {
-      const confirmFinanceiro = window.confirm(Deseja registrar R\$  de  no Financeiro?)
+      const confirmFinanceiro = window.confirm(`Deseja registrar R$ ${parseFloat(leadForm.commission||leadForm.value||"0").toFixed(2)} de ${leadForm.name.trim()} no Financeiro?`)
       if (confirmFinanceiro) {
-        await supabase.from('transactions').insert({id:crypto.randomUUID(),title:Venda: ,amount:parseFloat(leadForm.commission||leadForm.value),type:'receita',category:'trabalho',date:leadForm.purchase_date||new Date().toISOString().split('T')[0],notes:Origem: CRM,user_id:USER_ID})
+        await supabase.from('transactions').insert({id:crypto.randomUUID(),title:`Venda: ${leadForm.name.trim()}`,amount:parseFloat(leadForm.commission||leadForm.value),type:'receita',category:'trabalho',date:leadForm.purchase_date||new Date().toISOString().split('T')[0],notes:'Origem: CRM',user_id:USER_ID})
       }
     }
     if (leadForm.status === 'Ganho') {
@@ -474,6 +474,9 @@ export default function CRMPage() {
     </div>
   )
 }
+
+
+
 
 
 
