@@ -61,12 +61,12 @@ export default function Sidebar() {
         fontWeight: active ? 600 : 400,
         color: active ? '#ffffff' : 'rgba(255,255,255,0.4)',
         background: active
-          ? 'linear-gradient(135deg, #6c5fdb 0%, #5b50d6 100%)'
+          ? 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)'
           : 'transparent',
         textDecoration: 'none',
         marginBottom: '3px',
         transition: 'all 0.15s ease',
-        boxShadow: active ? '0 4px 14px rgba(91,80,214,0.4)' : 'none',
+        boxShadow: active ? '0 4px 18px rgba(139,92,246,0.5)' : 'none',
         border: active ? 'none' : '1px solid rgba(255,255,255,0.06)',
       }}>
         <Icon
@@ -101,10 +101,10 @@ export default function Sidebar() {
           <div style={{
             width: '28px', height: '28px',
             borderRadius: '8px',
-            background: 'linear-gradient(135deg, #7c6ff7 0%, #5b50d6 100%)',
+            background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             flexShrink: 0,
-            boxShadow: '0 0 14px rgba(124,111,247,0.45)',
+            boxShadow: '0 0 16px rgba(139,92,246,0.55)',
           }}>
             <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
               <path d="M7 1L13 4.5V9.5L7 13L1 9.5V4.5L7 1Z" stroke="white" strokeWidth="1.5" strokeLinejoin="round"/>
@@ -136,7 +136,7 @@ export default function Sidebar() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 10px', borderRadius: '10px', background: 'rgba(255,255,255,0.04)', marginBottom: '8px' }}>
           <div style={{
             width: '32px', height: '32px', borderRadius: '50%',
-            background: 'linear-gradient(135deg, #7c6ff7 0%, #5b50d6 100%)',
+            background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             color: '#fff', fontWeight: 700, fontSize: '14px', flexShrink: 0,
           }}>{initials}</div>
