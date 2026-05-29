@@ -13,14 +13,16 @@ import {
   Heart,
   BookOpen,
   LogOut,
+  Shield,
 } from 'lucide-react'
 
 const NAV_MAIN = [
-  { href: '/dashboard',  label: 'Dashboard',  Icon: LayoutDashboard },
-  { href: '/agenda',     label: 'Agenda',      Icon: Calendar        },
-  { href: '/pendencias', label: 'Pendências',  Icon: Zap             },
-  { href: '/crm',        label: 'CRM',         Icon: Users           },
-  { href: '/financeiro', label: 'Financeiro',  Icon: DollarSign      },
+  { href: '/dashboard',  label: 'Dashboard',       Icon: LayoutDashboard },
+  { href: '/agenda',     label: 'Agenda',           Icon: Calendar        },
+  { href: '/pendencias', label: 'Pendências',       Icon: Zap             },
+  { href: '/crm',        label: 'CRM',              Icon: Users           },
+  { href: '/financeiro', label: 'Financeiro',       Icon: DollarSign      },
+  { href: '/dados',      label: 'Dados Pessoais',   Icon: Shield          },
 ]
 
 const NAV_PERSONAL = [
