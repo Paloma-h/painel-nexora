@@ -98,18 +98,30 @@ export default function DashboardPage() {
 
           {/* KPIs */}
           <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'14px',marginBottom:'32px'}}>
-            <div style={{background:'linear-gradient(135deg,rgba(91,80,214,0.12) 0%,rgba(255,255,255,0.03) 100%)',border:'1px solid rgba(91,80,214,0.2)',borderRadius:'14px',padding:'20px'}}>
-              <p style={{color:'rgba(168,159,247,0.6)',fontSize:'11px',fontWeight:600,letterSpacing:'0.5px',textTransform:'uppercase',marginBottom:'8px'}}>Tarefas hoje</p>
-              <p style={{color:'#fff',fontSize:'32px',fontWeight:700,lineHeight:1}}>{todayTasks.length}</p>
-              {doneTasks.length > 0 && <p style={{color:'rgba(76,175,125,0.7)',fontSize:'12px',marginTop:'6px'}}>✓ {doneTasks.length} concluída{doneTasks.length>1?'s':''}</p>}
+            {/* Tarefas hoje */}
+            <div style={{background:'linear-gradient(135deg,rgba(91,80,214,0.15) 0%,rgba(91,80,214,0.05) 100%)',border:'1px solid rgba(91,80,214,0.25)',borderRadius:'16px',padding:'20px',position:'relative',overflow:'hidden'}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'12px'}}>
+                <p style={{color:'rgba(168,159,247,0.7)',fontSize:'11px',fontWeight:600,letterSpacing:'0.8px',textTransform:'uppercase'}}>Tarefas hoje</p>
+                <div style={{width:'34px',height:'34px',borderRadius:'10px',background:'rgba(91,80,214,0.3)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'16px'}}>📋</div>
+              </div>
+              <p style={{color:'#fff',fontSize:'36px',fontWeight:800,lineHeight:1,marginBottom:'6px'}}>{todayTasks.length}</p>
+              {doneTasks.length > 0 && <p style={{color:'rgba(76,175,125,0.8)',fontSize:'12px'}}>✓ {doneTasks.length} concluída{doneTasks.length>1?'s':''}</p>}
             </div>
-            <div style={{background:overdueTasks.length>0?'linear-gradient(135deg,rgba(224,82,82,0.1) 0%,rgba(255,255,255,0.02) 100%)':'linear-gradient(135deg,rgba(255,255,255,0.04) 0%,rgba(255,255,255,0.02) 100%)',border:`1px solid ${overdueTasks.length>0?'rgba(224,82,82,0.25)':'rgba(255,255,255,0.08)'}`,borderRadius:'14px',padding:'20px'}}>
-              <p style={{color:overdueTasks.length>0?'rgba(224,82,82,0.7)':'rgba(255,255,255,0.3)',fontSize:'11px',fontWeight:600,letterSpacing:'0.5px',textTransform:'uppercase',marginBottom:'8px'}}>Atrasadas</p>
-              <p style={{color:overdueTasks.length>0?'#ff6b6b':'rgba(255,255,255,0.4)',fontSize:'32px',fontWeight:700,lineHeight:1}}>{overdueTasks.length}</p>
+            {/* Atrasadas */}
+            <div style={{background:overdueTasks.length>0?'linear-gradient(135deg,rgba(224,82,82,0.15) 0%,rgba(224,82,82,0.04) 100%)':'linear-gradient(135deg,rgba(255,255,255,0.05) 0%,rgba(255,255,255,0.02) 100%)',border:`1px solid ${overdueTasks.length>0?'rgba(224,82,82,0.3)':'rgba(255,255,255,0.08)'}`,borderRadius:'16px',padding:'20px',position:'relative',overflow:'hidden'}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'12px'}}>
+                <p style={{color:overdueTasks.length>0?'rgba(224,82,82,0.8)':'rgba(255,255,255,0.3)',fontSize:'11px',fontWeight:600,letterSpacing:'0.8px',textTransform:'uppercase'}}>Atrasadas</p>
+                <div style={{width:'34px',height:'34px',borderRadius:'10px',background:overdueTasks.length>0?'rgba(224,82,82,0.25)':'rgba(255,255,255,0.06)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'16px'}}>⚠️</div>
+              </div>
+              <p style={{color:overdueTasks.length>0?'#ff7070':'rgba(255,255,255,0.35)',fontSize:'36px',fontWeight:800,lineHeight:1}}>{overdueTasks.length}</p>
             </div>
-            <div style={{background:todayFollowups.length>0?'linear-gradient(135deg,rgba(124,111,247,0.1) 0%,rgba(255,255,255,0.02) 100%)':'linear-gradient(135deg,rgba(255,255,255,0.04) 0%,rgba(255,255,255,0.02) 100%)',border:`1px solid ${todayFollowups.length>0?'rgba(124,111,247,0.25)':'rgba(255,255,255,0.08)'}`,borderRadius:'14px',padding:'20px'}}>
-              <p style={{color:todayFollowups.length>0?'rgba(168,159,247,0.7)':'rgba(255,255,255,0.3)',fontSize:'11px',fontWeight:600,letterSpacing:'0.5px',textTransform:'uppercase',marginBottom:'8px'}}>Follow-ups hoje</p>
-              <p style={{color:todayFollowups.length>0?'#c4bcff':'rgba(255,255,255,0.4)',fontSize:'32px',fontWeight:700,lineHeight:1}}>{todayFollowups.length}</p>
+            {/* Follow-ups */}
+            <div style={{background:todayFollowups.length>0?'linear-gradient(135deg,rgba(76,175,125,0.15) 0%,rgba(76,175,125,0.04) 100%)':'linear-gradient(135deg,rgba(255,255,255,0.05) 0%,rgba(255,255,255,0.02) 100%)',border:`1px solid ${todayFollowups.length>0?'rgba(76,175,125,0.3)':'rgba(255,255,255,0.08)'}`,borderRadius:'16px',padding:'20px',position:'relative',overflow:'hidden'}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'12px'}}>
+                <p style={{color:todayFollowups.length>0?'rgba(76,175,125,0.8)':'rgba(255,255,255,0.3)',fontSize:'11px',fontWeight:600,letterSpacing:'0.8px',textTransform:'uppercase'}}>Follow-ups hoje</p>
+                <div style={{width:'34px',height:'34px',borderRadius:'10px',background:todayFollowups.length>0?'rgba(76,175,125,0.25)':'rgba(255,255,255,0.06)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'16px'}}>👥</div>
+              </div>
+              <p style={{color:todayFollowups.length>0?'#5dcc8a':'rgba(255,255,255,0.35)',fontSize:'36px',fontWeight:800,lineHeight:1}}>{todayFollowups.length}</p>
             </div>
           </div>
 
