@@ -22,6 +22,9 @@ const CATEGORIAS = [
   { id: 'logins',      label: 'Logins & Plataformas', emoji: '🔐', color: '#d97706' },
   { id: 'veiculos',    label: 'Veículos',              emoji: '🚗', color: '#dc2626' },
   { id: 'enderecos',   label: 'Endereços',             emoji: '📍', color: '#0891b2' },
+  { id: 'cnpj',        label: 'CNPJ / Empresas',      emoji: '🏢', color: '#7c3aed' },
+  { id: 'enel',        label: 'ENEL / Energia',        emoji: '⚡', color: '#ca8a04' },
+  { id: 'cagece',      label: 'CAGECE / Água',         emoji: '💧', color: '#0284c7' },
   { id: 'outros',      label: 'Outros',                emoji: '📌', color: '#6b7280' },
 ]
 
@@ -33,6 +36,9 @@ const CAMPOS_SUGERIDOS: any = {
   logins:      ['Plataforma','E-mail/Usuário','Senha','Observação'],
   veiculos:    ['Modelo','Placa','RENAVAM','Chassi','Cor','Ano','Seguro'],
   enderecos:   ['Rua','Número','Bairro','Cidade','CEP','Referência'],
+  cnpj:        ['Razão Social','CNPJ','Titular','Situação','Abertura','Atividade'],
+  enel:        ['Unidade Consumidora','Titular','CPF Titular','Endereço','Vencimento','Conta Contrato'],
+  cagece:      ['Matrícula','Titular','CPF Titular','Endereço','Vencimento'],
   outros:      ['Descrição','Valor','Código','Observação'],
 }
 
@@ -43,6 +49,9 @@ const catColor: any = {
   logins:      '#d97706',
   veiculos:    '#dc2626',
   enderecos:   '#0891b2',
+  cnpj:        '#7c3aed',
+  enel:        '#ca8a04',
+  cagece:      '#0284c7',
   outros:      '#6b7280',
 }
 
