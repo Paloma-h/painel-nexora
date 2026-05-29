@@ -12,6 +12,8 @@ const SOURCES = ['Indicação', 'Facebook', 'TikTok', 'Instagram', 'Outra pessoa
 const RELATIONS = ['Cônjuge', 'Filho(a)', 'Mãe', 'Pai', 'Irmão/Irmã', 'Amigo(a)', 'Outro']
 const EMPTY_LEAD = { name:'', email:'', phone:'', whatsapp:'', phone2:'', phone2_name:'', phone2_relation:'', company:'', address:'', status:'Prospecção', value:'', notes:'', next_followup:'', followup_notes:'', source:'Indicação', children_count:'0', children_ages:'', difficulties:'', purchase_date:'', pots_bought:'0', product:'' }
 const EMPTY_CLIENT = { name:'', email:'', phone:'', whatsapp:'', phone2:'', phone2_name:'', phone2_relation:'', address:'', children_count:'0', children_ages:'', difficulties:'', source:'Indicação', product:'', purchase_date:'', pots_bought:'0', notes:'', status:'Ativo' }
+const EMPTY_FORNECEDOR = { name:'', company:'', category:'', product:'', phone:'', whatsapp:'', email:'', instagram:'', notes:'' }
+const FORN_CATS = ['Suplementos','Embalagens','Gráfica','Marketing','Tecnologia','Logística','Alimentos','Serviços','Outro']
 
 
 
@@ -35,6 +37,8 @@ export default function CRMPage() {
   const [editing, setEditing] = useState<any>(null)
   const [leadForm, setLeadForm] = useState(EMPTY_LEAD)
   const [clientForm, setClientForm] = useState(EMPTY_CLIENT)
+  const [fornecedores, setFornecedores] = useState<any[]>([])
+  const [fornForm, setFornForm] = useState(EMPTY_FORNECEDOR)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [search, setSearch] = useState('')
@@ -44,13 +48,36 @@ export default function CRMPage() {
 
   async function load() {
     setLoading(true)
-    const [l, c] = await Promise.all([
+    const [l, c, f] = await Promise.all([
       supabase.from('leads').select('*').eq('user_id', USER_ID).order('created_at', {ascending:false}),
-      supabase.from('clients').select('*').eq('user_id', USER_ID).order('created_at', {ascending:false})
+      supabase.from('clients').select('*').eq('user_id', USER_ID).order('created_at', {ascending:false}),
+      supabase.from('fornecedores').select('*').eq('user_id', USER_ID).order('created_at', {ascending:false})
     ])
     setLeads(l.data || [])
     setClients(c.data || [])
+    setFornecedores(f.data || [])
     setLoading(false)
+  }
+
+  function openNewForn() { setEditing(null); setFornForm(EMPTY_FORNECEDOR); setError(''); setShowForm('forn') }
+  function openEditForn(f: any) {
+    setEditing(f)
+    setFornForm({name:f.name||'',company:f.company||'',category:f.category||'',product:f.product||'',phone:f.phone||'',whatsapp:f.whatsapp||'',email:f.email||'',instagram:f.instagram||'',notes:f.notes||''})
+    setError(''); setShowForm('forn')
+  }
+  async function saveForn() {
+    if (!fornForm.name.trim()) return
+    setSaving(true); setError('')
+    const data = {name:fornForm.name.trim(),company:fornForm.company||null,category:fornForm.category||null,product:fornForm.product||null,phone:fornForm.phone||null,whatsapp:fornForm.whatsapp||null,email:fornForm.email||null,instagram:fornForm.instagram||null,notes:fornForm.notes||null,user_id:USER_ID}
+    const { error } = editing
+      ? await supabase.from('fornecedores').update(data).eq('id', editing.id)
+      : await supabase.from('fornecedores').insert({...data, id:crypto.randomUUID()})
+    if (error) { setError(error.message); setSaving(false); return }
+    setShowForm(''); setSaving(false); load()
+  }
+  async function removeForn(id: string) {
+    if (!confirm('Excluir fornecedor?')) return
+    await supabase.from('fornecedores').delete().eq('id', id); load()
   }
 
   function openNewLead() { setEditing(null); setLeadForm(EMPTY_LEAD); setError(''); setShowForm('lead') }
@@ -144,6 +171,7 @@ export default function CRMPage() {
         <div style={{background:'#0d0d1a',borderBottom:'1px solid rgba(255,255,255,0.06)',padding:'0 28px',display:'flex',gap:'4px',alignItems:'center',flexShrink:0}}>
           <button onClick={()=>setTab('leads')} style={{padding:'14px 16px',background:'transparent',border:'none',borderBottom:`2px solid ${tab==='leads'?'#7c6ff7':'transparent'}`,color:tab==='leads'?'#a89ff7':'rgba(255,255,255,0.35)',fontSize:'13px',cursor:'pointer',fontWeight:tab==='leads'?600:400}}>Leads {leads.length>0&&<span style={{background:'rgba(91,80,214,0.2)',color:'#a89ff7',borderRadius:'10px',padding:'1px 7px',fontSize:'11px',marginLeft:'4px'}}>{leads.length}</span>}</button>
           <button onClick={()=>setTab('clients')} style={{padding:'14px 16px',background:'transparent',border:'none',borderBottom:`2px solid ${tab==='clients'?'#7c6ff7':'transparent'}`,color:tab==='clients'?'#a89ff7':'rgba(255,255,255,0.35)',fontSize:'13px',cursor:'pointer',fontWeight:tab==='clients'?600:400}}>Clientes {clients.length>0&&<span style={{background:'rgba(76,175,125,0.15)',color:'#4caf7d',borderRadius:'10px',padding:'1px 7px',fontSize:'11px',marginLeft:'4px'}}>{clients.length}</span>}</button>
+          <button onClick={()=>setTab('fornecedores')} style={{padding:'14px 16px',background:'transparent',border:'none',borderBottom:`2px solid ${tab==='fornecedores'?'#e08c42':'transparent'}`,color:tab==='fornecedores'?'#e08c42':'rgba(255,255,255,0.35)',fontSize:'13px',cursor:'pointer',fontWeight:tab==='fornecedores'?600:400}}>Fornecedores {fornecedores.length>0&&<span style={{background:'rgba(224,140,66,0.15)',color:'#e08c42',borderRadius:'10px',padding:'1px 7px',fontSize:'11px',marginLeft:'4px'}}>{fornecedores.length}</span>}</button>
         </div>
 
         <div style={{flex:1,padding:'28px 32px',overflowY:'auto'}}>
@@ -245,9 +273,77 @@ export default function CRMPage() {
                 )}
               </div>
             )}
+            {tab==='fornecedores' && (
+              <div>
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}}>
+                  <div>
+                    <h1 style={{color:'#fff',fontSize:'20px',fontWeight:700}}>Fornecedores</h1>
+                    <p style={{color:'rgba(255,255,255,0.3)',fontSize:'12px',marginTop:'2px'}}>{fornecedores.length} fornecedor{fornecedores.length!==1?'es':''} cadastrado{fornecedores.length!==1?'s':''}</p>
+                  </div>
+                  <button onClick={openNewForn} style={{padding:'7px 14px',background:'#e08c42',border:'none',borderRadius:'10px',color:'#fff',fontSize:'13px',fontWeight:600,cursor:'pointer'}}>+ Novo Fornecedor</button>
+                </div>
+                <input placeholder="Buscar fornecedor..." value={search} onChange={e=>setSearch(e.target.value)} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.08)',borderRadius:'10px',padding:'8px 12px',color:'#fff',fontSize:'13px',outline:'none',marginBottom:'16px',boxSizing:'border-box'}} />
+                {loading ? <p style={{color:'rgba(255,255,255,0.3)',textAlign:'center',padding:'40px'}}>Carregando...</p> : (
+                  <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
+                    {fornecedores.filter(f=>f.name.toLowerCase().includes(search.toLowerCase())||(f.company||'').toLowerCase().includes(search.toLowerCase())||(f.product||'').toLowerCase().includes(search.toLowerCase())).length===0 && <p style={{color:'rgba(255,255,255,0.2)',textAlign:'center',padding:'40px'}}>Nenhum fornecedor encontrado</p>}
+                    {fornecedores.filter(f=>f.name.toLowerCase().includes(search.toLowerCase())||(f.company||'').toLowerCase().includes(search.toLowerCase())||(f.product||'').toLowerCase().includes(search.toLowerCase())).map(f=>(
+                      <div key={f.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'13px 15px',borderRadius:'12px',background:'rgba(255,255,255,0.04)',border:'1px solid rgba(224,140,66,0.15)',cursor:'pointer'}} onClick={()=>openEditForn(f)}>
+                        <div style={{width:'38px',height:'38px',borderRadius:'50%',background:'rgba(224,140,66,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'#e08c42',fontWeight:700,fontSize:'14px',flexShrink:0}}>{f.name.charAt(0).toUpperCase()}</div>
+                        <div style={{flex:1,minWidth:0}}>
+                          <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
+                            <p style={{color:'#fff',fontSize:'13px',fontWeight:500}}>{f.name}</p>
+                            {f.company&&<span style={{fontSize:'11px',color:'rgba(255,255,255,0.4)'}}>{f.company}</span>}
+                            {f.category&&<span style={{fontSize:'10px',padding:'1px 7px',borderRadius:'5px',background:'rgba(224,140,66,0.15)',color:'#e08c42'}}>{f.category}</span>}
+                          </div>
+                          <div style={{display:'flex',gap:'8px',marginTop:'2px',flexWrap:'wrap'}}>
+                            {f.product&&<span style={{color:'rgba(255,255,255,0.3)',fontSize:'11px'}}>📦 {f.product}</span>}
+                            {f.phone&&<span style={{color:'rgba(255,255,255,0.3)',fontSize:'11px'}}>📞 {f.phone}</span>}
+                          </div>
+                        </div>
+                        <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
+                          {f.whatsapp&&<a href={`https://wa.me/55${f.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'7px',color:'#25d366',fontSize:'11px',textDecoration:'none',fontWeight:600}}>WA</a>}
+                          <button onClick={e=>{e.stopPropagation();removeForn(f.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'11px',cursor:'pointer'}}>✕</button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
+
+      {showForm==='forn' && (
+        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',backdropFilter:'blur(4px)',zIndex:50,overflowY:'auto',display:'flex',justifyContent:'center',padding:'20px'}}>
+          <div style={{width:'100%',maxWidth:'480px',background:'#13131f',borderRadius:'16px',padding:'24px',border:'1px solid rgba(255,255,255,0.1)',height:'fit-content'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
+              <h2 style={{color:'#fff',fontSize:'16px',fontWeight:600}}>{editing?'Editar Fornecedor':'Novo Fornecedor'}</h2>
+              <button onClick={()=>setShowForm('')} style={{background:'none',border:'none',color:'rgba(255,255,255,0.3)',cursor:'pointer',fontSize:'18px'}}>✕</button>
+            </div>
+            <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
+              <input placeholder="Nome do contato *" value={fornForm.name} onChange={e=>setFornForm(f=>({...f,name:e.target.value}))} style={inp} />
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
+                <div><label style={{fontSize:'11px',color:'rgba(255,255,255,0.3)',display:'block',marginBottom:'4px'}}>Empresa</label><input placeholder="Nome da empresa" value={fornForm.company} onChange={e=>setFornForm(f=>({...f,company:e.target.value}))} style={inp} /></div>
+                <div><label style={{fontSize:'11px',color:'rgba(255,255,255,0.3)',display:'block',marginBottom:'4px'}}>Categoria</label><select value={fornForm.category} onChange={e=>setFornForm(f=>({...f,category:e.target.value}))} style={sel}><option value="">Selecione</option>{FORN_CATS.map(c=><option key={c}>{c}</option>)}</select></div>
+              </div>
+              <input placeholder="Produto / Serviço oferecido" value={fornForm.product} onChange={e=>setFornForm(f=>({...f,product:e.target.value}))} style={inp} />
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
+                <div><label style={{fontSize:'11px',color:'rgba(255,255,255,0.3)',display:'block',marginBottom:'4px'}}>Telefone</label><input placeholder="(00) 00000-0000" value={fornForm.phone} onChange={e=>setFornForm(f=>({...f,phone:e.target.value}))} style={inp} /></div>
+                <div><label style={{fontSize:'11px',color:'rgba(255,255,255,0.3)',display:'block',marginBottom:'4px'}}>WhatsApp</label><input placeholder="(00) 00000-0000" value={fornForm.whatsapp} onChange={e=>setFornForm(f=>({...f,whatsapp:e.target.value}))} style={inp} /></div>
+              </div>
+              <input placeholder="E-mail" value={fornForm.email} onChange={e=>setFornForm(f=>({...f,email:e.target.value}))} style={inp} />
+              <input placeholder="Instagram (@)" value={fornForm.instagram} onChange={e=>setFornForm(f=>({...f,instagram:e.target.value}))} style={inp} />
+              <textarea placeholder="Observações, condições, preços..." value={fornForm.notes} onChange={e=>setFornForm(f=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'70px'}} />
+            </div>
+            {error&&<p style={{color:'#e05252',fontSize:'12px',background:'rgba(224,82,82,0.1)',borderRadius:'8px',padding:'8px 12px',marginTop:'10px'}}>{error}</p>}
+            <div style={{display:'flex',gap:'8px',marginTop:'16px'}}>
+              <button onClick={saveForn} disabled={!fornForm.name.trim()||saving} style={{flex:1,padding:'11px',background:'#e08c42',border:'none',borderRadius:'10px',color:'#fff',fontSize:'13px',fontWeight:600,cursor:'pointer',opacity:!fornForm.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
+              <button onClick={()=>setShowForm('')} style={{padding:'11px 16px',background:'transparent',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',color:'rgba(255,255,255,0.4)',fontSize:'13px',cursor:'pointer'}}>Cancelar</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {showForm==='lead' && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',backdropFilter:'blur(4px)',zIndex:50,overflowY:'auto',display:'flex',justifyContent:'center',padding:'20px'}}>
