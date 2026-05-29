@@ -145,7 +145,7 @@ export default function Sidebar() {
             color: '#fff', fontWeight: 700, fontSize: '14px', flexShrink: 0,
           }}>{initials}</div>
           <div style={{ minWidth: 0 }}>
-            <p style={{ color: '#fff', fontSize: '12px', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{displayName}</p>
+            
             <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: '10px' }}>Premium</p>
           </div>
         </div>
