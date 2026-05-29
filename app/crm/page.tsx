@@ -213,7 +213,7 @@ export default function CRMPage() {
                             <p style={{color:'#fff',fontSize:'13px',fontWeight:500}}>{l.name}</p>
                             {l.product&&<span style={{fontSize:"11px",padding:"2px 10px",borderRadius:"6px",background:"rgba(139,92,246,0.2)",color:"#a78bfa",fontWeight:600,border:"1px solid rgba(139,92,246,0.3)"}}>{l.product}</span>}
                             {l.source&&<span style={{fontSize:'10px',padding:'1px 7px',borderRadius:'5px',background:`${sourceColor[l.source]}22`,color:sourceColor[l.source]}}>{l.source}</span>}
-                            {l.product&&<span style={{fontSize:'10px',padding:'1px 7px',borderRadius:'5px',background:'rgba(139,92,246,0.2)',color:'#a78bfa',border:'1px solid rgba(139,92,246,0.3)',fontWeight:600}}>{l.product}</span>}
+                            
                           </div>
                           <div style={{display:'flex',gap:'8px',marginTop:'2px',flexWrap:'wrap'}}>
                             {l.phone&&<span style={{color:'rgba(255,255,255,0.3)',fontSize:'11px'}}>{l.phone}</span>}
@@ -474,6 +474,7 @@ export default function CRMPage() {
     </div>
   )
 }
+
 
 
 
