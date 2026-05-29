@@ -13,7 +13,8 @@ import {
   Heart,
   BookOpen,
   LogOut,
-  Shield,
+  Shield,Tv,
+  ShoppingCart,
 } from 'lucide-react'
 
 const NAV_MAIN = [
@@ -26,9 +27,12 @@ const NAV_MAIN = [
 ]
 
 const NAV_PERSONAL = [
-  { href: '/projetos',   label: 'Projetos',    Icon: FolderOpen  },
-  { href: '/saude',      label: 'Saúde',       Icon: Heart       },
-  { href: '/educacao',   label: 'Educação',    Icon: BookOpen    },
+  { href: '/projetos',   label: 'Projetos',    Icon: FolderOpen   },
+  { href: '/saude',      label: 'Saúde',       Icon: Heart        },
+  { href: '/educacao',   label: 'Educação',    Icon: BookOpen     },
+  { href: '/livros',     label: 'Livros',      Icon: BookOpen     },
+  { href: '/filmes',     label: 'Filmes',      Icon: Tv           },
+  { href: '/desejos',    label: 'Desejos',     Icon: ShoppingCart },
 ]
 
 export default function Sidebar() {
