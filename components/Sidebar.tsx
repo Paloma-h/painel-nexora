@@ -92,7 +92,7 @@ export default function Sidebar() {
       position: 'sticky',
       top: 0,
       height: '100vh',
-      overflowY: 'auto',
+      overflowY: 'hidden',
     }}>
 
       {/* ── Logo ────────────────────────────── */}
@@ -117,7 +117,7 @@ export default function Sidebar() {
       </div>
 
       {/* ── Nav principal ───────────────────── */}
-      <nav style={{ flex: 1 }}>
+      <nav style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden' }}>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           {NAV_MAIN.map(item => <NavItem key={item.href} {...item} />)}
         </div>
