@@ -25,7 +25,7 @@ export default function DashboardPage() {
       supabase.from('tasks').select('*').eq('user_id', USER_ID).neq('type','pendencia').order('date',{ascending:true}),
       supabase.from('leads').select('*').eq('user_id', USER_ID).not('next_followup','is',null).order('next_followup',{ascending:true}),
       supabase.from('clients').select('*').eq('user_id', USER_ID),
-      supabase.from('bills').select('*').eq('user_id', USER_ID).eq('status','pending'),
+      supabase.from('bills').select('*').eq('user_id', USER_ID).eq('status','pendente'),
     ])
     setTasks(t.data || [])
     setLeads(l.data || [])
@@ -270,3 +270,4 @@ export default function DashboardPage() {
     </div>
   )
 }
+
