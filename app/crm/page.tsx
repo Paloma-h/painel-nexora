@@ -8,7 +8,7 @@ const STATUSES = ['Prospecção', 'Contato', 'Negociando', 'Ganho', 'Perdido']
 const SOURCES = ['Indicação', 'Facebook', 'TikTok', 'Instagram', 'Outra pessoa', 'Outro']
 const RELATIONS = ['Cônjuge', 'Filho(a)', 'Mãe', 'Pai', 'Irmão/Irmã', 'Amigo(a)', 'Outro']
 const EMPTY_LEAD = { commission:'', name:'', email:'', phone:'', whatsapp:'', phone2:'', phone2_name:'', phone2_relation:'', company:'', address:'', status:'Prospecção', value:'', notes:'', next_followup:'', followup_notes:'', source:'Indicação', children_count:'0', children_ages:'', difficulties:'', purchase_date:'', pots_bought:'0', product:'' }
-const EMPTY_CLIENT = { name:'', email:'', phone:'', whatsapp:'', phone2:'', phone2_name:'', phone2_relation:'', address:'', children_count:'0', children_ages:'', difficulties:'', source:'Indicação', product:'', purchase_date:'', pots_bought:'0', notes:'', status:'Ativo', social1_type:'Instagram', social1_user:'', social2_type:'TikTok', social2_user:'' }
+const EMPTY_CLIENT = { name:'', email:'', phone:'', whatsapp:'', phone2:'', phone2_name:'', phone2_relation:'', address:'', children_count:'0', children_ages:'', difficulties:'', source:'Indicação', product:'', purchase_date:'', pots_bought:'0', notes:'', status:'Ativo', social1_type:'Instagram', social1_user:'', social2_type:'TikTok', social2_user:'', value:'' }
 const EMPTY_FORNECEDOR = { name:'', company:'', category:'', product:'', phone:'', whatsapp:'', email:'', instagram:'', notes:'' }
 const FORN_CATS = ['Suplementos','Embalagens','Gráfica','Marketing','Tecnologia','Logística','Alimentos','Serviços','Outro']
 
@@ -120,16 +120,22 @@ export default function CRMPage() {
   function openNewClient() { setEditing(null); setClientForm(EMPTY_CLIENT); setError(''); setShowForm('client') }
   function openEditClient(c: any) {
     setEditing(c)
-    setClientForm({name:c.name||'',email:c.email||'',phone:c.phone||'',whatsapp:c.whatsapp||'',phone2:c.phone2||'',phone2_name:c.phone2_name||'',phone2_relation:c.phone2_relation||'',address:c.address||'',children_count:c.children_count?.toString()||'0',children_ages:c.children_ages||'',difficulties:c.difficulties||'',source:c.source||'Indicação',product:c.product||'',purchase_date:c.purchase_date||'',pots_bought:c.pots_bought?.toString()||'0',notes:c.notes||'',status:c.status||'Ativo',social1_type:c.social1_type||'Instagram',social1_user:c.social1_user||'',social2_type:c.social2_type||'TikTok',social2_user:c.social2_user||''})
+    setClientForm({name:c.name||'',email:c.email||'',phone:c.phone||'',whatsapp:c.whatsapp||'',phone2:c.phone2||'',phone2_name:c.phone2_name||'',phone2_relation:c.phone2_relation||'',address:c.address||'',children_count:c.children_count?.toString()||'0',children_ages:c.children_ages||'',difficulties:c.difficulties||'',source:c.source||'Indicação',product:c.product||'',purchase_date:c.purchase_date||'',pots_bought:c.pots_bought?.toString()||'0',notes:c.notes||'',status:c.status||'Ativo',social1_type:c.social1_type||'Instagram',social1_user:c.social1_user||'',social2_type:c.social2_type||'TikTok',social2_user:c.social2_user||'',value:c.value?.toString()||''})
     setError(''); setShowForm('client')
   }
 
   async function saveClient() {
     if (!clientForm.name.trim()) return
     setSaving(true); setError('')
-    const data: any = {name:clientForm.name.trim(),email:clientForm.email||null,phone:clientForm.phone||null,whatsapp:clientForm.whatsapp||null,phone2:clientForm.phone2||null,phone2_name:clientForm.phone2_name||null,phone2_relation:clientForm.phone2_relation||null,address:clientForm.address||null,children_count:parseInt(clientForm.children_count)||0,children_ages:clientForm.children_ages||null,difficulties:clientForm.difficulties||null,source:clientForm.source,product:clientForm.product||null,purchase_date:clientForm.purchase_date||null,pots_bought:parseInt(clientForm.pots_bought)||0,notes:clientForm.notes||null,status:clientForm.status,user_id:USER_ID}
+    const data: any = {name:clientForm.name.trim(),email:clientForm.email||null,phone:clientForm.phone||null,whatsapp:clientForm.whatsapp||null,phone2:clientForm.phone2||null,phone2_name:clientForm.phone2_name||null,phone2_relation:clientForm.phone2_relation||null,address:clientForm.address||null,children_count:parseInt(clientForm.children_count)||0,children_ages:clientForm.children_ages||null,difficulties:clientForm.difficulties||null,source:clientForm.source,product:clientForm.product||null,purchase_date:clientForm.purchase_date||null,pots_bought:parseInt(clientForm.pots_bought)||0,notes:clientForm.notes||null,status:clientForm.status,value:clientForm.value?parseFloat(clientForm.value):null,social1_type:clientForm.social1_type||null,social1_user:clientForm.social1_user||null,social2_type:clientForm.social2_type||null,social2_user:clientForm.social2_user||null,user_id:USER_ID}
     const { error } = editing ? await supabase.from('clients').update(data).eq('id', editing.id) : await supabase.from('clients').insert({...data,id:crypto.randomUUID()})
     if (error) { setError(error.message); setSaving(false); return }
+    if (!editing && clientForm.value && parseFloat(clientForm.value) > 0) {
+      const confirmFin = window.confirm('Registrar R$ ' + parseFloat(clientForm.value).toFixed(2) + ' de ' + clientForm.name.trim() + ' no Financeiro?')
+      if (confirmFin) {
+        await supabase.from('transactions').insert({id:crypto.randomUUID(),title:'Venda: '+clientForm.name.trim(),amount:parseFloat(clientForm.value),type:'receita',category:'trabalho',date:clientForm.purchase_date||new Date().toISOString().split('T')[0],notes:'Origem: CRM Clientes',user_id:USER_ID})
+      }
+    }
     setShowForm(''); setSaving(false); load()
   }
 
@@ -639,6 +645,7 @@ export default function CRMPage() {
                 <Fld label="Qtd. potes"><input type="number" min="0" value={clientForm.pots_bought} onChange={e=>setClientForm(f=>({...f,pots_bought:e.target.value}))} style={inp} /></Fld>
               </div>
               {clientForm.purchase_date&&parseInt(clientForm.pots_bought)>0&&<p style={{fontSize:'11px',color:'rgba(91,80,214,0.7)',background:'rgba(91,80,214,0.08)',borderRadius:'8px',padding:'8px 12px'}}>Potes terminam em: {new Date(new Date(clientForm.purchase_date).getTime()+parseInt(clientForm.pots_bought)*30*24*60*60*1000).toLocaleDateString('pt-BR')}</p>}
+              <Fld label="Valor (R$)"><input type="number" placeholder="0,00" value={clientForm.value} onChange={e=>setClientForm(f=>({...f,value:e.target.value}))} style={inp} /></Fld>
               <Fld label="Status"><select value={clientForm.status} onChange={e=>setClientForm(f=>({...f,status:e.target.value}))} style={sel}><option value="Ativo">Ativo</option><option value="Inativo">Inativo</option><option value="Recompra">Recompra</option></select></Fld>
             </div>
             <Sec title="Redes sociais" />
