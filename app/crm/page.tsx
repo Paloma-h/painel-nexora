@@ -120,7 +120,7 @@ export default function CRMPage() {
   function openNewClient() { setEditing(null); setClientForm(EMPTY_CLIENT); setError(''); setShowForm('client') }
   function openEditClient(c: any) {
     setEditing(c)
-    setClientForm({name:c.name||'',email:c.email||'',phone:c.phone||'',whatsapp:c.whatsapp||'',phone2:c.phone2||'',phone2_name:c.phone2_name||'',phone2_relation:c.phone2_relation||'',address:c.address||'',children_count:c.children_count?.toString()||'0',children_ages:c.children_ages||'',difficulties:c.difficulties||'',source:c.source||'Indicação',product:c.product||'',purchase_date:c.purchase_date||'',pots_bought:c.pots_bought?.toString()||'0',notes:c.notes||'',status:c.status||'Ativo'})
+    setClientForm({name:c.name||'',email:c.email||'',phone:c.phone||'',whatsapp:c.whatsapp||'',phone2:c.phone2||'',phone2_name:c.phone2_name||'',phone2_relation:c.phone2_relation||'',address:c.address||'',children_count:c.children_count?.toString()||'0',children_ages:c.children_ages||'',difficulties:c.difficulties||'',source:c.source||'Indicação',product:c.product||'',purchase_date:c.purchase_date||'',pots_bought:c.pots_bought?.toString()||'0',notes:c.notes||'',status:c.status||'Ativo',social1_type:c.social1_type||'Instagram',social1_user:c.social1_user||'',social2_type:c.social2_type||'TikTok',social2_user:c.social2_user||''})
     setError(''); setShowForm('client')
   }
 
