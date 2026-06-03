@@ -8,7 +8,7 @@ const STATUSES = ['Prospecção', 'Contato', 'Negociando', 'Ganho', 'Perdido']
 const SOURCES = ['Indicação', 'Facebook', 'TikTok', 'Instagram', 'Outra pessoa', 'Outro']
 const RELATIONS = ['Cônjuge', 'Filho(a)', 'Mãe', 'Pai', 'Irmão/Irmã', 'Amigo(a)', 'Outro']
 const EMPTY_LEAD = { commission:'', name:'', email:'', phone:'', whatsapp:'', phone2:'', phone2_name:'', phone2_relation:'', company:'', address:'', status:'Prospecção', value:'', notes:'', next_followup:'', followup_notes:'', source:'Indicação', children_count:'0', children_ages:'', difficulties:'', purchase_date:'', pots_bought:'0', product:'' }
-const EMPTY_CLIENT = { name:'', email:'', phone:'', whatsapp:'', phone2:'', phone2_name:'', phone2_relation:'', address:'', children_count:'0', children_ages:'', difficulties:'', source:'Indicação', product:'', purchase_date:'', pots_bought:'0', notes:'', status:'Ativo' }
+const EMPTY_CLIENT = { name:'', email:'', phone:'', whatsapp:'', phone2:'', phone2_name:'', phone2_relation:'', address:'', children_count:'0', children_ages:'', difficulties:'', source:'Indicação', product:'', purchase_date:'', pots_bought:'0', notes:'', status:'Ativo', social1_type:'Instagram', social1_user:'', social2_type:'TikTok', social2_user:'' }
 const EMPTY_FORNECEDOR = { name:'', company:'', category:'', product:'', phone:'', whatsapp:'', email:'', instagram:'', notes:'' }
 const FORN_CATS = ['Suplementos','Embalagens','Gráfica','Marketing','Tecnologia','Logística','Alimentos','Serviços','Outro']
 
@@ -640,6 +640,15 @@ export default function CRMPage() {
               </div>
               {clientForm.purchase_date&&parseInt(clientForm.pots_bought)>0&&<p style={{fontSize:'11px',color:'rgba(91,80,214,0.7)',background:'rgba(91,80,214,0.08)',borderRadius:'8px',padding:'8px 12px'}}>Potes terminam em: {new Date(new Date(clientForm.purchase_date).getTime()+parseInt(clientForm.pots_bought)*30*24*60*60*1000).toLocaleDateString('pt-BR')}</p>}
               <Fld label="Status"><select value={clientForm.status} onChange={e=>setClientForm(f=>({...f,status:e.target.value}))} style={sel}><option value="Ativo">Ativo</option><option value="Inativo">Inativo</option><option value="Recompra">Recompra</option></select></Fld>
+            </div>
+            <Sec title="Redes sociais" />
+            <div style={{display:'grid',gridTemplateColumns:'1fr 2fr',gap:'8px',marginBottom:'8px'}}>
+              <select value={clientForm.social1_type} onChange={e=>setClientForm(f=>({...f,social1_type:e.target.value}))} style={sel}><option>Instagram</option><option>TikTok</option><option>Facebook</option><option>YouTube</option><option>Outro</option></select>
+              <input placeholder="@usuario" value={clientForm.social1_user} onChange={e=>setClientForm(f=>({...f,social1_user:e.target.value}))} style={inp} />
+            </div>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 2fr',gap:'8px',marginBottom:'8px'}}>
+              <select value={clientForm.social2_type} onChange={e=>setClientForm(f=>({...f,social2_type:e.target.value}))} style={sel}><option>TikTok</option><option>Instagram</option><option>Facebook</option><option>YouTube</option><option>Outro</option></select>
+              <input placeholder="@usuario" value={clientForm.social2_user} onChange={e=>setClientForm(f=>({...f,social2_user:e.target.value}))} style={inp} />
             </div>
             <Sec title="Notas" />
             <textarea value={clientForm.notes} onChange={e=>setClientForm(f=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'64px'}} />
