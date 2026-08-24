@@ -138,7 +138,7 @@ export default function AgendaPage() {
     <div style={{display:'flex',minHeight:'100vh',background:'#0a0a0f',fontFamily:'system-ui,sans-serif'}}>
       <Sidebar />
 
-      <div style={{flex:1,padding:'24px',overflowY:'auto'}}>
+      <div style={{flex:1,padding:'24px',overflowY:'auto',minWidth:0,overflowX:'hidden'}}>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
           <div style={{color:'#fff',fontSize:'18px',fontWeight:600}}>{MONTHS[month]} {year}</div>
           <div style={{display:'flex',gap:'6px'}}>
@@ -149,7 +149,7 @@ export default function AgendaPage() {
         </div>
 
         <div style={{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:'2px',marginBottom:'4px'}}>
-          {DAYS.map(d => <div key={d} style={{textAlign:'center',fontSize:'10px',color:'rgba(255,255,255,0.2)',padding:'4px 0',textTransform:'uppercase'}}>{d}</div>)}
+          {DAYS.map(d => <div key={d} style={{textAlign:'center',fontSize:'10px',color:'rgba(255,255,255,0.4)',padding:'4px 0',textTransform:'uppercase'}}>{d}</div>)}
         </div>
 
         <div style={{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:'3px'}}>
@@ -160,7 +160,7 @@ export default function AgendaPage() {
             const dayTasks = getTasksForDay(day)
             return (
               <div key={day} onClick={() => { if(dayTasks.length > 0){ setViewingDay(day) } else { openDayForm(day) } }} style={{minHeight:'90px',borderRadius:'8px',padding:'6px',background:isToday?'rgba(91,80,214,0.12)':'rgba(255,255,255,0.02)',border:isToday?'1px solid rgba(91,80,214,0.35)':'1px solid rgba(255,255,255,0.05)',cursor:'pointer'}}>
-                <div style={{fontSize:'11px',color:isToday?'#a89ff7':'rgba(255,255,255,0.4)',fontWeight:isToday?700:400}}>{day}</div>
+                <div style={{fontSize:'11px',color:isToday?'#a89ff7':'rgba(255,255,255,0.55)',fontWeight:isToday?700:400}}>{day}</div>
                 <div style={{marginTop:'3px'}}>
                   {dayTasks.map((t:any) => (
                     <div key={t.id} onClick={e => {e.stopPropagation();openEditTask(t)}} style={{width:'100%',fontSize:'9px',color:t.status==='DONE'?'rgba(255,255,255,0.2)':'rgba(255,255,255,0.75)',background:`${priorityColor[t.priority]}18`,borderLeft:`2px solid ${t.status==='DONE'?'rgba(255,255,255,0.1)':priorityColor[t.priority]}`,borderRadius:'0 3px 3px 0',padding:'2px 4px',marginBottom:'2px',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis',textDecoration:t.status==='DONE'?'line-through':'none'}}>
