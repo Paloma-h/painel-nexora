@@ -18,14 +18,15 @@ body {
 }
 
 /* ── Scrollbar premium ────────────────────────────── */
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); border-radius: 99px; }
 ::-webkit-scrollbar-thumb {
-  background: rgba(124, 111, 247, 0.25);
+  background: rgba(124, 111, 247, 0.35);
   border-radius: 99px;
+  min-height: 40px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(124, 111, 247, 0.45);
+  background: rgba(124, 111, 247, 0.55);
 }
 
 /* ── Inputs & Selects base ────────────────────────── */
