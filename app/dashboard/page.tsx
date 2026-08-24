@@ -13,6 +13,8 @@ export default function DashboardPage() {
   const [clients, setClients] = useState<any[]>([])
   const [bills, setBills] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [rescheduleId, setRescheduleId] = useState<string|null>(null)
+  const [rescheduleDate, setRescheduleDate] = useState('')
 
   useEffect(() => { load() }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -81,6 +83,14 @@ export default function DashboardPage() {
 
   async function completeTask(id: string) {
     await supabase.from('tasks').update({status:'DONE'}).eq('id', id)
+    load()
+  }
+
+  async function rescheduleTask(id: string, newDate: string) {
+    if (!newDate) return
+    await supabase.from('tasks').update({date: newDate}).eq('id', id)
+    setRescheduleId(null)
+    setRescheduleDate('')
     load()
   }
 
@@ -199,6 +209,15 @@ export default function DashboardPage() {
                         {t.has_financial && t.amount > 0 && <p style={{color:'#d4b84a',fontSize:'10px',marginTop:'1px'}}>R$ {Number(t.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>}
                       </div>
                       {overdue && <span style={{color:'#e05252',fontSize:'9px',fontWeight:600,flexShrink:0}}>ATRASADO</span>}
+                      {rescheduleId === t.id ? (
+                        <div style={{display:'flex',alignItems:'center',gap:'4px',flexShrink:0}}>
+                          <input type="date" value={rescheduleDate} onChange={e => setRescheduleDate(e.target.value)} style={{background:'rgba(255,255,255,0.08)',border:'1px solid rgba(168,159,247,0.3)',borderRadius:'6px',color:'#fff',fontSize:'11px',padding:'3px 6px',outline:'none',colorScheme:'dark'}} />
+                          <button onClick={() => rescheduleTask(t.id, rescheduleDate)} style={{padding:'4px 7px',background:'rgba(168,159,247,0.15)',border:'none',borderRadius:'6px',color:'#a89ff7',fontSize:'10px',cursor:'pointer',fontWeight:600}}>OK</button>
+                          <button onClick={() => {setRescheduleId(null);setRescheduleDate('')}} style={{padding:'4px 6px',background:'none',border:'none',color:'rgba(255,255,255,0.3)',fontSize:'10px',cursor:'pointer'}}>✕</button>
+                        </div>
+                      ) : (
+                        <button onClick={() => {setRescheduleId(t.id);setRescheduleDate(t.date)}} title="Reagendar" style={{padding:'4px 8px',background:'rgba(168,159,247,0.1)',border:'none',borderRadius:'6px',color:'#a89ff7',fontSize:'11px',cursor:'pointer',flexShrink:0}}>📅</button>
+                      )}
                       <button onClick={() => completeTask(t.id)} style={{padding:'4px 8px',background:'rgba(76,175,125,0.12)',border:'none',borderRadius:'6px',color:'#4caf7d',fontSize:'11px',cursor:'pointer',flexShrink:0}}>✓</button>
                     </div>
                   )
