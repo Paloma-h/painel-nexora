@@ -22,7 +22,7 @@ export default function AgendaPage() {
   const [viewingDay, setViewingDay] = useState<number|null>(null)
   const [showTaskForm, setShowTaskForm] = useState(false)
   const [editingTask, setEditingTask] = useState<any>(null)
-  const [taskForm, setTaskForm] = useState({title:'',time:'',notes:'',priority:'MEDIUM',is_recurring:false,recurrence:'monthly',amount:'',financial_type:'despesa',financial_category:'outros',has_financial:false})
+  const [taskForm, setTaskForm] = useState({title:'',time:'',notes:'',location:'',priority:'MEDIUM',is_recurring:false,recurrence:'monthly',amount:'',financial_type:'despesa',financial_category:'outros',has_financial:false})
   const [saving, setSaving] = useState(false)
 
   useEffect(() => { load() }, [])
@@ -47,14 +47,14 @@ export default function AgendaPage() {
 
   function openDayForm(day: number) {
     setSelectedDay(day); setEditingTask(null)
-    setTaskForm({title:'',time:'',notes:'',priority:'MEDIUM',is_recurring:false,recurrence:'monthly',amount:'',financial_type:'despesa',financial_category:'outros',has_financial:false})
+    setTaskForm({title:'',time:'',notes:'',location:'',priority:'MEDIUM',is_recurring:false,recurrence:'monthly',amount:'',financial_type:'despesa',financial_category:'outros',has_financial:false})
     setShowTaskForm(true)
   }
 
   function openEditTask(task: any) {
     setEditingTask(task)
     setSelectedDay(parseInt(task.date?.split('-')[2]))
-    setTaskForm({title:task.title||'',time:task.time||'',notes:task.notes||'',priority:task.priority||'MEDIUM',is_recurring:task.is_recurring||false,recurrence:task.recurrence||'monthly',amount:task.amount?.toString()||'',financial_type:task.financial_type||'despesa',financial_category:task.financial_category||'outros',has_financial:!!task.amount})
+    setTaskForm({title:task.title||'',time:task.time||'',notes:task.notes||'',location:task.location||'',priority:task.priority||'MEDIUM',is_recurring:task.is_recurring||false,recurrence:task.recurrence||'monthly',amount:task.amount?.toString()||'',financial_type:task.financial_type||'despesa',financial_category:task.financial_category||'outros',has_financial:!!task.amount})
     setShowTaskForm(true)
   }
 
@@ -62,7 +62,7 @@ export default function AgendaPage() {
     if (!taskForm.title.trim() || !selectedDay) return
     setSaving(true)
     const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(selectedDay).padStart(2,'0')}`
-    const data: any = {title:taskForm.title.trim(),date:dateStr,time:taskForm.time||null,notes:taskForm.notes||null,priority:taskForm.priority,type:'task',is_recurring:taskForm.is_recurring,recurrence:taskForm.is_recurring?taskForm.recurrence:null,status:'PENDING',user_id:USER_ID}
+    const data: any = {title:taskForm.title.trim(),date:dateStr,time:taskForm.time||null,notes:taskForm.notes||null,location:taskForm.location||null,priority:taskForm.priority,type:'task',is_recurring:taskForm.is_recurring,recurrence:taskForm.is_recurring?taskForm.recurrence:null,status:'PENDING',user_id:USER_ID}
     if (taskForm.has_financial && taskForm.amount) {
       data.amount = parseFloat(taskForm.amount)
       data.financial_type = taskForm.financial_type
@@ -193,8 +193,9 @@ export default function AgendaPage() {
                     <div style={{width:'8px',height:'8px',borderRadius:'50%',background:priorityColor[t.priority],flexShrink:0}}/>
                     <div style={{flex:1,minWidth:0}}>
                       <p style={{color:t.status==='DONE'?'rgba(255,255,255,0.3)':'#fff',fontSize:'13px',fontWeight:500,textDecoration:t.status==='DONE'?'line-through':'none'}}>{t.title}{t.notes&&<span style={{color:'#d4b84a',marginLeft:'4px'}}>*</span>}</p>
-                      <div style={{display:'flex',alignItems:'center',gap:'8px',marginTop:'2px'}}>
+                      <div style={{display:'flex',alignItems:'center',gap:'8px',marginTop:'2px',flexWrap:'wrap'}}>
                         {t.time&&<span style={{color:'rgba(255,255,255,0.3)',fontSize:'11px'}}>🕐 {t.time}</span>}
+                        {t.location&&<a href={`https://www.google.com/maps/search/${encodeURIComponent(t.location)}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{color:'#4caf7d',fontSize:'11px',textDecoration:'none'}}>📍 {t.location}</a>}
                         {t.amount>0&&<span style={{color:'#d4b84a',fontSize:'11px'}}>R$ {Number(t.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
                       </div>
                     </div>
@@ -240,6 +241,13 @@ export default function AgendaPage() {
                 </div>
               </div>
               <textarea placeholder="Observações" value={taskForm.notes} onChange={e => setTaskForm(f=>({...f,notes:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'13px',outline:'none',resize:'none',height:'100px'}} />
+              <div>
+                <div style={{fontSize:'11px',color:'rgba(255,255,255,0.3)',marginBottom:'4px'}}>📍 Endereço / Local</div>
+                <div style={{display:'flex',gap:'6px'}}>
+                  <input placeholder="Ex: Rua das Flores, 123 - Fortaleza" value={taskForm.location} onChange={e => setTaskForm(f=>({...f,location:e.target.value}))} style={{flex:1,background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'13px',outline:'none'}} />
+                  {taskForm.location && <a href={`https://www.google.com/maps/search/${encodeURIComponent(taskForm.location)}`} target="_blank" rel="noopener noreferrer" style={{padding:'10px 12px',background:'rgba(76,175,125,0.12)',border:'1px solid rgba(76,175,125,0.25)',borderRadius:'10px',color:'#4caf7d',fontSize:'12px',textDecoration:'none',fontWeight:600,flexShrink:0,display:'flex',alignItems:'center'}}>🗺️ Maps</a>}
+                </div>
+              </div>
               <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
                 <input type="checkbox" id="rec" checked={taskForm.is_recurring} onChange={e => setTaskForm(f=>({...f,is_recurring:e.target.checked}))} style={{cursor:'pointer'}} />
                 <label htmlFor="rec" style={{fontSize:'12px',color:'rgba(255,255,255,0.5)',cursor:'pointer'}}>Recorrente</label>
