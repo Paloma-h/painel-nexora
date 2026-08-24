@@ -149,18 +149,18 @@ export default function AgendaPage() {
           </div>
         </div>
 
-        <div style={{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:'2px',marginBottom:'4px'}}>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(7,minmax(0,1fr))',gap:'2px',marginBottom:'4px'}}>
           {DAYS.map(d => <div key={d} style={{textAlign:'center',fontSize:'10px',color:'rgba(255,255,255,0.4)',padding:'4px 0',textTransform:'uppercase'}}>{d}</div>)}
         </div>
 
-        <div style={{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:'3px'}}>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(7,minmax(0,1fr))',gap:'3px'}}>
           {Array(firstDay).fill(null).map((_,i) => <div key={'e'+i}/>)}
           {Array(daysInMonth).fill(null).map((_,i) => {
             const day = i+1
             const isToday = day===today.getDate()&&month===today.getMonth()&&year===today.getFullYear()
             const dayTasks = getTasksForDay(day)
             return (
-              <div key={day} onClick={() => { if(dayTasks.length > 0){ setViewingDay(day) } else { openDayForm(day) } }} style={{minHeight:'90px',borderRadius:'8px',padding:'6px',background:isToday?'rgba(91,80,214,0.12)':'rgba(255,255,255,0.02)',border:isToday?'1px solid rgba(91,80,214,0.35)':'1px solid rgba(255,255,255,0.05)',cursor:'pointer'}}>
+              <div key={day} onClick={() => { if(dayTasks.length > 0){ setViewingDay(day) } else { openDayForm(day) } }} style={{minHeight:'90px',borderRadius:'8px',padding:'6px',background:isToday?'rgba(91,80,214,0.12)':'rgba(255,255,255,0.02)',border:isToday?'1px solid rgba(91,80,214,0.35)':'1px solid rgba(255,255,255,0.05)',cursor:'pointer',overflow:'hidden'}}>
                 <div style={{fontSize:'11px',color:isToday?'#a89ff7':'rgba(255,255,255,0.55)',fontWeight:isToday?700:400}}>{day}</div>
                 <div style={{marginTop:'3px'}}>
                   {dayTasks.map((t:any) => (
