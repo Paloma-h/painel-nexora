@@ -34,7 +34,7 @@ input, textarea, select, button {
   font-family: inherit;
 }
 input::placeholder, textarea::placeholder {
-  color: rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.35);
 }
 
 /* ── Sidebar nav items ────────────────────────────── */

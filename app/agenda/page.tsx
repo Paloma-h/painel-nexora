@@ -141,32 +141,37 @@ export default function AgendaPage() {
 
       <div style={{flex:1,padding:'24px',overflowY:'auto',minWidth:0}}>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
-          <div style={{color:'#fff',fontSize:'18px',fontWeight:600}}>{MONTHS[month]} {year}</div>
+          <div style={{color:'#fff',fontSize:'20px',fontWeight:700,letterSpacing:'-0.3px'}}>{MONTHS[month]} {year}</div>
           <div style={{display:'flex',gap:'6px'}}>
-            <button onClick={() => setCurrentDate(new Date(year,month-1,1))} style={{width:'28px',height:'28px',borderRadius:'8px',background:'rgba(255,255,255,0.05)',border:'none',color:'rgba(255,255,255,0.5)',cursor:'pointer',fontSize:'14px'}}>‹</button>
-            <button onClick={() => setCurrentDate(new Date())} style={{padding:'0 12px',height:'28px',borderRadius:'8px',background:'rgba(91,80,214,0.15)',border:'none',color:'#a89ff7',cursor:'pointer',fontSize:'11px'}}>Hoje</button>
-            <button onClick={() => setCurrentDate(new Date(year,month+1,1))} style={{width:'28px',height:'28px',borderRadius:'8px',background:'rgba(255,255,255,0.05)',border:'none',color:'rgba(255,255,255,0.5)',cursor:'pointer',fontSize:'14px'}}>›</button>
+            <button onClick={() => setCurrentDate(new Date(year,month-1,1))} style={{width:'32px',height:'32px',borderRadius:'8px',background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.12)',color:'rgba(255,255,255,0.7)',cursor:'pointer',fontSize:'16px',fontWeight:700}}>‹</button>
+            <button onClick={() => setCurrentDate(new Date())} style={{padding:'0 16px',height:'32px',borderRadius:'8px',background:'rgba(124,58,237,0.2)',border:'1px solid rgba(124,58,237,0.4)',color:'#c4b5fd',cursor:'pointer',fontSize:'12px',fontWeight:600}}>Hoje</button>
+            <button onClick={() => setCurrentDate(new Date(year,month+1,1))} style={{width:'32px',height:'32px',borderRadius:'8px',background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.12)',color:'rgba(255,255,255,0.7)',cursor:'pointer',fontSize:'16px',fontWeight:700}}>›</button>
           </div>
         </div>
 
-        <div style={{display:'grid',gridTemplateColumns:'repeat(7,minmax(0,1fr))',gap:'2px',marginBottom:'4px'}}>
-          {DAYS.map(d => <div key={d} style={{textAlign:'center',fontSize:'10px',color:'rgba(255,255,255,0.4)',padding:'4px 0',textTransform:'uppercase'}}>{d}</div>)}
+        <div style={{display:'grid',gridTemplateColumns:'repeat(7,minmax(0,1fr))',gap:'2px',marginBottom:'6px'}}>
+          {DAYS.map(d => <div key={d} style={{textAlign:'center',fontSize:'11px',color:'rgba(255,255,255,0.6)',padding:'6px 0',textTransform:'uppercase',fontWeight:700,letterSpacing:'1px'}}>{d}</div>)}
         </div>
 
         <div style={{display:'grid',gridTemplateColumns:'repeat(7,minmax(0,1fr))',gap:'3px'}}>
-          {Array(firstDay).fill(null).map((_,i) => <div key={'e'+i}/>)}
+          {Array(firstDay).fill(null).map((_,i) => <div key={'e'+i} style={{background:'rgba(255,255,255,0.01)',borderRadius:'8px',minHeight:'90px'}}/>)}
           {Array(daysInMonth).fill(null).map((_,i) => {
             const day = i+1
             const isToday = day===today.getDate()&&month===today.getMonth()&&year===today.getFullYear()
             const dayTasks = getTasksForDay(day)
+            const hasTasks = dayTasks.length > 0
+            const isPast = new Date(year,month,day) < new Date(today.getFullYear(),today.getMonth(),today.getDate())
             return (
-              <div key={day} onClick={() => { if(dayTasks.length > 0){ setViewingDay(day) } else { openDayForm(day) } }} style={{minHeight:'90px',borderRadius:'8px',padding:'6px',background:isToday?'rgba(91,80,214,0.12)':'rgba(255,255,255,0.02)',border:isToday?'1px solid rgba(91,80,214,0.35)':'1px solid rgba(255,255,255,0.05)',cursor:'pointer',overflow:'hidden'}}>
-                <div style={{fontSize:'11px',color:isToday?'#a89ff7':'rgba(255,255,255,0.55)',fontWeight:isToday?700:400}}>{day}</div>
+              <div key={day} onClick={() => { if(hasTasks){ setViewingDay(day) } else { openDayForm(day) } }} style={{minHeight:'90px',borderRadius:'8px',padding:'6px',background:isToday?'rgba(124,58,237,0.15)':hasTasks?'rgba(255,255,255,0.04)':'rgba(255,255,255,0.02)',border:isToday?'2px solid rgba(124,58,237,0.5)':'1px solid rgba(255,255,255,0.08)',cursor:'pointer',overflow:'hidden',transition:'border-color 0.15s'}}>
+                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+                  <span style={{fontSize:'12px',color:isToday?'#c4b5fd':isPast?'rgba(255,255,255,0.4)':'rgba(255,255,255,0.75)',fontWeight:isToday?800:600}}>{day}</span>
+                  {hasTasks && <span style={{fontSize:'8px',color:'rgba(255,255,255,0.3)',fontWeight:600}}>{dayTasks.length}</span>}
+                </div>
                 <div style={{marginTop:'3px'}}>
                   {dayTasks.map((t:any) => (
-                    <div key={t.id} onClick={e => {e.stopPropagation();openEditTask(t)}} style={{display:'flex',alignItems:'center',gap:'2px',width:'100%',fontSize:'9px',color:t.status==='DONE'?'rgba(255,255,255,0.2)':'rgba(255,255,255,0.75)',background:`${priorityColor[t.priority]}18`,borderLeft:`2px solid ${t.status==='DONE'?'rgba(255,255,255,0.1)':priorityColor[t.priority]}`,borderRadius:'0 3px 3px 0',padding:'2px 4px',marginBottom:'2px',textDecoration:t.status==='DONE'?'line-through':'none'}}>
-                      {t.notes&&<span style={{color:'#d4b84a',fontWeight:900,fontSize:'12px',lineHeight:1,flexShrink:0}} title="Tem observação">*</span>}
-                      <span style={{whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis',minWidth:0}}>{t.time&&<span style={{color:'rgba(255,255,255,0.3)',marginRight:'3px'}}>{t.time}</span>}{t.title}</span>
+                    <div key={t.id} onClick={e => {e.stopPropagation();openEditTask(t)}} style={{display:'flex',alignItems:'center',gap:'2px',width:'100%',fontSize:'9px',color:t.status==='DONE'?'rgba(255,255,255,0.25)':'#fff',background:t.status==='DONE'?'rgba(255,255,255,0.04)':`${priorityColor[t.priority]}25`,borderLeft:`3px solid ${t.status==='DONE'?'rgba(76,175,125,0.4)':priorityColor[t.priority]}`,borderRadius:'0 4px 4px 0',padding:'3px 5px',marginBottom:'2px',textDecoration:t.status==='DONE'?'line-through':'none',fontWeight:t.status==='DONE'?400:500}}>
+                      {t.notes&&<span style={{color:'#fbbf24',fontWeight:900,fontSize:'13px',lineHeight:1,flexShrink:0}} title="Tem observação">*</span>}
+                      <span style={{whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis',minWidth:0}}>{t.time&&<span style={{color:'rgba(255,255,255,0.5)',marginRight:'3px'}}>{t.time}</span>}{t.title}</span>
                     </div>
                   ))}
                 </div>
@@ -178,35 +183,35 @@ export default function AgendaPage() {
 
       {viewingDay && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.75)',backdropFilter:'blur(4px)',zIndex:50,display:'flex',alignItems:'center',justifyContent:'center',padding:'16px'}}>
-          <div style={{width:'100%',maxWidth:'480px',background:'#13131f',borderRadius:'16px',padding:'24px',border:'1px solid rgba(255,255,255,0.1)',maxHeight:'80vh',display:'flex',flexDirection:'column'}}>
+          <div style={{width:'100%',maxWidth:'520px',background:'#16162a',borderRadius:'16px',padding:'24px',border:'1px solid rgba(124,58,237,0.2)',maxHeight:'80vh',display:'flex',flexDirection:'column',boxShadow:'0 20px 60px rgba(0,0,0,0.5)'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}}>
-              <h2 style={{color:'#fff',fontSize:'16px',fontWeight:600}}>Dia {viewingDay} de {MONTHS[month]}</h2>
+              <h2 style={{color:'#fff',fontSize:'18px',fontWeight:700}}>Dia {viewingDay} de {MONTHS[month]}</h2>
               <div style={{display:'flex',gap:'8px'}}>
-                <button onClick={() => { setViewingDay(null); openDayForm(viewingDay) }} style={{padding:'6px 12px',background:'#5b50d6',border:'none',borderRadius:'8px',color:'#fff',fontSize:'12px',cursor:'pointer',fontWeight:600}}>+ Nova tarefa</button>
-                <button onClick={() => setViewingDay(null)} style={{background:'none',border:'none',color:'rgba(255,255,255,0.3)',cursor:'pointer',fontSize:'18px'}}>✕</button>
+                <button onClick={() => { setViewingDay(null); openDayForm(viewingDay) }} style={{padding:'8px 14px',background:'#7c3aed',border:'none',borderRadius:'8px',color:'#fff',fontSize:'12px',cursor:'pointer',fontWeight:600}}>+ Nova tarefa</button>
+                <button onClick={() => setViewingDay(null)} style={{background:'none',border:'none',color:'rgba(255,255,255,0.5)',cursor:'pointer',fontSize:'20px',fontWeight:700}}>✕</button>
               </div>
             </div>
             <div style={{overflowY:'auto',display:'flex',flexDirection:'column',gap:'6px'}}>
               {getTasksForDay(viewingDay).map((t:any) => (
-                <div key={t.id} style={{borderRadius:'10px',background:'rgba(255,255,255,0.04)',border:`1px solid ${priorityColor[t.priority]}22`,overflow:'hidden'}}>
-                  <div onClick={() => { setViewingDay(null); openEditTask(t) }} style={{display:'flex',alignItems:'center',gap:'10px',padding:'10px 12px',cursor:'pointer'}}>
-                    <div style={{width:'8px',height:'8px',borderRadius:'50%',background:priorityColor[t.priority],flexShrink:0}}/>
+                <div key={t.id} style={{borderRadius:'10px',background:'rgba(255,255,255,0.05)',border:`1px solid ${priorityColor[t.priority]}33`,overflow:'hidden'}}>
+                  <div onClick={() => { setViewingDay(null); openEditTask(t) }} style={{display:'flex',alignItems:'center',gap:'10px',padding:'12px 14px',cursor:'pointer'}}>
+                    <div style={{width:'10px',height:'10px',borderRadius:'50%',background:priorityColor[t.priority],flexShrink:0,boxShadow:`0 0 6px ${priorityColor[t.priority]}66`}}/>
                     <div style={{flex:1,minWidth:0}}>
-                      <p style={{color:t.status==='DONE'?'rgba(255,255,255,0.3)':'#fff',fontSize:'13px',fontWeight:500,textDecoration:t.status==='DONE'?'line-through':'none'}}>{t.title}{t.notes&&<span style={{color:'#d4b84a',marginLeft:'4px'}}>*</span>}</p>
-                      <div style={{display:'flex',alignItems:'center',gap:'8px',marginTop:'2px',flexWrap:'wrap'}}>
-                        {t.time&&<span style={{color:'rgba(255,255,255,0.3)',fontSize:'11px'}}>🕐 {t.time}</span>}
-                        {t.location&&<a href={`https://www.google.com/maps/search/${encodeURIComponent(t.location)}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{color:'#4caf7d',fontSize:'11px',textDecoration:'none'}}>📍 {t.location}</a>}
-                        {t.amount>0&&<span style={{color:'#d4b84a',fontSize:'11px'}}>R$ {Number(t.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
+                      <p style={{color:t.status==='DONE'?'rgba(255,255,255,0.35)':'#fff',fontSize:'14px',fontWeight:600,textDecoration:t.status==='DONE'?'line-through':'none'}}>{t.title}{t.notes&&<span style={{color:'#fbbf24',marginLeft:'5px',fontSize:'16px'}}>*</span>}</p>
+                      <div style={{display:'flex',alignItems:'center',gap:'10px',marginTop:'4px',flexWrap:'wrap'}}>
+                        {t.time&&<span style={{color:'rgba(255,255,255,0.5)',fontSize:'12px'}}>🕐 {t.time}</span>}
+                        {t.location&&<a href={`https://www.google.com/maps/search/${encodeURIComponent(t.location)}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{color:'#34d399',fontSize:'12px',textDecoration:'none',fontWeight:500}}>📍 {t.location}</a>}
+                        {t.amount>0&&<span style={{color:'#fbbf24',fontSize:'12px',fontWeight:500}}>R$ {Number(t.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
                       </div>
                     </div>
                     <div style={{display:'flex',alignItems:'center',gap:'6px',flexShrink:0}}>
-                      <span style={{fontSize:'10px',padding:'2px 8px',borderRadius:'5px',background:t.status==='DONE'?'rgba(76,175,125,0.1)':'rgba(255,255,255,0.06)',color:t.status==='DONE'?'#4caf7d':'rgba(255,255,255,0.3)'}}>{t.status==='DONE'?'Concluída':PRIO_LABEL[t.priority]||t.priority}</span>
-                      <button onClick={(e) => {e.stopPropagation(); setViewingDay(null); openEditTask(t)}} style={{padding:'3px 8px',background:'rgba(168,159,247,0.1)',border:'none',borderRadius:'5px',color:'#a89ff7',fontSize:'10px',cursor:'pointer'}}>✏️</button>
+                      <span style={{fontSize:'11px',padding:'3px 10px',borderRadius:'6px',background:t.status==='DONE'?'rgba(76,175,125,0.15)':`${priorityColor[t.priority]}20`,color:t.status==='DONE'?'#4caf7d':priorityColor[t.priority],fontWeight:600}}>{t.status==='DONE'?'✓ Concluída':PRIO_LABEL[t.priority]||t.priority}</span>
+                      <button onClick={(e) => {e.stopPropagation(); setViewingDay(null); openEditTask(t)}} style={{padding:'4px 10px',background:'rgba(124,58,237,0.15)',border:'1px solid rgba(124,58,237,0.3)',borderRadius:'6px',color:'#c4b5fd',fontSize:'11px',cursor:'pointer',fontWeight:600}}>✏️</button>
                     </div>
                   </div>
                   {t.notes && (
-                    <div style={{padding:'8px 12px 10px 30px',borderTop:'1px solid rgba(255,255,255,0.05)',background:'rgba(212,184,74,0.04)'}}>
-                      <p style={{color:'rgba(255,255,255,0.5)',fontSize:'11px',lineHeight:'1.5',whiteSpace:'pre-wrap'}} dangerouslySetInnerHTML={{__html: t.notes.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer" style="color:#a89ff7;text-decoration:underline">$1</a>')}} />
+                    <div style={{padding:'10px 14px 12px 34px',borderTop:'1px solid rgba(255,255,255,0.08)',background:'rgba(251,191,36,0.06)'}}>
+                      <p style={{color:'rgba(255,255,255,0.7)',fontSize:'12px',lineHeight:'1.6',whiteSpace:'pre-wrap'}} dangerouslySetInnerHTML={{__html: t.notes.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer" style="color:#c4b5fd;text-decoration:underline">$1</a>')}} />
                     </div>
                   )}
                 </div>
@@ -218,7 +223,7 @@ export default function AgendaPage() {
 
       {showTaskForm && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.75)',backdropFilter:'blur(4px)',zIndex:50,display:'flex',alignItems:'center',justifyContent:'center',padding:'16px'}}>
-          <div style={{width:'100%',maxWidth:'440px',background:'#13131f',borderRadius:'16px',padding:'24px',border:'1px solid rgba(255,255,255,0.1)'}}>
+          <div style={{width:'100%',maxWidth:'480px',background:'#16162a',borderRadius:'16px',padding:'28px',border:'1px solid rgba(124,58,237,0.2)',boxShadow:'0 20px 60px rgba(0,0,0,0.5)'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
               <h2 style={{color:'#fff',fontSize:'16px',fontWeight:600}}>{editingTask?'Editar tarefa':`Tarefa — dia ${selectedDay}`}</h2>
               <button onClick={() => setShowTaskForm(false)} style={{background:'none',border:'none',color:'rgba(255,255,255,0.3)',cursor:'pointer',fontSize:'18px'}}>✕</button>

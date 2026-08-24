@@ -41,14 +41,14 @@ export default function Sidebar() {
         display: 'flex', alignItems: 'center', gap: '10px',
         padding: '9px 12px', borderRadius: '10px', fontSize: '13px',
         fontWeight: active ? 600 : 400,
-        color: active ? '#ffffff' : 'rgba(255,255,255,0.65)',
+        color: active ? '#ffffff' : 'rgba(255,255,255,0.8)',
         background: active ? '#7c3aed' : 'transparent',
         textDecoration: 'none', marginBottom: '3px',
         transition: 'all 0.15s ease',
         boxShadow: active ? '0 0 0 1px #9333ea, 0 4px 24px rgba(124,58,237,0.7)' : 'none',
         border: active ? 'none' : '1px solid rgba(255,255,255,0.06)',
       }}>
-        <Icon size={16} strokeWidth={active ? 2 : 1.75} style={{ color: active ? '#fff' : 'rgba(255,255,255,0.55)', flexShrink: 0 }} />
+        <Icon size={16} strokeWidth={active ? 2 : 1.75} style={{ color: active ? '#fff' : 'rgba(255,255,255,0.7)', flexShrink: 0 }} />
         <span>{label}</span>
       </Link>
     )
@@ -78,7 +78,7 @@ export default function Sidebar() {
           </div>
           <span style={{ color: '#fff', fontWeight: 800, fontSize: '16px', letterSpacing: '1.5px' }}>NEXORA</span>
         </div>
-        <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '10px', letterSpacing: '0.5px', paddingLeft: '36px' }}>Personal OS</p>
+        <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '10px', letterSpacing: '0.5px', paddingLeft: '36px' }}>Personal OS</p>
       </div>
 
       <nav style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden' }}>
@@ -86,7 +86,7 @@ export default function Sidebar() {
           {NAV_MAIN.map(item => <NavItem key={item.href} {...item} />)}
         </div>
         <div style={{ height: '1px', background: 'rgba(255,255,255,0.055)', margin: '12px 4px' }} />
-        <p style={{ fontSize: '9px', fontWeight: 600, letterSpacing: '1.5px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', padding: '0 8px', marginBottom: '6px' }}>Pessoal</p>
+        <p style={{ fontSize: '9px', fontWeight: 600, letterSpacing: '1.5px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)', padding: '0 8px', marginBottom: '6px' }}>Pessoal</p>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           {NAV_PERSONAL.map(item => <NavItem key={item.href} {...item} />)}
         </div>
@@ -97,7 +97,7 @@ export default function Sidebar() {
           display: 'flex', alignItems: 'center', gap: '8px',
           width: '100%', padding: '8px 10px', borderRadius: '8px',
           background: 'transparent', border: 'none',
-          color: 'rgba(255,255,255,0.4)', fontSize: '12px', cursor: 'pointer',
+          color: 'rgba(255,255,255,0.55)', fontSize: '12px', cursor: 'pointer',
         }}>
           <LogOut size={14} strokeWidth={1.75} />
           <span>Sair</span>
