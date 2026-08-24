@@ -187,79 +187,104 @@ export default function DashboardPage() {
             </div>
           )}
 
-          {/* ── COMPROMISSOS EM ORDEM CRONOLÓGICA ── */}
-          <div style={{marginBottom:'24px'}}>
-            <SectionTitle label="📅 Compromissos pendentes" color="#a89ff7" count={allPending.length} />
-            {allPending.length === 0
-              ? <p style={{color:'rgba(255,255,255,0.2)',fontSize:'12px'}}>Nenhum compromisso pendente 🎉</p>
-              : <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
-                {allPending.slice(0,12).map(t => {
-                  const overdue = isOverdue(t.date)
-                  const isToday = t.date === todayStr
-                  return (
-                    <div key={t.id} style={{display:'flex',alignItems:'center',gap:'10px',padding:'10px 14px',borderRadius:'10px',background:overdue?'rgba(224,82,82,0.05)':isToday?'rgba(91,80,214,0.08)':'rgba(255,255,255,0.03)',border:`1px solid ${overdue?'rgba(224,82,82,0.12)':isToday?'rgba(91,80,214,0.2)':'rgba(255,255,255,0.06)'}`}}>
-                      <div style={{width:'42px',textAlign:'center',flexShrink:0}}>
-                        <p style={{color:overdue?'#e05252':isToday?'#a89ff7':'rgba(255,255,255,0.5)',fontSize:'11px',fontWeight:600}}>{formatDate(t.date)}</p>
-                        {t.time && <p style={{color:'rgba(255,255,255,0.25)',fontSize:'9px'}}>{t.time}</p>}
-                      </div>
-                      <div style={{width:'1px',height:'28px',background:overdue?'rgba(224,82,82,0.2)':'rgba(255,255,255,0.08)',flexShrink:0}}/>
-                      <div style={{width:'6px',height:'6px',borderRadius:'50%',background:priorityColor[t.priority]||'#888',flexShrink:0}}/>
-                      <div style={{flex:1,minWidth:0}}>
-                        <p style={{color:overdue?'rgba(255,255,255,0.6)':'#fff',fontSize:'12px',fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.title}</p>
-                        {t.has_financial && t.amount > 0 && <p style={{color:'#d4b84a',fontSize:'10px',marginTop:'1px'}}>R$ {Number(t.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>}
-                      </div>
-                      {overdue && <span style={{color:'#e05252',fontSize:'9px',fontWeight:600,flexShrink:0}}>ATRASADO</span>}
-                      {rescheduleId === t.id ? (
-                        <div style={{display:'flex',alignItems:'center',gap:'4px',flexShrink:0}}>
-                          <input type="date" value={rescheduleDate} onChange={e => setRescheduleDate(e.target.value)} style={{background:'rgba(255,255,255,0.08)',border:'1px solid rgba(168,159,247,0.3)',borderRadius:'6px',color:'#fff',fontSize:'11px',padding:'3px 6px',outline:'none',colorScheme:'dark'}} />
-                          <button onClick={() => rescheduleTask(t.id, rescheduleDate)} style={{padding:'4px 7px',background:'rgba(168,159,247,0.15)',border:'none',borderRadius:'6px',color:'#a89ff7',fontSize:'10px',cursor:'pointer',fontWeight:600}}>OK</button>
-                          <button onClick={() => {setRescheduleId(null);setRescheduleDate('')}} style={{padding:'4px 6px',background:'none',border:'none',color:'rgba(255,255,255,0.3)',fontSize:'10px',cursor:'pointer'}}>✕</button>
-                        </div>
-                      ) : (
-                        <button onClick={() => {setRescheduleId(t.id);setRescheduleDate(t.date)}} title="Reagendar" style={{padding:'4px 8px',background:'rgba(168,159,247,0.1)',border:'none',borderRadius:'6px',color:'#a89ff7',fontSize:'11px',cursor:'pointer',flexShrink:0}}>📅</button>
-                      )}
-                      <button onClick={() => completeTask(t.id)} style={{padding:'4px 8px',background:'rgba(76,175,125,0.12)',border:'none',borderRadius:'6px',color:'#4caf7d',fontSize:'11px',cursor:'pointer',flexShrink:0}}>✓</button>
-                    </div>
-                  )
-                })}
-                {allPending.length > 12 && <p style={{color:'rgba(168,159,247,0.5)',fontSize:'11px',textAlign:'center',marginTop:'4px'}}>+{allPending.length-12} compromissos · <Link href="/agenda" style={{color:'#a89ff7',textDecoration:'none'}}>Ver agenda →</Link></p>}
-              </div>
-            }
-          </div>
+          {/* ── DUAS COLUNAS: AGENDA | PENDÊNCIAS ── */}
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'20px',marginBottom:'24px'}}>
 
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'20px'}}>
-            {/* Coluna esquerda */}
+            {/* ══ COLUNA ESQUERDA — AGENDA ══ */}
+            <div style={{display:'flex',flexDirection:'column',gap:'20px'}}>
+              <div>
+                <SectionTitle label="📅 Agenda — Compromissos" color="#a89ff7" count={allPending.length} />
+                {allPending.length === 0
+                  ? <p style={{color:'rgba(255,255,255,0.2)',fontSize:'12px'}}>Nenhum compromisso pendente 🎉</p>
+                  : <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
+                    {allPending.slice(0,15).map(t => {
+                      const overdue = isOverdue(t.date)
+                      const isToday = t.date === todayStr
+                      return (
+                        <div key={t.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'10px',background:overdue?'rgba(224,82,82,0.05)':isToday?'rgba(91,80,214,0.08)':'rgba(255,255,255,0.03)',border:`1px solid ${overdue?'rgba(224,82,82,0.12)':isToday?'rgba(91,80,214,0.2)':'rgba(255,255,255,0.06)'}`}}>
+                          <div style={{width:'38px',textAlign:'center',flexShrink:0}}>
+                            <p style={{color:overdue?'#e05252':isToday?'#a89ff7':'rgba(255,255,255,0.5)',fontSize:'10px',fontWeight:600}}>{formatDate(t.date)}</p>
+                            {t.time && <p style={{color:'rgba(255,255,255,0.25)',fontSize:'8px'}}>{t.time}</p>}
+                          </div>
+                          <div style={{width:'1px',height:'24px',background:overdue?'rgba(224,82,82,0.2)':'rgba(255,255,255,0.08)',flexShrink:0}}/>
+                          <div style={{width:'5px',height:'5px',borderRadius:'50%',background:priorityColor[t.priority]||'#888',flexShrink:0}}/>
+                          <div style={{flex:1,minWidth:0}}>
+                            <p style={{color:overdue?'rgba(255,255,255,0.6)':'#fff',fontSize:'11px',fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.title}</p>
+                            {t.has_financial && t.amount > 0 && <p style={{color:'#d4b84a',fontSize:'9px',marginTop:'1px'}}>R$ {Number(t.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>}
+                          </div>
+                          {overdue && <span style={{color:'#e05252',fontSize:'8px',fontWeight:600,flexShrink:0}}>ATRASADO</span>}
+                          {rescheduleId === t.id ? (
+                            <div style={{display:'flex',alignItems:'center',gap:'3px',flexShrink:0}}>
+                              <input type="date" value={rescheduleDate} onChange={e => setRescheduleDate(e.target.value)} style={{background:'rgba(255,255,255,0.08)',border:'1px solid rgba(168,159,247,0.3)',borderRadius:'5px',color:'#fff',fontSize:'10px',padding:'2px 4px',outline:'none',colorScheme:'dark',width:'110px'}} />
+                              <button onClick={() => rescheduleTask(t.id, rescheduleDate)} style={{padding:'3px 6px',background:'rgba(168,159,247,0.15)',border:'none',borderRadius:'5px',color:'#a89ff7',fontSize:'9px',cursor:'pointer',fontWeight:600}}>OK</button>
+                              <button onClick={() => {setRescheduleId(null);setRescheduleDate('')}} style={{padding:'3px 5px',background:'none',border:'none',color:'rgba(255,255,255,0.3)',fontSize:'9px',cursor:'pointer'}}>✕</button>
+                            </div>
+                          ) : (
+                            <button onClick={() => {setRescheduleId(t.id);setRescheduleDate(t.date)}} title="Reagendar" style={{padding:'3px 6px',background:'rgba(168,159,247,0.1)',border:'none',borderRadius:'5px',color:'#a89ff7',fontSize:'10px',cursor:'pointer',flexShrink:0}}>📅</button>
+                          )}
+                          <button onClick={() => completeTask(t.id)} style={{padding:'3px 6px',background:'rgba(76,175,125,0.12)',border:'none',borderRadius:'5px',color:'#4caf7d',fontSize:'10px',cursor:'pointer',flexShrink:0}}>✓</button>
+                        </div>
+                      )
+                    })}
+                    {allPending.length > 15 && <p style={{color:'rgba(168,159,247,0.5)',fontSize:'11px',textAlign:'center',marginTop:'4px'}}>+{allPending.length-15} compromissos · <Link href="/agenda" style={{color:'#a89ff7',textDecoration:'none'}}>Ver agenda →</Link></p>}
+                  </div>
+                }
+              </div>
+
+              {/* Follow-ups CRM */}
+              <div>
+                <SectionTitle label="👥 Follow-ups CRM" color="#a89ff7" />
+                {upcomingFollowups.length === 0 && todayFollowups.length === 0
+                  ? <p style={{color:'rgba(255,255,255,0.2)',fontSize:'12px'}}>Nenhum follow-up agendado</p>
+                  : <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                    {[...todayFollowups,...upcomingFollowups].slice(0,5).map(l => (
+                      <div key={l.id} style={{display:'flex',alignItems:'center',gap:'10px',padding:'8px 10px',borderRadius:'10px',background:'rgba(91,80,214,0.05)',border:'1px solid rgba(91,80,214,0.1)'}}>
+                        <div style={{width:'28px',height:'28px',borderRadius:'50%',background:'rgba(91,80,214,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'#a89ff7',fontWeight:700,fontSize:'10px',flexShrink:0}}>{l.name.charAt(0).toUpperCase()}</div>
+                        <div style={{flex:1,minWidth:0}}>
+                          <p style={{color:'#fff',fontSize:'11px',fontWeight:500}}>{l.name}</p>
+                          <p style={{color:'rgba(91,80,214,0.7)',fontSize:'9px',marginTop:'1px'}}>{l.next_followup===todayStr?'Hoje':formatDate(l.next_followup)}</p>
+                        </div>
+                        {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{padding:'3px 7px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'5px',color:'#25d366',fontSize:'10px',textDecoration:'none'}}>WA</a>}
+                      </div>
+                    ))}
+                  </div>
+                }
+              </div>
+            </div>
+
+            {/* ══ COLUNA DIREITA — PENDÊNCIAS ══ */}
             <div style={{display:'flex',flexDirection:'column',gap:'20px'}}>
 
               {/* Pendências urgentes */}
-              {urgentPendencias.length > 0 && (
-                <div>
-                  <SectionTitle label="🔥 Pendências urgentes" color="#e08c42" count={urgentPendencias.length} />
-                  <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
-                    {urgentPendencias.slice(0,6).map(p => (
-                      <div key={p.id} style={{display:'flex',alignItems:'center',gap:'10px',padding:'9px 12px',borderRadius:'10px',background:'rgba(224,140,66,0.05)',border:'1px solid rgba(224,140,66,0.1)'}}>
-                        <div style={{width:'6px',height:'6px',borderRadius:'50%',background:priorityColor[p.priority],flexShrink:0}}/>
-                        <p style={{flex:1,color:'#fff',fontSize:'12px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{p.title}</p>
-                        <span style={{color:priorityColor[p.priority],fontSize:'9px',fontWeight:600,flexShrink:0}}>{p.priority==='CRITICAL'?'URGENTE':'ALTA'}</span>
+              <div>
+                <SectionTitle label="🔥 Pendências" color="#e08c42" count={pendencias.length} />
+                {pendencias.length === 0
+                  ? <p style={{color:'rgba(255,255,255,0.2)',fontSize:'12px'}}>Nenhuma pendência ativa 🎉</p>
+                  : <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
+                    {pendencias.slice(0,15).map(p => (
+                      <div key={p.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'10px',background:p.priority==='CRITICAL'?'rgba(224,82,82,0.05)':p.priority==='HIGH'?'rgba(224,140,66,0.05)':'rgba(255,255,255,0.03)',border:`1px solid ${p.priority==='CRITICAL'?'rgba(224,82,82,0.12)':p.priority==='HIGH'?'rgba(224,140,66,0.1)':'rgba(255,255,255,0.06)'}`}}>
+                        <div style={{width:'5px',height:'5px',borderRadius:'50%',background:priorityColor[p.priority]||'#888',flexShrink:0}}/>
+                        <p style={{flex:1,color:'#fff',fontSize:'11px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{p.title}</p>
+                        <span style={{color:priorityColor[p.priority]||'rgba(255,255,255,0.3)',fontSize:'8px',fontWeight:600,flexShrink:0}}>{prioLabel[p.priority]||''}</span>
                       </div>
                     ))}
-                    {urgentPendencias.length > 6 && <p style={{color:'rgba(224,140,66,0.5)',fontSize:'11px',textAlign:'center'}}>+{urgentPendencias.length-6} · <Link href="/pendencias" style={{color:'#e08c42',textDecoration:'none'}}>Ver todas →</Link></p>}
+                    {pendencias.length > 15 && <p style={{color:'rgba(224,140,66,0.5)',fontSize:'11px',textAlign:'center',marginTop:'4px'}}>+{pendencias.length-15} · <Link href="/pendencias" style={{color:'#e08c42',textDecoration:'none'}}>Ver todas →</Link></p>}
                   </div>
-                </div>
-              )}
+                }
+              </div>
 
               {/* Contas atrasadas */}
               {overdueBills.length > 0 && (
                 <div>
                   <SectionTitle label="💸 Contas atrasadas" color="#e05252" count={overdueBills.length} />
-                  <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                  <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
                     {overdueBills.map(b => (
-                      <div key={b.id} style={{display:'flex',alignItems:'center',gap:'10px',padding:'9px 12px',borderRadius:'10px',background:'rgba(224,82,82,0.05)',border:'1px solid rgba(224,82,82,0.1)'}}>
+                      <div key={b.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'10px',background:'rgba(224,82,82,0.05)',border:'1px solid rgba(224,82,82,0.1)'}}>
                         <div style={{flex:1,minWidth:0}}>
-                          <p style={{color:'#fff',fontSize:'12px',fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{b.name}</p>
-                          <p style={{color:'rgba(224,82,82,0.6)',fontSize:'10px',marginTop:'1px'}}>Venceu: {new Date(b.due_date+'T12:00:00').toLocaleDateString('pt-BR')}</p>
+                          <p style={{color:'#fff',fontSize:'11px',fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{b.name}</p>
+                          <p style={{color:'rgba(224,82,82,0.6)',fontSize:'9px',marginTop:'1px'}}>Venceu: {new Date(b.due_date+'T12:00:00').toLocaleDateString('pt-BR')}</p>
                         </div>
-                        {b.amount > 0 && <span style={{color:'#e05252',fontSize:'12px',fontWeight:600}}>R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
+                        {b.amount > 0 && <span style={{color:'#e05252',fontSize:'11px',fontWeight:600}}>R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
                       </div>
                     ))}
                   </div>
@@ -270,54 +295,14 @@ export default function DashboardPage() {
               {upcomingBills.length > 0 && (
                 <div>
                   <SectionTitle label="💰 Contas vencendo em breve" color="#d4b84a" count={upcomingBills.length} />
-                  <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                  <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
                     {upcomingBills.map(b => (
-                      <div key={b.id} style={{display:'flex',alignItems:'center',gap:'10px',padding:'9px 12px',borderRadius:'10px',background:'rgba(212,184,74,0.05)',border:'1px solid rgba(212,184,74,0.12)'}}>
+                      <div key={b.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'10px',background:'rgba(212,184,74,0.05)',border:'1px solid rgba(212,184,74,0.12)'}}>
                         <div style={{flex:1,minWidth:0}}>
-                          <p style={{color:'#fff',fontSize:'12px',fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{b.name}</p>
-                          <p style={{color:'rgba(255,255,255,0.25)',fontSize:'10px',marginTop:'1px'}}>{formatDate(b.due_date)}</p>
+                          <p style={{color:'#fff',fontSize:'11px',fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{b.name}</p>
+                          <p style={{color:'rgba(255,255,255,0.25)',fontSize:'9px',marginTop:'1px'}}>{formatDate(b.due_date)}</p>
                         </div>
-                        {b.amount > 0 && <span style={{color:'#d4b84a',fontSize:'12px',fontWeight:600}}>R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Coluna direita */}
-            <div style={{display:'flex',flexDirection:'column',gap:'20px'}}>
-
-              {/* Follow-ups CRM */}
-              <div>
-                <SectionTitle label="👥 Follow-ups CRM" color="#a89ff7" />
-                {upcomingFollowups.length === 0 && todayFollowups.length === 0
-                  ? <p style={{color:'rgba(255,255,255,0.2)',fontSize:'12px'}}>Nenhum follow-up agendado</p>
-                  : <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
-                    {[...todayFollowups,...upcomingFollowups].slice(0,5).map(l => (
-                      <div key={l.id} style={{display:'flex',alignItems:'center',gap:'10px',padding:'9px 12px',borderRadius:'10px',background:'rgba(91,80,214,0.05)',border:'1px solid rgba(91,80,214,0.1)'}}>
-                        <div style={{width:'30px',height:'30px',borderRadius:'50%',background:'rgba(91,80,214,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'#a89ff7',fontWeight:700,fontSize:'11px',flexShrink:0}}>{l.name.charAt(0).toUpperCase()}</div>
-                        <div style={{flex:1,minWidth:0}}>
-                          <p style={{color:'#fff',fontSize:'12px',fontWeight:500}}>{l.name}</p>
-                          <p style={{color:'rgba(91,80,214,0.7)',fontSize:'10px',marginTop:'1px'}}>{l.next_followup===todayStr?'Hoje':formatDate(l.next_followup)}</p>
-                        </div>
-                        {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{padding:'4px 8px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'6px',color:'#25d366',fontSize:'11px',textDecoration:'none'}}>WA</a>}
-                      </div>
-                    ))}
-                  </div>
-                }
-              </div>
-
-              {/* Próximos 7 dias */}
-              {upcomingTasks.length > 0 && (
-                <div>
-                  <SectionTitle label="📆 Próximos 7 dias" count={upcomingTasks.length} />
-                  <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
-                    {upcomingTasks.slice(0,5).map(t => (
-                      <div key={t.id} style={{display:'flex',alignItems:'center',gap:'10px',padding:'9px 12px',borderRadius:'10px',background:'rgba(255,255,255,0.02)',border:'1px solid rgba(255,255,255,0.05)'}}>
-                        <span style={{color:'rgba(255,255,255,0.4)',fontSize:'10px',fontWeight:600,width:'38px',flexShrink:0}}>{formatDate(t.date)}</span>
-                        <div style={{width:'5px',height:'5px',borderRadius:'50%',background:priorityColor[t.priority]||'#888',flexShrink:0}}/>
-                        <p style={{flex:1,color:'rgba(255,255,255,0.7)',fontSize:'12px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.title}</p>
+                        {b.amount > 0 && <span style={{color:'#d4b84a',fontSize:'11px',fontWeight:600}}>R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
                       </div>
                     ))}
                   </div>
