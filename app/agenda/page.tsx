@@ -164,8 +164,9 @@ export default function AgendaPage() {
                 <div style={{fontSize:'11px',color:isToday?'#a89ff7':'rgba(255,255,255,0.55)',fontWeight:isToday?700:400}}>{day}</div>
                 <div style={{marginTop:'3px'}}>
                   {dayTasks.map((t:any) => (
-                    <div key={t.id} onClick={e => {e.stopPropagation();openEditTask(t)}} style={{width:'100%',fontSize:'9px',color:t.status==='DONE'?'rgba(255,255,255,0.2)':'rgba(255,255,255,0.75)',background:`${priorityColor[t.priority]}18`,borderLeft:`2px solid ${t.status==='DONE'?'rgba(255,255,255,0.1)':priorityColor[t.priority]}`,borderRadius:'0 3px 3px 0',padding:'2px 4px',marginBottom:'2px',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis',textDecoration:t.status==='DONE'?'line-through':'none'}}>
-                      {t.time&&<span style={{color:'rgba(255,255,255,0.3)',marginRight:'3px'}}>{t.time}</span>}{t.title}{t.notes&&<span style={{color:'#d4b84a',marginLeft:'3px'}} title="Tem observação">*</span>}
+                    <div key={t.id} onClick={e => {e.stopPropagation();openEditTask(t)}} style={{display:'flex',alignItems:'center',gap:'2px',width:'100%',fontSize:'9px',color:t.status==='DONE'?'rgba(255,255,255,0.2)':'rgba(255,255,255,0.75)',background:`${priorityColor[t.priority]}18`,borderLeft:`2px solid ${t.status==='DONE'?'rgba(255,255,255,0.1)':priorityColor[t.priority]}`,borderRadius:'0 3px 3px 0',padding:'2px 4px',marginBottom:'2px',textDecoration:t.status==='DONE'?'line-through':'none'}}>
+                      {t.notes&&<span style={{color:'#d4b84a',fontWeight:900,fontSize:'12px',lineHeight:1,flexShrink:0}} title="Tem observação">*</span>}
+                      <span style={{whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis',minWidth:0}}>{t.time&&<span style={{color:'rgba(255,255,255,0.3)',marginRight:'3px'}}>{t.time}</span>}{t.title}</span>
                     </div>
                   ))}
                 </div>
