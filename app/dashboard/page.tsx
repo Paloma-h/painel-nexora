@@ -12,6 +12,7 @@ export default function DashboardPage() {
   const [leads, setLeads] = useState<any[]>([])
   const [clients, setClients] = useState<any[]>([])
   const [bills, setBills] = useState<any[]>([])
+  const [estoque, setEstoque] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [rescheduleId, setRescheduleId] = useState<string|null>(null)
   const [rescheduleDate, setRescheduleDate] = useState('')
@@ -20,18 +21,20 @@ export default function DashboardPage() {
 
   async function load() {
     setLoading(true)
-    const [t, p, l, c, b] = await Promise.all([
+    const [t, p, l, c, b, e] = await Promise.all([
       supabase.from('tasks').select('*').eq('user_id', USER_ID).neq('type','pendencia').order('date',{ascending:true}),
       supabase.from('tasks').select('*').eq('user_id', USER_ID).eq('type','pendencia').neq('status','DONE').order('created_at',{ascending:false}),
       supabase.from('leads').select('*').eq('user_id', USER_ID).not('next_followup','is',null).order('next_followup',{ascending:true}),
       supabase.from('clients').select('*').eq('user_id', USER_ID),
       supabase.from('bills').select('*').eq('user_id', USER_ID).eq('status','pendente'),
+      supabase.from('estoque').select('*').eq('user_id', USER_ID),
     ])
     setTasks(t.data || [])
     setPendencias(p.data || [])
     setLeads(l.data || [])
     setClients(c.data || [])
     setBills(b.data || [])
+    setEstoque(e.data || [])
     setLoading(false)
   }
 
@@ -66,6 +69,12 @@ export default function DashboardPage() {
     return Math.ceil((end.getTime() - today.getTime()) / (1000*60*60*24))
   }
   const alertClients = clients.filter(c => { const d = daysLeft(c); return d !== null && d <= 10 }).sort((a,b) => (daysLeft(a)||0)-(daysLeft(b)||0))
+
+  function findEstoque(productName: string) {
+    if (!productName) return null
+    const nome = productName.toLowerCase().trim()
+    return estoque.find(e => e.name && e.name.toLowerCase().trim().includes(nome) || nome.includes(e.name?.toLowerCase().trim())) || null
+  }
 
   // Contas a vencer nos próximos 7 dias
   const upcomingBills = bills.filter(b => {
@@ -171,15 +180,32 @@ export default function DashboardPage() {
                 {alertClients.map(c => {
                   const d = daysLeft(c)
                   const isOver = d !== null && d <= 0
+                  const prodEstoque = findEstoque(c.product)
+                  const temEstoque = prodEstoque && prodEstoque.quantity > 0
                   return (
-                    <div key={c.id} style={{display:'flex',alignItems:'center',gap:'10px',padding:'10px 12px',borderRadius:'10px',background:isOver?'rgba(224,82,82,0.08)':'rgba(224,140,66,0.06)',border:`1px solid ${isOver?'rgba(224,82,82,0.2)':'rgba(224,140,66,0.15)'}`}}>
-                      <div style={{width:'30px',height:'30px',borderRadius:'50%',background:'rgba(76,175,125,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'#4caf7d',fontWeight:700,fontSize:'12px',flexShrink:0}}>{c.name.charAt(0).toUpperCase()}</div>
-                      <div style={{flex:1}}>
-                        <p style={{color:'#fff',fontSize:'12px',fontWeight:500}}>{c.name}</p>
-                        <p style={{color:'rgba(255,255,255,0.3)',fontSize:'10px'}}>{c.product} · {c.pots_bought} potes</p>
+                    <div key={c.id} style={{padding:'12px 14px',borderRadius:'10px',background:isOver?'rgba(224,82,82,0.08)':'rgba(224,140,66,0.06)',border:`1px solid ${isOver?'rgba(224,82,82,0.2)':'rgba(224,140,66,0.15)'}`}}>
+                      <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
+                        <div style={{width:'32px',height:'32px',borderRadius:'50%',background:'rgba(76,175,125,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'#4caf7d',fontWeight:700,fontSize:'12px',flexShrink:0}}>{c.name.charAt(0).toUpperCase()}</div>
+                        <div style={{flex:1}}>
+                          <p style={{color:'#fff',fontSize:'13px',fontWeight:600}}>{c.name}</p>
+                          <p style={{color:'rgba(255,255,255,0.45)',fontSize:'10px',marginTop:'2px'}}>Cliente · Comprou {c.pots_bought} {c.pots_bought===1?'pote':'potes'}</p>
+                        </div>
+                        <span style={{color:isOver?'#e05252':'#e08c42',fontSize:'11px',fontWeight:700}}>{isOver?'Potes acabaram!':d===0?'Acaba hoje':`${d} dias`}</span>
                       </div>
-                      <span style={{color:isOver?'#e05252':'#e08c42',fontSize:'11px',fontWeight:600}}>{isOver?'Potes acabaram!':d===0?'Acaba hoje':`${d} dias`}</span>
-                      {c.whatsapp && <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{padding:'4px 9px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'6px',color:'#25d366',fontSize:'11px',textDecoration:'none',fontWeight:600}}>WhatsApp</a>}
+                      <div style={{display:'flex',alignItems:'center',gap:'8px',marginTop:'8px',paddingLeft:'42px'}}>
+                        <span style={{background:'rgba(168,159,247,0.12)',border:'1px solid rgba(168,159,247,0.2)',borderRadius:'6px',padding:'3px 8px',color:'#a89ff7',fontSize:'10px',fontWeight:600}}>📦 {c.product}</span>
+                        {prodEstoque ? (
+                          <span style={{background:temEstoque?'rgba(76,175,125,0.12)':'rgba(224,82,82,0.12)',border:`1px solid ${temEstoque?'rgba(76,175,125,0.25)':'rgba(224,82,82,0.25)'}`,borderRadius:'6px',padding:'3px 8px',color:temEstoque?'#4caf7d':'#e05252',fontSize:'10px',fontWeight:600}}>
+                            {temEstoque ? `✅ ${prodEstoque.quantity} em estoque` : '❌ Sem estoque — pedir ao fornecedor'}
+                          </span>
+                        ) : (
+                          <span style={{background:'rgba(212,184,74,0.12)',border:'1px solid rgba(212,184,74,0.2)',borderRadius:'6px',padding:'3px 8px',color:'#d4b84a',fontSize:'10px',fontWeight:600}}>⚠️ Produto não cadastrado no estoque</span>
+                        )}
+                      </div>
+                      <div style={{display:'flex',gap:'6px',marginTop:'8px',paddingLeft:'42px'}}>
+                        {c.whatsapp && <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{padding:'5px 10px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'6px',color:'#25d366',fontSize:'11px',textDecoration:'none',fontWeight:600}}>💬 WhatsApp</a>}
+                        <Link href="/crm" style={{padding:'5px 10px',background:'rgba(168,159,247,0.1)',border:'1px solid rgba(168,159,247,0.2)',borderRadius:'6px',color:'#a89ff7',fontSize:'11px',textDecoration:'none',fontWeight:600}}>📋 Ver no CRM</Link>
+                      </div>
                     </div>
                   )
                 })}
