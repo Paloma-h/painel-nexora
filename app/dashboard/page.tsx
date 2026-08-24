@@ -268,7 +268,7 @@ export default function DashboardPage() {
                           ) : (
                             <button onClick={() => {setRescheduleId(t.id);setRescheduleDate(t.date)}} title="Reagendar" style={{padding:'3px 6px',background:'rgba(168,159,247,0.1)',border:'none',borderRadius:'5px',color:'#a89ff7',fontSize:'10px',cursor:'pointer',flexShrink:0}}>📅</button>
                           )}
-                          <button onClick={() => completeTask(t.id)} style={{padding:'3px 6px',background:'rgba(76,175,125,0.12)',border:'none',borderRadius:'5px',color:'#4caf7d',fontSize:'10px',cursor:'pointer',flexShrink:0}}>✓</button>
+                          <button onClick={(e) => {e.stopPropagation();completeTask(t.id)}} title="Marcar como concluída" style={{padding:'5px 10px',background:'rgba(76,175,125,0.15)',border:'1px solid rgba(76,175,125,0.3)',borderRadius:'6px',color:'#4caf7d',fontSize:'12px',cursor:'pointer',flexShrink:0,fontWeight:700}}>✓</button>
                         </div>
                       )
                     })}
