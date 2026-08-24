@@ -13,10 +13,10 @@ const NAV_MAIN = [
   { href: '/pendencias', label: 'Pendências',     Icon: Zap             },
   { href: '/crm',        label: 'CRM',            Icon: Users           },
   { href: '/financeiro', label: 'Financeiro',     Icon: DollarSign      },
-  { href: '/dados',      label: 'Dados Pessoais', Icon: Shield          },
 ]
 
 const NAV_PERSONAL = [
+  { href: '/dados',     label: 'Dados Pessoais', Icon: Shield     },
   { href: '/projetos',  label: 'Projetos',  Icon: FolderOpen   },
   { href: '/saude',     label: 'Saúde',     Icon: Heart        },
   { href: '/educacao',  label: 'Educação',  Icon: BookOpen     },
