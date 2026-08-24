@@ -138,7 +138,7 @@ export default function AgendaPage() {
     <div style={{display:'flex',minHeight:'100vh',background:'#0a0a0f',fontFamily:'system-ui,sans-serif'}}>
       <Sidebar />
 
-      <div style={{flex:1,padding:'24px',overflowY:'auto',minWidth:0,overflowX:'hidden'}}>
+      <div style={{flex:1,padding:'24px',overflowY:'auto',minWidth:0}}>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
           <div style={{color:'#fff',fontSize:'18px',fontWeight:600}}>{MONTHS[month]} {year}</div>
           <div style={{display:'flex',gap:'6px'}}>
