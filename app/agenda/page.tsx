@@ -8,7 +8,7 @@ import Sidebar from '@/components/Sidebar'
 
 const USER_ID = 'paloma'
 const FINANCIAL_CATEGORIES = ['alimentação', 'transporte', 'saúde', 'educação', 'lazer', 'moradia', 'trabalho', 'outros']
-const DAYS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
+const DAYS = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom']
 const MONTHS = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
 const PRIO_COLOR: any = {CRITICAL:'#e05252',HIGH:'#e05252',MEDIUM:'#d4b84a',LOW:'#4caf7d'}
 const PRIO_LABEL: any = {CRITICAL:'Urgente',HIGH:'Alta',MEDIUM:'Média',LOW:'Depois'}
@@ -35,7 +35,8 @@ export default function AgendaPage() {
 
   const year = currentDate.getFullYear()
   const month = currentDate.getMonth()
-  const firstDay = new Date(year, month, 1).getDay()
+  const firstDayRaw = new Date(year, month, 1).getDay()
+  const firstDay = firstDayRaw === 0 ? 6 : firstDayRaw - 1
   const daysInMonth = new Date(year, month + 1, 0).getDate()
   const today = new Date()
 
