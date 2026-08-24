@@ -218,6 +218,26 @@ export default function DashboardPage() {
 
             {/* ══ COLUNA ESQUERDA — AGENDA ══ */}
             <div style={{display:'flex',flexDirection:'column',gap:'20px'}}>
+
+              {/* Follow-ups CRM — no topo */}
+              {(todayFollowups.length > 0 || upcomingFollowups.length > 0) && (
+              <div>
+                <SectionTitle label="👥 Follow-ups CRM" color="#a89ff7" />
+                <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+                  {[...todayFollowups,...upcomingFollowups].slice(0,5).map(l => (
+                    <div key={l.id} style={{display:'flex',alignItems:'center',gap:'10px',padding:'8px 10px',borderRadius:'10px',background:'rgba(91,80,214,0.05)',border:'1px solid rgba(91,80,214,0.1)'}}>
+                      <div style={{width:'28px',height:'28px',borderRadius:'50%',background:'rgba(91,80,214,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'#a89ff7',fontWeight:700,fontSize:'10px',flexShrink:0}}>{l.name.charAt(0).toUpperCase()}</div>
+                      <div style={{flex:1,minWidth:0}}>
+                        <p style={{color:'#fff',fontSize:'11px',fontWeight:500}}>{l.name}</p>
+                        <p style={{color:'rgba(91,80,214,0.7)',fontSize:'9px',marginTop:'1px'}}>{l.next_followup===todayStr?'Hoje':formatDate(l.next_followup)}</p>
+                      </div>
+                      {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{padding:'3px 7px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'5px',color:'#25d366',fontSize:'10px',textDecoration:'none'}}>WA</a>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              )}
+
               <div>
                 <SectionTitle label="📅 Agenda — Compromissos" color="#a89ff7" count={allPending.length} />
                 {allPending.length === 0
@@ -257,29 +277,10 @@ export default function DashboardPage() {
                 }
               </div>
 
-              {/* Follow-ups CRM */}
-              <div>
-                <SectionTitle label="👥 Follow-ups CRM" color="#a89ff7" />
-                {upcomingFollowups.length === 0 && todayFollowups.length === 0
-                  ? <p style={{color:'rgba(255,255,255,0.2)',fontSize:'12px'}}>Nenhum follow-up agendado</p>
-                  : <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
-                    {[...todayFollowups,...upcomingFollowups].slice(0,5).map(l => (
-                      <div key={l.id} style={{display:'flex',alignItems:'center',gap:'10px',padding:'8px 10px',borderRadius:'10px',background:'rgba(91,80,214,0.05)',border:'1px solid rgba(91,80,214,0.1)'}}>
-                        <div style={{width:'28px',height:'28px',borderRadius:'50%',background:'rgba(91,80,214,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'#a89ff7',fontWeight:700,fontSize:'10px',flexShrink:0}}>{l.name.charAt(0).toUpperCase()}</div>
-                        <div style={{flex:1,minWidth:0}}>
-                          <p style={{color:'#fff',fontSize:'11px',fontWeight:500}}>{l.name}</p>
-                          <p style={{color:'rgba(91,80,214,0.7)',fontSize:'9px',marginTop:'1px'}}>{l.next_followup===todayStr?'Hoje':formatDate(l.next_followup)}</p>
-                        </div>
-                        {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{padding:'3px 7px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'5px',color:'#25d366',fontSize:'10px',textDecoration:'none'}}>WA</a>}
-                      </div>
-                    ))}
-                  </div>
-                }
-              </div>
             </div>
 
             {/* ══ COLUNA DIREITA — PENDÊNCIAS ══ */}
-            <div style={{display:'flex',flexDirection:'column',gap:'20px'}}>
+            <div style={{display:'flex',flexDirection:'column',gap:'20px',maxHeight:'75vh',overflowY:'auto'}}>
 
               {/* Pendências urgentes */}
               <div>
