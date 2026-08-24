@@ -165,7 +165,7 @@ export default function AgendaPage() {
                 <div style={{marginTop:'3px'}}>
                   {dayTasks.map((t:any) => (
                     <div key={t.id} onClick={e => {e.stopPropagation();openEditTask(t)}} style={{width:'100%',fontSize:'9px',color:t.status==='DONE'?'rgba(255,255,255,0.2)':'rgba(255,255,255,0.75)',background:`${priorityColor[t.priority]}18`,borderLeft:`2px solid ${t.status==='DONE'?'rgba(255,255,255,0.1)':priorityColor[t.priority]}`,borderRadius:'0 3px 3px 0',padding:'2px 4px',marginBottom:'2px',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis',textDecoration:t.status==='DONE'?'line-through':'none'}}>
-                      {t.time&&<span style={{color:'rgba(255,255,255,0.3)',marginRight:'3px'}}>{t.time}</span>}{t.title}
+                      {t.time&&<span style={{color:'rgba(255,255,255,0.3)',marginRight:'3px'}}>{t.time}</span>}{t.title}{t.notes&&<span style={{color:'#d4b84a',marginLeft:'3px'}} title="Tem observação">*</span>}
                     </div>
                   ))}
                 </div>
@@ -187,14 +187,26 @@ export default function AgendaPage() {
             </div>
             <div style={{overflowY:'auto',display:'flex',flexDirection:'column',gap:'6px'}}>
               {getTasksForDay(viewingDay).map((t:any) => (
-                <div key={t.id} onClick={() => { setViewingDay(null); openEditTask(t) }} style={{display:'flex',alignItems:'center',gap:'10px',padding:'10px 12px',borderRadius:'10px',background:'rgba(255,255,255,0.04)',border:`1px solid ${priorityColor[t.priority]}22`,cursor:'pointer'}}>
-                  <div style={{width:'8px',height:'8px',borderRadius:'50%',background:priorityColor[t.priority],flexShrink:0}}/>
-                  <div style={{flex:1,minWidth:0}}>
-                    <p style={{color:t.status==='DONE'?'rgba(255,255,255,0.3)':'#fff',fontSize:'13px',fontWeight:500,textDecoration:t.status==='DONE'?'line-through':'none'}}>{t.title}</p>
-                    {t.time&&<p style={{color:'rgba(255,255,255,0.3)',fontSize:'11px',marginTop:'2px'}}>{t.time}</p>}
-                    {t.notes&&<p style={{color:'rgba(255,255,255,0.25)',fontSize:'11px',marginTop:'2px'}}>{t.notes}</p>}
+                <div key={t.id} style={{borderRadius:'10px',background:'rgba(255,255,255,0.04)',border:`1px solid ${priorityColor[t.priority]}22`,overflow:'hidden'}}>
+                  <div onClick={() => { setViewingDay(null); openEditTask(t) }} style={{display:'flex',alignItems:'center',gap:'10px',padding:'10px 12px',cursor:'pointer'}}>
+                    <div style={{width:'8px',height:'8px',borderRadius:'50%',background:priorityColor[t.priority],flexShrink:0}}/>
+                    <div style={{flex:1,minWidth:0}}>
+                      <p style={{color:t.status==='DONE'?'rgba(255,255,255,0.3)':'#fff',fontSize:'13px',fontWeight:500,textDecoration:t.status==='DONE'?'line-through':'none'}}>{t.title}{t.notes&&<span style={{color:'#d4b84a',marginLeft:'4px'}}>*</span>}</p>
+                      <div style={{display:'flex',alignItems:'center',gap:'8px',marginTop:'2px'}}>
+                        {t.time&&<span style={{color:'rgba(255,255,255,0.3)',fontSize:'11px'}}>🕐 {t.time}</span>}
+                        {t.amount>0&&<span style={{color:'#d4b84a',fontSize:'11px'}}>R$ {Number(t.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
+                      </div>
+                    </div>
+                    <div style={{display:'flex',alignItems:'center',gap:'6px',flexShrink:0}}>
+                      <span style={{fontSize:'10px',padding:'2px 8px',borderRadius:'5px',background:t.status==='DONE'?'rgba(76,175,125,0.1)':'rgba(255,255,255,0.06)',color:t.status==='DONE'?'#4caf7d':'rgba(255,255,255,0.3)'}}>{t.status==='DONE'?'Concluída':PRIO_LABEL[t.priority]||t.priority}</span>
+                      <button onClick={(e) => {e.stopPropagation(); setViewingDay(null); openEditTask(t)}} style={{padding:'3px 8px',background:'rgba(168,159,247,0.1)',border:'none',borderRadius:'5px',color:'#a89ff7',fontSize:'10px',cursor:'pointer'}}>✏️</button>
+                    </div>
                   </div>
-                  <span style={{fontSize:'10px',padding:'2px 8px',borderRadius:'5px',background:t.status==='DONE'?'rgba(76,175,125,0.1)':'rgba(255,255,255,0.06)',color:t.status==='DONE'?'#4caf7d':'rgba(255,255,255,0.3)'}}>{t.status==='DONE'?'Concluída':t.priority}</span>
+                  {t.notes && (
+                    <div style={{padding:'8px 12px 10px 30px',borderTop:'1px solid rgba(255,255,255,0.05)',background:'rgba(212,184,74,0.04)'}}>
+                      <p style={{color:'rgba(255,255,255,0.5)',fontSize:'11px',lineHeight:'1.5',whiteSpace:'pre-wrap'}} dangerouslySetInnerHTML={{__html: t.notes.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer" style="color:#a89ff7;text-decoration:underline">$1</a>')}} />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
