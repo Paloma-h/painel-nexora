@@ -217,7 +217,7 @@ export default function DashboardPage() {
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'20px',marginBottom:'24px'}}>
 
             {/* ══ COLUNA ESQUERDA — AGENDA ══ */}
-            <div style={{display:'flex',flexDirection:'column',gap:'20px'}}>
+            <div style={{display:'flex',flexDirection:'column',gap:'20px',maxHeight:'75vh',overflowY:'auto'}}>
 
               {/* Follow-ups CRM — no topo */}
               {(todayFollowups.length > 0 || upcomingFollowups.length > 0) && (
