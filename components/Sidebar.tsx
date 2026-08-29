@@ -38,17 +38,17 @@ export default function Sidebar() {
     const active = path === href
     return (
       <Link href={href} style={{
-        display: 'flex', alignItems: 'center', gap: '10px',
-        padding: '10px 14px', borderRadius: '10px', fontSize: '15px',
+        display: 'flex', alignItems: 'center', gap: '8px',
+        padding: '7px 12px', borderRadius: '8px', fontSize: '14px',
         fontWeight: active ? 800 : 600,
         color: active ? '#ffffff' : '#222',
         background: active ? '#7c3aed' : 'transparent',
-        textDecoration: 'none', marginBottom: '3px',
+        textDecoration: 'none', marginBottom: '1px',
         transition: 'all 0.15s ease',
-        boxShadow: active ? '0 4px 16px rgba(124,58,237,0.35)' : 'none',
+        boxShadow: active ? '0 3px 12px rgba(124,58,237,0.35)' : 'none',
         border: active ? 'none' : '1px solid transparent',
       }}>
-        <Icon size={18} strokeWidth={active ? 2.2 : 1.8} style={{ color: active ? '#fff' : '#7c3aed', flexShrink: 0 }} />
+        <Icon size={16} strokeWidth={active ? 2.2 : 1.8} style={{ color: active ? '#fff' : '#7c3aed', flexShrink: 0 }} />
         <span>{label}</span>
       </Link>
     )
@@ -56,50 +56,50 @@ export default function Sidebar() {
 
   return (
     <aside style={{
-      width: '220px', background: '#ffffff',
+      width: '200px', background: '#ffffff',
       borderRight: '1px solid #e5e5ea',
       display: 'flex', flexDirection: 'column',
-      padding: '20px 12px', flexShrink: 0,
+      padding: '12px 10px', flexShrink: 0,
       minHeight: '100vh', position: 'sticky',
-      top: 0, height: '100vh', overflowY: 'hidden',
+      top: 0, height: '100vh', overflow: 'hidden',
     }}>
-      <div style={{ padding: '4px 8px', marginBottom: '28px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
+      <div style={{ padding: '2px 6px', marginBottom: '14px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
           <div style={{
-            width: '32px', height: '32px', borderRadius: '8px',
+            width: '28px', height: '28px', borderRadius: '7px',
             background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            flexShrink: 0, boxShadow: '0 0 16px rgba(139,92,246,0.35)',
+            flexShrink: 0, boxShadow: '0 0 12px rgba(139,92,246,0.35)',
           }}>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
               <path d="M7 1L13 4.5V9.5L7 13L1 9.5V4.5L7 1Z" stroke="white" strokeWidth="1.5" strokeLinejoin="round"/>
               <circle cx="7" cy="7" r="2" fill="white"/>
             </svg>
           </div>
-          <span style={{ color: '#1a1a2e', fontWeight: 800, fontSize: '18px', letterSpacing: '1.5px' }}>NEXORA</span>
+          <span style={{ color: '#1a1a2e', fontWeight: 800, fontSize: '16px', letterSpacing: '1.5px' }}>NEXORA</span>
         </div>
-        <p style={{ color: '#999', fontSize: '11px', letterSpacing: '0.5px', paddingLeft: '40px' }}>Personal OS</p>
+        <p style={{ color: '#999', fontSize: '10px', letterSpacing: '0.5px', paddingLeft: '36px' }}>Personal OS</p>
       </div>
 
-      <nav style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden' }}>
+      <nav style={{ flex: 1 }}>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           {NAV_MAIN.map(item => <NavItem key={item.href} {...item} />)}
         </div>
-        <div style={{ height: '1px', background: '#e5e5ea', margin: '12px 4px' }} />
-        <p style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#aaa', padding: '0 8px', marginBottom: '6px' }}>Pessoal</p>
+        <div style={{ height: '1px', background: '#e5e5ea', margin: '8px 4px' }} />
+        <p style={{ fontSize: '9px', fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: '#aaa', padding: '0 8px', marginBottom: '4px' }}>Pessoal</p>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           {NAV_PERSONAL.map(item => <NavItem key={item.href} {...item} />)}
         </div>
       </nav>
 
-      <div style={{ borderTop: '1px solid #e5e5ea', paddingTop: '14px', marginTop: '8px' }}>
+      <div style={{ borderTop: '1px solid #e5e5ea', paddingTop: '8px', marginTop: '4px' }}>
         <button onClick={logout} style={{
           display: 'flex', alignItems: 'center', gap: '8px',
-          width: '100%', padding: '10px 12px', borderRadius: '8px',
+          width: '100%', padding: '7px 10px', borderRadius: '8px',
           background: 'transparent', border: 'none',
-          color: '#999', fontSize: '14px', cursor: 'pointer',
+          color: '#999', fontSize: '13px', cursor: 'pointer',
         }}>
-          <LogOut size={16} strokeWidth={1.75} />
+          <LogOut size={15} strokeWidth={1.75} />
           <span>Sair</span>
         </button>
       </div>
