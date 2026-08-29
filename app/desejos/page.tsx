@@ -4,8 +4,8 @@ import { supabase } from '@/lib/supabase'
 import Sidebar from '@/components/Sidebar'
 
 const USER_ID = 'paloma'
-const inp: any = {width:'100%',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none',boxSizing:'border-box'}
-const sel: any = {width:'100%',background:'#ffffff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none'}
+const inp: any = {width:'100%',background:'#fff',border:'2px solid #bbb',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none',boxSizing:'border-box'}
+const sel: any = {width:'100%',background:'#ffffff',border:'2px solid #bbb',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none'}
 function Fld({label,children}:{label:string,children:any}) {
   return <div><label style={{fontSize:'15px',color:'#444',display:'block',marginBottom:'4px'}}>{label}</label>{children}</div>
 }
@@ -77,13 +77,13 @@ export default function DesejosPage() {
           </div>
           {items.length > 0 && (
             <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'20px'}}>
-              <div style={{background:'#fffbe6',border:'1px solid #fff0b3',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#b8960f',fontSize:'22px',fontWeight:700}}>{aguardando}</p><p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Aguardando promoção</p></div>
-              <div style={{background:'#fff0f0',border:'1px solid #ffe0e0',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#e05252',fontSize:'22px',fontWeight:700}}>{urgentes}</p><p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Urgentes</p></div>
-              <div style={{background:'#f0faf5',border:'1px solid #ddf5e8',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#4caf7d',fontSize:'22px',fontWeight:700}}>{comprados}</p><p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Comprados</p></div>
+              <div style={{background:'#fff',border:'2px solid #eab308',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#854d0e',fontSize:'22px',fontWeight:700}}>{aguardando}</p><p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Aguardando promoção</p></div>
+              <div style={{background:'#fff',border:'2px solid #f87171',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#dc2626',fontSize:'22px',fontWeight:700}}>{urgentes}</p><p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Urgentes</p></div>
+              <div style={{background:'#fff',border:'1px solid #ddf5e8',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#15803d',fontSize:'22px',fontWeight:700}}>{comprados}</p><p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Comprados</p></div>
             </div>
           )}
           <div style={{display:'flex',gap:'10px',marginBottom:'16px',flexWrap:'wrap'}}>
-            <input placeholder="Buscar item..." value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1,minWidth:'160px',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'8px 12px',color:'#111',fontSize:'15px',outline:'none'}}/>
+            <input placeholder="Buscar item..." value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1,minWidth:'160px',background:'#fff',border:'2px solid #bbb',borderRadius:'10px',padding:'8px 12px',color:'#111',fontSize:'15px',outline:'none'}}/>
             <select value={filterType} onChange={e=>setFilterType(e.target.value)} style={{...sel,width:'auto',padding:'8px 12px',fontSize:'15px'}}><option value="Todos">Todos os tipos</option>{TYPES.map(t=><option key={t}>{t}</option>)}</select>
             <select value={filterStatus} onChange={e=>setFilterStatus(e.target.value)} style={{...sel,width:'auto',padding:'8px 12px',fontSize:'15px'}}><option value="Todos">Todos os status</option>{STATUS_LIST.map(s=><option key={s}>{s}</option>)}</select>
           </div>
@@ -104,17 +104,17 @@ export default function DesejosPage() {
                       </div>
                       <div style={{display:'flex',gap:'12px',marginTop:'5px',flexWrap:'wrap',alignItems:'center'}}>
                         <span style={{color:'#444',fontSize:'15px'}}>{item.category}</span>
-                        {item.target_price && <span style={{color:'#4caf7d',fontSize:'15px',fontWeight:600}}>Alvo: {fmt(item.target_price)}</span>}
+                        {item.target_price && <span style={{color:'#15803d',fontSize:'15px',fontWeight:600}}>Alvo: {fmt(item.target_price)}</span>}
                         {item.current_price && <span style={{color:'#333',fontSize:'15px'}}>Atual: {fmt(item.current_price)}</span>}
-                        {diff!==null&&diff>0 && <span style={{color:'#e05252',fontSize:'15px'}}>↑ {diff}% acima</span>}
-                        {diff!==null&&diff<=0 && <span style={{color:'#4caf7d',fontSize:'15px'}}>✓ Dentro do alvo!</span>}
+                        {diff!==null&&diff>0 && <span style={{color:'#dc2626',fontSize:'15px'}}>↑ {diff}% acima</span>}
+                        {diff!==null&&diff<=0 && <span style={{color:'#15803d',fontSize:'15px'}}>✓ Dentro do alvo!</span>}
                       </div>
                       {item.notes && <p style={{color:'#444',fontSize:'15px',marginTop:'4px'}}>{item.notes}</p>}
                     </div>
                     <div style={{display:'flex',gap:'6px',flexShrink:0}}>
-                      {item.url && <a href={item.url} target="_blank" rel="noopener noreferrer" style={{padding:'5px 9px',background:'#e8e4ff',border:'1px solid #d4cdff',borderRadius:'7px',color:'#6d5ce0',fontSize:'15px',textDecoration:'none'}}>Ver</a>}
+                      {item.url && <a href={item.url} target="_blank" rel="noopener noreferrer" style={{padding:'5px 9px',background:'#fff',border:'2px solid #7c3aed',borderRadius:'7px',color:'#5b21b6',fontSize:'15px',textDecoration:'none'}}>Ver</a>}
                       <button onClick={()=>openEdit(item)} style={{padding:'5px 9px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Editar</button>
-                      <button onClick={()=>remove(item.id)} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+                      <button onClick={()=>remove(item.id)} style={{padding:'5px 8px',background:'#fff',border:'none',borderRadius:'7px',color:'#dc2626',fontSize:'15px',cursor:'pointer'}}>✕</button>
                     </div>
                   </div>
                 )
@@ -125,7 +125,7 @@ export default function DesejosPage() {
       </div>
       {showForm && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',backdropFilter:'blur(4px)',zIndex:50,overflowY:'auto',display:'flex',justifyContent:'center',padding:'20px'}}>
-          <div style={{width:'100%',maxWidth:'520px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #d0d0d8',height:'fit-content'}}>
+          <div style={{width:'100%',maxWidth:'520px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'2px solid #bbb',height:'fit-content'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
               <h2 style={{color:'#111',fontSize:'18px',fontWeight:600}}>{editing?'Editar Item':'Novo Item'}</h2>
               <button onClick={()=>setShowForm(false)} style={{background:'none',border:'none',color:'#444',cursor:'pointer',fontSize:'18px'}}>✕</button>
@@ -149,7 +149,7 @@ export default function DesejosPage() {
             </div>
             <div style={{display:'flex',gap:'8px',marginTop:'20px'}}>
               <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
+              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'2px solid #bbb',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>

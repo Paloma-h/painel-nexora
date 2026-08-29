@@ -10,8 +10,8 @@ const USER_ID = 'paloma'
 
 
 
-const inp: any = {width:'100%',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none',boxSizing:'border-box'}
-const sel: any = {width:'100%',background:'#ffffff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none'}
+const inp: any = {width:'100%',background:'#fff',border:'2px solid #bbb',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none',boxSizing:'border-box'}
+const sel: any = {width:'100%',background:'#ffffff',border:'2px solid #bbb',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none'}
 
 function Fld({label,children}:{label:string,children:any}) {
   return <div><label style={{fontSize:'15px',color:'#444',display:'block',marginBottom:'4px'}}>{label}</label>{children}</div>
@@ -147,16 +147,16 @@ export default function EducacaoPage() {
           {/* KPIs */}
           {cursos.length > 0 && (
             <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'20px'}}>
-              <div style={{background:'#edeaff',border:'1px solid #e0dbff',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
-                <p style={{color:'#6d5ce0',fontSize:'22px',fontWeight:700}}>{emAndamento}</p>
+              <div style={{background:'#fff',border:'1px solid #e0dbff',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
+                <p style={{color:'#5b21b6',fontSize:'22px',fontWeight:700}}>{emAndamento}</p>
                 <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Em andamento</p>
               </div>
-              <div style={{background:'#fffbe6',border:'1px solid #fff0b3',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
-                <p style={{color:'#b8960f',fontSize:'22px',fontWeight:700}}>{pausados}</p>
+              <div style={{background:'#fff',border:'2px solid #eab308',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
+                <p style={{color:'#854d0e',fontSize:'22px',fontWeight:700}}>{pausados}</p>
                 <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Pausados</p>
               </div>
-              <div style={{background:'#f0faf5',border:'1px solid #ddf5e8',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
-                <p style={{color:'#4caf7d',fontSize:'22px',fontWeight:700}}>{concluidos}</p>
+              <div style={{background:'#fff',border:'1px solid #ddf5e8',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
+                <p style={{color:'#15803d',fontSize:'22px',fontWeight:700}}>{concluidos}</p>
                 <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Concluídos</p>
               </div>
             </div>
@@ -164,7 +164,7 @@ export default function EducacaoPage() {
 
           {/* Filtros */}
           <div style={{display:'flex',gap:'10px',marginBottom:'16px'}}>
-            <input placeholder="Buscar curso ou instrutor..." value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1,background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'8px 12px',color:'#111',fontSize:'15px',outline:'none'}}/>
+            <input placeholder="Buscar curso ou instrutor..." value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1,background:'#fff',border:'2px solid #bbb',borderRadius:'10px',padding:'8px 12px',color:'#111',fontSize:'15px',outline:'none'}}/>
             <select value={filterStatus} onChange={e=>setFilterStatus(e.target.value)} style={{...sel,width:'auto',padding:'8px 12px',fontSize:'15px'}}>
               <option value="Todos">Todos</option>
               {STATUS_LIST.map(s=><option key={s}>{s}</option>)}
@@ -207,25 +207,25 @@ export default function EducacaoPage() {
                         )}
                       </div>
                       <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
-                        {item.url && <a href={item.url} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'#e8e4ff',border:'1px solid #d4cdff',borderRadius:'7px',color:'#6d5ce0',fontSize:'15px',textDecoration:'none'}}>Abrir</a>}
+                        {item.url && <a href={item.url} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'#fff',border:'2px solid #7c3aed',borderRadius:'7px',color:'#5b21b6',fontSize:'15px',textDecoration:'none'}}>Abrir</a>}
                         <button onClick={e=>{e.stopPropagation();openEdit(item)}} style={{padding:'5px 9px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Editar</button>
-                        <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+                        <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'#fff',border:'none',borderRadius:'7px',color:'#dc2626',fontSize:'15px',cursor:'pointer'}}>✕</button>
                         <span style={{color:'#555',fontSize:'15px'}}>{expanded?'▲':'▼'}</span>
                       </div>
                     </div>
 
                     {/* Detalhes expandidos */}
                     {expanded && (
-                      <div style={{borderTop:'1px solid #d0d0d8',padding:'14px 16px',background:'rgba(0,0,0,0.2)'}}>
+                      <div style={{borderTop:'2px solid #bbb',padding:'14px 16px',background:'rgba(0,0,0,0.2)'}}>
                         <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'12px',marginBottom:'12px'}}>
                           <div style={{background:'#fff',borderRadius:'10px',padding:'12px',textAlign:'center'}}>
                             <p style={{color:'#444',fontSize:'12px',marginBottom:'4px'}}>Módulo atual</p>
-                            <p style={{color:'#6d5ce0',fontSize:'18px',fontWeight:700}}>{item.current_module||'—'}{item.total_modules?` / ${item.total_modules}`:''}</p>
+                            <p style={{color:'#5b21b6',fontSize:'18px',fontWeight:700}}>{item.current_module||'—'}{item.total_modules?` / ${item.total_modules}`:''}</p>
                             {item.current_module_name && <p style={{color:'#444',fontSize:'12px',marginTop:'2px'}}>{item.current_module_name}</p>}
                           </div>
                           <div style={{background:'#fff',borderRadius:'10px',padding:'12px',textAlign:'center'}}>
                             <p style={{color:'#444',fontSize:'12px',marginBottom:'4px'}}>Aula atual</p>
-                            <p style={{color:'#4caf7d',fontSize:'18px',fontWeight:700}}>{item.current_lesson||'—'}{item.total_lessons?` / ${item.total_lessons}`:''}</p>
+                            <p style={{color:'#15803d',fontSize:'18px',fontWeight:700}}>{item.current_lesson||'—'}{item.total_lessons?` / ${item.total_lessons}`:''}</p>
                           </div>
                           <div style={{background:'#fff',borderRadius:'10px',padding:'12px',textAlign:'center'}}>
                             <p style={{color:'#444',fontSize:'12px',marginBottom:'4px'}}>Progresso</p>
@@ -251,7 +251,7 @@ export default function EducacaoPage() {
       {/* Modal de formulário */}
       {showForm && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',backdropFilter:'blur(4px)',zIndex:50,overflowY:'auto',display:'flex',justifyContent:'center',padding:'20px'}}>
-          <div style={{width:'100%',maxWidth:'560px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #d0d0d8',height:'fit-content'}}>
+          <div style={{width:'100%',maxWidth:'560px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'2px solid #bbb',height:'fit-content'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
               <h2 style={{color:'#111',fontSize:'18px',fontWeight:600}}>{editing?'Editar Curso':'Novo Curso'}</h2>
               <button onClick={()=>setShowForm(false)} style={{background:'none',border:'none',color:'#444',cursor:'pointer',fontSize:'18px'}}>✕</button>
@@ -272,7 +272,7 @@ export default function EducacaoPage() {
 
               <Fld label="Link do curso"><input placeholder="https://..." value={form.url} onChange={e=>setForm((f:any)=>({...f,url:e.target.value}))} style={inp}/></Fld>
 
-              <div style={{borderTop:'1px solid #d0d0d8',paddingTop:'12px'}}>
+              <div style={{borderTop:'2px solid #bbb',paddingTop:'12px'}}>
                 <p style={{color:'#444',fontSize:'12px',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'10px'}}>Onde parei</p>
                 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr 1fr',gap:'8px'}}>
                   <Fld label="Módulo atual"><input type="number" min="0" placeholder="3" value={form.current_module} onChange={e=>setForm((f:any)=>({...f,current_module:e.target.value}))} style={inp}/></Fld>
@@ -301,7 +301,7 @@ export default function EducacaoPage() {
 
             <div style={{display:'flex',gap:'8px',marginTop:'20px'}}>
               <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
+              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'2px solid #bbb',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>

@@ -9,10 +9,10 @@ import Sidebar from '@/components/Sidebar'
 const USER_ID = 'paloma'
 
 const PRIOS = [
-  { key:'CRITICAL', label:'🔴 Urgente', color:'#e05252' },
-  { key:'HIGH',     label:'🟠 Alta',    color:'#e08c42' },
-  { key:'MEDIUM',   label:'🟡 Média',   color:'#b8960f' },
-  { key:'LOW',      label:'🟢 Depois',  color:'#4caf7d' },
+  { key:'CRITICAL', label:'🔴 Urgente', color:'#dc2626' },
+  { key:'HIGH',     label:'🟠 Alta',    color:'#c2410c' },
+  { key:'MEDIUM',   label:'🟡 Média',   color:'#854d0e' },
+  { key:'LOW',      label:'🟢 Depois',  color:'#15803d' },
 ]
 
 
@@ -92,7 +92,7 @@ export default function PendenciasPage() {
     .sort((a, b) => (prioOrder[a.priority] ?? 2) - (prioOrder[b.priority] ?? 2))
   const done = tasks.filter(t => t.status === 'DONE')
 
-  const pColor: any = { CRITICAL:'#e05252', HIGH:'#e08c42', MEDIUM:'#d4b84a', LOW:'#4caf7d' }
+  const pColor: any = { CRITICAL:'#dc2626', HIGH:'#ea580c', MEDIUM:'#ca8a04', LOW:'#16a34a' }
 
   return (
     <div style={{display:'flex',minHeight:'100vh',background:'#ffffff'}}>
@@ -109,7 +109,7 @@ export default function PendenciasPage() {
           </div>
 
           {/* ── CAPTURA RÁPIDA ── */}
-          <div style={{background:'#fff',border:'1px solid #d0d0d8',borderRadius:'16px',padding:'18px',marginBottom:'32px'}}>
+          <div style={{background:'#fff',border:'2px solid #bbb',borderRadius:'16px',padding:'18px',marginBottom:'32px'}}>
             <div style={{display:'flex',gap:'8px',marginBottom:'12px'}}>
               <input
                 autoFocus
@@ -117,7 +117,7 @@ export default function PendenciasPage() {
                 value={quickTitle}
                 onChange={e => setQuickTitle(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && add()}
-                style={{flex:1,background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'12px 14px',color:'#111',fontSize:'15px',outline:'none'}}
+                style={{flex:1,background:'#fff',border:'2px solid #bbb',borderRadius:'10px',padding:'12px 14px',color:'#111',fontSize:'15px',outline:'none'}}
               />
               <button
                 onClick={add}
@@ -165,7 +165,7 @@ export default function PendenciasPage() {
                           value={editTitle}
                           onChange={e => setEditTitle(e.target.value)}
                           onKeyDown={e => { if(e.key==='Enter') saveEdit(t.id); if(e.key==='Escape') setEditingId(null) }}
-                          style={{width:'100%',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'8px',padding:'10px 12px',color:'#111',fontSize:'15px',outline:'none',marginBottom:'10px',boxSizing:'border-box'}}
+                          style={{width:'100%',background:'#fff',border:'2px solid #bbb',borderRadius:'8px',padding:'10px 12px',color:'#111',fontSize:'15px',outline:'none',marginBottom:'10px',boxSizing:'border-box'}}
                         />
                         <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'6px',marginBottom:'10px'}}>
                           {PRIOS.map(p => (
@@ -174,8 +174,8 @@ export default function PendenciasPage() {
                         </div>
                         <div style={{display:'flex',gap:'8px'}}>
                           <button onClick={() => saveEdit(t.id)} style={{flex:1,padding:'9px',background:'#5b50d6',border:'none',borderRadius:'8px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>Salvar</button>
-                          <button onClick={() => setEditingId(null)} style={{padding:'9px 14px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'8px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
-                          <button onClick={() => { remove(t.id); setEditingId(null) }} style={{padding:'9px 14px',background:'#ffe0e0',border:'1px solid #ffc8c8',borderRadius:'8px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>Apagar</button>
+                          <button onClick={() => setEditingId(null)} style={{padding:'9px 14px',background:'transparent',border:'2px solid #bbb',borderRadius:'8px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
+                          <button onClick={() => { remove(t.id); setEditingId(null) }} style={{padding:'9px 14px',background:'#fff',border:'2px solid #ef4444',borderRadius:'8px',color:'#dc2626',fontSize:'15px',cursor:'pointer'}}>Apagar</button>
                         </div>
                       </div>
                     ) : (
@@ -223,7 +223,7 @@ export default function PendenciasPage() {
                     <div key={t.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'12px 16px',borderRadius:'12px',background:'#fff',opacity:0.5}}>
                       <div onClick={() => reopen(t.id)} style={{width:'26px',height:'26px',borderRadius:'8px',background:'#5b50d6',flexShrink:0,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'15px',color:'#111'}}>✓</div>
                       <p style={{flex:1,color:'#444',fontSize:'15px',textDecoration:'line-through'}}>{t.title}</p>
-                      <button onClick={() => remove(t.id)} style={{padding:'4px 8px',background:'#fff0f0',border:'none',borderRadius:'6px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+                      <button onClick={() => remove(t.id)} style={{padding:'4px 8px',background:'#fff',border:'none',borderRadius:'6px',color:'#dc2626',fontSize:'15px',cursor:'pointer'}}>✕</button>
                     </div>
                   ))}
                 </div>

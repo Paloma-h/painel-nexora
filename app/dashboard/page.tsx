@@ -85,7 +85,7 @@ export default function DashboardPage() {
   // Contas atrasadas
   const overdueBills = bills.filter(b => b.due_date && b.due_date < todayStr).sort((a: any, b: any) => a.due_date.localeCompare(b.due_date)).slice(0,5)
 
-  const priorityColor: any = {CRITICAL:'#e05252',HIGH:'#e08c42',MEDIUM:'#d4b84a',LOW:'#4caf7d'}
+  const priorityColor: any = {CRITICAL:'#dc2626',HIGH:'#ea580c',MEDIUM:'#ca8a04',LOW:'#16a34a'}
   const prioLabel: any = {CRITICAL:'🔴 Urgente',HIGH:'🟠 Alta',MEDIUM:'🟡 Média',LOW:'🟢 Depois'}
   const dias = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado']
   const meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro']
@@ -142,39 +142,39 @@ export default function DashboardPage() {
           </div>
 
           {/* KPIs */}
-          <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'28px'}}>
-            <div style={{background:'linear-gradient(135deg,#e8e4ff 0%,#f0edff 100%)',border:'1px solid #d4cdff',borderRadius:'14px',padding:'16px'}}>
-              <p style={{color:'#6d5ce0',fontSize:'12px',fontWeight:600,letterSpacing:'0.8px',textTransform:'uppercase',marginBottom:'8px'}}>📋 Hoje</p>
-              <p style={{color:'#111',fontSize:'28px',fontWeight:800,lineHeight:1}}>{todayTasks.length}</p>
-              {doneTasks.length > 0 && <p style={{color:'#2d9960',fontSize:'12px',marginTop:'4px'}}>✓ {doneTasks.length} feita{doneTasks.length>1?'s':''}</p>}
+          <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'14px',marginBottom:'28px'}}>
+            <div style={{background:'#7c3aed',borderRadius:'14px',padding:'18px',boxShadow:'0 4px 12px rgba(124,58,237,0.3)'}}>
+              <p style={{color:'#fff',fontSize:'13px',fontWeight:700,letterSpacing:'0.8px',textTransform:'uppercase',marginBottom:'8px',opacity:0.9}}>📋 HOJE</p>
+              <p style={{color:'#fff',fontSize:'32px',fontWeight:800,lineHeight:1}}>{todayTasks.length}</p>
+              {doneTasks.length > 0 && <p style={{color:'#c4f0d5',fontSize:'13px',marginTop:'6px',fontWeight:600}}>✓ {doneTasks.length} feita{doneTasks.length>1?'s':''}</p>}
             </div>
-            <div style={{background:overdueTasks.length>0?'linear-gradient(135deg,#ffe0e0 0%,#fff0f0 100%)':'#f8f8fa',border:`1px solid ${overdueTasks.length>0?'#ffb0b0':'#e8e8ee'}`,borderRadius:'14px',padding:'16px'}}>
-              <p style={{color:overdueTasks.length>0?'#cc3333':'#999',fontSize:'12px',fontWeight:600,letterSpacing:'0.8px',textTransform:'uppercase',marginBottom:'8px'}}>⚠️ Atrasadas</p>
-              <p style={{color:overdueTasks.length>0?'#ff7070':'#999',fontSize:'28px',fontWeight:800,lineHeight:1}}>{overdueTasks.length}</p>
+            <div style={{background:overdueTasks.length>0?'#dc2626':'#e0e0e0',borderRadius:'14px',padding:'18px',boxShadow:overdueTasks.length>0?'0 4px 12px rgba(220,38,38,0.3)':'none'}}>
+              <p style={{color:overdueTasks.length>0?'#fff':'#666',fontSize:'13px',fontWeight:700,letterSpacing:'0.8px',textTransform:'uppercase',marginBottom:'8px',opacity:0.9}}>⚠️ ATRASADAS</p>
+              <p style={{color:overdueTasks.length>0?'#fff':'#999',fontSize:'32px',fontWeight:800,lineHeight:1}}>{overdueTasks.length}</p>
             </div>
-            <div style={{background:urgentPendencias.length>0?'linear-gradient(135deg,#ffe8d0 0%,#fff5eb 100%)':'#f8f8fa',border:`1px solid ${urgentPendencias.length>0?'#ffd9b0':'#e8e8ee'}`,borderRadius:'14px',padding:'16px'}}>
-              <p style={{color:urgentPendencias.length>0?'#cc7020':'#999',fontSize:'12px',fontWeight:600,letterSpacing:'0.8px',textTransform:'uppercase',marginBottom:'8px'}}>🔥 Pendências</p>
-              <p style={{color:urgentPendencias.length>0?'#e08c42':'#999',fontSize:'28px',fontWeight:800,lineHeight:1}}>{urgentPendencias.length}</p>
+            <div style={{background:urgentPendencias.length>0?'#ea580c':'#e0e0e0',borderRadius:'14px',padding:'18px',boxShadow:urgentPendencias.length>0?'0 4px 12px rgba(234,88,12,0.3)':'none'}}>
+              <p style={{color:urgentPendencias.length>0?'#fff':'#666',fontSize:'13px',fontWeight:700,letterSpacing:'0.8px',textTransform:'uppercase',marginBottom:'8px',opacity:0.9}}>🔥 PENDÊNCIAS</p>
+              <p style={{color:urgentPendencias.length>0?'#fff':'#999',fontSize:'32px',fontWeight:800,lineHeight:1}}>{urgentPendencias.length}</p>
             </div>
-            <div style={{background:todayFollowups.length>0?'linear-gradient(135deg,#ddf5e8 0%,#f0faf5 100%)':'#f8f8fa',border:`1px solid ${todayFollowups.length>0?'#a0e0be':'#e8e8ee'}`,borderRadius:'14px',padding:'16px'}}>
-              <p style={{color:todayFollowups.length>0?'#2d9960':'#999',fontSize:'12px',fontWeight:600,letterSpacing:'0.8px',textTransform:'uppercase',marginBottom:'8px'}}>👥 Follow-ups</p>
-              <p style={{color:todayFollowups.length>0?'#5dcc8a':'#999',fontSize:'28px',fontWeight:800,lineHeight:1}}>{todayFollowups.length}</p>
+            <div style={{background:todayFollowups.length>0?'#16a34a':'#e0e0e0',borderRadius:'14px',padding:'18px',boxShadow:todayFollowups.length>0?'0 4px 12px rgba(22,163,74,0.3)':'none'}}>
+              <p style={{color:todayFollowups.length>0?'#fff':'#666',fontSize:'13px',fontWeight:700,letterSpacing:'0.8px',textTransform:'uppercase',marginBottom:'8px',opacity:0.9}}>👥 FOLLOW-UPS</p>
+              <p style={{color:todayFollowups.length>0?'#fff':'#999',fontSize:'32px',fontWeight:800,lineHeight:1}}>{todayFollowups.length}</p>
             </div>
           </div>
 
           {/* Alertas críticos */}
           {(alertClients.length > 0 || todayFollowups.length > 0) && (
-            <div style={{marginBottom:'24px',background:'#fff0f0',border:'1px solid #ffe0e0',borderRadius:'14px',padding:'16px'}}>
+            <div style={{marginBottom:'24px',background:'#fff',border:'2px solid #f87171',borderRadius:'14px',padding:'16px'}}>
               <SectionTitle label="⚡ Ação necessária hoje" color="#e05252" />
               <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
                 {todayFollowups.map(l => (
-                  <div key={l.id} style={{display:'flex',alignItems:'center',gap:'10px',padding:'10px 12px',borderRadius:'10px',background:'#f0edff',border:'1px solid #e8e4ff'}}>
-                    <div style={{width:'30px',height:'30px',borderRadius:'50%',background:'#d4cdff',display:'flex',alignItems:'center',justifyContent:'center',color:'#6d5ce0',fontWeight:700,fontSize:'15px',flexShrink:0}}>{l.name.charAt(0).toUpperCase()}</div>
+                  <div key={l.id} style={{display:'flex',alignItems:'center',gap:'10px',padding:'10px 12px',borderRadius:'10px',background:'#fff',border:'2px solid #a78bfa'}}>
+                    <div style={{width:'30px',height:'30px',borderRadius:'50%',background:'#c4b5fd',display:'flex',alignItems:'center',justifyContent:'center',color:'#5b21b6',fontWeight:700,fontSize:'15px',flexShrink:0}}>{l.name.charAt(0).toUpperCase()}</div>
                     <div style={{flex:1}}>
                       <p style={{color:'#111',fontSize:'15px',fontWeight:500}}>{l.name}</p>
-                      <p style={{color:'#7c6ff7',fontSize:'12px'}}>Follow-up CRM{l.followup_notes?` · ${l.followup_notes}`:''}</p>
+                      <p style={{color:'#6d28d9',fontSize:'12px'}}>Follow-up CRM{l.followup_notes?` · ${l.followup_notes}`:''}</p>
                     </div>
-                    {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{padding:'4px 9px',background:'#e0fce9',border:'1px solid #c0f5d5',borderRadius:'6px',color:'#25d366',fontSize:'15px',textDecoration:'none',fontWeight:600}}>WhatsApp</a>}
+                    {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{padding:'4px 9px',background:'#fff',border:'2px solid #22c55e',borderRadius:'6px',color:'#16a34a',fontSize:'15px',textDecoration:'none',fontWeight:600}}>WhatsApp</a>}
                   </div>
                 ))}
                 {alertClients.map(c => {
@@ -185,7 +185,7 @@ export default function DashboardPage() {
                   return (
                     <div key={c.id} style={{padding:'12px 14px',borderRadius:'10px',background:isOver?'#fff0f0':'#fff5eb',border:`1px solid ${isOver?'#ffc8c8':'#ffe8d0'}`}}>
                       <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
-                        <div style={{width:'32px',height:'32px',borderRadius:'50%',background:'#c0ebd3',display:'flex',alignItems:'center',justifyContent:'center',color:'#4caf7d',fontWeight:700,fontSize:'15px',flexShrink:0}}>{c.name.charAt(0).toUpperCase()}</div>
+                        <div style={{width:'32px',height:'32px',borderRadius:'50%',background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',color:'#15803d',fontWeight:700,fontSize:'15px',flexShrink:0}}>{c.name.charAt(0).toUpperCase()}</div>
                         <div style={{flex:1}}>
                           <p style={{color:'#111',fontSize:'15px',fontWeight:600}}>{c.name}</p>
                           <p style={{color:'#333',fontSize:'12px',marginTop:'2px'}}>Cliente · Comprou {c.pots_bought} {c.pots_bought===1?'pote':'potes'}</p>
@@ -193,18 +193,18 @@ export default function DashboardPage() {
                         <span style={{color:isOver?'#e05252':'#e08c42',fontSize:'15px',fontWeight:700}}>{isOver?'Potes acabaram!':d===0?'Acaba hoje':`${d} dias`}</span>
                       </div>
                       <div style={{display:'flex',alignItems:'center',gap:'8px',marginTop:'8px',paddingLeft:'42px'}}>
-                        <span style={{background:'#e8e4ff',border:'1px solid #d4cdff',borderRadius:'6px',padding:'3px 8px',color:'#6d5ce0',fontSize:'12px',fontWeight:600}}>📦 {c.product}</span>
+                        <span style={{background:'#fff',border:'2px solid #7c3aed',borderRadius:'6px',padding:'3px 8px',color:'#5b21b6',fontSize:'12px',fontWeight:600}}>📦 {c.product}</span>
                         {prodEstoque ? (
                           <span style={{background:temEstoque?'#ddf5e8':'#ffe0e0',border:`1px solid ${temEstoque?'#c0ebd3':'#ffc8c8'}`,borderRadius:'6px',padding:'3px 8px',color:temEstoque?'#4caf7d':'#e05252',fontSize:'12px',fontWeight:600}}>
                             {temEstoque ? `✅ ${prodEstoque.quantity} em estoque` : '❌ Sem estoque — pedir ao fornecedor'}
                           </span>
                         ) : (
-                          <span style={{background:'#fff0b3',border:'1px solid #ffe680',borderRadius:'6px',padding:'3px 8px',color:'#b8960f',fontSize:'12px',fontWeight:600}}>⚠️ Produto não cadastrado no estoque</span>
+                          <span style={{background:'#fff0b3',border:'2px solid #eab308',borderRadius:'6px',padding:'3px 8px',color:'#854d0e',fontSize:'12px',fontWeight:600}}>⚠️ Produto não cadastrado no estoque</span>
                         )}
                       </div>
                       <div style={{display:'flex',gap:'6px',marginTop:'8px',paddingLeft:'42px'}}>
-                        {c.whatsapp && <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{padding:'5px 10px',background:'#e0fce9',border:'1px solid #c0f5d5',borderRadius:'6px',color:'#25d366',fontSize:'15px',textDecoration:'none',fontWeight:600}}>💬 WhatsApp</a>}
-                        <Link href="/crm" style={{padding:'5px 10px',background:'#e8e4ff',border:'1px solid #d4cdff',borderRadius:'6px',color:'#6d5ce0',fontSize:'15px',textDecoration:'none',fontWeight:600}}>📋 Ver no CRM</Link>
+                        {c.whatsapp && <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{padding:'5px 10px',background:'#fff',border:'2px solid #22c55e',borderRadius:'6px',color:'#16a34a',fontSize:'15px',textDecoration:'none',fontWeight:600}}>💬 WhatsApp</a>}
+                        <Link href="/crm" style={{padding:'5px 10px',background:'#fff',border:'2px solid #7c3aed',borderRadius:'6px',color:'#5b21b6',fontSize:'15px',textDecoration:'none',fontWeight:600}}>📋 Ver no CRM</Link>
                       </div>
                     </div>
                   )
@@ -225,13 +225,13 @@ export default function DashboardPage() {
                 <SectionTitle label="👥 Follow-ups CRM" color="#a89ff7" />
                 <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
                   {[...todayFollowups,...upcomingFollowups].slice(0,5).map(l => (
-                    <div key={l.id} style={{display:'flex',alignItems:'center',gap:'10px',padding:'8px 10px',borderRadius:'10px',background:'#f0edff',border:'1px solid #e8e4ff'}}>
-                      <div style={{width:'28px',height:'28px',borderRadius:'50%',background:'#d4cdff',display:'flex',alignItems:'center',justifyContent:'center',color:'#6d5ce0',fontWeight:700,fontSize:'12px',flexShrink:0}}>{l.name.charAt(0).toUpperCase()}</div>
+                    <div key={l.id} style={{display:'flex',alignItems:'center',gap:'10px',padding:'8px 10px',borderRadius:'10px',background:'#fff',border:'2px solid #a78bfa'}}>
+                      <div style={{width:'28px',height:'28px',borderRadius:'50%',background:'#c4b5fd',display:'flex',alignItems:'center',justifyContent:'center',color:'#5b21b6',fontWeight:700,fontSize:'12px',flexShrink:0}}>{l.name.charAt(0).toUpperCase()}</div>
                       <div style={{flex:1,minWidth:0}}>
                         <p style={{color:'#111',fontSize:'15px',fontWeight:500}}>{l.name}</p>
-                        <p style={{color:'#5b50d6',fontSize:'11px',marginTop:'1px'}}>{l.next_followup===todayStr?'Hoje':formatDate(l.next_followup)}</p>
+                        <p style={{color:'#4c1d95',fontSize:'11px',marginTop:'1px'}}>{l.next_followup===todayStr?'Hoje':formatDate(l.next_followup)}</p>
                       </div>
-                      {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{padding:'3px 7px',background:'#e0fce9',border:'1px solid #c0f5d5',borderRadius:'5px',color:'#25d366',fontSize:'12px',textDecoration:'none'}}>WA</a>}
+                      {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{padding:'3px 7px',background:'#fff',border:'2px solid #22c55e',borderRadius:'5px',color:'#16a34a',fontSize:'12px',textDecoration:'none'}}>WA</a>}
                     </div>
                   ))}
                 </div>
@@ -256,23 +256,23 @@ export default function DashboardPage() {
                           <div style={{width:'5px',height:'5px',borderRadius:'50%',background:priorityColor[t.priority]||'#888',flexShrink:0}}/>
                           <div style={{flex:1,minWidth:0}}>
                             <p style={{color:'#111',fontSize:'15px',fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.title}</p>
-                            {t.has_financial && t.amount > 0 && <p style={{color:'#b8960f',fontSize:'11px',marginTop:'1px'}}>R$ {Number(t.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>}
+                            {t.has_financial && t.amount > 0 && <p style={{color:'#854d0e',fontSize:'11px',marginTop:'1px'}}>R$ {Number(t.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>}
                           </div>
-                          {overdue && <span style={{color:'#e05252',fontSize:'8px',fontWeight:600,flexShrink:0}}>ATRASADO</span>}
+                          {overdue && <span style={{color:'#dc2626',fontSize:'8px',fontWeight:600,flexShrink:0}}>ATRASADO</span>}
                           {rescheduleId === t.id ? (
                             <div style={{display:'flex',alignItems:'center',gap:'3px',flexShrink:0}}>
-                              <input type="date" value={rescheduleDate} onChange={e => setRescheduleDate(e.target.value)} style={{background:'#fff',border:'1px solid #c4bdff',borderRadius:'5px',color:'#111',fontSize:'12px',padding:'2px 4px',outline:'none',colorScheme:'light',width:'110px'}} />
-                              <button onClick={() => rescheduleTask(t.id, rescheduleDate)} style={{padding:'3px 6px',background:'#e8e4ff',border:'none',borderRadius:'5px',color:'#6d5ce0',fontSize:'11px',cursor:'pointer',fontWeight:600}}>OK</button>
+                              <input type="date" value={rescheduleDate} onChange={e => setRescheduleDate(e.target.value)} style={{background:'#fff',border:'2px solid #7c3aed',borderRadius:'5px',color:'#111',fontSize:'12px',padding:'2px 4px',outline:'none',colorScheme:'light',width:'110px'}} />
+                              <button onClick={() => rescheduleTask(t.id, rescheduleDate)} style={{padding:'3px 6px',background:'#fff',border:'none',borderRadius:'5px',color:'#5b21b6',fontSize:'11px',cursor:'pointer',fontWeight:600}}>OK</button>
                               <button onClick={() => {setRescheduleId(null);setRescheduleDate('')}} style={{padding:'3px 5px',background:'none',border:'none',color:'#444',fontSize:'11px',cursor:'pointer'}}>✕</button>
                             </div>
                           ) : (
-                            <button onClick={() => {setRescheduleId(t.id);setRescheduleDate(t.date)}} title="Reagendar" style={{padding:'3px 6px',background:'#e8e4ff',border:'none',borderRadius:'5px',color:'#6d5ce0',fontSize:'12px',cursor:'pointer',flexShrink:0}}>📅</button>
+                            <button onClick={() => {setRescheduleId(t.id);setRescheduleDate(t.date)}} title="Reagendar" style={{padding:'3px 6px',background:'#fff',border:'none',borderRadius:'5px',color:'#5b21b6',fontSize:'12px',cursor:'pointer',flexShrink:0}}>📅</button>
                           )}
-                          <button onClick={(e) => {e.stopPropagation();completeTask(t.id)}} title="Marcar como concluída" style={{padding:'5px 10px',background:'#ddf5e8',border:'1px solid #a0e0be',borderRadius:'6px',color:'#4caf7d',fontSize:'15px',cursor:'pointer',flexShrink:0,fontWeight:700}}>✓</button>
+                          <button onClick={(e) => {e.stopPropagation();completeTask(t.id)}} title="Marcar como concluída" style={{padding:'5px 10px',background:'#fff',border:'2px solid #16a34a',borderRadius:'6px',color:'#15803d',fontSize:'15px',cursor:'pointer',flexShrink:0,fontWeight:700}}>✓</button>
                         </div>
                       )
                     })}
-                    {allPending.length > 15 && <p style={{color:'#7c6ff7',fontSize:'15px',textAlign:'center',marginTop:'4px'}}>+{allPending.length-15} compromissos · <Link href="/agenda" style={{color:'#6d5ce0',textDecoration:'none'}}>Ver agenda →</Link></p>}
+                    {allPending.length > 15 && <p style={{color:'#6d28d9',fontSize:'15px',textAlign:'center',marginTop:'4px'}}>+{allPending.length-15} compromissos · <Link href="/agenda" style={{color:'#5b21b6',textDecoration:'none'}}>Ver agenda →</Link></p>}
                   </div>
                 }
               </div>
@@ -295,7 +295,7 @@ export default function DashboardPage() {
                         <span style={{color:priorityColor[p.priority]||'#999',fontSize:'8px',fontWeight:600,flexShrink:0}}>{prioLabel[p.priority]||''}</span>
                       </div>
                     ))}
-                    {pendencias.length > 15 && <p style={{color:'#cc7020',fontSize:'15px',textAlign:'center',marginTop:'4px'}}>+{pendencias.length-15} · <Link href="/pendencias" style={{color:'#e08c42',textDecoration:'none'}}>Ver todas →</Link></p>}
+                    {pendencias.length > 15 && <p style={{color:'#9a3412',fontSize:'15px',textAlign:'center',marginTop:'4px'}}>+{pendencias.length-15} · <Link href="/pendencias" style={{color:'#c2410c',textDecoration:'none'}}>Ver todas →</Link></p>}
                   </div>
                 }
               </div>
@@ -306,12 +306,12 @@ export default function DashboardPage() {
                   <SectionTitle label="💸 Contas atrasadas" color="#e05252" count={overdueBills.length} />
                   <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
                     {overdueBills.map(b => (
-                      <div key={b.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'10px',background:'#fff0f0',border:'1px solid #ffe0e0'}}>
+                      <div key={b.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'10px',background:'#fff',border:'2px solid #f87171'}}>
                         <div style={{flex:1,minWidth:0}}>
                           <p style={{color:'#111',fontSize:'15px',fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{b.name}</p>
-                          <p style={{color:'#cc3333',fontSize:'11px',marginTop:'1px'}}>Venceu: {new Date(b.due_date+'T12:00:00').toLocaleDateString('pt-BR')}</p>
+                          <p style={{color:'#b91c1c',fontSize:'11px',marginTop:'1px'}}>Venceu: {new Date(b.due_date+'T12:00:00').toLocaleDateString('pt-BR')}</p>
                         </div>
-                        {b.amount > 0 && <span style={{color:'#e05252',fontSize:'15px',fontWeight:600}}>R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
+                        {b.amount > 0 && <span style={{color:'#dc2626',fontSize:'15px',fontWeight:600}}>R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
                       </div>
                     ))}
                   </div>
@@ -324,12 +324,12 @@ export default function DashboardPage() {
                   <SectionTitle label="💰 Contas vencendo em breve" color="#d4b84a" count={upcomingBills.length} />
                   <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
                     {upcomingBills.map(b => (
-                      <div key={b.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'10px',background:'#fffbe6',border:'1px solid #fff0b3'}}>
+                      <div key={b.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'10px',background:'#fff',border:'2px solid #eab308'}}>
                         <div style={{flex:1,minWidth:0}}>
                           <p style={{color:'#111',fontSize:'15px',fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{b.name}</p>
                           <p style={{color:'#444',fontSize:'11px',marginTop:'1px'}}>{formatDate(b.due_date)}</p>
                         </div>
-                        {b.amount > 0 && <span style={{color:'#b8960f',fontSize:'15px',fontWeight:600}}>R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
+                        {b.amount > 0 && <span style={{color:'#854d0e',fontSize:'15px',fontWeight:600}}>R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
                       </div>
                     ))}
                   </div>

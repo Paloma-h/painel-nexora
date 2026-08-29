@@ -58,7 +58,7 @@ const catColor: any = {
 const inp: any = {
   width: '100%',
   background:'#fff',
-  border:'1px solid #d0d0d8',
+  border:'2px solid #bbb',
   borderRadius: '10px',
   padding: '9px 12px',
   color:'#111',
@@ -70,7 +70,7 @@ const inp: any = {
 const sel: any = {
   width: '100%',
   background: '#ffffff',
-  border:'1px solid #d0d0d8',
+  border:'2px solid #bbb',
   borderRadius: '10px',
   padding: '9px 12px',
   color:'#111',
@@ -94,7 +94,7 @@ function CamposEditor({ campos, onChange }: { campos: {label:string,value:string
         <div key={i} style={{display:'grid',gridTemplateColumns:'1fr 1.5fr auto',gap:'6px',alignItems:'center'}}>
           <input placeholder="Campo (ex: CPF)" value={c.label} onChange={e => update(i,'label',e.target.value)} style={{...inp,fontSize:'15px',padding:'7px 10px'}} />
           <input placeholder="Valor" value={c.value} onChange={e => update(i,'value',e.target.value)} style={{...inp,fontSize:'15px',padding:'7px 10px'}} />
-          <button onClick={() => remove(i)} style={{padding:'7px 9px',background:'#ffe0e0',border:'none',borderRadius:'8px',color:'#e05252',cursor:'pointer',fontSize:'15px'}}>✕</button>
+          <button onClick={() => remove(i)} style={{padding:'7px 9px',background:'#fff',border:'none',borderRadius:'8px',color:'#dc2626',cursor:'pointer',fontSize:'15px'}}>✕</button>
         </div>
       ))}
       <button onClick={add} style={{padding:'7px',background:'#fff',border:'1px dashed #e5e5e5',borderRadius:'8px',color:'#333',cursor:'pointer',fontSize:'15px'}}>+ Adicionar campo</button>
@@ -218,7 +218,7 @@ export default function DadosPage() {
           </div>
 
           {/* Tabs categorias */}
-          <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', borderBottom:'1px solid #d0d0d8', paddingBottom: '0' }}>
+          <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', borderBottom:'2px solid #bbb', paddingBottom: '0' }}>
             {CATEGORIAS.map(cat => (
               <button key={cat.id} onClick={() => setCategoria(cat.id)} style={{
                 padding: '10px 14px',
@@ -246,7 +246,7 @@ export default function DadosPage() {
               placeholder={`Buscar em ${CATEGORIAS.find(c=>c.id===categoria)?.label}...`}
               value={search}
               onChange={e => setSearch(e.target.value)}
-              style={{ flex: 1, background:'#fff', border:'1px solid #d0d0d8', borderRadius: '10px', padding: '9px 14px', color:'#111', fontSize: '13px', outline: 'none' }}
+              style={{ flex: 1, background:'#fff', border:'2px solid #bbb', borderRadius: '10px', padding: '9px 14px', color:'#111', fontSize: '13px', outline: 'none' }}
             />
             <button onClick={openNew} style={{ padding: '9px 20px', background: cc, border: 'none', borderRadius: '10px', color:'#111', fontSize: '13px', fontWeight: 600, cursor: 'pointer', flexShrink: 0 }}>
               + Adicionar
@@ -296,7 +296,7 @@ export default function DadosPage() {
 
                     {/* Campos expandidos */}
                     {expanded && (
-                      <div style={{ borderTop:'1px solid #d0d0d8', padding: '16px', background: 'rgba(0,0,0,0.2)' }}>
+                      <div style={{ borderTop:'2px solid #bbb', padding: '16px', background: 'rgba(0,0,0,0.2)' }}>
                         {item.campos && item.campos.length > 0 ? (
                           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '10px', marginBottom: item.notas ? '12px' : 0 }}>
                             {item.campos.map((c: any, i: number) => (
@@ -326,7 +326,7 @@ export default function DadosPage() {
       {/* ── Modal Formulário ── */}
       {showForm && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(4px)', zIndex: 50, overflowY: 'auto', display: 'flex', justifyContent: 'center', padding: '20px' }}>
-          <div style={{ width: '100%', maxWidth: '560px', background: '#ffffff', borderRadius: '16px', padding: '24px', border:'1px solid #d0d0d8', height: 'fit-content' }}>
+          <div style={{ width: '100%', maxWidth: '560px', background: '#ffffff', borderRadius: '16px', padding: '24px', border:'2px solid #bbb', height: 'fit-content' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
               <div>
                 <h2 style={{ color:'#111', fontSize: '16px', fontWeight: 600 }}>{editing ? 'Editar' : 'Novo registro'}</h2>
@@ -369,7 +369,7 @@ export default function DadosPage() {
               <button onClick={save} disabled={!titulo.trim() || saving} style={{ flex: 1, padding: '11px', background: cc, border: 'none', borderRadius: '10px', color:'#111', fontSize: '13px', fontWeight: 600, cursor: 'pointer', opacity: !titulo.trim() || saving ? 0.4 : 1 }}>
                 {saving ? 'Salvando...' : 'Salvar'}
               </button>
-              <button onClick={() => setShowForm(false)} style={{ padding: '11px 16px', background: 'transparent', border:'1px solid #d0d0d8', borderRadius: '10px', color:'#333', fontSize: '13px', cursor: 'pointer' }}>
+              <button onClick={() => setShowForm(false)} style={{ padding: '11px 16px', background: 'transparent', border:'2px solid #bbb', borderRadius: '10px', color:'#333', fontSize: '13px', cursor: 'pointer' }}>
                 Cancelar
               </button>
             </div>

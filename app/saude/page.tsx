@@ -10,8 +10,8 @@ const USER_ID = 'paloma'
 
 
 
-const inp: any = {width:'100%',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none',boxSizing:'border-box'}
-const sel: any = {width:'100%',background:'#ffffff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none'}
+const inp: any = {width:'100%',background:'#fff',border:'2px solid #bbb',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none',boxSizing:'border-box'}
+const sel: any = {width:'100%',background:'#ffffff',border:'2px solid #bbb',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none'}
 
 function Fld({label,children}:{label:string,children:any}) {
   return <div><label style={{fontSize:'15px',color:'#444',display:'block',marginBottom:'4px'}}>{label}</label>{children}</div>
@@ -71,7 +71,7 @@ function AtividadesTab() {
       <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
         {list.length===0 && <p style={{color:'#555',textAlign:'center',padding:'40px'}}>Nenhuma atividade cadastrada</p>}
         {list.map(item => (
-          <div key={item.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'14px 16px',borderRadius:'12px',background:'#fff',border:'1px solid #d0d0d8',opacity:item.active?1:0.5}}>
+          <div key={item.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'14px 16px',borderRadius:'12px',background:'#fff',border:'2px solid #bbb',opacity:item.active?1:0.5}}>
             <div style={{width:'40px',height:'40px',borderRadius:'10px',background:`${typeColor[item.type]||'#888'}22`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'18px',flexShrink:0}}>
               {item.type==='Musculação'?'🏋️':item.type==='Cardio'||item.type==='Corrida'?'🏃':item.type==='Yoga'||item.type==='Pilates'?'🧘':item.type==='Caminhada'?'🚶':item.type==='Natação'?'🏊':'⚡'}
             </div>
@@ -88,7 +88,7 @@ function AtividadesTab() {
             <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
               <button onClick={()=>toggleActive(item)} style={{padding:'5px 10px',background:item.active?'#ddf5e8':'#f5f5f5',border:'none',borderRadius:'7px',color:item.active?'#4caf7d':'#999',fontSize:'15px',cursor:'pointer'}}>{item.active?'Ativa':'Inativa'}</button>
               <button onClick={()=>openEdit(item)} style={{padding:'5px 10px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Editar</button>
-              <button onClick={()=>remove(item.id)} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+              <button onClick={()=>remove(item.id)} style={{padding:'5px 8px',background:'#fff',border:'none',borderRadius:'7px',color:'#dc2626',fontSize:'15px',cursor:'pointer'}}>✕</button>
             </div>
           </div>
         ))}
@@ -96,7 +96,7 @@ function AtividadesTab() {
 
       {showForm && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',backdropFilter:'blur(4px)',zIndex:50,display:'flex',justifyContent:'center',alignItems:'flex-start',padding:'40px 20px',overflowY:'auto'}}>
-          <div style={{width:'100%',maxWidth:'480px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #d0d0d8'}}>
+          <div style={{width:'100%',maxWidth:'480px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'2px solid #bbb'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
               <h2 style={{color:'#111',fontSize:'18px',fontWeight:600}}>{editing?'Editar Atividade':'Nova Atividade'}</h2>
               <button onClick={()=>setShowForm(false)} style={{background:'none',border:'none',color:'#444',cursor:'pointer',fontSize:'18px'}}>✕</button>
@@ -119,7 +119,7 @@ function AtividadesTab() {
             </div>
             <div style={{display:'flex',gap:'8px',marginTop:'20px'}}>
               <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
+              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'2px solid #bbb',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>
@@ -172,12 +172,12 @@ function MedidasTab() {
       {latest && (
         <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'10px',marginBottom:'24px'}}>
           {[
-            {label:'Peso',value:latest.weight,unit:'kg',color:'#6d5ce0'},
-            {label:'Cintura',value:latest.waist,unit:'cm',color:'#4caf7d'},
-            {label:'Quadril',value:latest.hip,unit:'cm',color:'#e08c42'},
+            {label:'Peso',value:latest.weight,unit:'kg',color:'#5b21b6'},
+            {label:'Cintura',value:latest.waist,unit:'cm',color:'#15803d'},
+            {label:'Quadril',value:latest.hip,unit:'cm',color:'#c2410c'},
             {label:'Peito',value:latest.chest,unit:'cm',color:'#4267B2'},
           ].map(m => m.value && (
-            <div key={m.label} style={{background:'#fff',border:'1px solid #d0d0d8',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
+            <div key={m.label} style={{background:'#fff',border:'2px solid #bbb',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
               <p style={{color:'#444',fontSize:'12px',marginBottom:'4px'}}>{m.label}</p>
               <p style={{color:m.color,fontSize:'22px',fontWeight:700}}>{m.value}</p>
               <p style={{color:'#555',fontSize:'12px'}}>{m.unit}</p>
@@ -189,11 +189,11 @@ function MedidasTab() {
       <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
         {list.length===0 && <p style={{color:'#555',textAlign:'center',padding:'40px'}}>Nenhum registro ainda</p>}
         {list.map(item => (
-          <div key={item.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'12px 16px',borderRadius:'12px',background:'#fff',border:'1px solid #d0d0d8'}}>
+          <div key={item.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'12px 16px',borderRadius:'12px',background:'#fff',border:'2px solid #bbb'}}>
             <div style={{flex:1}}>
               <p style={{color:'#444',fontSize:'15px',marginBottom:'6px'}}>{new Date(item.date+'T12:00:00').toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short',year:'numeric'})}</p>
               <div style={{display:'flex',gap:'12px',flexWrap:'wrap'}}>
-                {item.weight && <span style={{color:'#6d5ce0',fontSize:'15px',fontWeight:600}}>{item.weight} kg</span>}
+                {item.weight && <span style={{color:'#5b21b6',fontSize:'15px',fontWeight:600}}>{item.weight} kg</span>}
                 {item.waist && <span style={{color:'#333',fontSize:'15px'}}>Cintura: {item.waist} cm</span>}
                 {item.hip && <span style={{color:'#333',fontSize:'15px'}}>Quadril: {item.hip} cm</span>}
                 {item.chest && <span style={{color:'#333',fontSize:'15px'}}>Peito: {item.chest} cm</span>}
@@ -202,14 +202,14 @@ function MedidasTab() {
               </div>
               {item.notes && <p style={{color:'#555',fontSize:'15px',marginTop:'4px'}}>{item.notes}</p>}
             </div>
-            <button onClick={()=>remove(item.id)} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+            <button onClick={()=>remove(item.id)} style={{padding:'5px 8px',background:'#fff',border:'none',borderRadius:'7px',color:'#dc2626',fontSize:'15px',cursor:'pointer'}}>✕</button>
           </div>
         ))}
       </div>
 
       {showForm && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',backdropFilter:'blur(4px)',zIndex:50,display:'flex',justifyContent:'center',alignItems:'flex-start',padding:'40px 20px',overflowY:'auto'}}>
-          <div style={{width:'100%',maxWidth:'480px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #d0d0d8'}}>
+          <div style={{width:'100%',maxWidth:'480px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'2px solid #bbb'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
               <h2 style={{color:'#111',fontSize:'18px',fontWeight:600}}>Novo Registro</h2>
               <button onClick={()=>setShowForm(false)} style={{background:'none',border:'none',color:'#444',cursor:'pointer',fontSize:'18px'}}>✕</button>
@@ -228,7 +228,7 @@ function MedidasTab() {
             </div>
             <div style={{display:'flex',gap:'8px',marginTop:'20px'}}>
               <button onClick={save} disabled={!form.date||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!form.date||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
+              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'2px solid #bbb',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>
@@ -285,7 +285,7 @@ function DietasTab() {
       <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
         {list.length===0 && <p style={{color:'#555',textAlign:'center',padding:'40px'}}>Nenhuma dieta cadastrada</p>}
         {list.map(item => (
-          <div key={item.id} style={{padding:'16px',borderRadius:'12px',background:'#fff',border:'1px solid #d0d0d8',cursor:'pointer'}} onClick={()=>openEdit(item)}>
+          <div key={item.id} style={{padding:'16px',borderRadius:'12px',background:'#fff',border:'2px solid #bbb',cursor:'pointer'}} onClick={()=>openEdit(item)}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
               <div style={{flex:1}}>
                 <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'4px'}}>
@@ -301,7 +301,7 @@ function DietasTab() {
                   </div>
                 )}
               </div>
-              <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer',marginLeft:'12px'}}>✕</button>
+              <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'#fff',border:'none',borderRadius:'7px',color:'#dc2626',fontSize:'15px',cursor:'pointer',marginLeft:'12px'}}>✕</button>
             </div>
           </div>
         ))}
@@ -309,7 +309,7 @@ function DietasTab() {
 
       {showForm && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',backdropFilter:'blur(4px)',zIndex:50,display:'flex',justifyContent:'center',alignItems:'flex-start',padding:'40px 20px',overflowY:'auto'}}>
-          <div style={{width:'100%',maxWidth:'520px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #d0d0d8'}}>
+          <div style={{width:'100%',maxWidth:'520px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'2px solid #bbb'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
               <h2 style={{color:'#111',fontSize:'18px',fontWeight:600}}>{editing?'Editar Dieta':'Nova Dieta'}</h2>
               <button onClick={()=>setShowForm(false)} style={{background:'none',border:'none',color:'#444',cursor:'pointer',fontSize:'18px'}}>✕</button>
@@ -327,7 +327,7 @@ function DietasTab() {
             </div>
             <div style={{display:'flex',gap:'8px',marginTop:'20px'}}>
               <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
+              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'2px solid #bbb',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>
@@ -388,10 +388,10 @@ function MedicosTab() {
           const isToday = item.next_appointment === today
           return (
             <div key={item.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'14px 16px',borderRadius:'12px',background:'#fff',border:`1px solid ${isToday?'#c0b8ff':'#f0f0f3'}`,cursor:'pointer'}} onClick={()=>openEdit(item)}>
-              <div style={{width:'42px',height:'42px',borderRadius:'50%',background:'#e8e4ff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'22px',flexShrink:0}}>🩺</div>
+              <div style={{width:'42px',height:'42px',borderRadius:'50%',background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'22px',flexShrink:0}}>🩺</div>
               <div style={{flex:1}}>
                 <p style={{color:'#111',fontSize:'15px',fontWeight:500}}>{item.name}</p>
-                {item.specialty && <p style={{color:'#6d5ce0',fontSize:'15px',marginTop:'1px'}}>{item.specialty}</p>}
+                {item.specialty && <p style={{color:'#5b21b6',fontSize:'15px',marginTop:'1px'}}>{item.specialty}</p>}
                 <div style={{display:'flex',gap:'10px',marginTop:'4px',flexWrap:'wrap'}}>
                   {item.phone && <span style={{color:'#444',fontSize:'15px'}}>📞 {item.phone}</span>}
                   {item.next_appointment && <span style={{color:isToday?'#a89ff7':hasUpcoming?'#4caf7d':'#999',fontSize:'15px',fontWeight:isToday?600:400}}>
@@ -401,7 +401,7 @@ function MedicosTab() {
                 </div>
                 {item.notes && <p style={{color:'#555',fontSize:'15px',marginTop:'4px'}}>{item.notes}</p>}
               </div>
-              <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+              <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'#fff',border:'none',borderRadius:'7px',color:'#dc2626',fontSize:'15px',cursor:'pointer'}}>✕</button>
             </div>
           )
         })}
@@ -409,7 +409,7 @@ function MedicosTab() {
 
       {showForm && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',backdropFilter:'blur(4px)',zIndex:50,display:'flex',justifyContent:'center',alignItems:'flex-start',padding:'40px 20px',overflowY:'auto'}}>
-          <div style={{width:'100%',maxWidth:'480px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #d0d0d8'}}>
+          <div style={{width:'100%',maxWidth:'480px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'2px solid #bbb'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
               <h2 style={{color:'#111',fontSize:'18px',fontWeight:600}}>{editing?'Editar Médico':'Novo Médico'}</h2>
               <button onClick={()=>setShowForm(false)} style={{background:'none',border:'none',color:'#444',cursor:'pointer',fontSize:'18px'}}>✕</button>
@@ -429,7 +429,7 @@ function MedicosTab() {
             </div>
             <div style={{display:'flex',gap:'8px',marginTop:'20px'}}>
               <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
+              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'2px solid #bbb',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>
@@ -454,7 +454,7 @@ export default function SaudePage() {
       <Sidebar />
       <div style={{flex:1,display:'flex',flexDirection:'column',overflowY:'auto'}}>
         {/* Tabs */}
-        <div style={{background:'#f9f9fb',borderBottom:'1px solid #d0d0d8',padding:'0 28px',display:'flex',gap:'4px',alignItems:'center',flexShrink:0}}>
+        <div style={{background:'#fff',borderBottom:'2px solid #bbb',padding:'0 28px',display:'flex',gap:'4px',alignItems:'center',flexShrink:0}}>
           {TABS.map(t => (
             <button key={t.id} onClick={()=>setTab(t.id)} style={{padding:'14px 16px',background:'transparent',border:'none',borderBottom:`2px solid ${tab===t.id?'#7c6ff7':'transparent'}`,color:tab===t.id?'#a89ff7':'#999',fontSize:'15px',cursor:'pointer',fontWeight:tab===t.id?600:400,whiteSpace:'nowrap'}}>{t.label}</button>
           ))}

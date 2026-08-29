@@ -5,8 +5,8 @@ import Sidebar from '@/components/Sidebar'
 
 const USER_ID = 'paloma'
 
-const inp: any = {width:'100%',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none',boxSizing:'border-box'}
-const sel: any = {width:'100%',background:'#ffffff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none'}
+const inp: any = {width:'100%',background:'#fff',border:'2px solid #bbb',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none',boxSizing:'border-box'}
+const sel: any = {width:'100%',background:'#ffffff',border:'2px solid #bbb',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none'}
 
 function Fld({label,children}:{label:string,children:any}) {
   return <div><label style={{fontSize:'15px',color:'#444',display:'block',marginBottom:'4px'}}>{label}</label>{children}</div>
@@ -88,22 +88,22 @@ export default function LivrosPage() {
           </div>
           {items.length > 0 && (
             <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'20px'}}>
-              <div style={{background:'#edeaff',border:'1px solid #e0dbff',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
-                <p style={{color:'#6d5ce0',fontSize:'22px',fontWeight:700}}>{lendo}</p>
+              <div style={{background:'#fff',border:'1px solid #e0dbff',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
+                <p style={{color:'#5b21b6',fontSize:'22px',fontWeight:700}}>{lendo}</p>
                 <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Lendo</p>
               </div>
-              <div style={{background:'#f0faf5',border:'1px solid #ddf5e8',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
-                <p style={{color:'#4caf7d',fontSize:'22px',fontWeight:700}}>{concluidos}</p>
+              <div style={{background:'#fff',border:'1px solid #ddf5e8',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
+                <p style={{color:'#15803d',fontSize:'22px',fontWeight:700}}>{concluidos}</p>
                 <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Concluídos</p>
               </div>
-              <div style={{background:'#f5f5f5',border:'1px solid #ebebeb',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
+              <div style={{background:'#fff',border:'1px solid #ebebeb',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
                 <p style={{color:'#444',fontSize:'22px',fontWeight:700}}>{querLer}</p>
                 <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Quero ler</p>
               </div>
             </div>
           )}
           <div style={{display:'flex',gap:'10px',marginBottom:'16px'}}>
-            <input placeholder="Buscar livro ou autor..." value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1,background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'8px 12px',color:'#111',fontSize:'15px',outline:'none'}}/>
+            <input placeholder="Buscar livro ou autor..." value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1,background:'#fff',border:'2px solid #bbb',borderRadius:'10px',padding:'8px 12px',color:'#111',fontSize:'15px',outline:'none'}}/>
             <select value={filterStatus} onChange={e=>setFilterStatus(e.target.value)} style={{...sel,width:'auto',padding:'8px 12px',fontSize:'15px'}}>
               <option value="Todos">Todos</option>
               {STATUS_LIST.map(s=><option key={s}>{s}</option>)}
@@ -118,7 +118,7 @@ export default function LivrosPage() {
                 return (
                   <div key={item.id} style={{borderRadius:'14px',background:'#fff',border:`1px solid ${item.status==='Lendo'?'#d4cdff':'#f0f0f3'}`,overflow:'hidden'}}>
                     <div style={{display:'flex',alignItems:'center',gap:'12px',padding:'14px 16px',cursor:'pointer'}} onClick={()=>setExpandedId(expanded?null:item.id)}>
-                      <div style={{width:'42px',height:'42px',borderRadius:'10px',background:'#e8e4ff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'22px',flexShrink:0}}>📖</div>
+                      <div style={{width:'42px',height:'42px',borderRadius:'10px',background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'22px',flexShrink:0}}>📖</div>
                       <div style={{flex:1,minWidth:0}}>
                         <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
                           <p style={{color:'#111',fontSize:'15px',fontWeight:600}}>{item.name}</p>
@@ -127,7 +127,7 @@ export default function LivrosPage() {
                         <div style={{display:'flex',gap:'10px',marginTop:'4px',flexWrap:'wrap',alignItems:'center'}}>
                           {item.author && <span style={{color:'#444',fontSize:'15px'}}>{item.author}</span>}
                           {item.category && <span style={{color:'#444',fontSize:'15px'}}>· {item.category}</span>}
-                          {item.rating && <span style={{color:'#b8960f',fontSize:'15px'}}>· {'★'.repeat(item.rating)}</span>}
+                          {item.rating && <span style={{color:'#854d0e',fontSize:'15px'}}>· {'★'.repeat(item.rating)}</span>}
                         </div>
                         {pct !== null && (
                           <div style={{marginTop:'8px',display:'flex',alignItems:'center',gap:'8px'}}>
@@ -140,12 +140,12 @@ export default function LivrosPage() {
                       </div>
                       <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
                         <button onClick={e=>{e.stopPropagation();openEdit(item)}} style={{padding:'5px 9px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Editar</button>
-                        <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+                        <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'#fff',border:'none',borderRadius:'7px',color:'#dc2626',fontSize:'15px',cursor:'pointer'}}>✕</button>
                         <span style={{color:'#555',fontSize:'15px'}}>{expanded?'▲':'▼'}</span>
                       </div>
                     </div>
                     {expanded && item.notes && (
-                      <div style={{borderTop:'1px solid #d0d0d8',padding:'14px 16px',background:'rgba(0,0,0,0.2)'}}>
+                      <div style={{borderTop:'2px solid #bbb',padding:'14px 16px',background:'rgba(0,0,0,0.2)'}}>
                         <div style={{background:'#fff',borderRadius:'10px',padding:'12px'}}>
                           <p style={{color:'#555',fontSize:'12px',marginBottom:'4px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Notas</p>
                           <p style={{color:'#444',fontSize:'15px',whiteSpace:'pre-wrap'}}>{item.notes}</p>
@@ -161,7 +161,7 @@ export default function LivrosPage() {
       </div>
       {showForm && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',backdropFilter:'blur(4px)',zIndex:50,overflowY:'auto',display:'flex',justifyContent:'center',padding:'20px'}}>
-          <div style={{width:'100%',maxWidth:'520px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #d0d0d8',height:'fit-content'}}>
+          <div style={{width:'100%',maxWidth:'520px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'2px solid #bbb',height:'fit-content'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
               <h2 style={{color:'#111',fontSize:'18px',fontWeight:600}}>{editing?'Editar Livro':'Novo Livro'}</h2>
               <button onClick={()=>setShowForm(false)} style={{background:'none',border:'none',color:'#444',cursor:'pointer',fontSize:'18px'}}>✕</button>
@@ -186,7 +186,7 @@ export default function LivrosPage() {
             </div>
             <div style={{display:'flex',gap:'8px',marginTop:'20px'}}>
               <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
+              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'2px solid #bbb',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>

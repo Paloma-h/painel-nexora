@@ -13,8 +13,8 @@ const statusColor: any = {'💡 Ideia':'#d4b84a','🔧 Desenvolvendo':'#7c6ff7',
 
 
 
-const inp: any = {width:'100%',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none',boxSizing:'border-box'}
-const sel: any = {width:'100%',background:'#ffffff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none'}
+const inp: any = {width:'100%',background:'#fff',border:'2px solid #bbb',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none',boxSizing:'border-box'}
+const sel: any = {width:'100%',background:'#ffffff',border:'2px solid #bbb',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none'}
 
 const EMPTY = {title:'',description:'',inspiration_url:'',category:'Negócio',status:'💡 Ideia',notes:''}
 
@@ -117,8 +117,8 @@ export default function ProjetosPage() {
           </div>
 
           {/* ⚡ Captura rápida — para TDAH */}
-          <div style={{background:'#fffbe6',border:'1px solid #ffe680',borderRadius:'14px',padding:'18px',marginBottom:'24px'}}>
-            <p style={{color:'#b8960f',fontSize:'15px',fontWeight:600,marginBottom:'12px',textTransform:'uppercase',letterSpacing:'1px'}}>⚡ Captura rápida — anota antes de esquecer!</p>
+          <div style={{background:'#fff',border:'2px solid #eab308',borderRadius:'14px',padding:'18px',marginBottom:'24px'}}>
+            <p style={{color:'#854d0e',fontSize:'15px',fontWeight:600,marginBottom:'12px',textTransform:'uppercase',letterSpacing:'1px'}}>⚡ Captura rápida — anota antes de esquecer!</p>
             <div style={{display:'flex',gap:'8px',marginBottom:'8px'}}>
               <input
                 placeholder="Nome da ideia ou projeto..."
@@ -143,16 +143,16 @@ export default function ProjetosPage() {
           {/* KPIs */}
           {projetos.length > 0 && (
             <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'20px'}}>
-              <div style={{background:'#fffbe6',border:'1px solid #fff0b3',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
-                <p style={{color:'#b8960f',fontSize:'22px',fontWeight:700}}>{ideias}</p>
+              <div style={{background:'#fff',border:'2px solid #eab308',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
+                <p style={{color:'#854d0e',fontSize:'22px',fontWeight:700}}>{ideias}</p>
                 <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>💡 Ideias</p>
               </div>
-              <div style={{background:'#f0edff',border:'1px solid #e8e4ff',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
-                <p style={{color:'#6d5ce0',fontSize:'22px',fontWeight:700}}>{desenvolvendo}</p>
+              <div style={{background:'#fff',border:'2px solid #a78bfa',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
+                <p style={{color:'#5b21b6',fontSize:'22px',fontWeight:700}}>{desenvolvendo}</p>
                 <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>🔧 Desenvolvendo</p>
               </div>
-              <div style={{background:'#f0faf5',border:'1px solid #ddf5e8',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
-                <p style={{color:'#4caf7d',fontSize:'22px',fontWeight:700}}>{concluidos}</p>
+              <div style={{background:'#fff',border:'1px solid #ddf5e8',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
+                <p style={{color:'#15803d',fontSize:'22px',fontWeight:700}}>{concluidos}</p>
                 <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>✅ Concluídos</p>
               </div>
             </div>
@@ -160,7 +160,7 @@ export default function ProjetosPage() {
 
           {/* Filtros */}
           <div style={{display:'flex',gap:'8px',marginBottom:'16px',flexWrap:'wrap'}}>
-            <input placeholder="Buscar..." value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1,minWidth:'160px',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'8px 12px',color:'#111',fontSize:'15px',outline:'none'}}/>
+            <input placeholder="Buscar..." value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1,minWidth:'160px',background:'#fff',border:'2px solid #bbb',borderRadius:'10px',padding:'8px 12px',color:'#111',fontSize:'15px',outline:'none'}}/>
             <select value={filterStatus} onChange={e=>setFilterStatus(e.target.value)} style={{...sel,width:'auto',padding:'8px 12px',fontSize:'15px'}}>
               <option value="Todos">Todos status</option>
               {STATUS_LIST.map(s=><option key={s} value={s}>{s}</option>)}
@@ -198,21 +198,21 @@ export default function ProjetosPage() {
                         </div>
                         {item.description && <p style={{color:'#333',fontSize:'15px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.description}</p>}
                         {item.inspiration_url && (
-                          <a href={item.inspiration_url} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{display:'inline-flex',alignItems:'center',gap:'4px',color:'#5b50d6',fontSize:'15px',marginTop:'4px',textDecoration:'none'}}>
+                          <a href={item.inspiration_url} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{display:'inline-flex',alignItems:'center',gap:'4px',color:'#4c1d95',fontSize:'15px',marginTop:'4px',textDecoration:'none'}}>
                             🔗 Ver inspiração
                           </a>
                         )}
                       </div>
                       <div style={{display:'flex',gap:'6px',alignItems:'center',flexShrink:0}}>
                         <button onClick={e=>{e.stopPropagation();openEdit(item)}} style={{padding:'5px 10px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'15px',cursor:'pointer'}}>✎</button>
-                        <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+                        <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'#fff',border:'none',borderRadius:'7px',color:'#dc2626',fontSize:'15px',cursor:'pointer'}}>✕</button>
                         <span style={{color:'#555',fontSize:'15px'}}>{expanded?'▲':'▼'}</span>
                       </div>
                     </div>
 
                     {/* Detalhes expandidos */}
                     {expanded && (
-                      <div style={{borderTop:'1px solid #d0d0d8',padding:'16px',background:'rgba(0,0,0,0.15)'}}>
+                      <div style={{borderTop:'2px solid #bbb',padding:'16px',background:'rgba(0,0,0,0.15)'}}>
                         {item.notes && (
                           <div style={{background:'#fff',borderRadius:'10px',padding:'12px',marginBottom:'12px'}}>
                             <p style={{color:'#555',fontSize:'12px',marginBottom:'6px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Notas</p>
@@ -220,9 +220,9 @@ export default function ProjetosPage() {
                           </div>
                         )}
                         {item.inspiration_url && (
-                          <div style={{background:'#f0edff',borderRadius:'10px',padding:'12px',marginBottom:'12px'}}>
+                          <div style={{background:'#fff',borderRadius:'10px',padding:'12px',marginBottom:'12px'}}>
                             <p style={{color:'#555',fontSize:'12px',marginBottom:'6px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Link de Inspiração</p>
-                            <a href={item.inspiration_url} target="_blank" rel="noopener noreferrer" style={{color:'#6d5ce0',fontSize:'15px',wordBreak:'break-all'}}>{item.inspiration_url}</a>
+                            <a href={item.inspiration_url} target="_blank" rel="noopener noreferrer" style={{color:'#5b21b6',fontSize:'15px',wordBreak:'break-all'}}>{item.inspiration_url}</a>
                           </div>
                         )}
                         {/* Mudar status direto */}
@@ -248,7 +248,7 @@ export default function ProjetosPage() {
       {/* Modal de formulário completo */}
       {showForm && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',backdropFilter:'blur(4px)',zIndex:50,overflowY:'auto',display:'flex',justifyContent:'center',padding:'20px'}}>
-          <div style={{width:'100%',maxWidth:'520px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #d0d0d8',height:'fit-content'}}>
+          <div style={{width:'100%',maxWidth:'520px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'2px solid #bbb',height:'fit-content'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
               <h2 style={{color:'#111',fontSize:'18px',fontWeight:600}}>{editing?'Editar Projeto':'Novo Projeto'}</h2>
               <button onClick={()=>setShowForm(false)} style={{background:'none',border:'none',color:'#444',cursor:'pointer',fontSize:'18px'}}>✕</button>
@@ -283,7 +283,7 @@ export default function ProjetosPage() {
             </div>
             <div style={{display:'flex',gap:'8px',marginTop:'20px'}}>
               <button onClick={save} disabled={!form.title.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!form.title.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
+              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'2px solid #bbb',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>
