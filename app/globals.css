@@ -9,12 +9,14 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  font-size: 16px;
 }
 
 body {
   background: #f5f5f7;
   color: #1a1a2e;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 16px;
 }
 
 /* ── Scrollbar premium ────────────────────────────── */
@@ -37,63 +39,63 @@ input::placeholder, textarea::placeholder {
   color: #aaa;
 }
 
-/* ── Sidebar nav items ────────────────────────────── */
+/* ── Sidebar nav items (tema claro) ──────────────── */
 .nav-item {
   display: flex;
   align-items: center;
   gap: 9px;
-  padding: 9px 11px;
+  padding: 10px 14px;
   border-radius: 10px;
-  font-size: 12.5px;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.4);
+  font-size: 15px;
+  font-weight: 500;
+  color: #444;
   text-decoration: none;
   transition: all 0.15s ease;
   margin-bottom: 3px;
   cursor: pointer;
   position: relative;
   user-select: none;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid transparent;
+  background: transparent;
   width: 100%;
   text-align: left;
 }
 
 .nav-item:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.75);
+  background: #f0eeff;
+  border-color: #e5e5ea;
+  color: #333;
 }
 
 .nav-item.active {
-  background: rgba(124, 111, 247, 0.18);
-  border-color: rgba(124, 111, 247, 0.4);
-  box-shadow: 0 0 12px rgba(124, 111, 247, 0.15);
-  color: #d0caff;
-  font-weight: 600;
+  background: #7c3aed;
+  border-color: #7c3aed;
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.35);
+  color: #fff;
+  font-weight: 700;
 }
 
 .nav-icon {
-  color: rgba(255, 255, 255, 0.25);
+  color: #7c3aed;
   flex-shrink: 0;
   transition: color 0.15s ease;
 }
 
 .nav-item:hover .nav-icon {
-  color: rgba(255, 255, 255, 0.55);
+  color: #6d28d9;
 }
 
 .nav-item.active .nav-icon {
-  color: #a89ff7;
+  color: #fff;
 }
 
 /* ── Seção label da sidebar ───────────────────────── */
 .nav-section-label {
-  font-size: 9px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.14);
+  color: #aaa;
   padding: 0 12px;
   margin: 10px 0 6px;
 }
@@ -101,7 +103,7 @@ input::placeholder, textarea::placeholder {
 /* ── Divisor sidebar ──────────────────────────────── */
 .nav-divider {
   height: 1px;
-  background: rgba(255, 255, 255, 0.055);
+  background: #e5e5ea;
   margin: 10px 4px;
 }
 
@@ -110,7 +112,7 @@ input::placeholder, textarea::placeholder {
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 .card-glow:hover {
-  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
 }
 
 /* ── Animação de fade in ──────────────────────────── */
