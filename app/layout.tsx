@@ -7,7 +7,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet" />
       </head>
-      <body className="bg-[#f5f5f7] text-[#1a1a2e] antialiased" style={{fontFamily:"'Nunito', system-ui, sans-serif"}}>{children}</body>
+      <body className="bg-white text-black antialiased" style={{fontFamily:"'Nunito', system-ui, sans-serif"}}>{children}</body>
     </html>
   )
 }

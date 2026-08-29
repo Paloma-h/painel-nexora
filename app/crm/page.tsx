@@ -12,15 +12,15 @@ const EMPTY_CLIENT = { name:'', cpf:'', email:'', phone:'', whatsapp:'', phone2:
 const EMPTY_FORNECEDOR = { name:'', company:'', category:'', product:'', phone:'', whatsapp:'', email:'', instagram:'', notes:'' }
 const FORN_CATS = ['Suplementos','Embalagens','Gráfica','Marketing','Tecnologia','Logística','Alimentos','Serviços','Outro']
 
-const inp: any = {width:'100%',background:'#fff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'9px 12px',color:'#1a1a2e',fontSize:'15px',outline:'none',boxSizing:'border-box'}
-const sel: any = {width:'100%',background:'#ffffff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'9px 12px',color:'#1a1a2e',fontSize:'15px',outline:'none'}
+const inp: any = {width:'100%',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none',boxSizing:'border-box'}
+const sel: any = {width:'100%',background:'#ffffff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none'}
 const sourceColor: any = {'Indicação':'#7c6ff7','Facebook':'#4267B2','TikTok':'#e05252','Instagram':'#e08c42','Outra pessoa':'#4caf7d','Outro':'#888'}
 
 function Sec({title}:{title:string}) {
-  return <div style={{fontSize:'12px',color:'#999',textTransform:'uppercase',letterSpacing:'1px',marginTop:'16px',marginBottom:'8px',paddingBottom:'6px',borderBottom:'1px solid #e5e5ea'}}>{title}</div>
+  return <div style={{fontSize:'12px',color:'#444',textTransform:'uppercase',letterSpacing:'1px',marginTop:'16px',marginBottom:'8px',paddingBottom:'6px',borderBottom:'1px solid #d0d0d8'}}>{title}</div>
 }
 function Fld({label,children}:{label:string,children:any}) {
-  return <div><label style={{fontSize:'15px',color:'#999',display:'block',marginBottom:'4px'}}>{label}</label>{children}</div>
+  return <div><label style={{fontSize:'15px',color:'#444',display:'block',marginBottom:'4px'}}>{label}</label>{children}</div>
 }
 
 export default function CRMPage() {
@@ -371,7 +371,7 @@ export default function CRMPage() {
   const filteredClients = clients.filter(c => c.name.toLowerCase().includes(search.toLowerCase()) || (c.phone||'').includes(search))
 
   return (
-    <div style={{display:'flex',minHeight:'100vh',background:'#f5f5f7'}}>
+    <div style={{display:'flex',minHeight:'100vh',background:'#ffffff'}}>
       <Sidebar />
       <div style={{flex:1,display:'flex',flexDirection:'column',overflowY:'auto'}}>
 
@@ -381,7 +381,7 @@ export default function CRMPage() {
           </div>
         )}
 
-        <div style={{background:'#f8f8fa',borderBottom:'1px solid #e5e5ea',padding:'0 28px',display:'flex',gap:'4px',alignItems:'center',flexShrink:0}}>
+        <div style={{background:'#f9f9fb',borderBottom:'1px solid #d0d0d8',padding:'0 28px',display:'flex',gap:'4px',alignItems:'center',flexShrink:0}}>
           <button onClick={()=>setTab('leads')} style={{padding:'14px 16px',background:'transparent',border:'none',borderBottom:`2px solid ${tab==='leads'?'#7c6ff7':'transparent'}`,color:tab==='leads'?'#a89ff7':'#999',fontSize:'15px',cursor:'pointer',fontWeight:tab==='leads'?600:400}}>Leads {leads.length>0&&<span style={{background:'rgba(91,80,214,0.2)',color:'#a89ff7',borderRadius:'10px',padding:'1px 7px',fontSize:'15px',marginLeft:'4px'}}>{leads.length}</span>}</button>
           <button onClick={()=>setTab('clients')} style={{padding:'14px 16px',background:'transparent',border:'none',borderBottom:`2px solid ${tab==='clients'?'#7c6ff7':'transparent'}`,color:tab==='clients'?'#a89ff7':'#999',fontSize:'15px',cursor:'pointer',fontWeight:tab==='clients'?600:400}}>Clientes {clients.length>0&&<span style={{background:'rgba(76,175,125,0.15)',color:'#4caf7d',borderRadius:'10px',padding:'1px 7px',fontSize:'15px',marginLeft:'4px'}}>{clients.length}</span>}</button>
           <button onClick={()=>setTab('estoque')} style={{padding:'14px 16px',background:'transparent',border:'none',borderBottom:`2px solid ${tab==='estoque'?'#4caf7d':'transparent'}`,color:tab==='estoque'?'#4caf7d':'#999',fontSize:'15px',cursor:'pointer',fontWeight:tab==='estoque'?600:400}}>Estoque {estoque.length>0&&<span style={{background:'rgba(76,175,125,0.15)',color:'#4caf7d',borderRadius:'10px',padding:'1px 7px',fontSize:'15px',marginLeft:'4px'}}>{estoque.length}</span>}</button>
@@ -395,39 +395,39 @@ export default function CRMPage() {
               <div>
                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}}>
                   <div>
-                    <h1 style={{color:'#1a1a2e',fontSize:'22px',fontWeight:700}}>Leads</h1>
-                    <p style={{color:'#999',fontSize:'15px',marginTop:'2px'}}>{leads.length} contatos em prospecção</p>
+                    <h1 style={{color:'#111',fontSize:'22px',fontWeight:700}}>Leads</h1>
+                    <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>{leads.length} contatos em prospecção</p>
                   </div>
                   <div style={{display:'flex',gap:'8px',alignItems:'center'}}>
-                    <button onClick={exportLeads} style={{padding:'7px 12px',background:'#fff',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#666',fontSize:'15px',cursor:'pointer'}}>Exportar CSV</button>
+                    <button onClick={exportLeads} style={{padding:'7px 12px',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#444',fontSize:'15px',cursor:'pointer'}}>Exportar CSV</button>
                     <label style={{padding:'7px 12px',background:'rgba(91,80,214,0.1)',border:'1px solid rgba(91,80,214,0.2)',borderRadius:'10px',color:'#a89ff7',fontSize:'15px',cursor:'pointer'}}>
                       Importar CSV
                       <input type="file" accept=".csv,.xlsx,.xls" style={{display:'none'}} onChange={importLeads} />
                     </label>
-                    <button onClick={openNewLead} style={{padding:'7px 14px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>+ Novo Lead</button>
+                    <button onClick={openNewLead} style={{padding:'7px 14px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>+ Novo Lead</button>
                   </div>
                 </div>
                 <div style={{display:'flex',gap:'10px',marginBottom:'16px'}}>
-                  <input placeholder="Buscar..." value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1,background:'#fff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'8px 12px',color:'#1a1a2e',fontSize:'15px',outline:'none'}} />
+                  <input placeholder="Buscar..." value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1,background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'8px 12px',color:'#111',fontSize:'15px',outline:'none'}} />
                   <select value={filterStatus} onChange={e=>setFilterStatus(e.target.value)} style={{...sel,width:'auto',padding:'8px 12px',fontSize:'15px'}}>
                     <option value="Todos">Todos</option>
                     {STATUSES.map(s=><option key={s} value={s}>{s}</option>)}
                   </select>
                 </div>
-                {loading?<p style={{color:'#999',textAlign:'center',padding:'40px'}}>Carregando...</p>:(
+                {loading?<p style={{color:'#444',textAlign:'center',padding:'40px'}}>Carregando...</p>:(
                   <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
-                    {filteredLeads.length===0&&<p style={{color:'#bbb',textAlign:'center',padding:'40px'}}>Nenhum lead encontrado</p>}
+                    {filteredLeads.length===0&&<p style={{color:'#555',textAlign:'center',padding:'40px'}}>Nenhum lead encontrado</p>}
                     {filteredLeads.map(l=>(
-                      <div key={l.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'13px 15px',borderRadius:'12px',background:'#fff',border:'1px solid #e5e5ea',cursor:'pointer'}} onClick={()=>openEditLead(l)}>
+                      <div key={l.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'13px 15px',borderRadius:'12px',background:'#fff',border:'1px solid #d0d0d8',cursor:'pointer'}} onClick={()=>openEditLead(l)}>
                         <div style={{width:'38px',height:'38px',borderRadius:'50%',background:'rgba(91,80,214,0.25)',display:'flex',alignItems:'center',justifyContent:'center',color:'#a89ff7',fontWeight:700,fontSize:'15px',flexShrink:0}}>{l.name.charAt(0).toUpperCase()}</div>
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
-                            <p style={{color:'#1a1a2e',fontSize:'15px',fontWeight:500}}>{l.name}</p>
+                            <p style={{color:'#111',fontSize:'15px',fontWeight:500}}>{l.name}</p>
                             {l.product&&<span style={{fontSize:"11px",padding:"2px 10px",borderRadius:"6px",background:"rgba(139,92,246,0.2)",color:"#a78bfa",fontWeight:600,border:"1px solid rgba(139,92,246,0.3)"}}>{l.product}</span>}
                             {l.source&&<span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:`${sourceColor[l.source]}22`,color:sourceColor[l.source]}}>{l.source}</span>}
                           </div>
                           <div style={{display:'flex',gap:'8px',marginTop:'2px',flexWrap:'wrap'}}>
-                            {l.phone&&<span style={{color:'#999',fontSize:'15px'}}>{l.phone}</span>}
+                            {l.phone&&<span style={{color:'#444',fontSize:'15px'}}>{l.phone}</span>}
                             {l.value>0&&<span style={{color:'#4caf7d',fontSize:'15px'}}>R$ {l.value.toLocaleString('pt-BR')}</span>}
                             {l.next_followup&&<span style={{color:'rgba(91,80,214,0.8)',fontSize:'15px'}}>Follow-up: {new Date(l.next_followup+'T12:00:00').toLocaleDateString('pt-BR')}</span>}
                           </div>
@@ -448,22 +448,22 @@ export default function CRMPage() {
               <div>
                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}}>
                   <div>
-                    <h1 style={{color:'#1a1a2e',fontSize:'22px',fontWeight:700}}>Clientes</h1>
-                    <p style={{color:'#999',fontSize:'15px',marginTop:'2px'}}>{clients.length} clientes cadastrados</p>
+                    <h1 style={{color:'#111',fontSize:'22px',fontWeight:700}}>Clientes</h1>
+                    <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>{clients.length} clientes cadastrados</p>
                   </div>
                   <div style={{display:'flex',gap:'8px',alignItems:'center'}}>
-                    <button onClick={exportClients} style={{padding:'7px 12px',background:'#fff',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#666',fontSize:'15px',cursor:'pointer'}}>Exportar CSV</button>
+                    <button onClick={exportClients} style={{padding:'7px 12px',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#444',fontSize:'15px',cursor:'pointer'}}>Exportar CSV</button>
                     <label style={{padding:'7px 12px',background:'rgba(76,175,125,0.1)',border:'1px solid rgba(76,175,125,0.2)',borderRadius:'10px',color:'#4caf7d',fontSize:'15px',cursor:'pointer'}}>
                       Importar CSV
                       <input type="file" accept=".csv,.xlsx,.xls" style={{display:'none'}} onChange={importClients} />
                     </label>
-                    <button onClick={openNewClient} style={{padding:'7px 14px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>+ Novo Cliente</button>
+                    <button onClick={openNewClient} style={{padding:'7px 14px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>+ Novo Cliente</button>
                   </div>
                 </div>
-                <input placeholder="Buscar cliente..." value={search} onChange={e=>setSearch(e.target.value)} style={{width:'100%',background:'#fff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'8px 12px',color:'#1a1a2e',fontSize:'15px',outline:'none',marginBottom:'16px',boxSizing:'border-box'}} />
-                {loading?<p style={{color:'#999',textAlign:'center',padding:'40px'}}>Carregando...</p>:(
+                <input placeholder="Buscar cliente..." value={search} onChange={e=>setSearch(e.target.value)} style={{width:'100%',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'8px 12px',color:'#111',fontSize:'15px',outline:'none',marginBottom:'16px',boxSizing:'border-box'}} />
+                {loading?<p style={{color:'#444',textAlign:'center',padding:'40px'}}>Carregando...</p>:(
                   <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
-                    {filteredClients.length===0&&<p style={{color:'#bbb',textAlign:'center',padding:'40px'}}>Nenhum cliente encontrado</p>}
+                    {filteredClients.length===0&&<p style={{color:'#555',textAlign:'center',padding:'40px'}}>Nenhum cliente encontrado</p>}
                     {filteredClients.map(c=>{
                       const days = daysLeft(c)
                       const isLow = days!==null&&days<=10
@@ -473,13 +473,13 @@ export default function CRMPage() {
                           <div style={{width:'38px',height:'38px',borderRadius:'50%',background:'rgba(76,175,125,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'#4caf7d',fontWeight:700,fontSize:'15px',flexShrink:0}}>{c.name.charAt(0).toUpperCase()}</div>
                           <div style={{flex:1,minWidth:0}}>
                             <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
-                              <p style={{color:'#1a1a2e',fontSize:'15px',fontWeight:500}}>{c.name}</p>
+                              <p style={{color:'#111',fontSize:'15px',fontWeight:500}}>{c.name}</p>
                               {c.source&&<span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:`${sourceColor[c.source]}22`,color:sourceColor[c.source]}}>{c.source}</span>}
                               {c.product&&<span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:'rgba(76,175,125,0.1)',color:'#4caf7d'}}>{c.product}</span>}
                             </div>
                             <div style={{display:'flex',gap:'8px',marginTop:'2px',flexWrap:'wrap'}}>
-                              {c.phone&&<span style={{color:'#999',fontSize:'15px'}}>{c.phone}</span>}
-                              {c.pots_bought>0&&<span style={{color:'#999',fontSize:'15px'}}>{c.pots_bought} potes</span>}
+                              {c.phone&&<span style={{color:'#444',fontSize:'15px'}}>{c.phone}</span>}
+                              {c.pots_bought>0&&<span style={{color:'#444',fontSize:'15px'}}>{c.pots_bought} potes</span>}
                               {days!==null&&<span style={{color:isOver?'#e05252':isLow?'#e08c42':'#999',fontSize:'15px',fontWeight:isLow?600:400}}>{isOver?'Potes acabaram!':isLow?`⚠ ${days} dias`:days+' dias'}</span>}
                             </div>
                           </div>
@@ -499,12 +499,12 @@ export default function CRMPage() {
             {tab==='estoque' && (
               <div>
                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}}>
-                  <div><h1 style={{color:'#1a1a2e',fontSize:'22px',fontWeight:700}}>Estoque</h1><p style={{color:'#999',fontSize:'15px',marginTop:'2px'}}>{estoque.length} produto(s) cadastrado(s)</p></div>
-                  <button onClick={()=>{setEditing(null);setEstoqueForm({name:'',quantity:'0',min_quantity:'5',cost_price:'',sell_price:'',location:'',expiry_date:'',notes:''});setError('');setShowForm('estoque')}} style={{padding:'7px 14px',background:'#4caf7d',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>+ Novo Produto</button>
+                  <div><h1 style={{color:'#111',fontSize:'22px',fontWeight:700}}>Estoque</h1><p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>{estoque.length} produto(s) cadastrado(s)</p></div>
+                  <button onClick={()=>{setEditing(null);setEstoqueForm({name:'',quantity:'0',min_quantity:'5',cost_price:'',sell_price:'',location:'',expiry_date:'',notes:''});setError('');setShowForm('estoque')}} style={{padding:'7px 14px',background:'#4caf7d',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>+ Novo Produto</button>
                 </div>
-                {loading?<p style={{color:'#999',textAlign:'center',padding:'40px'}}>Carregando...</p>:(
+                {loading?<p style={{color:'#444',textAlign:'center',padding:'40px'}}>Carregando...</p>:(
                   <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
-                    {estoque.length===0&&<p style={{color:'#bbb',textAlign:'center',padding:'40px'}}>Nenhum produto cadastrado</p>}
+                    {estoque.length===0&&<p style={{color:'#555',textAlign:'center',padding:'40px'}}>Nenhum produto cadastrado</p>}
                     {estoque.map(p=>{
                       const isLow = p.quantity <= p.min_quantity
                       const isOut = p.quantity === 0
@@ -513,15 +513,15 @@ export default function CRMPage() {
                           <div style={{width:'38px',height:'38px',borderRadius:'10px',background:isOut?'rgba(224,82,82,0.2)':isLow?'rgba(224,140,66,0.2)':'rgba(76,175,125,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:isOut?'#e05252':isLow?'#e08c42':'#4caf7d',fontWeight:700,fontSize:'18px',flexShrink:0}}>{p.quantity}</div>
                           <div style={{flex:1,minWidth:0}}>
                             <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
-                              <p style={{color:'#1a1a2e',fontSize:'15px',fontWeight:500}}>{p.name}</p>
-                              {p.location&&<span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:'#fff',color:'#888'}}>📍 {p.location}</span>}
+                              <p style={{color:'#111',fontSize:'15px',fontWeight:500}}>{p.name}</p>
+                              {p.location&&<span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:'#fff',color:'#333'}}>📍 {p.location}</span>}
                               {isOut&&<span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:'rgba(224,82,82,0.15)',color:'#e05252'}}>SEM ESTOQUE</span>}
                               {!isOut&&isLow&&<span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:'rgba(224,140,66,0.15)',color:'#e08c42'}}>⚠ ESTOQUE BAIXO</span>}
                             </div>
                             <div style={{display:'flex',gap:'8px',marginTop:'2px',flexWrap:'wrap'}}>
                               {p.sell_price&&<span style={{color:'#4caf7d',fontSize:'15px'}}>Venda: R$ {p.sell_price}</span>}
-                              {p.cost_price&&<span style={{color:'#999',fontSize:'15px'}}>Custo: R$ {p.cost_price}</span>}
-                              {p.expiry_date&&<span style={{color:'#999',fontSize:'15px'}}>Val: {new Date(p.expiry_date+'T12:00:00').toLocaleDateString('pt-BR')}</span>}
+                              {p.cost_price&&<span style={{color:'#444',fontSize:'15px'}}>Custo: R$ {p.cost_price}</span>}
+                              {p.expiry_date&&<span style={{color:'#444',fontSize:'15px'}}>Val: {new Date(p.expiry_date+'T12:00:00').toLocaleDateString('pt-BR')}</span>}
                             </div>
                           </div>
                           <div style={{display:'flex',gap:'6px'}}>
@@ -541,34 +541,34 @@ export default function CRMPage() {
               <div>
                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}}>
                   <div>
-                    <h1 style={{color:'#1a1a2e',fontSize:'22px',fontWeight:700}}>Fornecedores</h1>
-                    <p style={{color:'#999',fontSize:'15px',marginTop:'2px'}}>{fornecedores.length} fornecedor{fornecedores.length!==1?'es':''} cadastrado{fornecedores.length!==1?'s':''}</p>
+                    <h1 style={{color:'#111',fontSize:'22px',fontWeight:700}}>Fornecedores</h1>
+                    <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>{fornecedores.length} fornecedor{fornecedores.length!==1?'es':''} cadastrado{fornecedores.length!==1?'s':''}</p>
                   </div>
                   <div style={{display:'flex',gap:'8px',alignItems:'center'}}>
-                    <button onClick={exportForn} style={{padding:'7px 12px',background:'#fff',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#666',fontSize:'15px',cursor:'pointer'}}>Exportar CSV</button>
+                    <button onClick={exportForn} style={{padding:'7px 12px',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#444',fontSize:'15px',cursor:'pointer'}}>Exportar CSV</button>
                     <label style={{padding:'7px 12px',background:'rgba(224,140,66,0.1)',border:'1px solid rgba(224,140,66,0.2)',borderRadius:'10px',color:'#e08c42',fontSize:'15px',cursor:'pointer'}}>
                       Importar CSV
                       <input type="file" accept=".csv" style={{display:'none'}} onChange={importForn} />
                     </label>
-                    <button onClick={openNewForn} style={{padding:'7px 14px',background:'#e08c42',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>+ Novo Fornecedor</button>
+                    <button onClick={openNewForn} style={{padding:'7px 14px',background:'#e08c42',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>+ Novo Fornecedor</button>
                   </div>
                 </div>
-                <input placeholder="Buscar fornecedor..." value={search} onChange={e=>setSearch(e.target.value)} style={{width:'100%',background:'#fff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'8px 12px',color:'#1a1a2e',fontSize:'15px',outline:'none',marginBottom:'16px',boxSizing:'border-box'}} />
-                {loading ? <p style={{color:'#999',textAlign:'center',padding:'40px'}}>Carregando...</p> : (
+                <input placeholder="Buscar fornecedor..." value={search} onChange={e=>setSearch(e.target.value)} style={{width:'100%',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'8px 12px',color:'#111',fontSize:'15px',outline:'none',marginBottom:'16px',boxSizing:'border-box'}} />
+                {loading ? <p style={{color:'#444',textAlign:'center',padding:'40px'}}>Carregando...</p> : (
                   <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
-                    {fornecedores.filter(f=>f.name.toLowerCase().includes(search.toLowerCase())||(f.company||'').toLowerCase().includes(search.toLowerCase())||(f.product||'').toLowerCase().includes(search.toLowerCase())).length===0 && <p style={{color:'#bbb',textAlign:'center',padding:'40px'}}>Nenhum fornecedor encontrado</p>}
+                    {fornecedores.filter(f=>f.name.toLowerCase().includes(search.toLowerCase())||(f.company||'').toLowerCase().includes(search.toLowerCase())||(f.product||'').toLowerCase().includes(search.toLowerCase())).length===0 && <p style={{color:'#555',textAlign:'center',padding:'40px'}}>Nenhum fornecedor encontrado</p>}
                     {fornecedores.filter(f=>f.name.toLowerCase().includes(search.toLowerCase())||(f.company||'').toLowerCase().includes(search.toLowerCase())||(f.product||'').toLowerCase().includes(search.toLowerCase())).map(f=>(
                       <div key={f.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'13px 15px',borderRadius:'12px',background:'#fff',border:'1px solid rgba(224,140,66,0.15)',cursor:'pointer'}} onClick={()=>openEditForn(f)}>
                         <div style={{width:'38px',height:'38px',borderRadius:'50%',background:'rgba(224,140,66,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'#e08c42',fontWeight:700,fontSize:'15px',flexShrink:0}}>{f.name.charAt(0).toUpperCase()}</div>
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
-                            <p style={{color:'#1a1a2e',fontSize:'15px',fontWeight:500}}>{f.name}</p>
-                            {f.company&&<span style={{fontSize:'15px',color:'#888'}}>{f.company}</span>}
+                            <p style={{color:'#111',fontSize:'15px',fontWeight:500}}>{f.name}</p>
+                            {f.company&&<span style={{fontSize:'15px',color:'#333'}}>{f.company}</span>}
                             {f.category&&<span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:'rgba(224,140,66,0.15)',color:'#e08c42'}}>{f.category}</span>}
                           </div>
                           <div style={{display:'flex',gap:'8px',marginTop:'2px',flexWrap:'wrap'}}>
-                            {f.product&&<span style={{color:'#999',fontSize:'15px'}}>📦 {f.product}</span>}
-                            {f.phone&&<span style={{color:'#999',fontSize:'15px'}}>📞 {f.phone}</span>}
+                            {f.product&&<span style={{color:'#444',fontSize:'15px'}}>📦 {f.product}</span>}
+                            {f.phone&&<span style={{color:'#444',fontSize:'15px'}}>📞 {f.phone}</span>}
                           </div>
                         </div>
                         <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
@@ -587,8 +587,8 @@ export default function CRMPage() {
 
       {showMovForm && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',backdropFilter:'blur(4px)',zIndex:50,display:'flex',alignItems:'center',justifyContent:'center',padding:'20px'}}>
-          <div style={{width:'100%',maxWidth:'360px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #e5e5ea'}}>
-            <h2 style={{color:'#1a1a2e',fontSize:'18px',fontWeight:600,marginBottom:'16px'}}>{movType==='entrada'?'+ Entrada':'- Saída'}: {showMovForm.name}</h2>
+          <div style={{width:'100%',maxWidth:'360px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #d0d0d8'}}>
+            <h2 style={{color:'#111',fontSize:'18px',fontWeight:600,marginBottom:'16px'}}>{movType==='entrada'?'+ Entrada':'- Saída'}: {showMovForm.name}</h2>
             <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
               <div style={{display:'flex',gap:'8px'}}>
                 <button onClick={()=>setMovType('entrada')} style={{flex:1,padding:'8px',borderRadius:'8px',border:`1px solid ${movType==='entrada'?'#4caf7d':'rgba(255,255,255,0.1)'}`,background:movType==='entrada'?'rgba(76,175,125,0.15)':'transparent',color:movType==='entrada'?'#4caf7d':'#999',cursor:'pointer',fontWeight:600}}>+ Entrada</button>
@@ -596,11 +596,11 @@ export default function CRMPage() {
               </div>
               <Fld label="Quantidade"><input type="number" min="1" value={movQty} onChange={e=>setMovQty(e.target.value)} style={inp} /></Fld>
               <Fld label="Observação"><input placeholder="Opcional" value={movNotes} onChange={e=>setMovNotes(e.target.value)} style={inp} /></Fld>
-              <p style={{fontSize:'15px',color:'#999'}}>Estoque atual: {showMovForm.quantity} → {movType==='entrada'?showMovForm.quantity+parseInt(movQty||'0'):Math.max(0,showMovForm.quantity-parseInt(movQty||'0'))}</p>
+              <p style={{fontSize:'15px',color:'#444'}}>Estoque atual: {showMovForm.quantity} → {movType==='entrada'?showMovForm.quantity+parseInt(movQty||'0'):Math.max(0,showMovForm.quantity-parseInt(movQty||'0'))}</p>
             </div>
             <div style={{display:'flex',gap:'8px',marginTop:'16px'}}>
-              <button onClick={registrarMovimentacao} disabled={saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>{saving?'Salvando...':'Confirmar'}</button>
-              <button onClick={()=>setShowMovForm(null)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#888',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
+              <button onClick={registrarMovimentacao} disabled={saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>{saving?'Salvando...':'Confirmar'}</button>
+              <button onClick={()=>setShowMovForm(null)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>
@@ -608,10 +608,10 @@ export default function CRMPage() {
 
       {showForm==='estoque' && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',backdropFilter:'blur(4px)',zIndex:50,overflowY:'auto',display:'flex',justifyContent:'center',padding:'20px'}}>
-          <div style={{width:'100%',maxWidth:'480px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #e5e5ea',height:'fit-content'}}>
+          <div style={{width:'100%',maxWidth:'480px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #d0d0d8',height:'fit-content'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
-              <h2 style={{color:'#1a1a2e',fontSize:'18px',fontWeight:600}}>{editing?'Editar Produto':'Novo Produto'}</h2>
-              <button onClick={()=>setShowForm('')} style={{background:'none',border:'none',color:'#999',cursor:'pointer',fontSize:'18px'}}>✕</button>
+              <h2 style={{color:'#111',fontSize:'18px',fontWeight:600}}>{editing?'Editar Produto':'Novo Produto'}</h2>
+              <button onClick={()=>setShowForm('')} style={{background:'none',border:'none',color:'#444',cursor:'pointer',fontSize:'18px'}}>✕</button>
             </div>
             <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
               <input placeholder="Nome do produto *" value={estoqueForm.name} onChange={e=>setEstoqueForm(f=>({...f,name:e.target.value}))} style={inp} />
@@ -629,9 +629,9 @@ export default function CRMPage() {
             </div>
             {error&&<p style={{color:'#e05252',fontSize:'15px',background:'rgba(224,82,82,0.1)',borderRadius:'8px',padding:'8px 12px',marginTop:'10px'}}>{error}</p>}
             <div style={{display:'flex',gap:'8px',marginTop:'16px'}}>
-              <button onClick={saveEstoque} disabled={!estoqueForm.name.trim()||saving} style={{flex:1,padding:'11px',background:'#4caf7d',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!estoqueForm.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
+              <button onClick={saveEstoque} disabled={!estoqueForm.name.trim()||saving} style={{flex:1,padding:'11px',background:'#4caf7d',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!estoqueForm.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
               {editing&&<button onClick={()=>{removeEstoque(editing.id);setShowForm('')}} style={{padding:'11px 14px',background:'rgba(224,82,82,0.1)',border:'1px solid rgba(224,82,82,0.2)',borderRadius:'10px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>Apagar</button>}
-              <button onClick={()=>setShowForm('')} style={{padding:'11px 16px',background:'transparent',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#888',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
+              <button onClick={()=>setShowForm('')} style={{padding:'11px 16px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>
@@ -639,21 +639,21 @@ export default function CRMPage() {
 
       {showForm==='forn' && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',backdropFilter:'blur(4px)',zIndex:50,overflowY:'auto',display:'flex',justifyContent:'center',padding:'20px'}}>
-          <div style={{width:'100%',maxWidth:'480px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #e5e5ea',height:'fit-content'}}>
+          <div style={{width:'100%',maxWidth:'480px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #d0d0d8',height:'fit-content'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
-              <h2 style={{color:'#1a1a2e',fontSize:'18px',fontWeight:600}}>{editing?'Editar Fornecedor':'Novo Fornecedor'}</h2>
-              <button onClick={()=>setShowForm('')} style={{background:'none',border:'none',color:'#999',cursor:'pointer',fontSize:'18px'}}>✕</button>
+              <h2 style={{color:'#111',fontSize:'18px',fontWeight:600}}>{editing?'Editar Fornecedor':'Novo Fornecedor'}</h2>
+              <button onClick={()=>setShowForm('')} style={{background:'none',border:'none',color:'#444',cursor:'pointer',fontSize:'18px'}}>✕</button>
             </div>
             <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
               <input placeholder="Nome do contato *" value={fornForm.name} onChange={e=>setFornForm(f=>({...f,name:e.target.value}))} style={inp} />
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
-                <div><label style={{fontSize:'15px',color:'#999',display:'block',marginBottom:'4px'}}>Empresa</label><input placeholder="Nome da empresa" value={fornForm.company} onChange={e=>setFornForm(f=>({...f,company:e.target.value}))} style={inp} /></div>
-                <div><label style={{fontSize:'15px',color:'#999',display:'block',marginBottom:'4px'}}>Categoria</label><select value={fornForm.category} onChange={e=>setFornForm(f=>({...f,category:e.target.value}))} style={sel}><option value="">Selecione</option>{FORN_CATS.map(c=><option key={c}>{c}</option>)}</select></div>
+                <div><label style={{fontSize:'15px',color:'#444',display:'block',marginBottom:'4px'}}>Empresa</label><input placeholder="Nome da empresa" value={fornForm.company} onChange={e=>setFornForm(f=>({...f,company:e.target.value}))} style={inp} /></div>
+                <div><label style={{fontSize:'15px',color:'#444',display:'block',marginBottom:'4px'}}>Categoria</label><select value={fornForm.category} onChange={e=>setFornForm(f=>({...f,category:e.target.value}))} style={sel}><option value="">Selecione</option>{FORN_CATS.map(c=><option key={c}>{c}</option>)}</select></div>
               </div>
               <input placeholder="Produto / Serviço oferecido" value={fornForm.product} onChange={e=>setFornForm(f=>({...f,product:e.target.value}))} style={inp} />
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
-                <div><label style={{fontSize:'15px',color:'#999',display:'block',marginBottom:'4px'}}>Telefone</label><input placeholder="(00) 00000-0000" value={fornForm.phone} onChange={e=>setFornForm(f=>({...f,phone:e.target.value}))} style={inp} /></div>
-                <div><label style={{fontSize:'15px',color:'#999',display:'block',marginBottom:'4px'}}>WhatsApp</label><input placeholder="(00) 00000-0000" value={fornForm.whatsapp} onChange={e=>setFornForm(f=>({...f,whatsapp:e.target.value}))} style={inp} /></div>
+                <div><label style={{fontSize:'15px',color:'#444',display:'block',marginBottom:'4px'}}>Telefone</label><input placeholder="(00) 00000-0000" value={fornForm.phone} onChange={e=>setFornForm(f=>({...f,phone:e.target.value}))} style={inp} /></div>
+                <div><label style={{fontSize:'15px',color:'#444',display:'block',marginBottom:'4px'}}>WhatsApp</label><input placeholder="(00) 00000-0000" value={fornForm.whatsapp} onChange={e=>setFornForm(f=>({...f,whatsapp:e.target.value}))} style={inp} /></div>
               </div>
               <input placeholder="E-mail" value={fornForm.email} onChange={e=>setFornForm(f=>({...f,email:e.target.value}))} style={inp} />
               <input placeholder="Instagram (@)" value={fornForm.instagram} onChange={e=>setFornForm(f=>({...f,instagram:e.target.value}))} style={inp} />
@@ -661,8 +661,8 @@ export default function CRMPage() {
             </div>
             {error&&<p style={{color:'#e05252',fontSize:'15px',background:'rgba(224,82,82,0.1)',borderRadius:'8px',padding:'8px 12px',marginTop:'10px'}}>{error}</p>}
             <div style={{display:'flex',gap:'8px',marginTop:'16px'}}>
-              <button onClick={saveForn} disabled={!fornForm.name.trim()||saving} style={{flex:1,padding:'11px',background:'#e08c42',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!fornForm.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-              <button onClick={()=>setShowForm('')} style={{padding:'11px 16px',background:'transparent',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#888',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
+              <button onClick={saveForn} disabled={!fornForm.name.trim()||saving} style={{flex:1,padding:'11px',background:'#e08c42',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!fornForm.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
+              <button onClick={()=>setShowForm('')} style={{padding:'11px 16px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>
@@ -670,10 +670,10 @@ export default function CRMPage() {
 
       {showForm==='lead' && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',backdropFilter:'blur(4px)',zIndex:50,overflowY:'auto',display:'flex',justifyContent:'center',padding:'20px'}}>
-          <div style={{width:'100%',maxWidth:'560px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #e5e5ea',height:'fit-content'}}>
+          <div style={{width:'100%',maxWidth:'560px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #d0d0d8',height:'fit-content'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'4px'}}>
-              <h2 style={{color:'#1a1a2e',fontSize:'18px',fontWeight:600}}>{editing?'Editar Lead':'Novo Lead'}</h2>
-              <button onClick={()=>setShowForm('')} style={{background:'none',border:'none',color:'#999',cursor:'pointer',fontSize:'18px'}}>✕</button>
+              <h2 style={{color:'#111',fontSize:'18px',fontWeight:600}}>{editing?'Editar Lead':'Novo Lead'}</h2>
+              <button onClick={()=>setShowForm('')} style={{background:'none',border:'none',color:'#444',cursor:'pointer',fontSize:'18px'}}>✕</button>
             </div>
             <Sec title="Informações básicas" />
             <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
@@ -726,8 +726,8 @@ export default function CRMPage() {
             <textarea placeholder="Observações gerais..." value={leadForm.notes} onChange={e=>setLeadForm(f=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'64px'}} />
             {error&&<p style={{color:'#e05252',fontSize:'15px',background:'rgba(224,82,82,0.1)',borderRadius:'8px',padding:'8px 12px',marginTop:'10px'}}>{error}</p>}
             <div style={{display:'flex',gap:'8px',marginTop:'16px'}}>
-              <button onClick={saveLead} disabled={!leadForm.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!leadForm.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-              <button onClick={()=>setShowForm('')} style={{padding:'11px 16px',background:'transparent',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#888',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
+              <button onClick={saveLead} disabled={!leadForm.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!leadForm.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
+              <button onClick={()=>setShowForm('')} style={{padding:'11px 16px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>
@@ -735,10 +735,10 @@ export default function CRMPage() {
 
       {showForm==='client' && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',backdropFilter:'blur(4px)',zIndex:50,overflowY:'auto',display:'flex',justifyContent:'center',padding:'20px'}}>
-          <div style={{width:'100%',maxWidth:'560px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #e5e5ea',height:'fit-content'}}>
+          <div style={{width:'100%',maxWidth:'560px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #d0d0d8',height:'fit-content'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'4px'}}>
-              <h2 style={{color:'#1a1a2e',fontSize:'18px',fontWeight:600}}>{editing?'Editar Cliente':'Novo Cliente'}</h2>
-              <button onClick={()=>setShowForm('')} style={{background:'none',border:'none',color:'#999',cursor:'pointer',fontSize:'18px'}}>✕</button>
+              <h2 style={{color:'#111',fontSize:'18px',fontWeight:600}}>{editing?'Editar Cliente':'Novo Cliente'}</h2>
+              <button onClick={()=>setShowForm('')} style={{background:'none',border:'none',color:'#444',cursor:'pointer',fontSize:'18px'}}>✕</button>
             </div>
             <Sec title="Informações básicas" />
             <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
@@ -793,8 +793,8 @@ export default function CRMPage() {
             <textarea value={clientForm.notes} onChange={e=>setClientForm(f=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'64px'}} />
             {error&&<p style={{color:'#e05252',fontSize:'15px',background:'rgba(224,82,82,0.1)',borderRadius:'8px',padding:'8px 12px',marginTop:'10px'}}>{error}</p>}
             <div style={{display:'flex',gap:'8px',marginTop:'16px'}}>
-              <button onClick={saveClient} disabled={!clientForm.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!clientForm.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-              <button onClick={()=>setShowForm('')} style={{padding:'11px 16px',background:'transparent',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#888',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
+              <button onClick={saveClient} disabled={!clientForm.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!clientForm.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
+              <button onClick={()=>setShowForm('')} style={{padding:'11px 16px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>

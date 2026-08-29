@@ -10,11 +10,11 @@ const USER_ID = 'paloma'
 
 
 
-const inp: any = {width:'100%',background:'#fff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'9px 12px',color:'#1a1a2e',fontSize:'15px',outline:'none',boxSizing:'border-box'}
-const sel: any = {width:'100%',background:'#ffffff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'9px 12px',color:'#1a1a2e',fontSize:'15px',outline:'none'}
+const inp: any = {width:'100%',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none',boxSizing:'border-box'}
+const sel: any = {width:'100%',background:'#ffffff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none'}
 
 function Fld({label,children}:{label:string,children:any}) {
-  return <div><label style={{fontSize:'15px',color:'#999',display:'block',marginBottom:'4px'}}>{label}</label>{children}</div>
+  return <div><label style={{fontSize:'15px',color:'#444',display:'block',marginBottom:'4px'}}>{label}</label>{children}</div>
 }
 
 const PLATFORMS = ['Udemy','YouTube','Hotmart','Coursera','Alura','Kiwify','Instagram','Particular','Outro']
@@ -130,7 +130,7 @@ export default function EducacaoPage() {
   const concluidos = cursos.filter(c=>c.status==='Concluído').length
 
   return (
-    <div style={{display:'flex',minHeight:'100vh',background:'#f5f5f7'}}>
+    <div style={{display:'flex',minHeight:'100vh',background:'#ffffff'}}>
       <Sidebar />
       <div style={{flex:1,padding:'28px 32px',overflowY:'auto'}}>
         <div style={{maxWidth:'860px',margin:'0 auto'}}>
@@ -138,10 +138,10 @@ export default function EducacaoPage() {
           {/* Cabeçalho */}
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
             <div>
-              <h1 style={{color:'#1a1a2e',fontSize:'22px',fontWeight:700}}>📚 Educação</h1>
-              <p style={{color:'#999',fontSize:'15px',marginTop:'2px'}}>{cursos.length} curso{cursos.length!==1?'s':''} cadastrado{cursos.length!==1?'s':''}</p>
+              <h1 style={{color:'#111',fontSize:'22px',fontWeight:700}}>📚 Educação</h1>
+              <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>{cursos.length} curso{cursos.length!==1?'s':''} cadastrado{cursos.length!==1?'s':''}</p>
             </div>
-            <button onClick={openNew} style={{padding:'8px 18px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>+ Novo Curso</button>
+            <button onClick={openNew} style={{padding:'8px 18px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>+ Novo Curso</button>
           </div>
 
           {/* KPIs */}
@@ -149,22 +149,22 @@ export default function EducacaoPage() {
             <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'20px'}}>
               <div style={{background:'rgba(124,111,247,0.08)',border:'1px solid rgba(124,111,247,0.15)',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
                 <p style={{color:'#a89ff7',fontSize:'22px',fontWeight:700}}>{emAndamento}</p>
-                <p style={{color:'#999',fontSize:'15px',marginTop:'2px'}}>Em andamento</p>
+                <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Em andamento</p>
               </div>
               <div style={{background:'rgba(212,184,74,0.06)',border:'1px solid rgba(212,184,74,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
                 <p style={{color:'#d4b84a',fontSize:'22px',fontWeight:700}}>{pausados}</p>
-                <p style={{color:'#999',fontSize:'15px',marginTop:'2px'}}>Pausados</p>
+                <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Pausados</p>
               </div>
               <div style={{background:'rgba(76,175,125,0.06)',border:'1px solid rgba(76,175,125,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
                 <p style={{color:'#4caf7d',fontSize:'22px',fontWeight:700}}>{concluidos}</p>
-                <p style={{color:'#999',fontSize:'15px',marginTop:'2px'}}>Concluídos</p>
+                <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Concluídos</p>
               </div>
             </div>
           )}
 
           {/* Filtros */}
           <div style={{display:'flex',gap:'10px',marginBottom:'16px'}}>
-            <input placeholder="Buscar curso ou instrutor..." value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1,background:'#fff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'8px 12px',color:'#1a1a2e',fontSize:'15px',outline:'none'}}/>
+            <input placeholder="Buscar curso ou instrutor..." value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1,background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'8px 12px',color:'#111',fontSize:'15px',outline:'none'}}/>
             <select value={filterStatus} onChange={e=>setFilterStatus(e.target.value)} style={{...sel,width:'auto',padding:'8px 12px',fontSize:'15px'}}>
               <option value="Todos">Todos</option>
               {STATUS_LIST.map(s=><option key={s}>{s}</option>)}
@@ -172,9 +172,9 @@ export default function EducacaoPage() {
           </div>
 
           {/* Lista de cursos */}
-          {loading ? <p style={{color:'#999',textAlign:'center',padding:'40px'}}>Carregando...</p> : (
+          {loading ? <p style={{color:'#444',textAlign:'center',padding:'40px'}}>Carregando...</p> : (
             <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
-              {filtered.length===0 && <p style={{color:'#bbb',textAlign:'center',padding:'40px'}}>Nenhum curso encontrado</p>}
+              {filtered.length===0 && <p style={{color:'#555',textAlign:'center',padding:'40px'}}>Nenhum curso encontrado</p>}
               {filtered.map(item => {
                 const pct = calcProgress(item)
                 const expanded = expandedId===item.id
@@ -187,14 +187,14 @@ export default function EducacaoPage() {
                       </div>
                       <div style={{flex:1,minWidth:0}}>
                         <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
-                          <p style={{color:'#1a1a2e',fontSize:'15px',fontWeight:600}}>{item.name}</p>
+                          <p style={{color:'#111',fontSize:'15px',fontWeight:600}}>{item.name}</p>
                           <span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:`${statusColor[item.status]||'#888'}22`,color:statusColor[item.status]||'#888'}}>{item.status}</span>
                           <span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:`${platformColor[item.platform]||'#888'}18`,color:platformColor[item.platform]||'#888'}}>{item.platform}</span>
                         </div>
                         <div style={{display:'flex',gap:'10px',marginTop:'4px',flexWrap:'wrap',alignItems:'center'}}>
-                          {item.instructor && <span style={{color:'#999',fontSize:'15px'}}>{item.instructor}</span>}
-                          {item.category && <span style={{color:'#aaa',fontSize:'15px'}}>· {item.category}</span>}
-                          {item.last_watched && <span style={{color:'#bbb',fontSize:'15px'}}>· Visto: {new Date(item.last_watched+'T12:00:00').toLocaleDateString('pt-BR')}</span>}
+                          {item.instructor && <span style={{color:'#444',fontSize:'15px'}}>{item.instructor}</span>}
+                          {item.category && <span style={{color:'#444',fontSize:'15px'}}>· {item.category}</span>}
+                          {item.last_watched && <span style={{color:'#555',fontSize:'15px'}}>· Visto: {new Date(item.last_watched+'T12:00:00').toLocaleDateString('pt-BR')}</span>}
                         </div>
                         {/* Barra de progresso */}
                         {pct !== null && (
@@ -202,40 +202,40 @@ export default function EducacaoPage() {
                             <div style={{flex:1,height:'4px',background:'#fff',borderRadius:'2px',overflow:'hidden'}}>
                               <div style={{width:`${Math.min(pct,100)}%`,height:'100%',background:item.status==='Concluído'?'#4caf7d':'#7c6ff7',borderRadius:'2px',transition:'width 0.3s'}}/>
                             </div>
-                            <span style={{color:'#999',fontSize:'12px',flexShrink:0}}>{pct}%</span>
+                            <span style={{color:'#444',fontSize:'12px',flexShrink:0}}>{pct}%</span>
                           </div>
                         )}
                       </div>
                       <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
                         {item.url && <a href={item.url} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'rgba(124,111,247,0.12)',border:'1px solid rgba(124,111,247,0.2)',borderRadius:'7px',color:'#a89ff7',fontSize:'15px',textDecoration:'none'}}>Abrir</a>}
-                        <button onClick={e=>{e.stopPropagation();openEdit(item)}} style={{padding:'5px 9px',background:'#fff',border:'none',borderRadius:'7px',color:'#888',fontSize:'15px',cursor:'pointer'}}>Editar</button>
+                        <button onClick={e=>{e.stopPropagation();openEdit(item)}} style={{padding:'5px 9px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Editar</button>
                         <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
-                        <span style={{color:'#bbb',fontSize:'15px'}}>{expanded?'▲':'▼'}</span>
+                        <span style={{color:'#555',fontSize:'15px'}}>{expanded?'▲':'▼'}</span>
                       </div>
                     </div>
 
                     {/* Detalhes expandidos */}
                     {expanded && (
-                      <div style={{borderTop:'1px solid #e5e5ea',padding:'14px 16px',background:'rgba(0,0,0,0.2)'}}>
+                      <div style={{borderTop:'1px solid #d0d0d8',padding:'14px 16px',background:'rgba(0,0,0,0.2)'}}>
                         <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'12px',marginBottom:'12px'}}>
                           <div style={{background:'#fff',borderRadius:'10px',padding:'12px',textAlign:'center'}}>
-                            <p style={{color:'#999',fontSize:'12px',marginBottom:'4px'}}>Módulo atual</p>
+                            <p style={{color:'#444',fontSize:'12px',marginBottom:'4px'}}>Módulo atual</p>
                             <p style={{color:'#a89ff7',fontSize:'18px',fontWeight:700}}>{item.current_module||'—'}{item.total_modules?` / ${item.total_modules}`:''}</p>
-                            {item.current_module_name && <p style={{color:'#999',fontSize:'12px',marginTop:'2px'}}>{item.current_module_name}</p>}
+                            {item.current_module_name && <p style={{color:'#444',fontSize:'12px',marginTop:'2px'}}>{item.current_module_name}</p>}
                           </div>
                           <div style={{background:'#fff',borderRadius:'10px',padding:'12px',textAlign:'center'}}>
-                            <p style={{color:'#999',fontSize:'12px',marginBottom:'4px'}}>Aula atual</p>
+                            <p style={{color:'#444',fontSize:'12px',marginBottom:'4px'}}>Aula atual</p>
                             <p style={{color:'#4caf7d',fontSize:'18px',fontWeight:700}}>{item.current_lesson||'—'}{item.total_lessons?` / ${item.total_lessons}`:''}</p>
                           </div>
                           <div style={{background:'#fff',borderRadius:'10px',padding:'12px',textAlign:'center'}}>
-                            <p style={{color:'#999',fontSize:'12px',marginBottom:'4px'}}>Progresso</p>
+                            <p style={{color:'#444',fontSize:'12px',marginBottom:'4px'}}>Progresso</p>
                             <p style={{color:pct!==null?(pct>=100?'#4caf7d':'#d4b84a'):'#999',fontSize:'18px',fontWeight:700}}>{pct!==null?`${pct}%`:'—'}</p>
                           </div>
                         </div>
                         {item.notes && (
                           <div style={{background:'#fff',borderRadius:'10px',padding:'12px'}}>
-                            <p style={{color:'#bbb',fontSize:'12px',marginBottom:'4px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Onde parei / Notas</p>
-                            <p style={{color:'#666',fontSize:'15px',whiteSpace:'pre-wrap'}}>{item.notes}</p>
+                            <p style={{color:'#555',fontSize:'12px',marginBottom:'4px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Onde parei / Notas</p>
+                            <p style={{color:'#444',fontSize:'15px',whiteSpace:'pre-wrap'}}>{item.notes}</p>
                           </div>
                         )}
                       </div>
@@ -251,10 +251,10 @@ export default function EducacaoPage() {
       {/* Modal de formulário */}
       {showForm && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',backdropFilter:'blur(4px)',zIndex:50,overflowY:'auto',display:'flex',justifyContent:'center',padding:'20px'}}>
-          <div style={{width:'100%',maxWidth:'560px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #e5e5ea',height:'fit-content'}}>
+          <div style={{width:'100%',maxWidth:'560px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #d0d0d8',height:'fit-content'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
-              <h2 style={{color:'#1a1a2e',fontSize:'18px',fontWeight:600}}>{editing?'Editar Curso':'Novo Curso'}</h2>
-              <button onClick={()=>setShowForm(false)} style={{background:'none',border:'none',color:'#999',cursor:'pointer',fontSize:'18px'}}>✕</button>
+              <h2 style={{color:'#111',fontSize:'18px',fontWeight:600}}>{editing?'Editar Curso':'Novo Curso'}</h2>
+              <button onClick={()=>setShowForm(false)} style={{background:'none',border:'none',color:'#444',cursor:'pointer',fontSize:'18px'}}>✕</button>
             </div>
 
             <div style={{display:'flex',flexDirection:'column',gap:'12px'}}>
@@ -272,8 +272,8 @@ export default function EducacaoPage() {
 
               <Fld label="Link do curso"><input placeholder="https://..." value={form.url} onChange={e=>setForm((f:any)=>({...f,url:e.target.value}))} style={inp}/></Fld>
 
-              <div style={{borderTop:'1px solid #e5e5ea',paddingTop:'12px'}}>
-                <p style={{color:'#aaa',fontSize:'12px',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'10px'}}>Onde parei</p>
+              <div style={{borderTop:'1px solid #d0d0d8',paddingTop:'12px'}}>
+                <p style={{color:'#444',fontSize:'12px',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'10px'}}>Onde parei</p>
                 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr 1fr',gap:'8px'}}>
                   <Fld label="Módulo atual"><input type="number" min="0" placeholder="3" value={form.current_module} onChange={e=>setForm((f:any)=>({...f,current_module:e.target.value}))} style={inp}/></Fld>
                   <Fld label="Total módulos"><input type="number" min="0" placeholder="10" value={form.total_modules} onChange={e=>setForm((f:any)=>({...f,total_modules:e.target.value}))} style={inp}/></Fld>
@@ -289,7 +289,7 @@ export default function EducacaoPage() {
                     <div style={{flex:1,height:'6px',background:'#fff',borderRadius:'3px',overflow:'hidden'}}>
                       <div style={{width:`${Math.min(formProgress()!,100)}%`,height:'100%',background:'#7c6ff7',borderRadius:'3px'}}/>
                     </div>
-                    <span style={{color:'#888',fontSize:'15px'}}>{formProgress()}%</span>
+                    <span style={{color:'#333',fontSize:'15px'}}>{formProgress()}%</span>
                   </div>
                 )}
               </div>
@@ -300,8 +300,8 @@ export default function EducacaoPage() {
             </div>
 
             <div style={{display:'flex',gap:'8px',marginTop:'20px'}}>
-              <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#888',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
+              <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
+              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>

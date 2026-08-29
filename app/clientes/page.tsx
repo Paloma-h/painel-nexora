@@ -13,17 +13,17 @@ const EMPTY = { name:'', email:'', phone:'', whatsapp:'', phone2:'', phone2_name
 
 
 
-const inputStyle: any = {width:'100%',background:'#fff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'9px 12px',color:'#1a1a2e',fontSize:'15px',outline:'none',boxSizing:'border-box'}
-const selectStyle: any = {width:'100%',background:'#ffffff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'9px 12px',color:'#1a1a2e',fontSize:'15px',outline:'none'}
+const inputStyle: any = {width:'100%',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none',boxSizing:'border-box'}
+const selectStyle: any = {width:'100%',background:'#ffffff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none'}
 
 function Section({ title }: { title: string }) {
-  return <div style={{fontSize:'12px',color:'#aaa',textTransform:'uppercase',letterSpacing:'1px',marginTop:'16px',marginBottom:'8px',paddingBottom:'6px',borderBottom:'1px solid #e5e5ea'}}>{title}</div>
+  return <div style={{fontSize:'12px',color:'#444',textTransform:'uppercase',letterSpacing:'1px',marginTop:'16px',marginBottom:'8px',paddingBottom:'6px',borderBottom:'1px solid #d0d0d8'}}>{title}</div>
 }
 
 function Field({ label, children }: { label: string, children: React.ReactNode }) {
   return (
     <div>
-      <label style={{fontSize:'15px',color:'#999',display:'block',marginBottom:'4px'}}>{label}</label>
+      <label style={{fontSize:'15px',color:'#444',display:'block',marginBottom:'4px'}}>{label}</label>
       {children}
     </div>
   )
@@ -130,30 +130,30 @@ export default function ClientesPage() {
   const filtered = clients.filter(c => c.name.toLowerCase().includes(search.toLowerCase()) || (c.phone||'').includes(search))
 
   return (
-    <div style={{display:'flex',minHeight:'100vh',background:'#f5f5f7'}}>
+    <div style={{display:'flex',minHeight:'100vh',background:'#ffffff'}}>
       <Sidebar />
       <div style={{flex:1,padding:'28px 32px',overflowY:'auto'}}>
         <div style={{maxWidth:'900px',margin:'0 auto'}}>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
             <div>
-              <h1 style={{color:'#1a1a2e',fontSize:'22px',fontWeight:700}}>Clientes</h1>
-              <p style={{color:'#999',fontSize:'15px',marginTop:'2px'}}>{clients.length} clientes cadastrados</p>
+              <h1 style={{color:'#111',fontSize:'22px',fontWeight:700}}>Clientes</h1>
+              <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>{clients.length} clientes cadastrados</p>
             </div>
             <div style={{display:'flex',gap:'8px'}}>
-              <label style={{padding:'8px 14px',background:'#fff',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#666',fontSize:'15px',cursor:'pointer'}}>
+              <label style={{padding:'8px 14px',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#444',fontSize:'15px',cursor:'pointer'}}>
                 Importar CSV
                 <input type="file" accept=".csv" onChange={importCSV} style={{display:'none'}} />
               </label>
-              <button onClick={exportCSV} style={{padding:'8px 14px',background:'#fff',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#666',fontSize:'15px',cursor:'pointer'}}>Exportar CSV</button>
-              <button onClick={openNew} style={{padding:'8px 18px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>+ Novo Cliente</button>
+              <button onClick={exportCSV} style={{padding:'8px 14px',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#444',fontSize:'15px',cursor:'pointer'}}>Exportar CSV</button>
+              <button onClick={openNew} style={{padding:'8px 18px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>+ Novo Cliente</button>
             </div>
           </div>
 
-          <input placeholder="Buscar por nome ou telefone..." value={search} onChange={e => setSearch(e.target.value)} style={{width:'100%',background:'#fff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'9px 14px',color:'#1a1a2e',fontSize:'15px',outline:'none',marginBottom:'16px',boxSizing:'border-box'}} />
+          <input placeholder="Buscar por nome ou telefone..." value={search} onChange={e => setSearch(e.target.value)} style={{width:'100%',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'9px 14px',color:'#111',fontSize:'15px',outline:'none',marginBottom:'16px',boxSizing:'border-box'}} />
 
-          {loading ? <p style={{color:'#999',textAlign:'center',padding:'40px'}}>Carregando...</p> : (
+          {loading ? <p style={{color:'#444',textAlign:'center',padding:'40px'}}>Carregando...</p> : (
             <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
-              {filtered.length===0 && <p style={{color:'#bbb',textAlign:'center',padding:'40px'}}>Nenhum cliente encontrado</p>}
+              {filtered.length===0 && <p style={{color:'#555',textAlign:'center',padding:'40px'}}>Nenhum cliente encontrado</p>}
               {filtered.map(c => {
                 const days = daysLeft(c)
                 const isLow = days !== null && days <= 10
@@ -163,13 +163,13 @@ export default function ClientesPage() {
                     <div style={{width:'40px',height:'40px',borderRadius:'50%',background:'rgba(76,175,125,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'#4caf7d',fontWeight:700,fontSize:'15px',flexShrink:0}}>{c.name.charAt(0).toUpperCase()}</div>
                     <div style={{flex:1,minWidth:0}}>
                       <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
-                        <p style={{color:'#1a1a2e',fontSize:'15px',fontWeight:500}}>{c.name}</p>
+                        <p style={{color:'#111',fontSize:'15px',fontWeight:500}}>{c.name}</p>
                         {c.source && <span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:`${sourceColor[c.source]}22`,color:sourceColor[c.source]}}>{c.source}</span>}
                         {c.product && <span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:'rgba(76,175,125,0.1)',color:'#4caf7d'}}>{c.product}</span>}
                       </div>
                       <div style={{display:'flex',gap:'10px',marginTop:'3px',flexWrap:'wrap'}}>
-                        {c.phone && <span style={{color:'#999',fontSize:'15px'}}>{c.phone}</span>}
-                        {c.pots_bought>0 && <span style={{color:'#999',fontSize:'15px'}}>{c.pots_bought} potes</span>}
+                        {c.phone && <span style={{color:'#444',fontSize:'15px'}}>{c.phone}</span>}
+                        {c.pots_bought>0 && <span style={{color:'#444',fontSize:'15px'}}>{c.pots_bought} potes</span>}
                         {days !== null && <span style={{color:isOver?'#e05252':isLow?'#e08c42':'#999',fontSize:'15px',fontWeight:isLow?600:400}}>{isOver?'Potes acabaram!':isLow?`⚠ ${days} dias restantes`:`${days} dias restantes`}</span>}
                       </div>
                     </div>
@@ -190,10 +190,10 @@ export default function ClientesPage() {
 
       {showForm && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',backdropFilter:'blur(4px)',zIndex:50,overflowY:'auto',display:'flex',justifyContent:'center',padding:'20px'}}>
-          <div style={{width:'100%',maxWidth:'560px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #e5e5ea',height:'fit-content'}}>
+          <div style={{width:'100%',maxWidth:'560px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #d0d0d8',height:'fit-content'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'4px'}}>
-              <h2 style={{color:'#1a1a2e',fontSize:'18px',fontWeight:600}}>{editing?'Editar Cliente':'Novo Cliente'}</h2>
-              <button onClick={() => setShowForm(false)} style={{background:'none',border:'none',color:'#999',cursor:'pointer',fontSize:'18px'}}>✕</button>
+              <h2 style={{color:'#111',fontSize:'18px',fontWeight:600}}>{editing?'Editar Cliente':'Novo Cliente'}</h2>
+              <button onClick={() => setShowForm(false)} style={{background:'none',border:'none',color:'#444',cursor:'pointer',fontSize:'18px'}}>✕</button>
             </div>
 
             <Section title="Informações básicas" />
@@ -264,8 +264,8 @@ export default function ClientesPage() {
             {error && <p style={{color:'#e05252',fontSize:'15px',background:'rgba(224,82,82,0.1)',borderRadius:'8px',padding:'8px 12px',marginTop:'10px'}}>{error}</p>}
 
             <div style={{display:'flex',gap:'8px',marginTop:'16px'}}>
-              <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-              <button onClick={() => setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#888',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
+              <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
+              <button onClick={() => setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>

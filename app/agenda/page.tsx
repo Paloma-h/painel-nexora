@@ -139,16 +139,16 @@ export default function AgendaPage() {
   const priorityColor: any = {CRITICAL:'#e05252',HIGH:'#e05252',MEDIUM:'#d4b84a',LOW:'#4caf7d'}
 
   return (
-    <div style={{display:'flex',minHeight:'100vh',background:'#f5f5f7'}}>
+    <div style={{display:'flex',minHeight:'100vh',background:'#ffffff'}}>
       <Sidebar />
 
       <div style={{flex:1,padding:'24px',overflowY:'auto',minWidth:0}}>
         <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
-          <div style={{color:'#1a1a2e',fontSize:'22px',fontWeight:700,letterSpacing:'-0.3px'}}>{MONTHS[month]} {year}</div>
+          <div style={{color:'#111',fontSize:'22px',fontWeight:700,letterSpacing:'-0.3px'}}>{MONTHS[month]} {year}</div>
           <div style={{display:'flex',gap:'6px'}}>
-            <button onClick={() => setCurrentDate(new Date(year,month-1,1))} style={{width:'32px',height:'32px',borderRadius:'8px',background:'#fff',border:'1px solid #ddd',color:'#555',cursor:'pointer',fontSize:'18px',fontWeight:700}}>‹</button>
+            <button onClick={() => setCurrentDate(new Date(year,month-1,1))} style={{width:'32px',height:'32px',borderRadius:'8px',background:'#fff',border:'1px solid #ddd',color:'#333',cursor:'pointer',fontSize:'18px',fontWeight:700}}>‹</button>
             <button onClick={() => setCurrentDate(new Date())} style={{padding:'0 16px',height:'32px',borderRadius:'8px',background:'#7c3aed',border:'none',color:'#fff',cursor:'pointer',fontSize:'15px',fontWeight:600}}>Hoje</button>
-            <button onClick={() => setCurrentDate(new Date(year,month+1,1))} style={{width:'32px',height:'32px',borderRadius:'8px',background:'#fff',border:'1px solid #ddd',color:'#555',cursor:'pointer',fontSize:'18px',fontWeight:700}}>›</button>
+            <button onClick={() => setCurrentDate(new Date(year,month+1,1))} style={{width:'32px',height:'32px',borderRadius:'8px',background:'#fff',border:'1px solid #ddd',color:'#333',cursor:'pointer',fontSize:'18px',fontWeight:700}}>›</button>
           </div>
         </div>
 
@@ -168,13 +168,13 @@ export default function AgendaPage() {
               <div key={day} onClick={() => { if(hasTasks){ setViewingDay(day) } else { openDayForm(day) } }} style={{minHeight:'90px',borderRadius:'8px',padding:'6px',background:isToday?'rgba(124,58,237,0.08)':'#fff',border:isToday?'2px solid #7c3aed':'1px solid #e5e5ea',cursor:'pointer',overflow:'hidden',transition:'border-color 0.15s',boxShadow:hasTasks?'0 1px 3px rgba(0,0,0,0.06)':'none'}}>
                 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
                   <span style={{fontSize:'15px',color:isToday?'#7c3aed':isPast?'#aaa':'#333',fontWeight:isToday?800:600}}>{day}</span>
-                  {hasTasks && <span style={{fontSize:'8px',color:'#999',fontWeight:600}}>{dayTasks.length}</span>}
+                  {hasTasks && <span style={{fontSize:'8px',color:'#444',fontWeight:600}}>{dayTasks.length}</span>}
                 </div>
                 <div style={{marginTop:'3px'}}>
                   {dayTasks.map((t:any) => (
                     <div key={t.id} onClick={e => {e.stopPropagation();openEditTask(t)}} style={{display:'flex',alignItems:'center',gap:'2px',width:'100%',fontSize:'11px',color:t.status==='DONE'?'#bbb':'#333',background:t.status==='DONE'?'#f5f5f5':`${priorityColor[t.priority]}15`,borderLeft:`3px solid ${t.status==='DONE'?'#ccc':priorityColor[t.priority]}`,borderRadius:'0 4px 4px 0',padding:'3px 5px',marginBottom:'2px',textDecoration:t.status==='DONE'?'line-through':'none',fontWeight:t.status==='DONE'?400:500}}>
                       {t.notes&&<span style={{color:'#e08c42',fontWeight:900,fontSize:'15px',lineHeight:1,flexShrink:0}} title="Tem observação">*</span>}
-                      <span style={{whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis',minWidth:0}}>{t.time&&<span style={{color:'#999',marginRight:'3px'}}>{t.time}</span>}{t.title}</span>
+                      <span style={{whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis',minWidth:0}}>{t.time&&<span style={{color:'#444',marginRight:'3px'}}>{t.time}</span>}{t.title}</span>
                     </div>
                   ))}
                 </div>
@@ -191,7 +191,7 @@ export default function AgendaPage() {
               <h2 style={{color:'#fff',fontSize:'18px',fontWeight:700}}>Dia {viewingDay} de {MONTHS[month]}</h2>
               <div style={{display:'flex',gap:'8px'}}>
                 <button onClick={() => { setViewingDay(null); openDayForm(viewingDay) }} style={{padding:'8px 14px',background:'#7c3aed',border:'none',borderRadius:'8px',color:'#fff',fontSize:'15px',cursor:'pointer',fontWeight:600}}>+ Nova tarefa</button>
-                <button onClick={() => setViewingDay(null)} style={{background:'none',border:'none',color:'#777',cursor:'pointer',fontSize:'22px',fontWeight:700}}>✕</button>
+                <button onClick={() => setViewingDay(null)} style={{background:'none',border:'none',color:'#555',cursor:'pointer',fontSize:'22px',fontWeight:700}}>✕</button>
               </div>
             </div>
             <div style={{overflowY:'auto',display:'flex',flexDirection:'column',gap:'6px'}}>
@@ -202,7 +202,7 @@ export default function AgendaPage() {
                     <div style={{flex:1,minWidth:0}}>
                       <p style={{color:t.status==='DONE'?'#999':'#fff',fontSize:'15px',fontWeight:600,textDecoration:t.status==='DONE'?'line-through':'none'}}>{t.title}{t.notes&&<span style={{color:'#fbbf24',marginLeft:'5px',fontSize:'18px'}}>*</span>}</p>
                       <div style={{display:'flex',alignItems:'center',gap:'10px',marginTop:'4px',flexWrap:'wrap'}}>
-                        {t.time&&<span style={{color:'#777',fontSize:'15px'}}>🕐 {t.time}</span>}
+                        {t.time&&<span style={{color:'#555',fontSize:'15px'}}>🕐 {t.time}</span>}
                         {t.location&&<a href={`https://www.google.com/maps/search/${encodeURIComponent(t.location)}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{color:'#34d399',fontSize:'15px',textDecoration:'none',fontWeight:500}}>📍 {t.location}</a>}
                         {t.amount>0&&<span style={{color:'#fbbf24',fontSize:'15px',fontWeight:500}}>R$ {Number(t.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
                       </div>
@@ -229,18 +229,18 @@ export default function AgendaPage() {
           <div style={{width:'100%',maxWidth:'480px',background:'#ffffff',borderRadius:'16px',padding:'28px',border:'1px solid rgba(124,58,237,0.2)',boxShadow:'0 20px 60px rgba(0,0,0,0.5)'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
               <h2 style={{color:'#fff',fontSize:'18px',fontWeight:600}}>{editingTask?'Editar tarefa':`Tarefa — dia ${selectedDay}`}</h2>
-              <button onClick={() => setShowTaskForm(false)} style={{background:'none',border:'none',color:'#999',cursor:'pointer',fontSize:'18px'}}>✕</button>
+              <button onClick={() => setShowTaskForm(false)} style={{background:'none',border:'none',color:'#444',cursor:'pointer',fontSize:'18px'}}>✕</button>
             </div>
             <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
-              <input placeholder="Título *" value={taskForm.title} onChange={e => setTaskForm(f=>({...f,title:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'15px',outline:'none'}} />
+              <input placeholder="Título *" value={taskForm.title} onChange={e => setTaskForm(f=>({...f,title:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'15px',outline:'none'}} />
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
                 <div>
-                  <div style={{fontSize:'15px',color:'#999',marginBottom:'4px'}}>Horário</div>
-                  <input type="time" value={taskForm.time} onChange={e => setTaskForm(f=>({...f,time:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'8px 12px',color:'#fff',fontSize:'15px',outline:'none',colorScheme:'light'}} />
+                  <div style={{fontSize:'15px',color:'#444',marginBottom:'4px'}}>Horário</div>
+                  <input type="time" value={taskForm.time} onChange={e => setTaskForm(f=>({...f,time:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'8px 12px',color:'#fff',fontSize:'15px',outline:'none',colorScheme:'light'}} />
                 </div>
                 <div>
-                  <div style={{fontSize:'15px',color:'#999',marginBottom:'4px'}}>Prioridade</div>
-                  <select value={taskForm.priority} onChange={e => setTaskForm(f=>({...f,priority:e.target.value}))} style={{width:'100%',background:'#ffffff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'8px 12px',color:'#fff',fontSize:'15px',outline:'none'}}>
+                  <div style={{fontSize:'15px',color:'#444',marginBottom:'4px'}}>Prioridade</div>
+                  <select value={taskForm.priority} onChange={e => setTaskForm(f=>({...f,priority:e.target.value}))} style={{width:'100%',background:'#ffffff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'8px 12px',color:'#fff',fontSize:'15px',outline:'none'}}>
                     <option value="CRITICAL">Urgente</option>
                     <option value="HIGH">Alta</option>
                     <option value="MEDIUM">Média</option>
@@ -248,19 +248,19 @@ export default function AgendaPage() {
                   </select>
                 </div>
               </div>
-              <textarea placeholder="Observações" value={taskForm.notes} onChange={e => setTaskForm(f=>({...f,notes:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'15px',outline:'none',resize:'none',height:'100px'}} />
+              <textarea placeholder="Observações" value={taskForm.notes} onChange={e => setTaskForm(f=>({...f,notes:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'15px',outline:'none',resize:'none',height:'100px'}} />
               <div>
-                <div style={{fontSize:'15px',color:'#999',marginBottom:'4px'}}>📍 Endereço / Local</div>
+                <div style={{fontSize:'15px',color:'#444',marginBottom:'4px'}}>📍 Endereço / Local</div>
                 <div style={{display:'flex',gap:'6px'}}>
-                  <input placeholder="Ex: Rua das Flores, 123 - Fortaleza" value={taskForm.location} onChange={e => setTaskForm(f=>({...f,location:e.target.value}))} style={{flex:1,background:'rgba(255,255,255,0.05)',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'15px',outline:'none'}} />
+                  <input placeholder="Ex: Rua das Flores, 123 - Fortaleza" value={taskForm.location} onChange={e => setTaskForm(f=>({...f,location:e.target.value}))} style={{flex:1,background:'rgba(255,255,255,0.05)',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'15px',outline:'none'}} />
                   {taskForm.location && <a href={`https://www.google.com/maps/search/${encodeURIComponent(taskForm.location)}`} target="_blank" rel="noopener noreferrer" style={{padding:'10px 12px',background:'rgba(76,175,125,0.12)',border:'1px solid rgba(76,175,125,0.25)',borderRadius:'10px',color:'#4caf7d',fontSize:'15px',textDecoration:'none',fontWeight:600,flexShrink:0,display:'flex',alignItems:'center'}}>🗺️ Maps</a>}
                 </div>
               </div>
               <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
                 <input type="checkbox" id="rec" checked={taskForm.is_recurring} onChange={e => setTaskForm(f=>({...f,is_recurring:e.target.checked}))} style={{cursor:'pointer'}} />
-                <label htmlFor="rec" style={{fontSize:'15px',color:'#777',cursor:'pointer'}}>Recorrente</label>
+                <label htmlFor="rec" style={{fontSize:'15px',color:'#555',cursor:'pointer'}}>Recorrente</label>
                 {taskForm.is_recurring && (
-                  <select value={taskForm.recurrence} onChange={e => setTaskForm(f=>({...f,recurrence:e.target.value}))} style={{marginLeft:'8px',background:'#ffffff',border:'1px solid #e5e5ea',borderRadius:'8px',padding:'4px 8px',color:'#fff',fontSize:'15px',outline:'none'}}>
+                  <select value={taskForm.recurrence} onChange={e => setTaskForm(f=>({...f,recurrence:e.target.value}))} style={{marginLeft:'8px',background:'#ffffff',border:'1px solid #d0d0d8',borderRadius:'8px',padding:'4px 8px',color:'#fff',fontSize:'15px',outline:'none'}}>
                     <option value="daily">Diário</option>
                     <option value="weekly">Semanal</option>
                     <option value="monthly">Mensal</option>
@@ -269,16 +269,16 @@ export default function AgendaPage() {
               </div>
               <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
                 <input type="checkbox" id="fin" checked={taskForm.has_financial} onChange={e => setTaskForm(f=>({...f,has_financial:e.target.checked}))} style={{cursor:'pointer'}} />
-                <label htmlFor="fin" style={{fontSize:'15px',color:'#777',cursor:'pointer'}}>Lançar no financeiro</label>
+                <label htmlFor="fin" style={{fontSize:'15px',color:'#555',cursor:'pointer'}}>Lançar no financeiro</label>
               </div>
               {taskForm.has_financial && (
                 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'8px',background:'rgba(91,80,214,0.05)',borderRadius:'10px',padding:'12px',border:'1px solid rgba(91,80,214,0.15)'}}>
-                  <input placeholder="Valor R$" type="number" value={taskForm.amount} onChange={e => setTaskForm(f=>({...f,amount:e.target.value}))} style={{background:'rgba(255,255,255,0.05)',border:'1px solid #e5e5ea',borderRadius:'8px',padding:'7px 10px',color:'#fff',fontSize:'15px',outline:'none'}} />
-                  <select value={taskForm.financial_type} onChange={e => setTaskForm(f=>({...f,financial_type:e.target.value}))} style={{background:'#ffffff',border:'1px solid #e5e5ea',borderRadius:'8px',padding:'7px 10px',color:'#fff',fontSize:'15px',outline:'none'}}>
+                  <input placeholder="Valor R$" type="number" value={taskForm.amount} onChange={e => setTaskForm(f=>({...f,amount:e.target.value}))} style={{background:'rgba(255,255,255,0.05)',border:'1px solid #d0d0d8',borderRadius:'8px',padding:'7px 10px',color:'#fff',fontSize:'15px',outline:'none'}} />
+                  <select value={taskForm.financial_type} onChange={e => setTaskForm(f=>({...f,financial_type:e.target.value}))} style={{background:'#ffffff',border:'1px solid #d0d0d8',borderRadius:'8px',padding:'7px 10px',color:'#fff',fontSize:'15px',outline:'none'}}>
                     <option value="despesa">Despesa</option>
                     <option value="receita">Receita</option>
                   </select>
-                  <select value={taskForm.financial_category} onChange={e => setTaskForm(f=>({...f,financial_category:e.target.value}))} style={{background:'#ffffff',border:'1px solid #e5e5ea',borderRadius:'8px',padding:'7px 10px',color:'#fff',fontSize:'15px',outline:'none'}}>
+                  <select value={taskForm.financial_category} onChange={e => setTaskForm(f=>({...f,financial_category:e.target.value}))} style={{background:'#ffffff',border:'1px solid #d0d0d8',borderRadius:'8px',padding:'7px 10px',color:'#fff',fontSize:'15px',outline:'none'}}>
                     {FINANCIAL_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>

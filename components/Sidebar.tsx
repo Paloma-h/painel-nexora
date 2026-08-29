@@ -40,8 +40,8 @@ export default function Sidebar() {
       <Link href={href} style={{
         display: 'flex', alignItems: 'center', gap: '10px',
         padding: '10px 14px', borderRadius: '10px', fontSize: '15px',
-        fontWeight: active ? 700 : 500,
-        color: active ? '#ffffff' : '#444',
+        fontWeight: active ? 800 : 600,
+        color: active ? '#ffffff' : '#222',
         background: active ? '#7c3aed' : 'transparent',
         textDecoration: 'none', marginBottom: '3px',
         transition: 'all 0.15s ease',

@@ -4,10 +4,10 @@ import { supabase } from '@/lib/supabase'
 import Sidebar from '@/components/Sidebar'
 
 const USER_ID = 'paloma'
-const inp: any = {width:'100%',background:'#fff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'9px 12px',color:'#1a1a2e',fontSize:'15px',outline:'none',boxSizing:'border-box'}
-const sel: any = {width:'100%',background:'#ffffff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'9px 12px',color:'#1a1a2e',fontSize:'15px',outline:'none'}
+const inp: any = {width:'100%',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none',boxSizing:'border-box'}
+const sel: any = {width:'100%',background:'#ffffff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'9px 12px',color:'#111',fontSize:'15px',outline:'none'}
 function Fld({label,children}:{label:string,children:any}) {
-  return <div><label style={{fontSize:'15px',color:'#999',display:'block',marginBottom:'4px'}}>{label}</label>{children}</div>
+  return <div><label style={{fontSize:'15px',color:'#444',display:'block',marginBottom:'4px'}}>{label}</label>{children}</div>
 }
 const GENRES = ['Drama','Comédia','Ação','Terror','Romance','Documentário','Animação','Suspense','Ficção Científica','Outro']
 const TYPES = ['Filme','Série','Documentário','Anime','Mini-série']
@@ -64,31 +64,31 @@ export default function FilmesPage() {
   const concluidos = items.filter(c=>c.status==='Concluído').length
   const querAssistir = items.filter(c=>c.status==='Quero assistir').length
   return (
-    <div style={{display:'flex',minHeight:'100vh',background:'#f5f5f7'}}>
+    <div style={{display:'flex',minHeight:'100vh',background:'#ffffff'}}>
       <Sidebar />
       <div style={{flex:1,padding:'28px 32px',overflowY:'auto'}}>
         <div style={{maxWidth:'860px',margin:'0 auto'}}>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
             <div>
-              <h1 style={{color:'#1a1a2e',fontSize:'22px',fontWeight:700}}>🎬 Filmes & Séries</h1>
-              <p style={{color:'#999',fontSize:'15px',marginTop:'2px'}}>{items.length} título{items.length!==1?'s':''} cadastrado{items.length!==1?'s':''}</p>
+              <h1 style={{color:'#111',fontSize:'22px',fontWeight:700}}>🎬 Filmes & Séries</h1>
+              <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>{items.length} título{items.length!==1?'s':''} cadastrado{items.length!==1?'s':''}</p>
             </div>
-            <button onClick={openNew} style={{padding:'8px 18px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>+ Novo Título</button>
+            <button onClick={openNew} style={{padding:'8px 18px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>+ Novo Título</button>
           </div>
           {items.length > 0 && (
             <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'20px'}}>
-              <div style={{background:'rgba(124,111,247,0.08)',border:'1px solid rgba(124,111,247,0.15)',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#a89ff7',fontSize:'22px',fontWeight:700}}>{assistindo}</p><p style={{color:'#999',fontSize:'15px',marginTop:'2px'}}>Assistindo</p></div>
-              <div style={{background:'rgba(76,175,125,0.06)',border:'1px solid rgba(76,175,125,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#4caf7d',fontSize:'22px',fontWeight:700}}>{concluidos}</p><p style={{color:'#999',fontSize:'15px',marginTop:'2px'}}>Concluídos</p></div>
-              <div style={{background:'rgba(136,136,136,0.06)',border:'1px solid rgba(136,136,136,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#aaa',fontSize:'22px',fontWeight:700}}>{querAssistir}</p><p style={{color:'#999',fontSize:'15px',marginTop:'2px'}}>Quero assistir</p></div>
+              <div style={{background:'rgba(124,111,247,0.08)',border:'1px solid rgba(124,111,247,0.15)',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#a89ff7',fontSize:'22px',fontWeight:700}}>{assistindo}</p><p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Assistindo</p></div>
+              <div style={{background:'rgba(76,175,125,0.06)',border:'1px solid rgba(76,175,125,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#4caf7d',fontSize:'22px',fontWeight:700}}>{concluidos}</p><p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Concluídos</p></div>
+              <div style={{background:'rgba(136,136,136,0.06)',border:'1px solid rgba(136,136,136,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#444',fontSize:'22px',fontWeight:700}}>{querAssistir}</p><p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Quero assistir</p></div>
             </div>
           )}
           <div style={{display:'flex',gap:'10px',marginBottom:'16px'}}>
-            <input placeholder="Buscar título..." value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1,background:'#fff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'8px 12px',color:'#1a1a2e',fontSize:'15px',outline:'none'}}/>
+            <input placeholder="Buscar título..." value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1,background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'8px 12px',color:'#111',fontSize:'15px',outline:'none'}}/>
             <select value={filterStatus} onChange={e=>setFilterStatus(e.target.value)} style={{...sel,width:'auto',padding:'8px 12px',fontSize:'15px'}}><option value="Todos">Todos</option>{STATUS_LIST.map(s=><option key={s}>{s}</option>)}</select>
           </div>
-          {loading ? <p style={{color:'#999',textAlign:'center',padding:'40px'}}>Carregando...</p> : (
+          {loading ? <p style={{color:'#444',textAlign:'center',padding:'40px'}}>Carregando...</p> : (
             <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
-              {filtered.length===0 && <p style={{color:'#bbb',textAlign:'center',padding:'40px'}}>Nenhum título encontrado</p>}
+              {filtered.length===0 && <p style={{color:'#555',textAlign:'center',padding:'40px'}}>Nenhum título encontrado</p>}
               {filtered.map(item => {
                 const pct = calcProgress(item)
                 const expanded = expandedId===item.id
@@ -98,24 +98,24 @@ export default function FilmesPage() {
                       <div style={{width:'42px',height:'42px',borderRadius:'10px',background:`${platformColor[item.platform]||'#888'}18`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'22px',flexShrink:0}}>{typeIcon[item.type]||'🎬'}</div>
                       <div style={{flex:1,minWidth:0}}>
                         <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
-                          <p style={{color:'#1a1a2e',fontSize:'15px',fontWeight:600}}>{item.name}</p>
+                          <p style={{color:'#111',fontSize:'15px',fontWeight:600}}>{item.name}</p>
                           <span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:`${statusColor[item.status]||'#888'}22`,color:statusColor[item.status]||'#888'}}>{item.status}</span>
                           <span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:`${platformColor[item.platform]||'#888'}18`,color:platformColor[item.platform]||'#888'}}>{item.platform}</span>
                         </div>
                         <div style={{display:'flex',gap:'10px',marginTop:'4px',flexWrap:'wrap'}}>
-                          <span style={{color:'#999',fontSize:'15px'}}>{item.type}</span>
-                          {item.genre && <span style={{color:'#aaa',fontSize:'15px'}}>· {item.genre}</span>}
+                          <span style={{color:'#444',fontSize:'15px'}}>{item.type}</span>
+                          {item.genre && <span style={{color:'#444',fontSize:'15px'}}>· {item.genre}</span>}
                           {item.rating && <span style={{color:'#d4b84a',fontSize:'15px'}}>· {'★'.repeat(item.rating)}</span>}
                         </div>
-                        {pct !== null && <div style={{marginTop:'8px',display:'flex',alignItems:'center',gap:'8px'}}><div style={{flex:1,height:'4px',background:'#fff',borderRadius:'2px',overflow:'hidden'}}><div style={{width:`${Math.min(pct,100)}%`,height:'100%',background:item.status==='Concluído'?'#4caf7d':'#7c6ff7',borderRadius:'2px'}}/></div><span style={{color:'#999',fontSize:'12px'}}>{pct}%</span></div>}
+                        {pct !== null && <div style={{marginTop:'8px',display:'flex',alignItems:'center',gap:'8px'}}><div style={{flex:1,height:'4px',background:'#fff',borderRadius:'2px',overflow:'hidden'}}><div style={{width:`${Math.min(pct,100)}%`,height:'100%',background:item.status==='Concluído'?'#4caf7d':'#7c6ff7',borderRadius:'2px'}}/></div><span style={{color:'#444',fontSize:'12px'}}>{pct}%</span></div>}
                       </div>
                       <div style={{display:'flex',gap:'6px'}}>
-                        <button onClick={e=>{e.stopPropagation();openEdit(item)}} style={{padding:'5px 9px',background:'#fff',border:'none',borderRadius:'7px',color:'#888',fontSize:'15px',cursor:'pointer'}}>Editar</button>
+                        <button onClick={e=>{e.stopPropagation();openEdit(item)}} style={{padding:'5px 9px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Editar</button>
                         <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
-                        <span style={{color:'#bbb',fontSize:'15px'}}>{expanded?'▲':'▼'}</span>
+                        <span style={{color:'#555',fontSize:'15px'}}>{expanded?'▲':'▼'}</span>
                       </div>
                     </div>
-                    {expanded && item.notes && <div style={{borderTop:'1px solid #e5e5ea',padding:'14px 16px',background:'rgba(0,0,0,0.2)'}}><div style={{background:'#fff',borderRadius:'10px',padding:'12px'}}><p style={{color:'#bbb',fontSize:'12px',marginBottom:'4px',textTransform:'uppercase'}}>Notas</p><p style={{color:'#666',fontSize:'15px',whiteSpace:'pre-wrap'}}>{item.notes}</p></div></div>}
+                    {expanded && item.notes && <div style={{borderTop:'1px solid #d0d0d8',padding:'14px 16px',background:'rgba(0,0,0,0.2)'}}><div style={{background:'#fff',borderRadius:'10px',padding:'12px'}}><p style={{color:'#555',fontSize:'12px',marginBottom:'4px',textTransform:'uppercase'}}>Notas</p><p style={{color:'#444',fontSize:'15px',whiteSpace:'pre-wrap'}}>{item.notes}</p></div></div>}
                   </div>
                 )
               })}
@@ -125,10 +125,10 @@ export default function FilmesPage() {
       </div>
       {showForm && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',backdropFilter:'blur(4px)',zIndex:50,overflowY:'auto',display:'flex',justifyContent:'center',padding:'20px'}}>
-          <div style={{width:'100%',maxWidth:'520px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #e5e5ea',height:'fit-content'}}>
+          <div style={{width:'100%',maxWidth:'520px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #d0d0d8',height:'fit-content'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
-              <h2 style={{color:'#1a1a2e',fontSize:'18px',fontWeight:600}}>{editing?'Editar Título':'Novo Título'}</h2>
-              <button onClick={()=>setShowForm(false)} style={{background:'none',border:'none',color:'#999',cursor:'pointer',fontSize:'18px'}}>✕</button>
+              <h2 style={{color:'#111',fontSize:'18px',fontWeight:600}}>{editing?'Editar Título':'Novo Título'}</h2>
+              <button onClick={()=>setShowForm(false)} style={{background:'none',border:'none',color:'#444',cursor:'pointer',fontSize:'18px'}}>✕</button>
             </div>
             <div style={{display:'flex',flexDirection:'column',gap:'12px'}}>
               <Fld label="Título *"><input placeholder="Ex: Breaking Bad" value={form.name} onChange={e=>setForm((f:any)=>({...f,name:e.target.value}))} style={inp}/></Fld>
@@ -150,8 +150,8 @@ export default function FilmesPage() {
               <Fld label="Notas"><textarea placeholder="Onde parei, o que achei..." value={form.notes} onChange={e=>setForm((f:any)=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'80px'}}/></Fld>
             </div>
             <div style={{display:'flex',gap:'8px',marginTop:'20px'}}>
-              <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#888',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
+              <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
+              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>
