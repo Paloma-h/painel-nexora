@@ -4,7 +4,7 @@ export const metadata: Metadata = { title: 'Meu Painel', description: 'Agenda, C
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
-      <body className="bg-[#0a0a0f] text-white antialiased">{children}</body>
+      <body className="bg-[#f5f5f7] text-white antialiased">{children}</body>
     </html>
   )
 }

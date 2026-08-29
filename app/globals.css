@@ -12,14 +12,14 @@ html {
 }
 
 body {
-  background: #08080f;
-  color: #fff;
+  background: #f5f5f7;
+  color: #1a1a2e;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 /* ── Scrollbar premium ────────────────────────────── */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); border-radius: 99px; }
+::-webkit-scrollbar-track { background: #f0f0f3; border-radius: 99px; }
 ::-webkit-scrollbar-thumb {
   background: rgba(124, 111, 247, 0.35);
   border-radius: 99px;
@@ -34,7 +34,7 @@ input, textarea, select, button {
   font-family: inherit;
 }
 input::placeholder, textarea::placeholder {
-  color: rgba(255,255,255,0.35);
+  color: #aaa;
 }
 
 /* ── Sidebar nav items ────────────────────────────── */

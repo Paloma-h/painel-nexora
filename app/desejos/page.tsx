@@ -4,10 +4,10 @@ import { supabase } from '@/lib/supabase'
 import Sidebar from '@/components/Sidebar'
 
 const USER_ID = 'paloma'
-const inp: any = {width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'9px 12px',color:'#fff',fontSize:'13px',outline:'none',boxSizing:'border-box'}
-const sel: any = {width:'100%',background:'#13131f',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'9px 12px',color:'#fff',fontSize:'13px',outline:'none'}
+const inp: any = {width:'100%',background:'#fff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'9px 12px',color:'#1a1a2e',fontSize:'13px',outline:'none',boxSizing:'border-box'}
+const sel: any = {width:'100%',background:'#ffffff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'9px 12px',color:'#1a1a2e',fontSize:'13px',outline:'none'}
 function Fld({label,children}:{label:string,children:any}) {
-  return <div><label style={{fontSize:'11px',color:'rgba(255,255,255,0.3)',display:'block',marginBottom:'4px'}}>{label}</label>{children}</div>
+  return <div><label style={{fontSize:'11px',color:'#999',display:'block',marginBottom:'4px'}}>{label}</label>{children}</div>
 }
 const TYPES = ['Grande compra','Compra rotineira','Presente','Outro']
 const CATEGORIES = ['Eletrônico','Veículo','Imóvel','Roupa','Calçado','Casa','Beleza','Mercado','Farmácia','Curso','Viagem','Presente','Outro']
@@ -64,56 +64,56 @@ export default function DesejosPage() {
     return Math.round(((item.current_price-item.target_price)/item.current_price)*100)
   }
   return (
-    <div style={{display:'flex',minHeight:'100vh',background:'#0a0a0f',fontFamily:'system-ui,sans-serif'}}>
+    <div style={{display:'flex',minHeight:'100vh',background:'#f5f5f7',fontFamily:'system-ui,sans-serif'}}>
       <Sidebar />
       <div style={{flex:1,padding:'28px 32px',overflowY:'auto'}}>
         <div style={{maxWidth:'860px',margin:'0 auto'}}>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
             <div>
-              <h1 style={{color:'#fff',fontSize:'22px',fontWeight:700}}>🛒 Lista de Desejos</h1>
-              <p style={{color:'rgba(255,255,255,0.3)',fontSize:'12px',marginTop:'2px'}}>{items.length} item{items.length!==1?'s':''} na lista</p>
+              <h1 style={{color:'#1a1a2e',fontSize:'22px',fontWeight:700}}>🛒 Lista de Desejos</h1>
+              <p style={{color:'#999',fontSize:'12px',marginTop:'2px'}}>{items.length} item{items.length!==1?'s':''} na lista</p>
             </div>
-            <button onClick={openNew} style={{padding:'8px 18px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#fff',fontSize:'13px',fontWeight:600,cursor:'pointer'}}>+ Novo Item</button>
+            <button onClick={openNew} style={{padding:'8px 18px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'13px',fontWeight:600,cursor:'pointer'}}>+ Novo Item</button>
           </div>
           {items.length > 0 && (
             <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'20px'}}>
-              <div style={{background:'rgba(212,184,74,0.06)',border:'1px solid rgba(212,184,74,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#d4b84a',fontSize:'22px',fontWeight:700}}>{aguardando}</p><p style={{color:'rgba(255,255,255,0.3)',fontSize:'11px',marginTop:'2px'}}>Aguardando promoção</p></div>
-              <div style={{background:'rgba(224,82,82,0.06)',border:'1px solid rgba(224,82,82,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#e05252',fontSize:'22px',fontWeight:700}}>{urgentes}</p><p style={{color:'rgba(255,255,255,0.3)',fontSize:'11px',marginTop:'2px'}}>Urgentes</p></div>
-              <div style={{background:'rgba(76,175,125,0.06)',border:'1px solid rgba(76,175,125,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#4caf7d',fontSize:'22px',fontWeight:700}}>{comprados}</p><p style={{color:'rgba(255,255,255,0.3)',fontSize:'11px',marginTop:'2px'}}>Comprados</p></div>
+              <div style={{background:'rgba(212,184,74,0.06)',border:'1px solid rgba(212,184,74,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#d4b84a',fontSize:'22px',fontWeight:700}}>{aguardando}</p><p style={{color:'#999',fontSize:'11px',marginTop:'2px'}}>Aguardando promoção</p></div>
+              <div style={{background:'rgba(224,82,82,0.06)',border:'1px solid rgba(224,82,82,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#e05252',fontSize:'22px',fontWeight:700}}>{urgentes}</p><p style={{color:'#999',fontSize:'11px',marginTop:'2px'}}>Urgentes</p></div>
+              <div style={{background:'rgba(76,175,125,0.06)',border:'1px solid rgba(76,175,125,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#4caf7d',fontSize:'22px',fontWeight:700}}>{comprados}</p><p style={{color:'#999',fontSize:'11px',marginTop:'2px'}}>Comprados</p></div>
             </div>
           )}
           <div style={{display:'flex',gap:'10px',marginBottom:'16px',flexWrap:'wrap'}}>
-            <input placeholder="Buscar item..." value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1,minWidth:'160px',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.08)',borderRadius:'10px',padding:'8px 12px',color:'#fff',fontSize:'13px',outline:'none'}}/>
+            <input placeholder="Buscar item..." value={search} onChange={e=>setSearch(e.target.value)} style={{flex:1,minWidth:'160px',background:'#fff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'8px 12px',color:'#1a1a2e',fontSize:'13px',outline:'none'}}/>
             <select value={filterType} onChange={e=>setFilterType(e.target.value)} style={{...sel,width:'auto',padding:'8px 12px',fontSize:'12px'}}><option value="Todos">Todos os tipos</option>{TYPES.map(t=><option key={t}>{t}</option>)}</select>
             <select value={filterStatus} onChange={e=>setFilterStatus(e.target.value)} style={{...sel,width:'auto',padding:'8px 12px',fontSize:'12px'}}><option value="Todos">Todos os status</option>{STATUS_LIST.map(s=><option key={s}>{s}</option>)}</select>
           </div>
-          {loading ? <p style={{color:'rgba(255,255,255,0.3)',textAlign:'center',padding:'40px'}}>Carregando...</p> : (
+          {loading ? <p style={{color:'#999',textAlign:'center',padding:'40px'}}>Carregando...</p> : (
             <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
-              {filtered.length===0 && <p style={{color:'rgba(255,255,255,0.2)',textAlign:'center',padding:'40px'}}>Nenhum item encontrado</p>}
+              {filtered.length===0 && <p style={{color:'#bbb',textAlign:'center',padding:'40px'}}>Nenhum item encontrado</p>}
               {filtered.map(item => {
                 const diff = discount(item)
                 return (
-                  <div key={item.id} style={{borderRadius:'14px',background:'rgba(255,255,255,0.04)',border:`1px solid ${item.priority==='Urgente'?'rgba(224,82,82,0.2)':'rgba(255,255,255,0.07)'}`,padding:'14px 16px',display:'flex',alignItems:'center',gap:'12px'}}>
+                  <div key={item.id} style={{borderRadius:'14px',background:'#fff',border:`1px solid ${item.priority==='Urgente'?'rgba(224,82,82,0.2)':'rgba(255,255,255,0.07)'}`,padding:'14px 16px',display:'flex',alignItems:'center',gap:'12px'}}>
                     <div style={{width:'42px',height:'42px',borderRadius:'10px',background:`${typeColor[item.type]||'#888'}15`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'20px',flexShrink:0}}>{typeIcon[item.type]||'📦'}</div>
                     <div style={{flex:1,minWidth:0}}>
                       <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
-                        <p style={{color:'#fff',fontSize:'13px',fontWeight:600}}>{item.name}</p>
+                        <p style={{color:'#1a1a2e',fontSize:'13px',fontWeight:600}}>{item.name}</p>
                         <span style={{fontSize:'10px',padding:'1px 7px',borderRadius:'5px',background:`${typeColor[item.type]||'#888'}20`,color:typeColor[item.type]||'#888'}}>{item.type}</span>
                         <span style={{fontSize:'10px',padding:'1px 7px',borderRadius:'5px',background:`${statusColor[item.status]||'#888'}22`,color:statusColor[item.status]||'#888'}}>{item.status}</span>
                         <span style={{fontSize:'10px',padding:'1px 7px',borderRadius:'5px',background:`${priorityColor[item.priority]||'#888'}18`,color:priorityColor[item.priority]||'#888'}}>{item.priority}</span>
                       </div>
                       <div style={{display:'flex',gap:'12px',marginTop:'5px',flexWrap:'wrap',alignItems:'center'}}>
-                        <span style={{color:'rgba(255,255,255,0.3)',fontSize:'11px'}}>{item.category}</span>
+                        <span style={{color:'#999',fontSize:'11px'}}>{item.category}</span>
                         {item.target_price && <span style={{color:'#4caf7d',fontSize:'12px',fontWeight:600}}>Alvo: {fmt(item.target_price)}</span>}
-                        {item.current_price && <span style={{color:'rgba(255,255,255,0.4)',fontSize:'12px'}}>Atual: {fmt(item.current_price)}</span>}
+                        {item.current_price && <span style={{color:'#888',fontSize:'12px'}}>Atual: {fmt(item.current_price)}</span>}
                         {diff!==null&&diff>0 && <span style={{color:'#e05252',fontSize:'11px'}}>↑ {diff}% acima</span>}
                         {diff!==null&&diff<=0 && <span style={{color:'#4caf7d',fontSize:'11px'}}>✓ Dentro do alvo!</span>}
                       </div>
-                      {item.notes && <p style={{color:'rgba(255,255,255,0.25)',fontSize:'11px',marginTop:'4px'}}>{item.notes}</p>}
+                      {item.notes && <p style={{color:'#aaa',fontSize:'11px',marginTop:'4px'}}>{item.notes}</p>}
                     </div>
                     <div style={{display:'flex',gap:'6px',flexShrink:0}}>
                       {item.url && <a href={item.url} target="_blank" rel="noopener noreferrer" style={{padding:'5px 9px',background:'rgba(124,111,247,0.12)',border:'1px solid rgba(124,111,247,0.2)',borderRadius:'7px',color:'#a89ff7',fontSize:'11px',textDecoration:'none'}}>Ver</a>}
-                      <button onClick={()=>openEdit(item)} style={{padding:'5px 9px',background:'rgba(255,255,255,0.05)',border:'none',borderRadius:'7px',color:'rgba(255,255,255,0.4)',fontSize:'11px',cursor:'pointer'}}>Editar</button>
+                      <button onClick={()=>openEdit(item)} style={{padding:'5px 9px',background:'#fff',border:'none',borderRadius:'7px',color:'#888',fontSize:'11px',cursor:'pointer'}}>Editar</button>
                       <button onClick={()=>remove(item.id)} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'11px',cursor:'pointer'}}>✕</button>
                     </div>
                   </div>
@@ -125,10 +125,10 @@ export default function DesejosPage() {
       </div>
       {showForm && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',backdropFilter:'blur(4px)',zIndex:50,overflowY:'auto',display:'flex',justifyContent:'center',padding:'20px'}}>
-          <div style={{width:'100%',maxWidth:'520px',background:'#13131f',borderRadius:'16px',padding:'24px',border:'1px solid rgba(255,255,255,0.1)',height:'fit-content'}}>
+          <div style={{width:'100%',maxWidth:'520px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #e5e5ea',height:'fit-content'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
-              <h2 style={{color:'#fff',fontSize:'16px',fontWeight:600}}>{editing?'Editar Item':'Novo Item'}</h2>
-              <button onClick={()=>setShowForm(false)} style={{background:'none',border:'none',color:'rgba(255,255,255,0.3)',cursor:'pointer',fontSize:'18px'}}>✕</button>
+              <h2 style={{color:'#1a1a2e',fontSize:'16px',fontWeight:600}}>{editing?'Editar Item':'Novo Item'}</h2>
+              <button onClick={()=>setShowForm(false)} style={{background:'none',border:'none',color:'#999',cursor:'pointer',fontSize:'18px'}}>✕</button>
             </div>
             <div style={{display:'flex',flexDirection:'column',gap:'12px'}}>
               <Fld label="Nome do item *"><input placeholder="Ex: iPhone 16, Geladeira, Carro..." value={form.name} onChange={e=>setForm((f:any)=>({...f,name:e.target.value}))} style={inp}/></Fld>
@@ -148,8 +148,8 @@ export default function DesejosPage() {
               <Fld label="Notas"><textarea placeholder="Onde pesquisar, condições, observações..." value={form.notes} onChange={e=>setForm((f:any)=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'70px'}}/></Fld>
             </div>
             <div style={{display:'flex',gap:'8px',marginTop:'20px'}}>
-              <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#fff',fontSize:'13px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',color:'rgba(255,255,255,0.4)',fontSize:'13px',cursor:'pointer'}}>Cancelar</button>
+              <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'13px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
+              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#888',fontSize:'13px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>

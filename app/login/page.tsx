@@ -20,13 +20,13 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#f5f5f7] flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-black text-violet-400 mb-2">NEXORA</h1>
           <p className="text-white/30 text-sm">Seu painel pessoal</p>
         </div>
-        <div className="bg-[#13131f] border border-white/10 rounded-2xl p-6 space-y-4">
+        <div className="bg-[#ffffff] border border-white/10 rounded-2xl p-6 space-y-4">
           <div>
             <label className="text-xs text-white/40 block mb-1">Email</label>
             <input

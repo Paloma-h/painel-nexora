@@ -95,21 +95,21 @@ export default function PendenciasPage() {
   const pColor: any = { CRITICAL:'#e05252', HIGH:'#e08c42', MEDIUM:'#d4b84a', LOW:'#4caf7d' }
 
   return (
-    <div style={{display:'flex',minHeight:'100vh',background:'#0a0a0f',fontFamily:'system-ui,sans-serif'}}>
+    <div style={{display:'flex',minHeight:'100vh',background:'#f5f5f7',fontFamily:'system-ui,sans-serif'}}>
       <Sidebar />
       <div style={{flex:1,padding:'32px',overflowY:'auto'}}>
         <div style={{maxWidth:'680px',margin:'0 auto'}}>
 
           {/* Título */}
           <div style={{marginBottom:'28px'}}>
-            <h1 style={{color:'#fff',fontSize:'22px',fontWeight:700}}>Pendências</h1>
-            <p style={{color:'rgba(255,255,255,0.3)',fontSize:'13px',marginTop:'4px'}}>
+            <h1 style={{color:'#1a1a2e',fontSize:'22px',fontWeight:700}}>Pendências</h1>
+            <p style={{color:'#999',fontSize:'13px',marginTop:'4px'}}>
               {pending.length} para fazer{done.length>0?` · ${done.length} concluída${done.length>1?'s':''}`:''}
             </p>
           </div>
 
           {/* ── CAPTURA RÁPIDA ── */}
-          <div style={{background:'rgba(255,255,255,0.04)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'16px',padding:'18px',marginBottom:'32px'}}>
+          <div style={{background:'#fff',border:'1px solid #e5e5ea',borderRadius:'16px',padding:'18px',marginBottom:'32px'}}>
             <div style={{display:'flex',gap:'8px',marginBottom:'12px'}}>
               <input
                 autoFocus
@@ -117,12 +117,12 @@ export default function PendenciasPage() {
                 value={quickTitle}
                 onChange={e => setQuickTitle(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && add()}
-                style={{flex:1,background:'rgba(255,255,255,0.06)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'10px',padding:'12px 14px',color:'#fff',fontSize:'14px',outline:'none'}}
+                style={{flex:1,background:'#fff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'12px 14px',color:'#1a1a2e',fontSize:'14px',outline:'none'}}
               />
               <button
                 onClick={add}
                 disabled={!quickTitle.trim() || adding}
-                style={{padding:'12px 20px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#fff',fontSize:'14px',fontWeight:700,cursor:'pointer',opacity:!quickTitle.trim()||adding?0.4:1,flexShrink:0}}
+                style={{padding:'12px 20px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'14px',fontWeight:700,cursor:'pointer',opacity:!quickTitle.trim()||adding?0.4:1,flexShrink:0}}
               >
                 + Adicionar
               </button>
@@ -133,7 +133,7 @@ export default function PendenciasPage() {
                 <button
                   key={p.key}
                   onClick={() => setQuickPrio(p.key)}
-                  style={{padding:'8px 4px',borderRadius:'8px',border:`1px solid ${quickPrio===p.key?p.color:'rgba(255,255,255,0.07)'}`,background:quickPrio===p.key?`${p.color}22`:'transparent',color:quickPrio===p.key?p.color:'rgba(255,255,255,0.3)',fontSize:'12px',cursor:'pointer',fontWeight:quickPrio===p.key?700:400,transition:'all 0.15s'}}
+                  style={{padding:'8px 4px',borderRadius:'8px',border:`1px solid ${quickPrio===p.key?p.color:'rgba(255,255,255,0.07)'}`,background:quickPrio===p.key?`${p.color}22`:'transparent',color:quickPrio===p.key?p.color:'#999',fontSize:'12px',cursor:'pointer',fontWeight:quickPrio===p.key?700:400,transition:'all 0.15s'}}
                 >
                   {p.label}
                 </button>
@@ -143,12 +143,12 @@ export default function PendenciasPage() {
 
           {/* ── LISTA ── */}
           {loading ? (
-            <p style={{color:'rgba(255,255,255,0.3)',textAlign:'center',padding:'40px'}}>Carregando...</p>
+            <p style={{color:'#999',textAlign:'center',padding:'40px'}}>Carregando...</p>
           ) : pending.length === 0 ? (
             <div style={{textAlign:'center',padding:'60px 0'}}>
               <p style={{fontSize:'48px',marginBottom:'12px'}}>✅</p>
-              <p style={{color:'rgba(255,255,255,0.4)',fontSize:'16px',fontWeight:600}}>Tudo em dia!</p>
-              <p style={{color:'rgba(255,255,255,0.2)',fontSize:'13px',marginTop:'4px'}}>Adicione uma pendência acima.</p>
+              <p style={{color:'#888',fontSize:'16px',fontWeight:600}}>Tudo em dia!</p>
+              <p style={{color:'#bbb',fontSize:'13px',marginTop:'4px'}}>Adicione uma pendência acima.</p>
             </div>
           ) : (
             <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
@@ -156,7 +156,7 @@ export default function PendenciasPage() {
                 const isEditing = editingId === t.id
                 const pc = pColor[t.priority] || '#888'
                 return (
-                  <div key={t.id} style={{borderRadius:'14px',background:'rgba(255,255,255,0.04)',border:`1px solid ${pc}33`,overflow:'hidden'}}>
+                  <div key={t.id} style={{borderRadius:'14px',background:'#fff',border:`1px solid ${pc}33`,overflow:'hidden'}}>
                     {isEditing ? (
                       /* Modo edição inline */
                       <div style={{padding:'14px 16px'}}>
@@ -165,16 +165,16 @@ export default function PendenciasPage() {
                           value={editTitle}
                           onChange={e => setEditTitle(e.target.value)}
                           onKeyDown={e => { if(e.key==='Enter') saveEdit(t.id); if(e.key==='Escape') setEditingId(null) }}
-                          style={{width:'100%',background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.15)',borderRadius:'8px',padding:'10px 12px',color:'#fff',fontSize:'14px',outline:'none',marginBottom:'10px',boxSizing:'border-box'}}
+                          style={{width:'100%',background:'#fff',border:'1px solid #e5e5ea',borderRadius:'8px',padding:'10px 12px',color:'#1a1a2e',fontSize:'14px',outline:'none',marginBottom:'10px',boxSizing:'border-box'}}
                         />
                         <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'6px',marginBottom:'10px'}}>
                           {PRIOS.map(p => (
-                            <button key={p.key} onClick={() => setEditPrio(p.key)} style={{padding:'7px 4px',borderRadius:'8px',border:`1px solid ${editPrio===p.key?p.color:'rgba(255,255,255,0.07)'}`,background:editPrio===p.key?`${p.color}22`:'transparent',color:editPrio===p.key?p.color:'rgba(255,255,255,0.3)',fontSize:'11px',cursor:'pointer',fontWeight:editPrio===p.key?700:400}}>{p.label}</button>
+                            <button key={p.key} onClick={() => setEditPrio(p.key)} style={{padding:'7px 4px',borderRadius:'8px',border:`1px solid ${editPrio===p.key?p.color:'rgba(255,255,255,0.07)'}`,background:editPrio===p.key?`${p.color}22`:'transparent',color:editPrio===p.key?p.color:'#999',fontSize:'11px',cursor:'pointer',fontWeight:editPrio===p.key?700:400}}>{p.label}</button>
                           ))}
                         </div>
                         <div style={{display:'flex',gap:'8px'}}>
-                          <button onClick={() => saveEdit(t.id)} style={{flex:1,padding:'9px',background:'#5b50d6',border:'none',borderRadius:'8px',color:'#fff',fontSize:'13px',fontWeight:600,cursor:'pointer'}}>Salvar</button>
-                          <button onClick={() => setEditingId(null)} style={{padding:'9px 14px',background:'transparent',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'8px',color:'rgba(255,255,255,0.4)',fontSize:'13px',cursor:'pointer'}}>Cancelar</button>
+                          <button onClick={() => saveEdit(t.id)} style={{flex:1,padding:'9px',background:'#5b50d6',border:'none',borderRadius:'8px',color:'#1a1a2e',fontSize:'13px',fontWeight:600,cursor:'pointer'}}>Salvar</button>
+                          <button onClick={() => setEditingId(null)} style={{padding:'9px 14px',background:'transparent',border:'1px solid #e5e5ea',borderRadius:'8px',color:'#888',fontSize:'13px',cursor:'pointer'}}>Cancelar</button>
                           <button onClick={() => { remove(t.id); setEditingId(null) }} style={{padding:'9px 14px',background:'rgba(224,82,82,0.1)',border:'1px solid rgba(224,82,82,0.2)',borderRadius:'8px',color:'#e05252',fontSize:'13px',cursor:'pointer'}}>Apagar</button>
                         </div>
                       </div>
@@ -190,15 +190,15 @@ export default function PendenciasPage() {
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'2px'}}>
                             <div style={{width:'8px',height:'8px',borderRadius:'50%',background:pc,flexShrink:0}}/>
-                            <span style={{color:'rgba(255,255,255,0.4)',fontSize:'11px'}}>{PRIOS.find(p=>p.key===t.priority)?.label.split(' ')[1]||''}</span>
+                            <span style={{color:'#888',fontSize:'11px'}}>{PRIOS.find(p=>p.key===t.priority)?.label.split(' ')[1]||''}</span>
                           </div>
-                          <p style={{color:'#fff',fontSize:'15px',fontWeight:500,lineHeight:1.4}}>{t.title}</p>
-                          {t.notes && <p style={{color:'rgba(255,255,255,0.35)',fontSize:'12px',marginTop:'3px'}}>{t.notes}</p>}
+                          <p style={{color:'#1a1a2e',fontSize:'15px',fontWeight:500,lineHeight:1.4}}>{t.title}</p>
+                          {t.notes && <p style={{color:'#999',fontSize:'12px',marginTop:'3px'}}>{t.notes}</p>}
                         </div>
                         {/* Editar */}
                         <button
                           onClick={() => { setEditingId(t.id); setEditTitle(t.title); setEditPrio(t.priority||'MEDIUM') }}
-                          style={{padding:'7px 10px',background:'rgba(255,255,255,0.05)',border:'none',borderRadius:'8px',color:'rgba(255,255,255,0.3)',fontSize:'13px',cursor:'pointer',flexShrink:0}}
+                          style={{padding:'7px 10px',background:'#fff',border:'none',borderRadius:'8px',color:'#999',fontSize:'13px',cursor:'pointer',flexShrink:0}}
                         >✎</button>
                       </div>
                     )}
@@ -213,16 +213,16 @@ export default function PendenciasPage() {
             <div style={{marginTop:'32px'}}>
               <button
                 onClick={() => setShowDone(v => !v)}
-                style={{background:'transparent',border:'none',color:'rgba(255,255,255,0.25)',fontSize:'12px',cursor:'pointer',textTransform:'uppercase',letterSpacing:'1px',padding:0,marginBottom:'10px'}}
+                style={{background:'transparent',border:'none',color:'#aaa',fontSize:'12px',cursor:'pointer',textTransform:'uppercase',letterSpacing:'1px',padding:0,marginBottom:'10px'}}
               >
                 {showDone ? '▲' : '▼'} Concluídas ({done.length})
               </button>
               {showDone && (
                 <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
                   {done.map(t => (
-                    <div key={t.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'12px 16px',borderRadius:'12px',background:'rgba(255,255,255,0.02)',opacity:0.5}}>
-                      <div onClick={() => reopen(t.id)} style={{width:'26px',height:'26px',borderRadius:'8px',background:'#5b50d6',flexShrink:0,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px',color:'#fff'}}>✓</div>
-                      <p style={{flex:1,color:'rgba(255,255,255,0.3)',fontSize:'14px',textDecoration:'line-through'}}>{t.title}</p>
+                    <div key={t.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'12px 16px',borderRadius:'12px',background:'#fff',opacity:0.5}}>
+                      <div onClick={() => reopen(t.id)} style={{width:'26px',height:'26px',borderRadius:'8px',background:'#5b50d6',flexShrink:0,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px',color:'#1a1a2e'}}>✓</div>
+                      <p style={{flex:1,color:'#999',fontSize:'14px',textDecoration:'line-through'}}>{t.title}</p>
                       <button onClick={() => remove(t.id)} style={{padding:'4px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'6px',color:'#e05252',fontSize:'12px',cursor:'pointer'}}>✕</button>
                     </div>
                   ))}

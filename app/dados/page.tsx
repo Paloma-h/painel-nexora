@@ -57,11 +57,11 @@ const catColor: any = {
 
 const inp: any = {
   width: '100%',
-  background: 'rgba(255,255,255,0.05)',
-  border: '1px solid rgba(255,255,255,0.1)',
+  background:'#fff',
+  border:'1px solid #e5e5ea',
   borderRadius: '10px',
   padding: '9px 12px',
-  color: '#fff',
+  color:'#1a1a2e',
   fontSize: '13px',
   outline: 'none',
   boxSizing: 'border-box',
@@ -69,11 +69,11 @@ const inp: any = {
 
 const sel: any = {
   width: '100%',
-  background: '#13131f',
-  border: '1px solid rgba(255,255,255,0.1)',
+  background: '#ffffff',
+  border:'1px solid #e5e5ea',
   borderRadius: '10px',
   padding: '9px 12px',
-  color: '#fff',
+  color:'#1a1a2e',
   fontSize: '13px',
   outline: 'none',
 }
@@ -97,7 +97,7 @@ function CamposEditor({ campos, onChange }: { campos: {label:string,value:string
           <button onClick={() => remove(i)} style={{padding:'7px 9px',background:'rgba(224,82,82,0.1)',border:'none',borderRadius:'8px',color:'#e05252',cursor:'pointer',fontSize:'12px'}}>✕</button>
         </div>
       ))}
-      <button onClick={add} style={{padding:'7px',background:'rgba(255,255,255,0.04)',border:'1px dashed rgba(255,255,255,0.15)',borderRadius:'8px',color:'rgba(255,255,255,0.4)',cursor:'pointer',fontSize:'12px'}}>+ Adicionar campo</button>
+      <button onClick={add} style={{padding:'7px',background:'#fff',border:'1px dashed rgba(255,255,255,0.15)',borderRadius:'8px',color:'#888',cursor:'pointer',fontSize:'12px'}}>+ Adicionar campo</button>
     </div>
   )
 }
@@ -190,14 +190,14 @@ export default function DadosPage() {
   const cc = catColor[categoria] || '#7c3aed'
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#08080f', fontFamily: 'system-ui,sans-serif' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#f5f5f7', fontFamily: 'system-ui,sans-serif' }}>
       <Sidebar />
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
 
         {/* ── Cabeçalho ── */}
         <div style={{ padding: '28px 32px 0', maxWidth: '960px', margin: '0 auto', width: '100%' }}>
-          <h1 style={{ color: '#fff', fontSize: '22px', fontWeight: 700, marginBottom: '4px' }}>🗂️ Dados Pessoais</h1>
-          <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '13px', marginBottom: '24px' }}>Informações organizadas por pessoa e categoria</p>
+          <h1 style={{ color:'#1a1a2e', fontSize: '22px', fontWeight: 700, marginBottom: '4px' }}>🗂️ Dados Pessoais</h1>
+          <p style={{ color:'#999', fontSize: '13px', marginBottom: '24px' }}>Informações organizadas por pessoa e categoria</p>
 
           {/* Tabs pessoas */}
           <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '16px' }}>
@@ -207,7 +207,7 @@ export default function DadosPage() {
                 borderRadius: '10px',
                 border: `1px solid ${pessoa === p.id ? cc : 'rgba(255,255,255,0.08)'}`,
                 background: pessoa === p.id ? `${cc}22` : 'rgba(255,255,255,0.03)',
-                color: pessoa === p.id ? '#fff' : 'rgba(255,255,255,0.4)',
+                color: pessoa === p.id ? '#fff' : '#888',
                 fontSize: '13px',
                 fontWeight: pessoa === p.id ? 700 : 400,
                 cursor: 'pointer',
@@ -218,14 +218,14 @@ export default function DadosPage() {
           </div>
 
           {/* Tabs categorias */}
-          <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', borderBottom: '1px solid rgba(255,255,255,0.07)', paddingBottom: '0' }}>
+          <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', borderBottom:'1px solid #e5e5ea', paddingBottom: '0' }}>
             {CATEGORIAS.map(cat => (
               <button key={cat.id} onClick={() => setCategoria(cat.id)} style={{
                 padding: '10px 14px',
                 background: 'transparent',
                 border: 'none',
                 borderBottom: `2px solid ${categoria === cat.id ? cat.color : 'transparent'}`,
-                color: categoria === cat.id ? '#fff' : 'rgba(255,255,255,0.35)',
+                color: categoria === cat.id ? '#fff' : '#999',
                 fontSize: '13px',
                 fontWeight: categoria === cat.id ? 600 : 400,
                 cursor: 'pointer',
@@ -246,20 +246,20 @@ export default function DadosPage() {
               placeholder={`Buscar em ${CATEGORIAS.find(c=>c.id===categoria)?.label}...`}
               value={search}
               onChange={e => setSearch(e.target.value)}
-              style={{ flex: 1, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '10px', padding: '9px 14px', color: '#fff', fontSize: '13px', outline: 'none' }}
+              style={{ flex: 1, background:'#fff', border:'1px solid #e5e5ea', borderRadius: '10px', padding: '9px 14px', color:'#1a1a2e', fontSize: '13px', outline: 'none' }}
             />
-            <button onClick={openNew} style={{ padding: '9px 20px', background: cc, border: 'none', borderRadius: '10px', color: '#fff', fontSize: '13px', fontWeight: 600, cursor: 'pointer', flexShrink: 0 }}>
+            <button onClick={openNew} style={{ padding: '9px 20px', background: cc, border: 'none', borderRadius: '10px', color:'#1a1a2e', fontSize: '13px', fontWeight: 600, cursor: 'pointer', flexShrink: 0 }}>
               + Adicionar
             </button>
           </div>
 
           {/* Lista */}
           {loading ? (
-            <p style={{ color: 'rgba(255,255,255,0.3)', textAlign: 'center', padding: '40px' }}>Carregando...</p>
+            <p style={{ color:'#999', textAlign: 'center', padding: '40px' }}>Carregando...</p>
           ) : filtered.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '60px 0' }}>
               <p style={{ fontSize: '40px', marginBottom: '12px' }}>📋</p>
-              <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '14px' }}>Nenhum registro ainda</p>
+              <p style={{ color:'#999', fontSize: '14px' }}>Nenhum registro ainda</p>
               <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '12px', marginTop: '4px' }}>Clique em &quot;+ Adicionar&quot; para começar</p>
             </div>
           ) : (
@@ -267,19 +267,19 @@ export default function DadosPage() {
               {filtered.map(item => {
                 const expanded = expandedId === item.id
                 return (
-                  <div key={item.id} style={{ borderRadius: '14px', background: 'rgba(255,255,255,0.04)', border: `1px solid ${expanded ? cc + '44' : 'rgba(255,255,255,0.07)'}`, overflow: 'hidden', transition: 'border-color 0.2s' }}>
+                  <div key={item.id} style={{ borderRadius: '14px', background:'#fff', border: `1px solid ${expanded ? cc + '44' : 'rgba(255,255,255,0.07)'}`, overflow: 'hidden', transition: 'border-color 0.2s' }}>
                     {/* Header do card */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 16px', cursor: 'pointer' }} onClick={() => setExpandedId(expanded ? null : item.id)}>
                       <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: `${cc}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', flexShrink: 0 }}>
                         {CATEGORIAS.find(c => c.id === categoria)?.emoji}
                       </div>
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <p style={{ color: '#fff', fontSize: '14px', fontWeight: 600 }}>{item.titulo}</p>
+                        <p style={{ color:'#1a1a2e', fontSize: '14px', fontWeight: 600 }}>{item.titulo}</p>
                         {/* Preview dos primeiros campos */}
                         {!expanded && item.campos && item.campos.length > 0 && (
                           <div style={{ display: 'flex', gap: '12px', marginTop: '3px', flexWrap: 'wrap' }}>
                             {item.campos.slice(0, 3).map((c: any, i: number) => (
-                              <span key={i} style={{ color: 'rgba(255,255,255,0.35)', fontSize: '11px' }}>
+                              <span key={i} style={{ color:'#999', fontSize: '11px' }}>
                                 <span style={{ color: 'rgba(255,255,255,0.25)' }}>{c.label}: </span>{c.value}
                               </span>
                             ))}
@@ -288,7 +288,7 @@ export default function DadosPage() {
                         )}
                       </div>
                       <div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexShrink: 0 }}>
-                        <button onClick={e => { e.stopPropagation(); openEdit(item) }} style={{ padding: '5px 10px', background: 'rgba(255,255,255,0.06)', border: 'none', borderRadius: '7px', color: 'rgba(255,255,255,0.4)', fontSize: '11px', cursor: 'pointer' }}>✎</button>
+                        <button onClick={e => { e.stopPropagation(); openEdit(item) }} style={{ padding: '5px 10px', background:'#fff', border: 'none', borderRadius: '7px', color:'#888', fontSize: '11px', cursor: 'pointer' }}>✎</button>
                         <button onClick={e => { e.stopPropagation(); remove(item.id) }} style={{ padding: '5px 8px', background: 'rgba(224,82,82,0.08)', border: 'none', borderRadius: '7px', color: '#e05252', fontSize: '11px', cursor: 'pointer' }}>✕</button>
                         <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '12px' }}>{expanded ? '▲' : '▼'}</span>
                       </div>
@@ -296,21 +296,21 @@ export default function DadosPage() {
 
                     {/* Campos expandidos */}
                     {expanded && (
-                      <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '16px', background: 'rgba(0,0,0,0.2)' }}>
+                      <div style={{ borderTop:'1px solid #e5e5ea', padding: '16px', background: 'rgba(0,0,0,0.2)' }}>
                         {item.campos && item.campos.length > 0 ? (
                           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '10px', marginBottom: item.notas ? '12px' : 0 }}>
                             {item.campos.map((c: any, i: number) => (
-                              <div key={i} style={{ background: 'rgba(255,255,255,0.04)', borderRadius: '10px', padding: '12px' }}>
-                                <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' }}>{c.label}</p>
-                                <p style={{ color: '#fff', fontSize: '14px', fontWeight: 500, wordBreak: 'break-all' }}>{c.value}</p>
+                              <div key={i} style={{ background:'#fff', borderRadius: '10px', padding: '12px' }}>
+                                <p style={{ color:'#999', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' }}>{c.label}</p>
+                                <p style={{ color:'#1a1a2e', fontSize: '14px', fontWeight: 500, wordBreak: 'break-all' }}>{c.value}</p>
                               </div>
                             ))}
                           </div>
                         ) : null}
                         {item.notas && (
-                          <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: '10px', padding: '12px' }}>
+                          <div style={{ background:'#fff', borderRadius: '10px', padding: '12px' }}>
                             <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: '10px', marginBottom: '4px' }}>NOTAS</p>
-                            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '13px', whiteSpace: 'pre-wrap' }}>{item.notas}</p>
+                            <p style={{ color:'#666', fontSize: '13px', whiteSpace: 'pre-wrap' }}>{item.notas}</p>
                           </div>
                         )}
                       </div>
@@ -326,20 +326,20 @@ export default function DadosPage() {
       {/* ── Modal Formulário ── */}
       {showForm && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(4px)', zIndex: 50, overflowY: 'auto', display: 'flex', justifyContent: 'center', padding: '20px' }}>
-          <div style={{ width: '100%', maxWidth: '560px', background: '#13131f', borderRadius: '16px', padding: '24px', border: '1px solid rgba(255,255,255,0.1)', height: 'fit-content' }}>
+          <div style={{ width: '100%', maxWidth: '560px', background: '#ffffff', borderRadius: '16px', padding: '24px', border:'1px solid #e5e5ea', height: 'fit-content' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
               <div>
-                <h2 style={{ color: '#fff', fontSize: '16px', fontWeight: 600 }}>{editing ? 'Editar' : 'Novo registro'}</h2>
-                <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '12px', marginTop: '2px' }}>
+                <h2 style={{ color:'#1a1a2e', fontSize: '16px', fontWeight: 600 }}>{editing ? 'Editar' : 'Novo registro'}</h2>
+                <p style={{ color:'#999', fontSize: '12px', marginTop: '2px' }}>
                   {PESSOAS.find(p => p.id === pessoa)?.emoji} {PESSOAS.find(p => p.id === pessoa)?.label} · {CATEGORIAS.find(c => c.id === categoria)?.emoji} {CATEGORIAS.find(c => c.id === categoria)?.label}
                 </p>
               </div>
-              <button onClick={() => setShowForm(false)} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.3)', cursor: 'pointer', fontSize: '20px' }}>✕</button>
+              <button onClick={() => setShowForm(false)} style={{ background: 'none', border: 'none', color:'#999', cursor: 'pointer', fontSize: '20px' }}>✕</button>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div>
-                <label style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', display: 'block', marginBottom: '5px' }}>Título *</label>
+                <label style={{ fontSize: '11px', color:'#999', display: 'block', marginBottom: '5px' }}>Título *</label>
                 <input
                   autoFocus
                   placeholder={`Ex: ${categoria === 'cadastrais' ? 'Documentos RG/CPF' : categoria === 'financeiros' ? 'Bradesco Corrente' : categoria === 'redes' ? 'Instagram Principal' : categoria === 'logins' ? 'Gmail Principal' : 'Ford Ranger'}`}
@@ -350,12 +350,12 @@ export default function DadosPage() {
               </div>
 
               <div>
-                <label style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', display: 'block', marginBottom: '8px' }}>Campos</label>
+                <label style={{ fontSize: '11px', color:'#999', display: 'block', marginBottom: '8px' }}>Campos</label>
                 <CamposEditor campos={campos} onChange={setCampos} />
               </div>
 
               <div>
-                <label style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', display: 'block', marginBottom: '5px' }}>Observações</label>
+                <label style={{ fontSize: '11px', color:'#999', display: 'block', marginBottom: '5px' }}>Observações</label>
                 <textarea
                   placeholder="Informações extras, observações..."
                   value={notas}
@@ -366,10 +366,10 @@ export default function DadosPage() {
             </div>
 
             <div style={{ display: 'flex', gap: '8px', marginTop: '20px' }}>
-              <button onClick={save} disabled={!titulo.trim() || saving} style={{ flex: 1, padding: '11px', background: cc, border: 'none', borderRadius: '10px', color: '#fff', fontSize: '13px', fontWeight: 600, cursor: 'pointer', opacity: !titulo.trim() || saving ? 0.4 : 1 }}>
+              <button onClick={save} disabled={!titulo.trim() || saving} style={{ flex: 1, padding: '11px', background: cc, border: 'none', borderRadius: '10px', color:'#1a1a2e', fontSize: '13px', fontWeight: 600, cursor: 'pointer', opacity: !titulo.trim() || saving ? 0.4 : 1 }}>
                 {saving ? 'Salvando...' : 'Salvar'}
               </button>
-              <button onClick={() => setShowForm(false)} style={{ padding: '11px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', color: 'rgba(255,255,255,0.4)', fontSize: '13px', cursor: 'pointer' }}>
+              <button onClick={() => setShowForm(false)} style={{ padding: '11px 16px', background: 'transparent', border:'1px solid #e5e5ea', borderRadius: '10px', color:'#888', fontSize: '13px', cursor: 'pointer' }}>
                 Cancelar
               </button>
             </div>

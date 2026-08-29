@@ -82,12 +82,12 @@ export default function SeedPage() {
   }
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#08080f', fontFamily: 'system-ui' }}>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', background: '#f5f5f7', fontFamily: 'system-ui' }}>
       <div style={{ textAlign: 'center', maxWidth: 500, padding: 40 }}>
-        <h1 style={{ color: '#fff', fontSize: 24, marginBottom: 20 }}>📋 Inserir Filmes e Livros</h1>
-        <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, marginBottom: 30 }}>{status}</p>
+        <h1 style={{ color:'#1a1a2e', fontSize: 24, marginBottom: 20 }}>📋 Inserir Filmes e Livros</h1>
+        <p style={{ color:'#666', fontSize: 14, marginBottom: 30 }}>{status}</p>
         {!done && (
-          <button onClick={seed} style={{ padding: '14px 32px', background: '#7c3aed', border: 'none', borderRadius: 12, color: '#fff', fontSize: 16, fontWeight: 700, cursor: 'pointer' }}>
+          <button onClick={seed} style={{ padding: '14px 32px', background: '#7c3aed', border: 'none', borderRadius: 12, color:'#1a1a2e', fontSize: 16, fontWeight: 700, cursor: 'pointer' }}>
             🚀 Inserir {FILMES.length} filmes + {LIVROS.length} livros
           </button>
         )}
