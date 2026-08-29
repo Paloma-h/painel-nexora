@@ -86,9 +86,9 @@ function AtividadesTab() {
               {item.notes && <p style={{color:'#555',fontSize:'15px',marginTop:'2px'}}>{item.notes}</p>}
             </div>
             <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
-              <button onClick={()=>toggleActive(item)} style={{padding:'5px 10px',background:item.active?'rgba(76,175,125,0.12)':'rgba(255,255,255,0.05)',border:'none',borderRadius:'7px',color:item.active?'#4caf7d':'#999',fontSize:'15px',cursor:'pointer'}}>{item.active?'Ativa':'Inativa'}</button>
+              <button onClick={()=>toggleActive(item)} style={{padding:'5px 10px',background:item.active?'#ddf5e8':'rgba(255,255,255,0.05)',border:'none',borderRadius:'7px',color:item.active?'#4caf7d':'#999',fontSize:'15px',cursor:'pointer'}}>{item.active?'Ativa':'Inativa'}</button>
               <button onClick={()=>openEdit(item)} style={{padding:'5px 10px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Editar</button>
-              <button onClick={()=>remove(item.id)} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+              <button onClick={()=>remove(item.id)} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
             </div>
           </div>
         ))}
@@ -172,7 +172,7 @@ function MedidasTab() {
       {latest && (
         <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'10px',marginBottom:'24px'}}>
           {[
-            {label:'Peso',value:latest.weight,unit:'kg',color:'#a89ff7'},
+            {label:'Peso',value:latest.weight,unit:'kg',color:'#6d5ce0'},
             {label:'Cintura',value:latest.waist,unit:'cm',color:'#4caf7d'},
             {label:'Quadril',value:latest.hip,unit:'cm',color:'#e08c42'},
             {label:'Peito',value:latest.chest,unit:'cm',color:'#4267B2'},
@@ -193,7 +193,7 @@ function MedidasTab() {
             <div style={{flex:1}}>
               <p style={{color:'#444',fontSize:'15px',marginBottom:'6px'}}>{new Date(item.date+'T12:00:00').toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short',year:'numeric'})}</p>
               <div style={{display:'flex',gap:'12px',flexWrap:'wrap'}}>
-                {item.weight && <span style={{color:'#a89ff7',fontSize:'15px',fontWeight:600}}>{item.weight} kg</span>}
+                {item.weight && <span style={{color:'#6d5ce0',fontSize:'15px',fontWeight:600}}>{item.weight} kg</span>}
                 {item.waist && <span style={{color:'#333',fontSize:'15px'}}>Cintura: {item.waist} cm</span>}
                 {item.hip && <span style={{color:'#333',fontSize:'15px'}}>Quadril: {item.hip} cm</span>}
                 {item.chest && <span style={{color:'#333',fontSize:'15px'}}>Peito: {item.chest} cm</span>}
@@ -202,7 +202,7 @@ function MedidasTab() {
               </div>
               {item.notes && <p style={{color:'#555',fontSize:'15px',marginTop:'4px'}}>{item.notes}</p>}
             </div>
-            <button onClick={()=>remove(item.id)} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+            <button onClick={()=>remove(item.id)} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
           </div>
         ))}
       </div>
@@ -301,7 +301,7 @@ function DietasTab() {
                   </div>
                 )}
               </div>
-              <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer',marginLeft:'12px'}}>✕</button>
+              <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer',marginLeft:'12px'}}>✕</button>
             </div>
           </div>
         ))}
@@ -388,10 +388,10 @@ function MedicosTab() {
           const isToday = item.next_appointment === today
           return (
             <div key={item.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'14px 16px',borderRadius:'12px',background:'#fff',border:`1px solid ${isToday?'rgba(91,80,214,0.3)':'rgba(255,255,255,0.07)'}`,cursor:'pointer'}} onClick={()=>openEdit(item)}>
-              <div style={{width:'42px',height:'42px',borderRadius:'50%',background:'rgba(91,80,214,0.15)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'22px',flexShrink:0}}>🩺</div>
+              <div style={{width:'42px',height:'42px',borderRadius:'50%',background:'#e8e4ff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'22px',flexShrink:0}}>🩺</div>
               <div style={{flex:1}}>
                 <p style={{color:'#111',fontSize:'15px',fontWeight:500}}>{item.name}</p>
-                {item.specialty && <p style={{color:'rgba(168,159,247,0.7)',fontSize:'15px',marginTop:'1px'}}>{item.specialty}</p>}
+                {item.specialty && <p style={{color:'#6d5ce0',fontSize:'15px',marginTop:'1px'}}>{item.specialty}</p>}
                 <div style={{display:'flex',gap:'10px',marginTop:'4px',flexWrap:'wrap'}}>
                   {item.phone && <span style={{color:'#444',fontSize:'15px'}}>📞 {item.phone}</span>}
                   {item.next_appointment && <span style={{color:isToday?'#a89ff7':hasUpcoming?'#4caf7d':'#999',fontSize:'15px',fontWeight:isToday?600:400}}>
@@ -401,7 +401,7 @@ function MedicosTab() {
                 </div>
                 {item.notes && <p style={{color:'#555',fontSize:'15px',marginTop:'4px'}}>{item.notes}</p>}
               </div>
-              <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+              <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
             </div>
           )
         })}

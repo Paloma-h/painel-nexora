@@ -94,7 +94,7 @@ function CamposEditor({ campos, onChange }: { campos: {label:string,value:string
         <div key={i} style={{display:'grid',gridTemplateColumns:'1fr 1.5fr auto',gap:'6px',alignItems:'center'}}>
           <input placeholder="Campo (ex: CPF)" value={c.label} onChange={e => update(i,'label',e.target.value)} style={{...inp,fontSize:'15px',padding:'7px 10px'}} />
           <input placeholder="Valor" value={c.value} onChange={e => update(i,'value',e.target.value)} style={{...inp,fontSize:'15px',padding:'7px 10px'}} />
-          <button onClick={() => remove(i)} style={{padding:'7px 9px',background:'rgba(224,82,82,0.1)',border:'none',borderRadius:'8px',color:'#e05252',cursor:'pointer',fontSize:'15px'}}>✕</button>
+          <button onClick={() => remove(i)} style={{padding:'7px 9px',background:'#ffe0e0',border:'none',borderRadius:'8px',color:'#e05252',cursor:'pointer',fontSize:'15px'}}>✕</button>
         </div>
       ))}
       <button onClick={add} style={{padding:'7px',background:'#fff',border:'1px dashed rgba(255,255,255,0.15)',borderRadius:'8px',color:'#333',cursor:'pointer',fontSize:'15px'}}>+ Adicionar campo</button>
@@ -205,8 +205,8 @@ export default function DadosPage() {
               <button key={p.id} onClick={() => { setPessoa(p.id); setSearch('') }} style={{
                 padding: '8px 16px',
                 borderRadius: '10px',
-                border: `1px solid ${pessoa === p.id ? cc : 'rgba(255,255,255,0.08)'}`,
-                background: pessoa === p.id ? `${cc}22` : 'rgba(255,255,255,0.03)',
+                border: `1px solid ${pessoa === p.id ? cc : '#e8e8ee'}`,
+                background: pessoa === p.id ? `${cc}22` : '#f8f8fa',
                 color: pessoa === p.id ? '#fff' : '#888',
                 fontSize: '13px',
                 fontWeight: pessoa === p.id ? 700 : 400,
@@ -289,7 +289,7 @@ export default function DadosPage() {
                       </div>
                       <div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexShrink: 0 }}>
                         <button onClick={e => { e.stopPropagation(); openEdit(item) }} style={{ padding: '5px 10px', background:'#fff', border: 'none', borderRadius: '7px', color:'#333', fontSize: '11px', cursor: 'pointer' }}>✎</button>
-                        <button onClick={e => { e.stopPropagation(); remove(item.id) }} style={{ padding: '5px 8px', background: 'rgba(224,82,82,0.08)', border: 'none', borderRadius: '7px', color: '#e05252', fontSize: '11px', cursor: 'pointer' }}>✕</button>
+                        <button onClick={e => { e.stopPropagation(); remove(item.id) }} style={{ padding: '5px 8px', background: '#fff0f0', border: 'none', borderRadius: '7px', color: '#e05252', fontSize: '11px', cursor: 'pointer' }}>✕</button>
                         <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '12px' }}>{expanded ? '▲' : '▼'}</span>
                       </div>
                     </div>

@@ -208,12 +208,12 @@ export default function AgendaPage() {
                       </div>
                     </div>
                     <div style={{display:'flex',alignItems:'center',gap:'6px',flexShrink:0}}>
-                      <span style={{fontSize:'15px',padding:'3px 10px',borderRadius:'6px',background:t.status==='DONE'?'rgba(76,175,125,0.15)':`${priorityColor[t.priority]}20`,color:t.status==='DONE'?'#4caf7d':priorityColor[t.priority],fontWeight:600}}>{t.status==='DONE'?'✓ Concluída':PRIO_LABEL[t.priority]||t.priority}</span>
+                      <span style={{fontSize:'15px',padding:'3px 10px',borderRadius:'6px',background:t.status==='DONE'?'#ddf5e8':`${priorityColor[t.priority]}20`,color:t.status==='DONE'?'#4caf7d':priorityColor[t.priority],fontWeight:600}}>{t.status==='DONE'?'✓ Concluída':PRIO_LABEL[t.priority]||t.priority}</span>
                       <button onClick={(e) => {e.stopPropagation(); setViewingDay(null); openEditTask(t)}} style={{padding:'4px 10px',background:'rgba(124,58,237,0.15)',border:'1px solid rgba(124,58,237,0.3)',borderRadius:'6px',color:'#c4b5fd',fontSize:'15px',cursor:'pointer',fontWeight:600}}>✏️</button>
                     </div>
                   </div>
                   {t.notes && (
-                    <div style={{padding:'10px 14px 12px 34px',borderTop:'1px solid rgba(255,255,255,0.08)',background:'rgba(251,191,36,0.06)'}}>
+                    <div style={{padding:'10px 14px 12px 34px',borderTop:'1px solid #e8e8ee',background:'rgba(251,191,36,0.06)'}}>
                       <p style={{color:'rgba(255,255,255,0.7)',fontSize:'15px',lineHeight:'1.6',whiteSpace:'pre-wrap'}} dangerouslySetInnerHTML={{__html: t.notes.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer" style="color:#c4b5fd;text-decoration:underline">$1</a>')}} />
                     </div>
                   )}
@@ -253,7 +253,7 @@ export default function AgendaPage() {
                 <div style={{fontSize:'15px',color:'#444',marginBottom:'4px'}}>📍 Endereço / Local</div>
                 <div style={{display:'flex',gap:'6px'}}>
                   <input placeholder="Ex: Rua das Flores, 123 - Fortaleza" value={taskForm.location} onChange={e => setTaskForm(f=>({...f,location:e.target.value}))} style={{flex:1,background:'rgba(255,255,255,0.05)',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'15px',outline:'none'}} />
-                  {taskForm.location && <a href={`https://www.google.com/maps/search/${encodeURIComponent(taskForm.location)}`} target="_blank" rel="noopener noreferrer" style={{padding:'10px 12px',background:'rgba(76,175,125,0.12)',border:'1px solid rgba(76,175,125,0.25)',borderRadius:'10px',color:'#4caf7d',fontSize:'15px',textDecoration:'none',fontWeight:600,flexShrink:0,display:'flex',alignItems:'center'}}>🗺️ Maps</a>}
+                  {taskForm.location && <a href={`https://www.google.com/maps/search/${encodeURIComponent(taskForm.location)}`} target="_blank" rel="noopener noreferrer" style={{padding:'10px 12px',background:'#ddf5e8',border:'1px solid #c0ebd3',borderRadius:'10px',color:'#4caf7d',fontSize:'15px',textDecoration:'none',fontWeight:600,flexShrink:0,display:'flex',alignItems:'center'}}>🗺️ Maps</a>}
                 </div>
               </div>
               <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
@@ -272,7 +272,7 @@ export default function AgendaPage() {
                 <label htmlFor="fin" style={{fontSize:'15px',color:'#555',cursor:'pointer'}}>Lançar no financeiro</label>
               </div>
               {taskForm.has_financial && (
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'8px',background:'rgba(91,80,214,0.05)',borderRadius:'10px',padding:'12px',border:'1px solid rgba(91,80,214,0.15)'}}>
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'8px',background:'#f0edff',borderRadius:'10px',padding:'12px',border:'1px solid #e8e4ff'}}>
                   <input placeholder="Valor R$" type="number" value={taskForm.amount} onChange={e => setTaskForm(f=>({...f,amount:e.target.value}))} style={{background:'rgba(255,255,255,0.05)',border:'1px solid #d0d0d8',borderRadius:'8px',padding:'7px 10px',color:'#fff',fontSize:'15px',outline:'none'}} />
                   <select value={taskForm.financial_type} onChange={e => setTaskForm(f=>({...f,financial_type:e.target.value}))} style={{background:'#ffffff',border:'1px solid #d0d0d8',borderRadius:'8px',padding:'7px 10px',color:'#fff',fontSize:'15px',outline:'none'}}>
                     <option value="despesa">Despesa</option>
@@ -285,8 +285,8 @@ export default function AgendaPage() {
               )}
               <div style={{display:'flex',gap:'8px',marginTop:'4px'}}>
                 <button onClick={saveTask} disabled={!taskForm.title.trim()||saving} style={{flex:1,padding:'10px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#fff',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!taskForm.title.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-                {editingTask && <button onClick={() => completeTask(editingTask.id)} style={{padding:'10px 14px',background:'rgba(76,175,125,0.15)',border:'1px solid rgba(76,175,125,0.3)',borderRadius:'10px',color:'#4caf7d',fontSize:'15px',cursor:'pointer'}}>✓</button>}
-                {editingTask && <button onClick={() => deleteTask(editingTask.id)} style={{padding:'10px 14px',background:'rgba(224,82,82,0.1)',border:'1px solid rgba(224,82,82,0.2)',borderRadius:'10px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>Apagar</button>}
+                {editingTask && <button onClick={() => completeTask(editingTask.id)} style={{padding:'10px 14px',background:'#ddf5e8',border:'1px solid #a0e0be',borderRadius:'10px',color:'#4caf7d',fontSize:'15px',cursor:'pointer'}}>✓</button>}
+                {editingTask && <button onClick={() => deleteTask(editingTask.id)} style={{padding:'10px 14px',background:'#ffe0e0',border:'1px solid #ffc8c8',borderRadius:'10px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>Apagar</button>}
               </div>
             </div>
           </div>

@@ -159,13 +159,13 @@ export default function ClientesPage() {
                 const isLow = days !== null && days <= 10
                 const isOver = days !== null && days <= 0
                 return (
-                  <div key={c.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'14px 16px',borderRadius:'12px',background:'#fff',border:`1px solid ${isOver?'rgba(224,82,82,0.4)':isLow?'rgba(224,82,82,0.2)':'rgba(255,255,255,0.08)'}`,cursor:'pointer'}} onClick={() => openEdit(c)}>
-                    <div style={{width:'40px',height:'40px',borderRadius:'50%',background:'rgba(76,175,125,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'#4caf7d',fontWeight:700,fontSize:'15px',flexShrink:0}}>{c.name.charAt(0).toUpperCase()}</div>
+                  <div key={c.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'14px 16px',borderRadius:'12px',background:'#fff',border:`1px solid ${isOver?'#ff9999':isLow?'#ffc8c8':'#e8e8ee'}`,cursor:'pointer'}} onClick={() => openEdit(c)}>
+                    <div style={{width:'40px',height:'40px',borderRadius:'50%',background:'#c0ebd3',display:'flex',alignItems:'center',justifyContent:'center',color:'#4caf7d',fontWeight:700,fontSize:'15px',flexShrink:0}}>{c.name.charAt(0).toUpperCase()}</div>
                     <div style={{flex:1,minWidth:0}}>
                       <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
                         <p style={{color:'#111',fontSize:'15px',fontWeight:500}}>{c.name}</p>
                         {c.source && <span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:`${sourceColor[c.source]}22`,color:sourceColor[c.source]}}>{c.source}</span>}
-                        {c.product && <span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:'rgba(76,175,125,0.1)',color:'#4caf7d'}}>{c.product}</span>}
+                        {c.product && <span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:'#ddf5e8',color:'#4caf7d'}}>{c.product}</span>}
                       </div>
                       <div style={{display:'flex',gap:'10px',marginTop:'3px',flexWrap:'wrap'}}>
                         {c.phone && <span style={{color:'#444',fontSize:'15px'}}>{c.phone}</span>}
@@ -175,10 +175,10 @@ export default function ClientesPage() {
                     </div>
                     <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
                       {c.whatsapp && (
-                        <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} style={{padding:'6px 10px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'8px',color:'#25d366',fontSize:'15px',textDecoration:'none',fontWeight:600}}>WhatsApp</a>
+                        <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} style={{padding:'6px 10px',background:'#e0fce9',border:'1px solid #c0f5d5',borderRadius:'8px',color:'#25d366',fontSize:'15px',textDecoration:'none',fontWeight:600}}>WhatsApp</a>
                       )}
-                      <span style={{fontSize:'15px',padding:'3px 10px',borderRadius:'6px',background:c.status==='Ativo'?'rgba(76,175,125,0.15)':'rgba(255,255,255,0.08)',color:c.status==='Ativo'?'#4caf7d':'#888',fontWeight:500}}>{c.status}</span>
-                      <button onClick={e => {e.stopPropagation();remove(c.id)}} style={{padding:'6px 10px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'8px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+                      <span style={{fontSize:'15px',padding:'3px 10px',borderRadius:'6px',background:c.status==='Ativo'?'#ddf5e8':'#e8e8ee',color:c.status==='Ativo'?'#4caf7d':'#888',fontWeight:500}}>{c.status}</span>
+                      <button onClick={e => {e.stopPropagation();remove(c.id)}} style={{padding:'6px 10px',background:'#fff0f0',border:'none',borderRadius:'8px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
                     </div>
                   </div>
                 )
@@ -233,7 +233,7 @@ export default function ClientesPage() {
             <Section title="Origem do contato" />
             <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'6px'}}>
               {SOURCES.map(s => (
-                <button key={s} onClick={() => setForm(f=>({...f,source:s}))} style={{padding:'8px 4px',borderRadius:'8px',border:`1px solid ${form.source===s?sourceColor[s]:'rgba(255,255,255,0.08)'}`,background:form.source===s?`${sourceColor[s]}22`:'transparent',color:form.source===s?sourceColor[s]:'#999',fontSize:'15px',cursor:'pointer',fontWeight:form.source===s?600:400}}>{s}</button>
+                <button key={s} onClick={() => setForm(f=>({...f,source:s}))} style={{padding:'8px 4px',borderRadius:'8px',border:`1px solid ${form.source===s?sourceColor[s]:'#e8e8ee'}`,background:form.source===s?`${sourceColor[s]}22`:'transparent',color:form.source===s?sourceColor[s]:'#999',fontSize:'15px',cursor:'pointer',fontWeight:form.source===s?600:400}}>{s}</button>
               ))}
             </div>
 
@@ -245,7 +245,7 @@ export default function ClientesPage() {
                 <Field label="Qtd. potes"><input type="number" min="0" value={form.pots_bought} onChange={e => setForm(f=>({...f,pots_bought:e.target.value}))} style={inputStyle} /></Field>
               </div>
               {form.purchase_date && parseInt(form.pots_bought) > 0 && (
-                <p style={{fontSize:'15px',color:'rgba(91,80,214,0.7)',background:'rgba(91,80,214,0.08)',borderRadius:'8px',padding:'8px 12px'}}>
+                <p style={{fontSize:'15px',color:'rgba(91,80,214,0.7)',background:'#f0edff',borderRadius:'8px',padding:'8px 12px'}}>
                   Potes terminam em: {new Date(new Date(form.purchase_date).getTime() + parseInt(form.pots_bought) * 30 * 24 * 60 * 60 * 1000).toLocaleDateString('pt-BR')} — alerta no dashboard com 10 dias
                 </p>
               )}
@@ -261,7 +261,7 @@ export default function ClientesPage() {
             <Section title="Notas" />
             <textarea placeholder="Observações sobre o cliente..." value={form.notes} onChange={e => setForm(f=>({...f,notes:e.target.value}))} style={{...inputStyle,resize:'none',height:'80px'}} />
 
-            {error && <p style={{color:'#e05252',fontSize:'15px',background:'rgba(224,82,82,0.1)',borderRadius:'8px',padding:'8px 12px',marginTop:'10px'}}>{error}</p>}
+            {error && <p style={{color:'#e05252',fontSize:'15px',background:'#ffe0e0',borderRadius:'8px',padding:'8px 12px',marginTop:'10px'}}>{error}</p>}
 
             <div style={{display:'flex',gap:'8px',marginTop:'16px'}}>
               <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>

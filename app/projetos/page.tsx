@@ -148,10 +148,10 @@ export default function ProjetosPage() {
                 <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>💡 Ideias</p>
               </div>
               <div style={{background:'rgba(124,111,247,0.06)',border:'1px solid rgba(124,111,247,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
-                <p style={{color:'#a89ff7',fontSize:'22px',fontWeight:700}}>{desenvolvendo}</p>
+                <p style={{color:'#6d5ce0',fontSize:'22px',fontWeight:700}}>{desenvolvendo}</p>
                 <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>🔧 Desenvolvendo</p>
               </div>
-              <div style={{background:'rgba(76,175,125,0.06)',border:'1px solid rgba(76,175,125,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
+              <div style={{background:'#f0faf5',border:'1px solid #ddf5e8',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
                 <p style={{color:'#4caf7d',fontSize:'22px',fontWeight:700}}>{concluidos}</p>
                 <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>✅ Concluídos</p>
               </div>
@@ -205,7 +205,7 @@ export default function ProjetosPage() {
                       </div>
                       <div style={{display:'flex',gap:'6px',alignItems:'center',flexShrink:0}}>
                         <button onClick={e=>{e.stopPropagation();openEdit(item)}} style={{padding:'5px 10px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'15px',cursor:'pointer'}}>✎</button>
-                        <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+                        <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
                         <span style={{color:'#555',fontSize:'15px'}}>{expanded?'▲':'▼'}</span>
                       </div>
                     </div>
@@ -222,7 +222,7 @@ export default function ProjetosPage() {
                         {item.inspiration_url && (
                           <div style={{background:'rgba(124,111,247,0.06)',borderRadius:'10px',padding:'12px',marginBottom:'12px'}}>
                             <p style={{color:'#555',fontSize:'12px',marginBottom:'6px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Link de Inspiração</p>
-                            <a href={item.inspiration_url} target="_blank" rel="noopener noreferrer" style={{color:'#a89ff7',fontSize:'15px',wordBreak:'break-all'}}>{item.inspiration_url}</a>
+                            <a href={item.inspiration_url} target="_blank" rel="noopener noreferrer" style={{color:'#6d5ce0',fontSize:'15px',wordBreak:'break-all'}}>{item.inspiration_url}</a>
                           </div>
                         )}
                         {/* Mudar status direto */}
@@ -230,7 +230,7 @@ export default function ProjetosPage() {
                           <p style={{color:'#555',fontSize:'12px',marginBottom:'8px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Mudar status</p>
                           <div style={{display:'flex',gap:'6px',flexWrap:'wrap'}}>
                             {STATUS_LIST.map(s=>(
-                              <button key={s} onClick={()=>changeStatus(item.id,s)} style={{padding:'6px 12px',borderRadius:'8px',border:`1px solid ${item.status===s?statusColor[s]:'rgba(255,255,255,0.08)'}`,background:item.status===s?`${statusColor[s]}22`:'transparent',color:item.status===s?statusColor[s]:'#999',fontSize:'15px',cursor:'pointer',fontWeight:item.status===s?600:400}}>{s}</button>
+                              <button key={s} onClick={()=>changeStatus(item.id,s)} style={{padding:'6px 12px',borderRadius:'8px',border:`1px solid ${item.status===s?statusColor[s]:'#e8e8ee'}`,background:item.status===s?`${statusColor[s]}22`:'transparent',color:item.status===s?statusColor[s]:'#999',fontSize:'15px',cursor:'pointer',fontWeight:item.status===s?600:400}}>{s}</button>
                             ))}
                           </div>
                         </div>

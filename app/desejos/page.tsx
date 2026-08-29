@@ -78,8 +78,8 @@ export default function DesejosPage() {
           {items.length > 0 && (
             <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'20px'}}>
               <div style={{background:'rgba(212,184,74,0.06)',border:'1px solid rgba(212,184,74,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#d4b84a',fontSize:'22px',fontWeight:700}}>{aguardando}</p><p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Aguardando promoção</p></div>
-              <div style={{background:'rgba(224,82,82,0.06)',border:'1px solid rgba(224,82,82,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#e05252',fontSize:'22px',fontWeight:700}}>{urgentes}</p><p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Urgentes</p></div>
-              <div style={{background:'rgba(76,175,125,0.06)',border:'1px solid rgba(76,175,125,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#4caf7d',fontSize:'22px',fontWeight:700}}>{comprados}</p><p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Comprados</p></div>
+              <div style={{background:'#fff0f0',border:'1px solid #ffe0e0',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#e05252',fontSize:'22px',fontWeight:700}}>{urgentes}</p><p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Urgentes</p></div>
+              <div style={{background:'#f0faf5',border:'1px solid #ddf5e8',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#4caf7d',fontSize:'22px',fontWeight:700}}>{comprados}</p><p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Comprados</p></div>
             </div>
           )}
           <div style={{display:'flex',gap:'10px',marginBottom:'16px',flexWrap:'wrap'}}>
@@ -93,7 +93,7 @@ export default function DesejosPage() {
               {filtered.map(item => {
                 const diff = discount(item)
                 return (
-                  <div key={item.id} style={{borderRadius:'14px',background:'#fff',border:`1px solid ${item.priority==='Urgente'?'rgba(224,82,82,0.2)':'rgba(255,255,255,0.07)'}`,padding:'14px 16px',display:'flex',alignItems:'center',gap:'12px'}}>
+                  <div key={item.id} style={{borderRadius:'14px',background:'#fff',border:`1px solid ${item.priority==='Urgente'?'#ffc8c8':'rgba(255,255,255,0.07)'}`,padding:'14px 16px',display:'flex',alignItems:'center',gap:'12px'}}>
                     <div style={{width:'42px',height:'42px',borderRadius:'10px',background:`${typeColor[item.type]||'#888'}15`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'22px',flexShrink:0}}>{typeIcon[item.type]||'📦'}</div>
                     <div style={{flex:1,minWidth:0}}>
                       <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
@@ -112,9 +112,9 @@ export default function DesejosPage() {
                       {item.notes && <p style={{color:'#444',fontSize:'15px',marginTop:'4px'}}>{item.notes}</p>}
                     </div>
                     <div style={{display:'flex',gap:'6px',flexShrink:0}}>
-                      {item.url && <a href={item.url} target="_blank" rel="noopener noreferrer" style={{padding:'5px 9px',background:'rgba(124,111,247,0.12)',border:'1px solid rgba(124,111,247,0.2)',borderRadius:'7px',color:'#a89ff7',fontSize:'15px',textDecoration:'none'}}>Ver</a>}
+                      {item.url && <a href={item.url} target="_blank" rel="noopener noreferrer" style={{padding:'5px 9px',background:'rgba(124,111,247,0.12)',border:'1px solid rgba(124,111,247,0.2)',borderRadius:'7px',color:'#6d5ce0',fontSize:'15px',textDecoration:'none'}}>Ver</a>}
                       <button onClick={()=>openEdit(item)} style={{padding:'5px 9px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Editar</button>
-                      <button onClick={()=>remove(item.id)} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+                      <button onClick={()=>remove(item.id)} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
                     </div>
                   </div>
                 )

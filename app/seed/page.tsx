@@ -94,7 +94,7 @@ export default function SeedPage() {
         {done && (
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 20 }}>
             <a href="/filmes" style={{ padding: '12px 24px', background: 'rgba(124,58,237,0.2)', border: '1px solid rgba(124,58,237,0.4)', borderRadius: 10, color: '#c4b5fd', textDecoration: 'none', fontWeight: 600 }}>🎬 Ver Filmes</a>
-            <a href="/livros" style={{ padding: '12px 24px', background: 'rgba(76,175,125,0.2)', border: '1px solid rgba(76,175,125,0.4)', borderRadius: 10, color: '#4caf7d', textDecoration: 'none', fontWeight: 600 }}>📚 Ver Livros</a>
+            <a href="/livros" style={{ padding: '12px 24px', background: '#c0ebd3', border: '1px solid rgba(76,175,125,0.4)', borderRadius: 10, color: '#4caf7d', textDecoration: 'none', fontWeight: 600 }}>📚 Ver Livros</a>
           </div>
         )}
       </div>

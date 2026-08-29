@@ -89,10 +89,10 @@ export default function LivrosPage() {
           {items.length > 0 && (
             <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'20px'}}>
               <div style={{background:'rgba(124,111,247,0.08)',border:'1px solid rgba(124,111,247,0.15)',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
-                <p style={{color:'#a89ff7',fontSize:'22px',fontWeight:700}}>{lendo}</p>
+                <p style={{color:'#6d5ce0',fontSize:'22px',fontWeight:700}}>{lendo}</p>
                 <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Lendo</p>
               </div>
-              <div style={{background:'rgba(76,175,125,0.06)',border:'1px solid rgba(76,175,125,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
+              <div style={{background:'#f0faf5',border:'1px solid #ddf5e8',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
                 <p style={{color:'#4caf7d',fontSize:'22px',fontWeight:700}}>{concluidos}</p>
                 <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Concluídos</p>
               </div>
@@ -140,7 +140,7 @@ export default function LivrosPage() {
                       </div>
                       <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
                         <button onClick={e=>{e.stopPropagation();openEdit(item)}} style={{padding:'5px 9px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Editar</button>
-                        <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+                        <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
                         <span style={{color:'#555',fontSize:'15px'}}>{expanded?'▲':'▼'}</span>
                       </div>
                     </div>

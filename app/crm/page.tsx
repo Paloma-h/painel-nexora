@@ -376,16 +376,16 @@ export default function CRMPage() {
       <div style={{flex:1,display:'flex',flexDirection:'column',overflowY:'auto'}}>
 
         {importMsg && (
-          <div style={{position:'fixed',top:'16px',right:'16px',zIndex:100,background:importMsg.startsWith('✓')?'rgba(76,175,125,0.15)':'rgba(224,82,82,0.15)',border:`1px solid ${importMsg.startsWith('✓')?'rgba(76,175,125,0.3)':'rgba(224,82,82,0.3)'}`,borderRadius:'10px',padding:'10px 16px',color:importMsg.startsWith('✓')?'#4caf7d':'#e05252',fontSize:'15px',fontWeight:500}}>
+          <div style={{position:'fixed',top:'16px',right:'16px',zIndex:100,background:importMsg.startsWith('✓')?'#ddf5e8':'#ffe0e0',border:`1px solid ${importMsg.startsWith('✓')?'#a0e0be':'#ffb0b0'}`,borderRadius:'10px',padding:'10px 16px',color:importMsg.startsWith('✓')?'#4caf7d':'#e05252',fontSize:'15px',fontWeight:500}}>
             {importMsg}
           </div>
         )}
 
         <div style={{background:'#f9f9fb',borderBottom:'1px solid #d0d0d8',padding:'0 28px',display:'flex',gap:'4px',alignItems:'center',flexShrink:0}}>
-          <button onClick={()=>setTab('leads')} style={{padding:'14px 16px',background:'transparent',border:'none',borderBottom:`2px solid ${tab==='leads'?'#7c6ff7':'transparent'}`,color:tab==='leads'?'#a89ff7':'#999',fontSize:'15px',cursor:'pointer',fontWeight:tab==='leads'?600:400}}>Leads {leads.length>0&&<span style={{background:'rgba(91,80,214,0.2)',color:'#a89ff7',borderRadius:'10px',padding:'1px 7px',fontSize:'15px',marginLeft:'4px'}}>{leads.length}</span>}</button>
-          <button onClick={()=>setTab('clients')} style={{padding:'14px 16px',background:'transparent',border:'none',borderBottom:`2px solid ${tab==='clients'?'#7c6ff7':'transparent'}`,color:tab==='clients'?'#a89ff7':'#999',fontSize:'15px',cursor:'pointer',fontWeight:tab==='clients'?600:400}}>Clientes {clients.length>0&&<span style={{background:'rgba(76,175,125,0.15)',color:'#4caf7d',borderRadius:'10px',padding:'1px 7px',fontSize:'15px',marginLeft:'4px'}}>{clients.length}</span>}</button>
-          <button onClick={()=>setTab('estoque')} style={{padding:'14px 16px',background:'transparent',border:'none',borderBottom:`2px solid ${tab==='estoque'?'#4caf7d':'transparent'}`,color:tab==='estoque'?'#4caf7d':'#999',fontSize:'15px',cursor:'pointer',fontWeight:tab==='estoque'?600:400}}>Estoque {estoque.length>0&&<span style={{background:'rgba(76,175,125,0.15)',color:'#4caf7d',borderRadius:'10px',padding:'1px 7px',fontSize:'15px',marginLeft:'4px'}}>{estoque.length}</span>}</button>
-          <button onClick={()=>setTab('fornecedores')} style={{padding:'14px 16px',background:'transparent',border:'none',borderBottom:`2px solid ${tab==='fornecedores'?'#e08c42':'transparent'}`,color:tab==='fornecedores'?'#e08c42':'#999',fontSize:'15px',cursor:'pointer',fontWeight:tab==='fornecedores'?600:400}}>Fornecedores {fornecedores.length>0&&<span style={{background:'rgba(224,140,66,0.15)',color:'#e08c42',borderRadius:'10px',padding:'1px 7px',fontSize:'15px',marginLeft:'4px'}}>{fornecedores.length}</span>}</button>
+          <button onClick={()=>setTab('leads')} style={{padding:'14px 16px',background:'transparent',border:'none',borderBottom:`2px solid ${tab==='leads'?'#7c6ff7':'transparent'}`,color:tab==='leads'?'#a89ff7':'#999',fontSize:'15px',cursor:'pointer',fontWeight:tab==='leads'?600:400}}>Leads {leads.length>0&&<span style={{background:'#d4cdff',color:'#6d5ce0',borderRadius:'10px',padding:'1px 7px',fontSize:'15px',marginLeft:'4px'}}>{leads.length}</span>}</button>
+          <button onClick={()=>setTab('clients')} style={{padding:'14px 16px',background:'transparent',border:'none',borderBottom:`2px solid ${tab==='clients'?'#7c6ff7':'transparent'}`,color:tab==='clients'?'#a89ff7':'#999',fontSize:'15px',cursor:'pointer',fontWeight:tab==='clients'?600:400}}>Clientes {clients.length>0&&<span style={{background:'#ddf5e8',color:'#4caf7d',borderRadius:'10px',padding:'1px 7px',fontSize:'15px',marginLeft:'4px'}}>{clients.length}</span>}</button>
+          <button onClick={()=>setTab('estoque')} style={{padding:'14px 16px',background:'transparent',border:'none',borderBottom:`2px solid ${tab==='estoque'?'#4caf7d':'transparent'}`,color:tab==='estoque'?'#4caf7d':'#999',fontSize:'15px',cursor:'pointer',fontWeight:tab==='estoque'?600:400}}>Estoque {estoque.length>0&&<span style={{background:'#ddf5e8',color:'#4caf7d',borderRadius:'10px',padding:'1px 7px',fontSize:'15px',marginLeft:'4px'}}>{estoque.length}</span>}</button>
+          <button onClick={()=>setTab('fornecedores')} style={{padding:'14px 16px',background:'transparent',border:'none',borderBottom:`2px solid ${tab==='fornecedores'?'#e08c42':'transparent'}`,color:tab==='fornecedores'?'#e08c42':'#999',fontSize:'15px',cursor:'pointer',fontWeight:tab==='fornecedores'?600:400}}>Fornecedores {fornecedores.length>0&&<span style={{background:'#ffe8d0',color:'#e08c42',borderRadius:'10px',padding:'1px 7px',fontSize:'15px',marginLeft:'4px'}}>{fornecedores.length}</span>}</button>
         </div>
 
         <div style={{flex:1,padding:'28px 32px',overflowY:'auto'}}>
@@ -400,7 +400,7 @@ export default function CRMPage() {
                   </div>
                   <div style={{display:'flex',gap:'8px',alignItems:'center'}}>
                     <button onClick={exportLeads} style={{padding:'7px 12px',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#444',fontSize:'15px',cursor:'pointer'}}>Exportar CSV</button>
-                    <label style={{padding:'7px 12px',background:'rgba(91,80,214,0.1)',border:'1px solid rgba(91,80,214,0.2)',borderRadius:'10px',color:'#a89ff7',fontSize:'15px',cursor:'pointer'}}>
+                    <label style={{padding:'7px 12px',background:'#e8e4ff',border:'1px solid #d4cdff',borderRadius:'10px',color:'#6d5ce0',fontSize:'15px',cursor:'pointer'}}>
                       Importar CSV
                       <input type="file" accept=".csv,.xlsx,.xls" style={{display:'none'}} onChange={importLeads} />
                     </label>
@@ -419,23 +419,23 @@ export default function CRMPage() {
                     {filteredLeads.length===0&&<p style={{color:'#555',textAlign:'center',padding:'40px'}}>Nenhum lead encontrado</p>}
                     {filteredLeads.map(l=>(
                       <div key={l.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'13px 15px',borderRadius:'12px',background:'#fff',border:'1px solid #d0d0d8',cursor:'pointer'}} onClick={()=>openEditLead(l)}>
-                        <div style={{width:'38px',height:'38px',borderRadius:'50%',background:'rgba(91,80,214,0.25)',display:'flex',alignItems:'center',justifyContent:'center',color:'#a89ff7',fontWeight:700,fontSize:'15px',flexShrink:0}}>{l.name.charAt(0).toUpperCase()}</div>
+                        <div style={{width:'38px',height:'38px',borderRadius:'50%',background:'#d4cdff',display:'flex',alignItems:'center',justifyContent:'center',color:'#6d5ce0',fontWeight:700,fontSize:'15px',flexShrink:0}}>{l.name.charAt(0).toUpperCase()}</div>
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
                             <p style={{color:'#111',fontSize:'15px',fontWeight:500}}>{l.name}</p>
-                            {l.product&&<span style={{fontSize:"11px",padding:"2px 10px",borderRadius:"6px",background:"rgba(139,92,246,0.2)",color:"#a78bfa",fontWeight:600,border:"1px solid rgba(139,92,246,0.3)"}}>{l.product}</span>}
+                            {l.product&&<span style={{fontSize:"11px",padding:"2px 10px",borderRadius:"6px",background:"#e0d4ff",color:"#a78bfa",fontWeight:600,border:"1px solid #d0c0ff"}}>{l.product}</span>}
                             {l.source&&<span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:`${sourceColor[l.source]}22`,color:sourceColor[l.source]}}>{l.source}</span>}
                           </div>
                           <div style={{display:'flex',gap:'8px',marginTop:'2px',flexWrap:'wrap'}}>
                             {l.phone&&<span style={{color:'#444',fontSize:'15px'}}>{l.phone}</span>}
                             {l.value>0&&<span style={{color:'#4caf7d',fontSize:'15px'}}>R$ {l.value.toLocaleString('pt-BR')}</span>}
-                            {l.next_followup&&<span style={{color:'rgba(91,80,214,0.8)',fontSize:'15px'}}>Follow-up: {new Date(l.next_followup+'T12:00:00').toLocaleDateString('pt-BR')}</span>}
+                            {l.next_followup&&<span style={{color:'#5b50d6',fontSize:'15px'}}>Follow-up: {new Date(l.next_followup+'T12:00:00').toLocaleDateString('pt-BR')}</span>}
                           </div>
                         </div>
                         <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
-                          {l.whatsapp&&<a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'7px',color:'#25d366',fontSize:'15px',textDecoration:'none',fontWeight:600}}>WA</a>}
-                          <span style={{fontSize:'15px',padding:'3px 9px',borderRadius:'6px',background:l.status==='Ganho'?'rgba(76,175,125,0.15)':l.status==='Perdido'?'rgba(224,82,82,0.15)':'rgba(255,255,255,0.08)',color:l.status==='Ganho'?'#4caf7d':l.status==='Perdido'?'#e05252':'#888',fontWeight:500}}>{l.status}</span>
-                          <button onClick={e=>{e.stopPropagation();removeLead(l.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+                          {l.whatsapp&&<a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'#e0fce9',border:'1px solid #c0f5d5',borderRadius:'7px',color:'#25d366',fontSize:'15px',textDecoration:'none',fontWeight:600}}>WA</a>}
+                          <span style={{fontSize:'15px',padding:'3px 9px',borderRadius:'6px',background:l.status==='Ganho'?'#ddf5e8':l.status==='Perdido'?'#ffe0e0':'#e8e8ee',color:l.status==='Ganho'?'#4caf7d':l.status==='Perdido'?'#e05252':'#888',fontWeight:500}}>{l.status}</span>
+                          <button onClick={e=>{e.stopPropagation();removeLead(l.id)}} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
                         </div>
                       </div>
                     ))}
@@ -453,7 +453,7 @@ export default function CRMPage() {
                   </div>
                   <div style={{display:'flex',gap:'8px',alignItems:'center'}}>
                     <button onClick={exportClients} style={{padding:'7px 12px',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#444',fontSize:'15px',cursor:'pointer'}}>Exportar CSV</button>
-                    <label style={{padding:'7px 12px',background:'rgba(76,175,125,0.1)',border:'1px solid rgba(76,175,125,0.2)',borderRadius:'10px',color:'#4caf7d',fontSize:'15px',cursor:'pointer'}}>
+                    <label style={{padding:'7px 12px',background:'#ddf5e8',border:'1px solid #c0ebd3',borderRadius:'10px',color:'#4caf7d',fontSize:'15px',cursor:'pointer'}}>
                       Importar CSV
                       <input type="file" accept=".csv,.xlsx,.xls" style={{display:'none'}} onChange={importClients} />
                     </label>
@@ -469,13 +469,13 @@ export default function CRMPage() {
                       const isLow = days!==null&&days<=10
                       const isOver = days!==null&&days<=0
                       return (
-                        <div key={c.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'13px 15px',borderRadius:'12px',background:'#fff',border:`1px solid ${isOver?'rgba(224,82,82,0.3)':isLow?'rgba(224,82,82,0.15)':'rgba(255,255,255,0.07)'}`,cursor:'pointer'}} onClick={()=>openEditClient(c)}>
-                          <div style={{width:'38px',height:'38px',borderRadius:'50%',background:'rgba(76,175,125,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'#4caf7d',fontWeight:700,fontSize:'15px',flexShrink:0}}>{c.name.charAt(0).toUpperCase()}</div>
+                        <div key={c.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'13px 15px',borderRadius:'12px',background:'#fff',border:`1px solid ${isOver?'#ffb0b0':isLow?'#ffe0e0':'rgba(255,255,255,0.07)'}`,cursor:'pointer'}} onClick={()=>openEditClient(c)}>
+                          <div style={{width:'38px',height:'38px',borderRadius:'50%',background:'#c0ebd3',display:'flex',alignItems:'center',justifyContent:'center',color:'#4caf7d',fontWeight:700,fontSize:'15px',flexShrink:0}}>{c.name.charAt(0).toUpperCase()}</div>
                           <div style={{flex:1,minWidth:0}}>
                             <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
                               <p style={{color:'#111',fontSize:'15px',fontWeight:500}}>{c.name}</p>
                               {c.source&&<span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:`${sourceColor[c.source]}22`,color:sourceColor[c.source]}}>{c.source}</span>}
-                              {c.product&&<span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:'rgba(76,175,125,0.1)',color:'#4caf7d'}}>{c.product}</span>}
+                              {c.product&&<span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:'#ddf5e8',color:'#4caf7d'}}>{c.product}</span>}
                             </div>
                             <div style={{display:'flex',gap:'8px',marginTop:'2px',flexWrap:'wrap'}}>
                               {c.phone&&<span style={{color:'#444',fontSize:'15px'}}>{c.phone}</span>}
@@ -484,9 +484,9 @@ export default function CRMPage() {
                             </div>
                           </div>
                           <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
-                            {c.whatsapp&&<a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'7px',color:'#25d366',fontSize:'15px',textDecoration:'none',fontWeight:600}}>WA</a>}
-                            <span style={{fontSize:'15px',padding:'3px 9px',borderRadius:'6px',background:c.status==='Ativo'?'rgba(76,175,125,0.15)':'rgba(255,255,255,0.08)',color:c.status==='Ativo'?'#4caf7d':'#888',fontWeight:500}}>{c.status}</span>
-                            <button onClick={e=>{e.stopPropagation();removeClient(c.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+                            {c.whatsapp&&<a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'#e0fce9',border:'1px solid #c0f5d5',borderRadius:'7px',color:'#25d366',fontSize:'15px',textDecoration:'none',fontWeight:600}}>WA</a>}
+                            <span style={{fontSize:'15px',padding:'3px 9px',borderRadius:'6px',background:c.status==='Ativo'?'#ddf5e8':'#e8e8ee',color:c.status==='Ativo'?'#4caf7d':'#888',fontWeight:500}}>{c.status}</span>
+                            <button onClick={e=>{e.stopPropagation();removeClient(c.id)}} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
                           </div>
                         </div>
                       )
@@ -509,14 +509,14 @@ export default function CRMPage() {
                       const isLow = p.quantity <= p.min_quantity
                       const isOut = p.quantity === 0
                       return (
-                        <div key={p.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'13px 15px',borderRadius:'12px',background:'#fff',border:`1px solid ${isOut?'rgba(224,82,82,0.4)':isLow?'rgba(224,140,66,0.3)':'rgba(255,255,255,0.07)'}`,cursor:'pointer'}} onClick={()=>{setEditing(p);setEstoqueForm({name:p.name,quantity:p.quantity?.toString()||'0',min_quantity:p.min_quantity?.toString()||'5',cost_price:p.cost_price?.toString()||'',sell_price:p.sell_price?.toString()||'',location:p.location||'',expiry_date:p.expiry_date||'',notes:p.notes||''});setError('');setShowForm('estoque')}}>
-                          <div style={{width:'38px',height:'38px',borderRadius:'10px',background:isOut?'rgba(224,82,82,0.2)':isLow?'rgba(224,140,66,0.2)':'rgba(76,175,125,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:isOut?'#e05252':isLow?'#e08c42':'#4caf7d',fontWeight:700,fontSize:'18px',flexShrink:0}}>{p.quantity}</div>
+                        <div key={p.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'13px 15px',borderRadius:'12px',background:'#fff',border:`1px solid ${isOut?'#ff9999':isLow?'#ffca90':'rgba(255,255,255,0.07)'}`,cursor:'pointer'}} onClick={()=>{setEditing(p);setEstoqueForm({name:p.name,quantity:p.quantity?.toString()||'0',min_quantity:p.min_quantity?.toString()||'5',cost_price:p.cost_price?.toString()||'',sell_price:p.sell_price?.toString()||'',location:p.location||'',expiry_date:p.expiry_date||'',notes:p.notes||''});setError('');setShowForm('estoque')}}>
+                          <div style={{width:'38px',height:'38px',borderRadius:'10px',background:isOut?'#ffc8c8':isLow?'#ffd9b0':'#c0ebd3',display:'flex',alignItems:'center',justifyContent:'center',color:isOut?'#e05252':isLow?'#e08c42':'#4caf7d',fontWeight:700,fontSize:'18px',flexShrink:0}}>{p.quantity}</div>
                           <div style={{flex:1,minWidth:0}}>
                             <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
                               <p style={{color:'#111',fontSize:'15px',fontWeight:500}}>{p.name}</p>
                               {p.location&&<span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:'#fff',color:'#333'}}>📍 {p.location}</span>}
-                              {isOut&&<span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:'rgba(224,82,82,0.15)',color:'#e05252'}}>SEM ESTOQUE</span>}
-                              {!isOut&&isLow&&<span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:'rgba(224,140,66,0.15)',color:'#e08c42'}}>⚠ ESTOQUE BAIXO</span>}
+                              {isOut&&<span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:'#ffe0e0',color:'#e05252'}}>SEM ESTOQUE</span>}
+                              {!isOut&&isLow&&<span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:'#ffe8d0',color:'#e08c42'}}>⚠ ESTOQUE BAIXO</span>}
                             </div>
                             <div style={{display:'flex',gap:'8px',marginTop:'2px',flexWrap:'wrap'}}>
                               {p.sell_price&&<span style={{color:'#4caf7d',fontSize:'15px'}}>Venda: R$ {p.sell_price}</span>}
@@ -525,9 +525,9 @@ export default function CRMPage() {
                             </div>
                           </div>
                           <div style={{display:'flex',gap:'6px'}}>
-                            <button onClick={e=>{e.stopPropagation();setShowMovForm(p);setMovType('entrada');setMovQty('1')}} style={{padding:'5px 9px',background:'rgba(76,175,125,0.12)',border:'1px solid rgba(76,175,125,0.2)',borderRadius:'7px',color:'#4caf7d',fontSize:'15px',cursor:'pointer'}}>+ Entrada</button>
-                            <button onClick={e=>{e.stopPropagation();setShowMovForm(p);setMovType('saida');setMovQty('1')}} style={{padding:'5px 9px',background:'rgba(91,80,214,0.12)',border:'1px solid rgba(91,80,214,0.2)',borderRadius:'7px',color:'#a89ff7',fontSize:'15px',cursor:'pointer'}}>- Saída</button>
-                            <button onClick={e=>{e.stopPropagation();removeEstoque(p.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+                            <button onClick={e=>{e.stopPropagation();setShowMovForm(p);setMovType('entrada');setMovQty('1')}} style={{padding:'5px 9px',background:'#ddf5e8',border:'1px solid #c0ebd3',borderRadius:'7px',color:'#4caf7d',fontSize:'15px',cursor:'pointer'}}>+ Entrada</button>
+                            <button onClick={e=>{e.stopPropagation();setShowMovForm(p);setMovType('saida');setMovQty('1')}} style={{padding:'5px 9px',background:'#e8e4ff',border:'1px solid #d4cdff',borderRadius:'7px',color:'#6d5ce0',fontSize:'15px',cursor:'pointer'}}>- Saída</button>
+                            <button onClick={e=>{e.stopPropagation();removeEstoque(p.id)}} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
                           </div>
                         </div>
                       )
@@ -546,7 +546,7 @@ export default function CRMPage() {
                   </div>
                   <div style={{display:'flex',gap:'8px',alignItems:'center'}}>
                     <button onClick={exportForn} style={{padding:'7px 12px',background:'#fff',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#444',fontSize:'15px',cursor:'pointer'}}>Exportar CSV</button>
-                    <label style={{padding:'7px 12px',background:'rgba(224,140,66,0.1)',border:'1px solid rgba(224,140,66,0.2)',borderRadius:'10px',color:'#e08c42',fontSize:'15px',cursor:'pointer'}}>
+                    <label style={{padding:'7px 12px',background:'#ffe8d0',border:'1px solid #ffd9b0',borderRadius:'10px',color:'#e08c42',fontSize:'15px',cursor:'pointer'}}>
                       Importar CSV
                       <input type="file" accept=".csv" style={{display:'none'}} onChange={importForn} />
                     </label>
@@ -558,13 +558,13 @@ export default function CRMPage() {
                   <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
                     {fornecedores.filter(f=>f.name.toLowerCase().includes(search.toLowerCase())||(f.company||'').toLowerCase().includes(search.toLowerCase())||(f.product||'').toLowerCase().includes(search.toLowerCase())).length===0 && <p style={{color:'#555',textAlign:'center',padding:'40px'}}>Nenhum fornecedor encontrado</p>}
                     {fornecedores.filter(f=>f.name.toLowerCase().includes(search.toLowerCase())||(f.company||'').toLowerCase().includes(search.toLowerCase())||(f.product||'').toLowerCase().includes(search.toLowerCase())).map(f=>(
-                      <div key={f.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'13px 15px',borderRadius:'12px',background:'#fff',border:'1px solid rgba(224,140,66,0.15)',cursor:'pointer'}} onClick={()=>openEditForn(f)}>
-                        <div style={{width:'38px',height:'38px',borderRadius:'50%',background:'rgba(224,140,66,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'#e08c42',fontWeight:700,fontSize:'15px',flexShrink:0}}>{f.name.charAt(0).toUpperCase()}</div>
+                      <div key={f.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'13px 15px',borderRadius:'12px',background:'#fff',border:'1px solid #ffe8d0',cursor:'pointer'}} onClick={()=>openEditForn(f)}>
+                        <div style={{width:'38px',height:'38px',borderRadius:'50%',background:'#ffd9b0',display:'flex',alignItems:'center',justifyContent:'center',color:'#e08c42',fontWeight:700,fontSize:'15px',flexShrink:0}}>{f.name.charAt(0).toUpperCase()}</div>
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
                             <p style={{color:'#111',fontSize:'15px',fontWeight:500}}>{f.name}</p>
                             {f.company&&<span style={{fontSize:'15px',color:'#333'}}>{f.company}</span>}
-                            {f.category&&<span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:'rgba(224,140,66,0.15)',color:'#e08c42'}}>{f.category}</span>}
+                            {f.category&&<span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:'#ffe8d0',color:'#e08c42'}}>{f.category}</span>}
                           </div>
                           <div style={{display:'flex',gap:'8px',marginTop:'2px',flexWrap:'wrap'}}>
                             {f.product&&<span style={{color:'#444',fontSize:'15px'}}>📦 {f.product}</span>}
@@ -572,8 +572,8 @@ export default function CRMPage() {
                           </div>
                         </div>
                         <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
-                          {f.whatsapp&&<a href={`https://wa.me/55${f.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'7px',color:'#25d366',fontSize:'15px',textDecoration:'none',fontWeight:600}}>WA</a>}
-                          <button onClick={e=>{e.stopPropagation();removeForn(f.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+                          {f.whatsapp&&<a href={`https://wa.me/55${f.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'#e0fce9',border:'1px solid #c0f5d5',borderRadius:'7px',color:'#25d366',fontSize:'15px',textDecoration:'none',fontWeight:600}}>WA</a>}
+                          <button onClick={e=>{e.stopPropagation();removeForn(f.id)}} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
                         </div>
                       </div>
                     ))}
@@ -591,8 +591,8 @@ export default function CRMPage() {
             <h2 style={{color:'#111',fontSize:'18px',fontWeight:600,marginBottom:'16px'}}>{movType==='entrada'?'+ Entrada':'- Saída'}: {showMovForm.name}</h2>
             <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
               <div style={{display:'flex',gap:'8px'}}>
-                <button onClick={()=>setMovType('entrada')} style={{flex:1,padding:'8px',borderRadius:'8px',border:`1px solid ${movType==='entrada'?'#4caf7d':'rgba(255,255,255,0.1)'}`,background:movType==='entrada'?'rgba(76,175,125,0.15)':'transparent',color:movType==='entrada'?'#4caf7d':'#999',cursor:'pointer',fontWeight:600}}>+ Entrada</button>
-                <button onClick={()=>setMovType('saida')} style={{flex:1,padding:'8px',borderRadius:'8px',border:`1px solid ${movType==='saida'?'#a89ff7':'rgba(255,255,255,0.1)'}`,background:movType==='saida'?'rgba(91,80,214,0.15)':'transparent',color:movType==='saida'?'#a89ff7':'#999',cursor:'pointer',fontWeight:600}}>- Saída</button>
+                <button onClick={()=>setMovType('entrada')} style={{flex:1,padding:'8px',borderRadius:'8px',border:`1px solid ${movType==='entrada'?'#4caf7d':'rgba(255,255,255,0.1)'}`,background:movType==='entrada'?'#ddf5e8':'transparent',color:movType==='entrada'?'#4caf7d':'#999',cursor:'pointer',fontWeight:600}}>+ Entrada</button>
+                <button onClick={()=>setMovType('saida')} style={{flex:1,padding:'8px',borderRadius:'8px',border:`1px solid ${movType==='saida'?'#a89ff7':'rgba(255,255,255,0.1)'}`,background:movType==='saida'?'#e8e4ff':'transparent',color:movType==='saida'?'#a89ff7':'#999',cursor:'pointer',fontWeight:600}}>- Saída</button>
               </div>
               <Fld label="Quantidade"><input type="number" min="1" value={movQty} onChange={e=>setMovQty(e.target.value)} style={inp} /></Fld>
               <Fld label="Observação"><input placeholder="Opcional" value={movNotes} onChange={e=>setMovNotes(e.target.value)} style={inp} /></Fld>
@@ -627,10 +627,10 @@ export default function CRMPage() {
               <Fld label="Validade"><input type="date" value={estoqueForm.expiry_date} onChange={e=>setEstoqueForm(f=>({...f,expiry_date:e.target.value}))} style={{...inp,colorScheme:'light'}} /></Fld>
               <Fld label="Notas"><textarea value={estoqueForm.notes} onChange={e=>setEstoqueForm(f=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'60px'}} /></Fld>
             </div>
-            {error&&<p style={{color:'#e05252',fontSize:'15px',background:'rgba(224,82,82,0.1)',borderRadius:'8px',padding:'8px 12px',marginTop:'10px'}}>{error}</p>}
+            {error&&<p style={{color:'#e05252',fontSize:'15px',background:'#ffe0e0',borderRadius:'8px',padding:'8px 12px',marginTop:'10px'}}>{error}</p>}
             <div style={{display:'flex',gap:'8px',marginTop:'16px'}}>
               <button onClick={saveEstoque} disabled={!estoqueForm.name.trim()||saving} style={{flex:1,padding:'11px',background:'#4caf7d',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!estoqueForm.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-              {editing&&<button onClick={()=>{removeEstoque(editing.id);setShowForm('')}} style={{padding:'11px 14px',background:'rgba(224,82,82,0.1)',border:'1px solid rgba(224,82,82,0.2)',borderRadius:'10px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>Apagar</button>}
+              {editing&&<button onClick={()=>{removeEstoque(editing.id);setShowForm('')}} style={{padding:'11px 14px',background:'#ffe0e0',border:'1px solid #ffc8c8',borderRadius:'10px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>Apagar</button>}
               <button onClick={()=>setShowForm('')} style={{padding:'11px 16px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
@@ -659,7 +659,7 @@ export default function CRMPage() {
               <input placeholder="Instagram (@)" value={fornForm.instagram} onChange={e=>setFornForm(f=>({...f,instagram:e.target.value}))} style={inp} />
               <textarea placeholder="Observações, condições, preços..." value={fornForm.notes} onChange={e=>setFornForm(f=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'70px'}} />
             </div>
-            {error&&<p style={{color:'#e05252',fontSize:'15px',background:'rgba(224,82,82,0.1)',borderRadius:'8px',padding:'8px 12px',marginTop:'10px'}}>{error}</p>}
+            {error&&<p style={{color:'#e05252',fontSize:'15px',background:'#ffe0e0',borderRadius:'8px',padding:'8px 12px',marginTop:'10px'}}>{error}</p>}
             <div style={{display:'flex',gap:'8px',marginTop:'16px'}}>
               <button onClick={saveForn} disabled={!fornForm.name.trim()||saving} style={{flex:1,padding:'11px',background:'#e08c42',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!fornForm.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
               <button onClick={()=>setShowForm('')} style={{padding:'11px 16px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
@@ -702,7 +702,7 @@ export default function CRMPage() {
             </div>
             <Sec title="Origem" />
             <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'6px'}}>
-              {SOURCES.map(s=><button key={s} onClick={()=>setLeadForm(f=>({...f,source:s}))} style={{padding:'8px 4px',borderRadius:'8px',border:`1px solid ${leadForm.source===s?sourceColor[s]:'rgba(255,255,255,0.08)'}`,background:leadForm.source===s?`${sourceColor[s]}22`:'transparent',color:leadForm.source===s?sourceColor[s]:'#999',fontSize:'15px',cursor:'pointer',fontWeight:leadForm.source===s?600:400}}>{s}</button>)}
+              {SOURCES.map(s=><button key={s} onClick={()=>setLeadForm(f=>({...f,source:s}))} style={{padding:'8px 4px',borderRadius:'8px',border:`1px solid ${leadForm.source===s?sourceColor[s]:'#e8e8ee'}`,background:leadForm.source===s?`${sourceColor[s]}22`:'transparent',color:leadForm.source===s?sourceColor[s]:'#999',fontSize:'15px',cursor:'pointer',fontWeight:leadForm.source===s?600:400}}>{s}</button>)}
             </div>
             <Sec title="Produto e venda" />
             <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
@@ -715,7 +715,7 @@ export default function CRMPage() {
                 <Fld label="Valor total kit (R$)"><input type="number" value={leadForm.value} onChange={e=>setLeadForm(f=>({...f,value:e.target.value}))} style={inp} /></Fld>
                 <Fld label="Status"><select value={leadForm.status} onChange={e=>setLeadForm(f=>({...f,status:e.target.value}))} style={sel}>{STATUSES.map(s=><option key={s} value={s}>{s}</option>)}</select></Fld>
               </div>
-              {leadForm.status==='Ganho'&&<p style={{fontSize:'15px',color:'rgba(76,175,125,0.7)',background:'rgba(76,175,125,0.08)',borderRadius:'8px',padding:'8px 12px'}}>✓ Este lead será automaticamente adicionado como Cliente</p>}
+              {leadForm.status==='Ganho'&&<p style={{fontSize:'15px',color:'rgba(76,175,125,0.7)',background:'#f0faf5',borderRadius:'8px',padding:'8px 12px'}}>✓ Este lead será automaticamente adicionado como Cliente</p>}
             </div>
             <Sec title="Follow-up" />
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
@@ -724,7 +724,7 @@ export default function CRMPage() {
             </div>
             <Sec title="Notas" />
             <textarea placeholder="Observações gerais..." value={leadForm.notes} onChange={e=>setLeadForm(f=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'64px'}} />
-            {error&&<p style={{color:'#e05252',fontSize:'15px',background:'rgba(224,82,82,0.1)',borderRadius:'8px',padding:'8px 12px',marginTop:'10px'}}>{error}</p>}
+            {error&&<p style={{color:'#e05252',fontSize:'15px',background:'#ffe0e0',borderRadius:'8px',padding:'8px 12px',marginTop:'10px'}}>{error}</p>}
             <div style={{display:'flex',gap:'8px',marginTop:'16px'}}>
               <button onClick={saveLead} disabled={!leadForm.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!leadForm.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
               <button onClick={()=>setShowForm('')} style={{padding:'11px 16px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
@@ -767,7 +767,7 @@ export default function CRMPage() {
             </div>
             <Sec title="Origem" />
             <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'6px'}}>
-              {SOURCES.map(s=><button key={s} onClick={()=>setClientForm(f=>({...f,source:s}))} style={{padding:'8px 4px',borderRadius:'8px',border:`1px solid ${clientForm.source===s?sourceColor[s]:'rgba(255,255,255,0.08)'}`,background:clientForm.source===s?`${sourceColor[s]}22`:'transparent',color:clientForm.source===s?sourceColor[s]:'#999',fontSize:'15px',cursor:'pointer',fontWeight:clientForm.source===s?600:400}}>{s}</button>)}
+              {SOURCES.map(s=><button key={s} onClick={()=>setClientForm(f=>({...f,source:s}))} style={{padding:'8px 4px',borderRadius:'8px',border:`1px solid ${clientForm.source===s?sourceColor[s]:'#e8e8ee'}`,background:clientForm.source===s?`${sourceColor[s]}22`:'transparent',color:clientForm.source===s?sourceColor[s]:'#999',fontSize:'15px',cursor:'pointer',fontWeight:clientForm.source===s?600:400}}>{s}</button>)}
             </div>
             <Sec title="Compra" />
             <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
@@ -776,7 +776,7 @@ export default function CRMPage() {
                 <Fld label="Data compra"><input type="date" value={clientForm.purchase_date} onChange={e=>setClientForm(f=>({...f,purchase_date:e.target.value}))} style={{...inp,colorScheme:'light'}} /></Fld>
                 <Fld label="Qtd. potes"><input type="number" min="0" value={clientForm.pots_bought} onChange={e=>setClientForm(f=>({...f,pots_bought:e.target.value}))} style={inp} /></Fld>
               </div>
-              {clientForm.purchase_date&&parseInt(clientForm.pots_bought)>0&&<p style={{fontSize:'15px',color:'rgba(91,80,214,0.7)',background:'rgba(91,80,214,0.08)',borderRadius:'8px',padding:'8px 12px'}}>Potes terminam em: {new Date(new Date(clientForm.purchase_date).getTime()+parseInt(clientForm.pots_bought)*30*24*60*60*1000).toLocaleDateString('pt-BR')}</p>}
+              {clientForm.purchase_date&&parseInt(clientForm.pots_bought)>0&&<p style={{fontSize:'15px',color:'rgba(91,80,214,0.7)',background:'#f0edff',borderRadius:'8px',padding:'8px 12px'}}>Potes terminam em: {new Date(new Date(clientForm.purchase_date).getTime()+parseInt(clientForm.pots_bought)*30*24*60*60*1000).toLocaleDateString('pt-BR')}</p>}
               <Fld label="Valor (R$)"><input type="number" placeholder="0,00" value={clientForm.value} onChange={e=>setClientForm(f=>({...f,value:e.target.value}))} style={inp} /></Fld>
               <Fld label="Status"><select value={clientForm.status} onChange={e=>setClientForm(f=>({...f,status:e.target.value}))} style={sel}><option value="Ativo">Ativo</option><option value="Inativo">Inativo</option><option value="Recompra">Recompra</option></select></Fld>
             </div>
@@ -791,7 +791,7 @@ export default function CRMPage() {
             </div>
             <Sec title="Notas" />
             <textarea value={clientForm.notes} onChange={e=>setClientForm(f=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'64px'}} />
-            {error&&<p style={{color:'#e05252',fontSize:'15px',background:'rgba(224,82,82,0.1)',borderRadius:'8px',padding:'8px 12px',marginTop:'10px'}}>{error}</p>}
+            {error&&<p style={{color:'#e05252',fontSize:'15px',background:'#ffe0e0',borderRadius:'8px',padding:'8px 12px',marginTop:'10px'}}>{error}</p>}
             <div style={{display:'flex',gap:'8px',marginTop:'16px'}}>
               <button onClick={saveClient} disabled={!clientForm.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!clientForm.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
               <button onClick={()=>setShowForm('')} style={{padding:'11px 16px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>

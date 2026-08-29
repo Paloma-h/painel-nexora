@@ -193,15 +193,15 @@ export default function FinanceiroPage() {
                 </div>
 
                 <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'12px',marginBottom:'24px'}}>
-                  <div style={{background:'rgba(76,175,125,0.08)',border:'1px solid rgba(76,175,125,0.15)',borderRadius:'14px',padding:'20px'}}>
+                  <div style={{background:'#f0faf5',border:'1px solid #ddf5e8',borderRadius:'14px',padding:'20px'}}>
                     <p style={{color:'rgba(76,175,125,0.6)',fontSize:'15px',marginBottom:'6px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Receitas</p>
                     <p style={{color:'#4caf7d',fontSize:'26px',fontWeight:700}}>R$ {receitas.toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
                   </div>
-                  <div style={{background:'rgba(224,82,82,0.08)',border:'1px solid rgba(224,82,82,0.15)',borderRadius:'14px',padding:'20px'}}>
+                  <div style={{background:'#fff0f0',border:'1px solid #ffe0e0',borderRadius:'14px',padding:'20px'}}>
                     <p style={{color:'rgba(224,82,82,0.6)',fontSize:'15px',marginBottom:'6px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Despesas</p>
                     <p style={{color:'#e05252',fontSize:'26px',fontWeight:700}}>R$ {despesas.toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
                   </div>
-                  <div style={{background:saldo>=0?'rgba(91,80,214,0.08)':'rgba(224,82,82,0.08)',border:`1px solid ${saldo>=0?'rgba(91,80,214,0.15)':'rgba(224,82,82,0.15)'}`,borderRadius:'14px',padding:'20px'}}>
+                  <div style={{background:saldo>=0?'#f0edff':'#fff0f0',border:`1px solid ${saldo>=0?'#e8e4ff':'#ffe0e0'}`,borderRadius:'14px',padding:'20px'}}>
                     <p style={{color:'#333',fontSize:'15px',marginBottom:'6px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Saldo</p>
                     <p style={{color:saldo>=0?'#a89ff7':'#e05252',fontSize:'26px',fontWeight:700}}>R$ {saldo.toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
                   </div>
@@ -219,7 +219,7 @@ export default function FinanceiroPage() {
                 </div>
 
                 {(billsDuesSoon.length > 0 || cardsDueSoon.length > 0) && (
-                  <div style={{background:'rgba(224,82,82,0.05)',border:'1px solid rgba(224,82,82,0.15)',borderRadius:'14px',padding:'20px',marginBottom:'20px'}}>
+                  <div style={{background:'#fff0f0',border:'1px solid #ffe0e0',borderRadius:'14px',padding:'20px',marginBottom:'20px'}}>
                     <p style={{color:'#e05252',fontSize:'15px',fontWeight:600,marginBottom:'12px',textTransform:'uppercase',letterSpacing:'0.5px'}}>⚠ Próximos 7 dias</p>
                     <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
                       {cardsDueSoon.map(c => (
@@ -237,7 +237,7 @@ export default function FinanceiroPage() {
                             <p style={{color:'#111',fontSize:'15px',fontWeight:500}}>{b.title}</p>
                             <p style={{color:'#444',fontSize:'15px'}}>Vence dia {b.due_day} · R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
                           </div>
-                          <button onClick={() => payBill(b.id)} style={{padding:'5px 10px',background:'rgba(76,175,125,0.15)',border:'1px solid rgba(76,175,125,0.2)',borderRadius:'7px',color:'#4caf7d',fontSize:'15px',cursor:'pointer'}}>Pagar</button>
+                          <button onClick={() => payBill(b.id)} style={{padding:'5px 10px',background:'#ddf5e8',border:'1px solid #c0ebd3',borderRadius:'7px',color:'#4caf7d',fontSize:'15px',cursor:'pointer'}}>Pagar</button>
                         </div>
                       ))}
                     </div>
@@ -264,15 +264,15 @@ export default function FinanceiroPage() {
                   </div>
                 </div>
                 <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'20px'}}>
-                  <div style={{background:'rgba(76,175,125,0.08)',border:'1px solid rgba(76,175,125,0.12)',borderRadius:'12px',padding:'14px'}}>
+                  <div style={{background:'#f0faf5',border:'1px solid #ddf5e8',borderRadius:'12px',padding:'14px'}}>
                     <p style={{color:'rgba(76,175,125,0.6)',fontSize:'12px',marginBottom:'4px'}}>Receitas</p>
                     <p style={{color:'#4caf7d',fontSize:'22px',fontWeight:700}}>R$ {receitas.toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
                   </div>
-                  <div style={{background:'rgba(224,82,82,0.08)',border:'1px solid rgba(224,82,82,0.12)',borderRadius:'12px',padding:'14px'}}>
+                  <div style={{background:'#fff0f0',border:'1px solid #ffe0e0',borderRadius:'12px',padding:'14px'}}>
                     <p style={{color:'rgba(224,82,82,0.6)',fontSize:'12px',marginBottom:'4px'}}>Despesas</p>
                     <p style={{color:'#e05252',fontSize:'22px',fontWeight:700}}>R$ {despesas.toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
                   </div>
-                  <div style={{background:saldo>=0?'rgba(91,80,214,0.08)':'rgba(224,82,82,0.08)',border:`1px solid ${saldo>=0?'rgba(91,80,214,0.12)':'rgba(224,82,82,0.12)'}`,borderRadius:'12px',padding:'14px'}}>
+                  <div style={{background:saldo>=0?'#f0edff':'#fff0f0',border:`1px solid ${saldo>=0?'#e8e4ff':'#ffe0e0'}`,borderRadius:'12px',padding:'14px'}}>
                     <p style={{color:'#333',fontSize:'12px',marginBottom:'4px'}}>Saldo</p>
                     <p style={{color:saldo>=0?'#a89ff7':'#e05252',fontSize:'22px',fontWeight:700}}>R$ {saldo.toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
                   </div>
@@ -291,7 +291,7 @@ export default function FinanceiroPage() {
                       </div>
                       <p style={{color:t.type==='receita'?'#4caf7d':'#e05252',fontSize:'15px',fontWeight:700}}>{t.type==='receita'?'+':'-'} R$ {Number(t.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
                       <button onClick={()=>{setEditing(t);setTForm({title:t.title,amount:t.amount.toString(),type:t.type,category:t.category,date:t.date||'',notes:t.notes||''});setShowForm('t')}} style={{padding:'5px 8px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'15px',cursor:'pointer'}}>✎</button>
-                      <button onClick={()=>del('transactions',t.id)} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+                      <button onClick={()=>del('transactions',t.id)} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
                     </div>
                   ))}
                 </div>
@@ -312,7 +312,7 @@ export default function FinanceiroPage() {
                         <div style={{width:'36px',height:'22px',borderRadius:'5px',background:c.color}}/>
                         <div style={{display:'flex',gap:'4px'}}>
                           <button onClick={()=>{setEditing(c);setCForm({name:c.name,limit_total:c.limit_total?.toString()||'',closing_day:c.closing_day?.toString()||'',due_day:c.due_day?.toString()||'',color:c.color||'#5b50d6',notes:c.notes||''});setShowForm('c')}} style={{padding:'4px 7px',background:'#fff',border:'none',borderRadius:'6px',color:'#333',fontSize:'15px',cursor:'pointer'}}>✎</button>
-                          <button onClick={()=>del('cards',c.id)} style={{padding:'4px 7px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'6px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+                          <button onClick={()=>del('cards',c.id)} style={{padding:'4px 7px',background:'#fff0f0',border:'none',borderRadius:'6px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
                         </div>
                       </div>
                       <p style={{color:'#111',fontSize:'15px',fontWeight:600,marginBottom:'12px'}}>{c.name}</p>
@@ -348,7 +348,7 @@ export default function FinanceiroPage() {
                   {bills.map(b=>{
                     const isPaid = b.status==='pago'
                     return (
-                      <div key={b.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'12px 14px',borderRadius:'12px',background:isPaid?'rgba(255,255,255,0.02)':'rgba(255,255,255,0.04)',border:`1px solid ${isPaid?'rgba(255,255,255,0.05)':'rgba(255,255,255,0.08)'}`}}>
+                      <div key={b.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'12px 14px',borderRadius:'12px',background:isPaid?'rgba(255,255,255,0.02)':'rgba(255,255,255,0.04)',border:`1px solid ${isPaid?'rgba(255,255,255,0.05)':'#e8e8ee'}`}}>
                         <div style={{flex:1,minWidth:0}}>
                           <p style={{color:isPaid?'#999':'#fff',fontSize:'15px',fontWeight:500,textDecoration:isPaid?'line-through':'none'}}>{b.title}</p>
                           <div style={{display:'flex',gap:'8px',marginTop:'2px'}}>
@@ -358,10 +358,10 @@ export default function FinanceiroPage() {
                           </div>
                         </div>
                         <p style={{color:isPaid?'#999':'#e05252',fontSize:'15px',fontWeight:600}}>R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
-                        {!isPaid&&<button onClick={()=>payBill(b.id)} style={{padding:'5px 10px',background:'rgba(76,175,125,0.12)',border:'1px solid rgba(76,175,125,0.2)',borderRadius:'7px',color:'#4caf7d',fontSize:'15px',cursor:'pointer'}}>Pagar</button>}
+                        {!isPaid&&<button onClick={()=>payBill(b.id)} style={{padding:'5px 10px',background:'#ddf5e8',border:'1px solid #c0ebd3',borderRadius:'7px',color:'#4caf7d',fontSize:'15px',cursor:'pointer'}}>Pagar</button>}
                         {isPaid&&<span style={{fontSize:'15px',color:'#4caf7d',padding:'5px 10px'}}>✓ Pago</span>}
                         <button onClick={()=>{setEditing(b);setBForm({title:b.title,amount:b.amount?.toString()||'',category:b.category,due_day:b.due_day?.toString()||'',due_date:b.due_date||'',is_recurring:b.is_recurring||false,recurrence:b.recurrence||'monthly',notes:b.notes||''});setShowForm('b')}} style={{padding:'5px 8px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'15px',cursor:'pointer'}}>✎</button>
-                        <button onClick={()=>del('bills',b.id)} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+                        <button onClick={()=>del('bills',b.id)} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
                       </div>
                     )
                   })}
@@ -394,7 +394,7 @@ export default function FinanceiroPage() {
                           {rendimento !== 0 && <p style={{color:rendimento>=0?'#4caf7d':'#e05252',fontSize:'15px'}}>{rendimento>=0?'+':''}R$ {rendimento.toLocaleString('pt-BR',{minimumFractionDigits:2})} ({perc}%)</p>}
                         </div>
                         <button onClick={()=>{setEditing(i);setIForm({name:i.name,type:i.type,amount_invested:i.amount_invested?.toString()||'',current_value:i.current_value?.toString()||'',notes:i.notes||''});setShowForm('i')}} style={{padding:'5px 8px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'15px',cursor:'pointer'}}>✎</button>
-                        <button onClick={()=>del('investments',i.id)} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+                        <button onClick={()=>del('investments',i.id)} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
                       </div>
                     )
                   })}
@@ -419,7 +419,7 @@ export default function FinanceiroPage() {
                         <span style={{fontSize:'12px',padding:'2px 8px',borderRadius:'5px',background:'rgba(212,184,74,0.1)',color:'#d4b84a'}}>{a.type}</span>
                         <div style={{display:'flex',gap:'4px'}}>
                           <button onClick={()=>{setEditing(a);setAForm({name:a.name,type:a.type,estimated_value:a.estimated_value?.toString()||'',notes:a.notes||''});setShowForm('a')}} style={{padding:'4px 7px',background:'#fff',border:'none',borderRadius:'6px',color:'#333',fontSize:'15px',cursor:'pointer'}}>✎</button>
-                          <button onClick={()=>del('assets',a.id)} style={{padding:'4px 7px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'6px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+                          <button onClick={()=>del('assets',a.id)} style={{padding:'4px 7px',background:'#fff0f0',border:'none',borderRadius:'6px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
                         </div>
                       </div>
                       <p style={{color:'#111',fontSize:'15px',fontWeight:600,marginBottom:'6px'}}>{a.name}</p>
@@ -469,7 +469,7 @@ export default function FinanceiroPage() {
             <div><label style={{fontSize:'15px',color:'#444',display:'block',marginBottom:'4px'}}>Cor</label>
               <input type="color" value={cForm.color} onChange={e=>setCForm(f=>({...f,color:e.target.value}))} style={{width:'100%',height:'40px',borderRadius:'10px',border:'1px solid #d0d0d8',background:'#fff',cursor:'pointer'}} /></div>
             <textarea placeholder="Notas" value={cForm.notes} onChange={e=>setCForm(f=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'64px'}} />
-            {!editing&&cForm.due_day&&<p style={{fontSize:'15px',color:'rgba(91,80,214,0.6)',background:'rgba(91,80,214,0.08)',borderRadius:'8px',padding:'8px 12px'}}>O vencimento aparecerá automaticamente na agenda todo mês</p>}
+            {!editing&&cForm.due_day&&<p style={{fontSize:'15px',color:'rgba(91,80,214,0.6)',background:'#f0edff',borderRadius:'8px',padding:'8px 12px'}}>O vencimento aparecerá automaticamente na agenda todo mês</p>}
             <div style={{display:'flex',gap:'8px',marginTop:'4px'}}>
               <button onClick={saveCard} disabled={!cForm.name.trim()||saving} style={{flex:1,padding:'10px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!cForm.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
               <button onClick={()=>setShowForm('')} style={{padding:'10px 14px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
@@ -495,7 +495,7 @@ export default function FinanceiroPage() {
               <input type="checkbox" id="brec" checked={bForm.is_recurring} onChange={e=>setBForm(f=>({...f,is_recurring:e.target.checked}))} style={{cursor:'pointer'}} />
               <label htmlFor="brec" style={{fontSize:'15px',color:'#444',cursor:'pointer'}}>Recorrente mensal</label>
             </div>
-            {!editing&&<p style={{fontSize:'15px',color:'rgba(91,80,214,0.6)',background:'rgba(91,80,214,0.08)',borderRadius:'8px',padding:'8px 12px'}}>Aparecerá automaticamente na agenda</p>}
+            {!editing&&<p style={{fontSize:'15px',color:'rgba(91,80,214,0.6)',background:'#f0edff',borderRadius:'8px',padding:'8px 12px'}}>Aparecerá automaticamente na agenda</p>}
             <div style={{display:'flex',gap:'8px',marginTop:'4px'}}>
               <button onClick={saveBill} disabled={!bForm.title.trim()||saving} style={{flex:1,padding:'10px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!bForm.title.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
               <button onClick={()=>setShowForm('')} style={{padding:'10px 14px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'10px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>

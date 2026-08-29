@@ -175,7 +175,7 @@ export default function PendenciasPage() {
                         <div style={{display:'flex',gap:'8px'}}>
                           <button onClick={() => saveEdit(t.id)} style={{flex:1,padding:'9px',background:'#5b50d6',border:'none',borderRadius:'8px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>Salvar</button>
                           <button onClick={() => setEditingId(null)} style={{padding:'9px 14px',background:'transparent',border:'1px solid #d0d0d8',borderRadius:'8px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
-                          <button onClick={() => { remove(t.id); setEditingId(null) }} style={{padding:'9px 14px',background:'rgba(224,82,82,0.1)',border:'1px solid rgba(224,82,82,0.2)',borderRadius:'8px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>Apagar</button>
+                          <button onClick={() => { remove(t.id); setEditingId(null) }} style={{padding:'9px 14px',background:'#ffe0e0',border:'1px solid #ffc8c8',borderRadius:'8px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>Apagar</button>
                         </div>
                       </div>
                     ) : (
@@ -223,7 +223,7 @@ export default function PendenciasPage() {
                     <div key={t.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'12px 16px',borderRadius:'12px',background:'#fff',opacity:0.5}}>
                       <div onClick={() => reopen(t.id)} style={{width:'26px',height:'26px',borderRadius:'8px',background:'#5b50d6',flexShrink:0,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'15px',color:'#111'}}>✓</div>
                       <p style={{flex:1,color:'#444',fontSize:'15px',textDecoration:'line-through'}}>{t.title}</p>
-                      <button onClick={() => remove(t.id)} style={{padding:'4px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'6px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
+                      <button onClick={() => remove(t.id)} style={{padding:'4px 8px',background:'#fff0f0',border:'none',borderRadius:'6px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
                     </div>
                   ))}
                 </div>
