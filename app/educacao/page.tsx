@@ -23,6 +23,7 @@ const STATUS_LIST = ['Em andamento','Pausado','Concluído','Não iniciado']
 
 const EMPTY = {
   name:'', platform:'Udemy', category:'Marketing', url:'',
+  links:[] as {label:string,url:string}[],
   instructor:'', total_modules:'', total_lessons:'',
   current_module:'', current_lesson:'', current_module_name:'',
   last_watched:'', progress_pct:'', status:'Em andamento', notes:''
@@ -61,7 +62,8 @@ export default function EducacaoPage() {
     setEditing(item)
     setForm({
       name:item.name, platform:item.platform||'Udemy', category:item.category||'Marketing',
-      url:item.url||'', instructor:item.instructor||'',
+      url:item.url||'', links:item.links||[],
+      instructor:item.instructor||'',
       total_modules:item.total_modules?.toString()||'',
       total_lessons:item.total_lessons?.toString()||'',
       current_module:item.current_module?.toString()||'',
@@ -80,7 +82,8 @@ export default function EducacaoPage() {
     const now = new Date().toISOString()
     const data: any = {
       name:form.name.trim(), platform:form.platform, category:form.category,
-      url:form.url||null, instructor:form.instructor||null,
+      url:form.url||null, links:form.links&&form.links.length>0?form.links:null,
+      instructor:form.instructor||null,
       total_modules:form.total_modules?parseInt(form.total_modules):null,
       total_lessons:form.total_lessons?parseInt(form.total_lessons):null,
       current_module:form.current_module?parseInt(form.current_module):null,
@@ -232,6 +235,16 @@ export default function EducacaoPage() {
                             <p style={{color:pct!==null?(pct>=100?'#4caf7d':'#d4b84a'):'#999',fontSize:'18px',fontWeight:700}}>{pct!==null?`${pct}%`:'—'}</p>
                           </div>
                         </div>
+                        {item.links && item.links.length > 0 && (
+                          <div style={{background:'#fff',borderRadius:'10px',padding:'12px',marginBottom:'8px'}}>
+                            <p style={{color:'#5b21b6',fontSize:'12px',marginBottom:'6px',textTransform:'uppercase',letterSpacing:'0.5px',fontWeight:700}}>🔗 Links</p>
+                            <div style={{display:'flex',flexWrap:'wrap',gap:'6px'}}>
+                              {item.links.map((link:any,i:number)=>(
+                                <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" style={{padding:'5px 12px',background:'#fff',border:'2px solid #7c3aed',borderRadius:'8px',color:'#5b21b6',fontSize:'13px',textDecoration:'none',fontWeight:600}}>{link.label||link.url}</a>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                         {item.notes && (
                           <div style={{background:'#fff',borderRadius:'10px',padding:'12px'}}>
                             <p style={{color:'#555',fontSize:'12px',marginBottom:'4px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Onde parei / Notas</p>
@@ -271,6 +284,22 @@ export default function EducacaoPage() {
               </div>
 
               <Fld label="Link do curso"><input placeholder="https://..." value={form.url} onChange={e=>setForm((f:any)=>({...f,url:e.target.value}))} style={inp}/></Fld>
+
+              {/* Links extras */}
+              <div style={{border:'2px solid #a78bfa',borderRadius:'12px',padding:'12px',background:'#faf8ff'}}>
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'8px'}}>
+                  <p style={{color:'#5b21b6',fontSize:'13px',fontWeight:700,textTransform:'uppercase',letterSpacing:'0.5px'}}>🔗 Links adicionais</p>
+                  <button type="button" onClick={()=>setForm((f:any)=>({...f,links:[...(f.links||[]),{label:'',url:''}]}))} style={{padding:'4px 12px',background:'#7c3aed',border:'none',borderRadius:'8px',color:'#fff',fontSize:'13px',fontWeight:600,cursor:'pointer'}}>+ Adicionar link</button>
+                </div>
+                {(form.links||[]).length===0 && <p style={{color:'#888',fontSize:'13px',fontStyle:'italic'}}>Nenhum link adicional. Clique em "+ Adicionar link" para incluir.</p>}
+                {(form.links||[]).map((link:any,i:number)=>(
+                  <div key={i} style={{display:'flex',gap:'8px',marginBottom:'6px',alignItems:'center'}}>
+                    <input placeholder="Nome (ex: Material, Aula 5)" value={link.label} onChange={e=>{const links=[...(form.links||[])];links[i]={...links[i],label:e.target.value};setForm((f:any)=>({...f,links}))}} style={{...inp,width:'35%'}}/>
+                    <input placeholder="https://..." value={link.url} onChange={e=>{const links=[...(form.links||[])];links[i]={...links[i],url:e.target.value};setForm((f:any)=>({...f,links}))}} style={{...inp,flex:1}}/>
+                    <button type="button" onClick={()=>{const links=[...(form.links||[])];links.splice(i,1);setForm((f:any)=>({...f,links}))}} style={{padding:'6px 10px',background:'#fff',border:'2px solid #ef4444',borderRadius:'8px',color:'#dc2626',fontSize:'13px',cursor:'pointer',fontWeight:700,flexShrink:0}}>✕</button>
+                  </div>
+                ))}
+              </div>
 
               <div style={{borderTop:'2px solid #bbb',paddingTop:'12px'}}>
                 <p style={{color:'#444',fontSize:'12px',textTransform:'uppercase',letterSpacing:'1px',marginBottom:'10px'}}>Onde parei</p>
