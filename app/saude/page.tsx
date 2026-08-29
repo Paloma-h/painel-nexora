@@ -10,11 +10,11 @@ const USER_ID = 'paloma'
 
 
 
-const inp: any = {width:'100%',background:'#fff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'9px 12px',color:'#1a1a2e',fontSize:'13px',outline:'none',boxSizing:'border-box'}
-const sel: any = {width:'100%',background:'#ffffff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'9px 12px',color:'#1a1a2e',fontSize:'13px',outline:'none'}
+const inp: any = {width:'100%',background:'#fff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'9px 12px',color:'#1a1a2e',fontSize:'15px',outline:'none',boxSizing:'border-box'}
+const sel: any = {width:'100%',background:'#ffffff',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'9px 12px',color:'#1a1a2e',fontSize:'15px',outline:'none'}
 
 function Fld({label,children}:{label:string,children:any}) {
-  return <div><label style={{fontSize:'11px',color:'#999',display:'block',marginBottom:'4px'}}>{label}</label>{children}</div>
+  return <div><label style={{fontSize:'15px',color:'#999',display:'block',marginBottom:'4px'}}>{label}</label>{children}</div>
 }
 
 // ── ATIVIDADES ──────────────────────────────────────────────────────
@@ -62,10 +62,10 @@ function AtividadesTab() {
     <div>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
         <div>
-          <h1 style={{color:'#1a1a2e',fontSize:'20px',fontWeight:700}}>Atividades Físicas</h1>
-          <p style={{color:'#999',fontSize:'12px',marginTop:'2px'}}>{list.filter(a=>a.active).length} ativas · {list.length} total</p>
+          <h1 style={{color:'#1a1a2e',fontSize:'22px',fontWeight:700}}>Atividades Físicas</h1>
+          <p style={{color:'#999',fontSize:'15px',marginTop:'2px'}}>{list.filter(a=>a.active).length} ativas · {list.length} total</p>
         </div>
-        <button onClick={openNew} style={{padding:'8px 16px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'13px',fontWeight:600,cursor:'pointer'}}>+ Adicionar</button>
+        <button onClick={openNew} style={{padding:'8px 16px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>+ Adicionar</button>
       </div>
 
       <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
@@ -77,18 +77,18 @@ function AtividadesTab() {
             </div>
             <div style={{flex:1,minWidth:0}}>
               <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
-                <p style={{color:'#1a1a2e',fontSize:'13px',fontWeight:500}}>{item.name}</p>
-                <span style={{fontSize:'10px',padding:'1px 7px',borderRadius:'5px',background:`${typeColor[item.type]||'#888'}22`,color:typeColor[item.type]||'#888'}}>{item.type}</span>
+                <p style={{color:'#1a1a2e',fontSize:'15px',fontWeight:500}}>{item.name}</p>
+                <span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:`${typeColor[item.type]||'#888'}22`,color:typeColor[item.type]||'#888'}}>{item.type}</span>
               </div>
-              <p style={{color:'#999',fontSize:'11px',marginTop:'2px'}}>
+              <p style={{color:'#999',fontSize:'15px',marginTop:'2px'}}>
                 {item.frequency}{item.duration_min?` · ${item.duration_min} min`:''}{item.time?` · ${item.time}`:''}
               </p>
-              {item.notes && <p style={{color:'#bbb',fontSize:'11px',marginTop:'2px'}}>{item.notes}</p>}
+              {item.notes && <p style={{color:'#bbb',fontSize:'15px',marginTop:'2px'}}>{item.notes}</p>}
             </div>
             <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
-              <button onClick={()=>toggleActive(item)} style={{padding:'5px 10px',background:item.active?'rgba(76,175,125,0.12)':'rgba(255,255,255,0.05)',border:'none',borderRadius:'7px',color:item.active?'#4caf7d':'#999',fontSize:'11px',cursor:'pointer'}}>{item.active?'Ativa':'Inativa'}</button>
-              <button onClick={()=>openEdit(item)} style={{padding:'5px 10px',background:'#fff',border:'none',borderRadius:'7px',color:'#888',fontSize:'11px',cursor:'pointer'}}>Editar</button>
-              <button onClick={()=>remove(item.id)} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'11px',cursor:'pointer'}}>✕</button>
+              <button onClick={()=>toggleActive(item)} style={{padding:'5px 10px',background:item.active?'rgba(76,175,125,0.12)':'rgba(255,255,255,0.05)',border:'none',borderRadius:'7px',color:item.active?'#4caf7d':'#999',fontSize:'15px',cursor:'pointer'}}>{item.active?'Ativa':'Inativa'}</button>
+              <button onClick={()=>openEdit(item)} style={{padding:'5px 10px',background:'#fff',border:'none',borderRadius:'7px',color:'#888',fontSize:'15px',cursor:'pointer'}}>Editar</button>
+              <button onClick={()=>remove(item.id)} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
             </div>
           </div>
         ))}
@@ -98,7 +98,7 @@ function AtividadesTab() {
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',backdropFilter:'blur(4px)',zIndex:50,display:'flex',justifyContent:'center',alignItems:'flex-start',padding:'40px 20px',overflowY:'auto'}}>
           <div style={{width:'100%',maxWidth:'480px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #e5e5ea'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
-              <h2 style={{color:'#1a1a2e',fontSize:'16px',fontWeight:600}}>{editing?'Editar Atividade':'Nova Atividade'}</h2>
+              <h2 style={{color:'#1a1a2e',fontSize:'18px',fontWeight:600}}>{editing?'Editar Atividade':'Nova Atividade'}</h2>
               <button onClick={()=>setShowForm(false)} style={{background:'none',border:'none',color:'#999',cursor:'pointer',fontSize:'18px'}}>✕</button>
             </div>
             <div style={{display:'flex',flexDirection:'column',gap:'12px'}}>
@@ -114,12 +114,12 @@ function AtividadesTab() {
               <Fld label="Observações"><textarea placeholder="Detalhes, exercícios, séries..." value={form.notes} onChange={e=>setForm((f:any)=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'72px'}}/></Fld>
               <label style={{display:'flex',alignItems:'center',gap:'8px',cursor:'pointer'}}>
                 <input type="checkbox" checked={form.active} onChange={e=>setForm((f:any)=>({...f,active:e.target.checked}))} />
-                <span style={{color:'#666',fontSize:'13px'}}>Atividade ativa</span>
+                <span style={{color:'#666',fontSize:'15px'}}>Atividade ativa</span>
               </label>
             </div>
             <div style={{display:'flex',gap:'8px',marginTop:'20px'}}>
-              <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'13px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#888',fontSize:'13px',cursor:'pointer'}}>Cancelar</button>
+              <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
+              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#888',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>
@@ -162,10 +162,10 @@ function MedidasTab() {
     <div>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
         <div>
-          <h1 style={{color:'#1a1a2e',fontSize:'20px',fontWeight:700}}>Medidas e Peso</h1>
-          <p style={{color:'#999',fontSize:'12px',marginTop:'2px'}}>{list.length} registro{list.length!==1?'s':''}</p>
+          <h1 style={{color:'#1a1a2e',fontSize:'22px',fontWeight:700}}>Medidas e Peso</h1>
+          <p style={{color:'#999',fontSize:'15px',marginTop:'2px'}}>{list.length} registro{list.length!==1?'s':''}</p>
         </div>
-        <button onClick={()=>{setForm({...EMPTY_MED,date:new Date().toISOString().split('T')[0]});setShowForm(true)}} style={{padding:'8px 16px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'13px',fontWeight:600,cursor:'pointer'}}>+ Registrar</button>
+        <button onClick={()=>{setForm({...EMPTY_MED,date:new Date().toISOString().split('T')[0]});setShowForm(true)}} style={{padding:'8px 16px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>+ Registrar</button>
       </div>
 
       {/* Último registro em destaque */}
@@ -178,9 +178,9 @@ function MedidasTab() {
             {label:'Peito',value:latest.chest,unit:'cm',color:'#4267B2'},
           ].map(m => m.value && (
             <div key={m.label} style={{background:'#fff',border:'1px solid #e5e5ea',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
-              <p style={{color:'#999',fontSize:'10px',marginBottom:'4px'}}>{m.label}</p>
+              <p style={{color:'#999',fontSize:'12px',marginBottom:'4px'}}>{m.label}</p>
               <p style={{color:m.color,fontSize:'22px',fontWeight:700}}>{m.value}</p>
-              <p style={{color:'#bbb',fontSize:'10px'}}>{m.unit}</p>
+              <p style={{color:'#bbb',fontSize:'12px'}}>{m.unit}</p>
             </div>
           ))}
         </div>
@@ -191,18 +191,18 @@ function MedidasTab() {
         {list.map(item => (
           <div key={item.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'12px 16px',borderRadius:'12px',background:'#fff',border:'1px solid #e5e5ea'}}>
             <div style={{flex:1}}>
-              <p style={{color:'#666',fontSize:'11px',marginBottom:'6px'}}>{new Date(item.date+'T12:00:00').toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short',year:'numeric'})}</p>
+              <p style={{color:'#666',fontSize:'15px',marginBottom:'6px'}}>{new Date(item.date+'T12:00:00').toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short',year:'numeric'})}</p>
               <div style={{display:'flex',gap:'12px',flexWrap:'wrap'}}>
-                {item.weight && <span style={{color:'#a89ff7',fontSize:'12px',fontWeight:600}}>{item.weight} kg</span>}
-                {item.waist && <span style={{color:'#888',fontSize:'12px'}}>Cintura: {item.waist} cm</span>}
-                {item.hip && <span style={{color:'#888',fontSize:'12px'}}>Quadril: {item.hip} cm</span>}
-                {item.chest && <span style={{color:'#888',fontSize:'12px'}}>Peito: {item.chest} cm</span>}
-                {item.arm && <span style={{color:'#888',fontSize:'12px'}}>Braço: {item.arm} cm</span>}
-                {item.thigh && <span style={{color:'#888',fontSize:'12px'}}>Coxa: {item.thigh} cm</span>}
+                {item.weight && <span style={{color:'#a89ff7',fontSize:'15px',fontWeight:600}}>{item.weight} kg</span>}
+                {item.waist && <span style={{color:'#888',fontSize:'15px'}}>Cintura: {item.waist} cm</span>}
+                {item.hip && <span style={{color:'#888',fontSize:'15px'}}>Quadril: {item.hip} cm</span>}
+                {item.chest && <span style={{color:'#888',fontSize:'15px'}}>Peito: {item.chest} cm</span>}
+                {item.arm && <span style={{color:'#888',fontSize:'15px'}}>Braço: {item.arm} cm</span>}
+                {item.thigh && <span style={{color:'#888',fontSize:'15px'}}>Coxa: {item.thigh} cm</span>}
               </div>
-              {item.notes && <p style={{color:'#bbb',fontSize:'11px',marginTop:'4px'}}>{item.notes}</p>}
+              {item.notes && <p style={{color:'#bbb',fontSize:'15px',marginTop:'4px'}}>{item.notes}</p>}
             </div>
-            <button onClick={()=>remove(item.id)} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'11px',cursor:'pointer'}}>✕</button>
+            <button onClick={()=>remove(item.id)} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
           </div>
         ))}
       </div>
@@ -211,7 +211,7 @@ function MedidasTab() {
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',backdropFilter:'blur(4px)',zIndex:50,display:'flex',justifyContent:'center',alignItems:'flex-start',padding:'40px 20px',overflowY:'auto'}}>
           <div style={{width:'100%',maxWidth:'480px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #e5e5ea'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
-              <h2 style={{color:'#1a1a2e',fontSize:'16px',fontWeight:600}}>Novo Registro</h2>
+              <h2 style={{color:'#1a1a2e',fontSize:'18px',fontWeight:600}}>Novo Registro</h2>
               <button onClick={()=>setShowForm(false)} style={{background:'none',border:'none',color:'#999',cursor:'pointer',fontSize:'18px'}}>✕</button>
             </div>
             <div style={{display:'flex',flexDirection:'column',gap:'12px'}}>
@@ -227,8 +227,8 @@ function MedidasTab() {
               <Fld label="Observações"><textarea placeholder="Como se sentiu, contexto..." value={form.notes} onChange={e=>setForm((f:any)=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'60px'}}/></Fld>
             </div>
             <div style={{display:'flex',gap:'8px',marginTop:'20px'}}>
-              <button onClick={save} disabled={!form.date||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'13px',fontWeight:600,cursor:'pointer',opacity:!form.date||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#888',fontSize:'13px',cursor:'pointer'}}>Cancelar</button>
+              <button onClick={save} disabled={!form.date||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!form.date||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
+              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#888',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>
@@ -276,10 +276,10 @@ function DietasTab() {
     <div>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
         <div>
-          <h1 style={{color:'#1a1a2e',fontSize:'20px',fontWeight:700}}>Dietas</h1>
-          <p style={{color:'#999',fontSize:'12px',marginTop:'2px'}}>{list.filter(d=>d.status==='Ativa').length} ativa{list.filter(d=>d.status==='Ativa').length!==1?'s':''}</p>
+          <h1 style={{color:'#1a1a2e',fontSize:'22px',fontWeight:700}}>Dietas</h1>
+          <p style={{color:'#999',fontSize:'15px',marginTop:'2px'}}>{list.filter(d=>d.status==='Ativa').length} ativa{list.filter(d=>d.status==='Ativa').length!==1?'s':''}</p>
         </div>
-        <button onClick={openNew} style={{padding:'8px 16px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'13px',fontWeight:600,cursor:'pointer'}}>+ Nova Dieta</button>
+        <button onClick={openNew} style={{padding:'8px 16px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>+ Nova Dieta</button>
       </div>
 
       <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
@@ -289,19 +289,19 @@ function DietasTab() {
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
               <div style={{flex:1}}>
                 <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'4px'}}>
-                  <p style={{color:'#1a1a2e',fontSize:'13px',fontWeight:600}}>🥗 {item.name}</p>
-                  <span style={{fontSize:'10px',padding:'2px 8px',borderRadius:'5px',background:`${statusColor[item.status]||'#888'}22`,color:statusColor[item.status]||'#888'}}>{item.status}</span>
+                  <p style={{color:'#1a1a2e',fontSize:'15px',fontWeight:600}}>🥗 {item.name}</p>
+                  <span style={{fontSize:'12px',padding:'2px 8px',borderRadius:'5px',background:`${statusColor[item.status]||'#888'}22`,color:statusColor[item.status]||'#888'}}>{item.status}</span>
                 </div>
-                {item.goal && <p style={{color:'#888',fontSize:'11px',marginBottom:'4px'}}>Objetivo: {item.goal}</p>}
-                {item.description && <p style={{color:'#999',fontSize:'11px'}}>{item.description}</p>}
+                {item.goal && <p style={{color:'#888',fontSize:'15px',marginBottom:'4px'}}>Objetivo: {item.goal}</p>}
+                {item.description && <p style={{color:'#999',fontSize:'15px'}}>{item.description}</p>}
                 {item.meals && (
                   <div style={{marginTop:'8px',padding:'10px',background:'#fff',borderRadius:'8px'}}>
-                    <p style={{color:'#bbb',fontSize:'10px',marginBottom:'4px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Refeições</p>
-                    <p style={{color:'#666',fontSize:'12px',whiteSpace:'pre-wrap'}}>{item.meals}</p>
+                    <p style={{color:'#bbb',fontSize:'12px',marginBottom:'4px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Refeições</p>
+                    <p style={{color:'#666',fontSize:'15px',whiteSpace:'pre-wrap'}}>{item.meals}</p>
                   </div>
                 )}
               </div>
-              <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'11px',cursor:'pointer',marginLeft:'12px'}}>✕</button>
+              <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer',marginLeft:'12px'}}>✕</button>
             </div>
           </div>
         ))}
@@ -311,7 +311,7 @@ function DietasTab() {
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',backdropFilter:'blur(4px)',zIndex:50,display:'flex',justifyContent:'center',alignItems:'flex-start',padding:'40px 20px',overflowY:'auto'}}>
           <div style={{width:'100%',maxWidth:'520px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #e5e5ea'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
-              <h2 style={{color:'#1a1a2e',fontSize:'16px',fontWeight:600}}>{editing?'Editar Dieta':'Nova Dieta'}</h2>
+              <h2 style={{color:'#1a1a2e',fontSize:'18px',fontWeight:600}}>{editing?'Editar Dieta':'Nova Dieta'}</h2>
               <button onClick={()=>setShowForm(false)} style={{background:'none',border:'none',color:'#999',cursor:'pointer',fontSize:'18px'}}>✕</button>
             </div>
             <div style={{display:'flex',flexDirection:'column',gap:'12px'}}>
@@ -326,8 +326,8 @@ function DietasTab() {
               <Fld label="Notas"><textarea placeholder="Observações, restrições..." value={form.notes} onChange={e=>setForm((f:any)=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'60px'}}/></Fld>
             </div>
             <div style={{display:'flex',gap:'8px',marginTop:'20px'}}>
-              <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'13px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#888',fontSize:'13px',cursor:'pointer'}}>Cancelar</button>
+              <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
+              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#888',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>
@@ -375,10 +375,10 @@ function MedicosTab() {
     <div>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
         <div>
-          <h1 style={{color:'#1a1a2e',fontSize:'20px',fontWeight:700}}>Médicos</h1>
-          <p style={{color:'#999',fontSize:'12px',marginTop:'2px'}}>{list.length} médico{list.length!==1?'s':''} cadastrado{list.length!==1?'s':''}</p>
+          <h1 style={{color:'#1a1a2e',fontSize:'22px',fontWeight:700}}>Médicos</h1>
+          <p style={{color:'#999',fontSize:'15px',marginTop:'2px'}}>{list.length} médico{list.length!==1?'s':''} cadastrado{list.length!==1?'s':''}</p>
         </div>
-        <button onClick={openNew} style={{padding:'8px 16px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'13px',fontWeight:600,cursor:'pointer'}}>+ Adicionar</button>
+        <button onClick={openNew} style={{padding:'8px 16px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>+ Adicionar</button>
       </div>
 
       <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
@@ -388,20 +388,20 @@ function MedicosTab() {
           const isToday = item.next_appointment === today
           return (
             <div key={item.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'14px 16px',borderRadius:'12px',background:'#fff',border:`1px solid ${isToday?'rgba(91,80,214,0.3)':'rgba(255,255,255,0.07)'}`,cursor:'pointer'}} onClick={()=>openEdit(item)}>
-              <div style={{width:'42px',height:'42px',borderRadius:'50%',background:'rgba(91,80,214,0.15)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'20px',flexShrink:0}}>🩺</div>
+              <div style={{width:'42px',height:'42px',borderRadius:'50%',background:'rgba(91,80,214,0.15)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'22px',flexShrink:0}}>🩺</div>
               <div style={{flex:1}}>
-                <p style={{color:'#1a1a2e',fontSize:'13px',fontWeight:500}}>{item.name}</p>
-                {item.specialty && <p style={{color:'rgba(168,159,247,0.7)',fontSize:'11px',marginTop:'1px'}}>{item.specialty}</p>}
+                <p style={{color:'#1a1a2e',fontSize:'15px',fontWeight:500}}>{item.name}</p>
+                {item.specialty && <p style={{color:'rgba(168,159,247,0.7)',fontSize:'15px',marginTop:'1px'}}>{item.specialty}</p>}
                 <div style={{display:'flex',gap:'10px',marginTop:'4px',flexWrap:'wrap'}}>
-                  {item.phone && <span style={{color:'#999',fontSize:'11px'}}>📞 {item.phone}</span>}
-                  {item.next_appointment && <span style={{color:isToday?'#a89ff7':hasUpcoming?'#4caf7d':'#999',fontSize:'11px',fontWeight:isToday?600:400}}>
+                  {item.phone && <span style={{color:'#999',fontSize:'15px'}}>📞 {item.phone}</span>}
+                  {item.next_appointment && <span style={{color:isToday?'#a89ff7':hasUpcoming?'#4caf7d':'#999',fontSize:'15px',fontWeight:isToday?600:400}}>
                     {isToday?'🔔 Consulta HOJE':hasUpcoming?`Consulta: ${new Date(item.next_appointment+'T12:00:00').toLocaleDateString('pt-BR')}`:`Última: ${new Date(item.next_appointment+'T12:00:00').toLocaleDateString('pt-BR')}`}
                     {item.next_appointment_time?` às ${item.next_appointment_time}`:''}
                   </span>}
                 </div>
-                {item.notes && <p style={{color:'#bbb',fontSize:'11px',marginTop:'4px'}}>{item.notes}</p>}
+                {item.notes && <p style={{color:'#bbb',fontSize:'15px',marginTop:'4px'}}>{item.notes}</p>}
               </div>
-              <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'11px',cursor:'pointer'}}>✕</button>
+              <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'rgba(224,82,82,0.08)',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
             </div>
           )
         })}
@@ -411,7 +411,7 @@ function MedicosTab() {
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',backdropFilter:'blur(4px)',zIndex:50,display:'flex',justifyContent:'center',alignItems:'flex-start',padding:'40px 20px',overflowY:'auto'}}>
           <div style={{width:'100%',maxWidth:'480px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #e5e5ea'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
-              <h2 style={{color:'#1a1a2e',fontSize:'16px',fontWeight:600}}>{editing?'Editar Médico':'Novo Médico'}</h2>
+              <h2 style={{color:'#1a1a2e',fontSize:'18px',fontWeight:600}}>{editing?'Editar Médico':'Novo Médico'}</h2>
               <button onClick={()=>setShowForm(false)} style={{background:'none',border:'none',color:'#999',cursor:'pointer',fontSize:'18px'}}>✕</button>
             </div>
             <div style={{display:'flex',flexDirection:'column',gap:'12px'}}>
@@ -428,8 +428,8 @@ function MedicosTab() {
               <Fld label="Notas"><textarea placeholder="Observações, medicamentos, histórico..." value={form.notes} onChange={e=>setForm((f:any)=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'80px'}}/></Fld>
             </div>
             <div style={{display:'flex',gap:'8px',marginTop:'20px'}}>
-              <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'13px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#888',fontSize:'13px',cursor:'pointer'}}>Cancelar</button>
+              <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#1a1a2e',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
+              <button onClick={()=>setShowForm(false)} style={{padding:'11px 16px',background:'transparent',border:'1px solid #e5e5ea',borderRadius:'10px',color:'#888',fontSize:'15px',cursor:'pointer'}}>Cancelar</button>
             </div>
           </div>
         </div>
@@ -456,7 +456,7 @@ export default function SaudePage() {
         {/* Tabs */}
         <div style={{background:'#f8f8fa',borderBottom:'1px solid #e5e5ea',padding:'0 28px',display:'flex',gap:'4px',alignItems:'center',flexShrink:0}}>
           {TABS.map(t => (
-            <button key={t.id} onClick={()=>setTab(t.id)} style={{padding:'14px 16px',background:'transparent',border:'none',borderBottom:`2px solid ${tab===t.id?'#7c6ff7':'transparent'}`,color:tab===t.id?'#a89ff7':'#999',fontSize:'13px',cursor:'pointer',fontWeight:tab===t.id?600:400,whiteSpace:'nowrap'}}>{t.label}</button>
+            <button key={t.id} onClick={()=>setTab(t.id)} style={{padding:'14px 16px',background:'transparent',border:'none',borderBottom:`2px solid ${tab===t.id?'#7c6ff7':'transparent'}`,color:tab===t.id?'#a89ff7':'#999',fontSize:'15px',cursor:'pointer',fontWeight:tab===t.id?600:400,whiteSpace:'nowrap'}}>{t.label}</button>
           ))}
         </div>
         <div style={{flex:1,padding:'28px 32px',overflowY:'auto'}}>

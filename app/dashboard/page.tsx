@@ -115,8 +115,8 @@ export default function DashboardPage() {
 
   const SectionTitle = ({label, color='#888', count}: {label:string, color?:string, count?:number}) => (
     <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'12px'}}>
-      <h2 style={{color,fontSize:'11px',fontWeight:600,textTransform:'uppercase',letterSpacing:'1px'}}>{label}</h2>
-      {count !== undefined && count > 0 && <span style={{background:`${color}22`,color,fontSize:'10px',padding:'1px 7px',borderRadius:'8px',fontWeight:600}}>{count}</span>}
+      <h2 style={{color,fontSize:'15px',fontWeight:600,textTransform:'uppercase',letterSpacing:'1px'}}>{label}</h2>
+      {count !== undefined && count > 0 && <span style={{background:`${color}22`,color,fontSize:'12px',padding:'1px 7px',borderRadius:'8px',fontWeight:600}}>{count}</span>}
     </div>
   )
 
@@ -138,26 +138,26 @@ export default function DashboardPage() {
           {/* Cabeçalho */}
           <div style={{marginBottom:'28px'}}>
             <h1 style={{color:'#1a1a2e',fontSize:'24px',fontWeight:700,letterSpacing:'-0.3px'}}>Dashboard</h1>
-            <p style={{color:'#999',fontSize:'13px',marginTop:'5px'}}>{dias[today.getDay()]}, {today.getDate()} de {meses[today.getMonth()]} de {today.getFullYear()}</p>
+            <p style={{color:'#999',fontSize:'15px',marginTop:'5px'}}>{dias[today.getDay()]}, {today.getDate()} de {meses[today.getMonth()]} de {today.getFullYear()}</p>
           </div>
 
           {/* KPIs */}
           <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'12px',marginBottom:'28px'}}>
             <div style={{background:'linear-gradient(135deg,rgba(91,80,214,0.15) 0%,rgba(91,80,214,0.05) 100%)',border:'1px solid rgba(91,80,214,0.25)',borderRadius:'14px',padding:'16px'}}>
-              <p style={{color:'rgba(168,159,247,0.7)',fontSize:'10px',fontWeight:600,letterSpacing:'0.8px',textTransform:'uppercase',marginBottom:'8px'}}>📋 Hoje</p>
+              <p style={{color:'rgba(168,159,247,0.7)',fontSize:'12px',fontWeight:600,letterSpacing:'0.8px',textTransform:'uppercase',marginBottom:'8px'}}>📋 Hoje</p>
               <p style={{color:'#1a1a2e',fontSize:'28px',fontWeight:800,lineHeight:1}}>{todayTasks.length}</p>
-              {doneTasks.length > 0 && <p style={{color:'rgba(76,175,125,0.8)',fontSize:'10px',marginTop:'4px'}}>✓ {doneTasks.length} feita{doneTasks.length>1?'s':''}</p>}
+              {doneTasks.length > 0 && <p style={{color:'rgba(76,175,125,0.8)',fontSize:'12px',marginTop:'4px'}}>✓ {doneTasks.length} feita{doneTasks.length>1?'s':''}</p>}
             </div>
             <div style={{background:overdueTasks.length>0?'linear-gradient(135deg,rgba(224,82,82,0.15) 0%,rgba(224,82,82,0.04) 100%)':'rgba(255,255,255,0.03)',border:`1px solid ${overdueTasks.length>0?'rgba(224,82,82,0.3)':'rgba(255,255,255,0.08)'}`,borderRadius:'14px',padding:'16px'}}>
-              <p style={{color:overdueTasks.length>0?'rgba(224,82,82,0.8)':'#999',fontSize:'10px',fontWeight:600,letterSpacing:'0.8px',textTransform:'uppercase',marginBottom:'8px'}}>⚠️ Atrasadas</p>
+              <p style={{color:overdueTasks.length>0?'rgba(224,82,82,0.8)':'#999',fontSize:'12px',fontWeight:600,letterSpacing:'0.8px',textTransform:'uppercase',marginBottom:'8px'}}>⚠️ Atrasadas</p>
               <p style={{color:overdueTasks.length>0?'#ff7070':'#999',fontSize:'28px',fontWeight:800,lineHeight:1}}>{overdueTasks.length}</p>
             </div>
             <div style={{background:urgentPendencias.length>0?'linear-gradient(135deg,rgba(224,140,66,0.12) 0%,rgba(224,140,66,0.03) 100%)':'rgba(255,255,255,0.03)',border:`1px solid ${urgentPendencias.length>0?'rgba(224,140,66,0.25)':'rgba(255,255,255,0.08)'}`,borderRadius:'14px',padding:'16px'}}>
-              <p style={{color:urgentPendencias.length>0?'rgba(224,140,66,0.8)':'#999',fontSize:'10px',fontWeight:600,letterSpacing:'0.8px',textTransform:'uppercase',marginBottom:'8px'}}>🔥 Pendências</p>
+              <p style={{color:urgentPendencias.length>0?'rgba(224,140,66,0.8)':'#999',fontSize:'12px',fontWeight:600,letterSpacing:'0.8px',textTransform:'uppercase',marginBottom:'8px'}}>🔥 Pendências</p>
               <p style={{color:urgentPendencias.length>0?'#e08c42':'#999',fontSize:'28px',fontWeight:800,lineHeight:1}}>{urgentPendencias.length}</p>
             </div>
             <div style={{background:todayFollowups.length>0?'linear-gradient(135deg,rgba(76,175,125,0.15) 0%,rgba(76,175,125,0.04) 100%)':'rgba(255,255,255,0.03)',border:`1px solid ${todayFollowups.length>0?'rgba(76,175,125,0.3)':'rgba(255,255,255,0.08)'}`,borderRadius:'14px',padding:'16px'}}>
-              <p style={{color:todayFollowups.length>0?'rgba(76,175,125,0.8)':'#999',fontSize:'10px',fontWeight:600,letterSpacing:'0.8px',textTransform:'uppercase',marginBottom:'8px'}}>👥 Follow-ups</p>
+              <p style={{color:todayFollowups.length>0?'rgba(76,175,125,0.8)':'#999',fontSize:'12px',fontWeight:600,letterSpacing:'0.8px',textTransform:'uppercase',marginBottom:'8px'}}>👥 Follow-ups</p>
               <p style={{color:todayFollowups.length>0?'#5dcc8a':'#999',fontSize:'28px',fontWeight:800,lineHeight:1}}>{todayFollowups.length}</p>
             </div>
           </div>
@@ -169,12 +169,12 @@ export default function DashboardPage() {
               <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
                 {todayFollowups.map(l => (
                   <div key={l.id} style={{display:'flex',alignItems:'center',gap:'10px',padding:'10px 12px',borderRadius:'10px',background:'rgba(91,80,214,0.08)',border:'1px solid rgba(91,80,214,0.15)'}}>
-                    <div style={{width:'30px',height:'30px',borderRadius:'50%',background:'rgba(91,80,214,0.25)',display:'flex',alignItems:'center',justifyContent:'center',color:'#a89ff7',fontWeight:700,fontSize:'12px',flexShrink:0}}>{l.name.charAt(0).toUpperCase()}</div>
+                    <div style={{width:'30px',height:'30px',borderRadius:'50%',background:'rgba(91,80,214,0.25)',display:'flex',alignItems:'center',justifyContent:'center',color:'#a89ff7',fontWeight:700,fontSize:'15px',flexShrink:0}}>{l.name.charAt(0).toUpperCase()}</div>
                     <div style={{flex:1}}>
-                      <p style={{color:'#1a1a2e',fontSize:'12px',fontWeight:500}}>{l.name}</p>
-                      <p style={{color:'rgba(168,159,247,0.6)',fontSize:'10px'}}>Follow-up CRM{l.followup_notes?` · ${l.followup_notes}`:''}</p>
+                      <p style={{color:'#1a1a2e',fontSize:'15px',fontWeight:500}}>{l.name}</p>
+                      <p style={{color:'rgba(168,159,247,0.6)',fontSize:'12px'}}>Follow-up CRM{l.followup_notes?` · ${l.followup_notes}`:''}</p>
                     </div>
-                    {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{padding:'4px 9px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'6px',color:'#25d366',fontSize:'11px',textDecoration:'none',fontWeight:600}}>WhatsApp</a>}
+                    {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{padding:'4px 9px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'6px',color:'#25d366',fontSize:'15px',textDecoration:'none',fontWeight:600}}>WhatsApp</a>}
                   </div>
                 ))}
                 {alertClients.map(c => {
@@ -185,26 +185,26 @@ export default function DashboardPage() {
                   return (
                     <div key={c.id} style={{padding:'12px 14px',borderRadius:'10px',background:isOver?'rgba(224,82,82,0.08)':'rgba(224,140,66,0.06)',border:`1px solid ${isOver?'rgba(224,82,82,0.2)':'rgba(224,140,66,0.15)'}`}}>
                       <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
-                        <div style={{width:'32px',height:'32px',borderRadius:'50%',background:'rgba(76,175,125,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'#4caf7d',fontWeight:700,fontSize:'12px',flexShrink:0}}>{c.name.charAt(0).toUpperCase()}</div>
+                        <div style={{width:'32px',height:'32px',borderRadius:'50%',background:'rgba(76,175,125,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'#4caf7d',fontWeight:700,fontSize:'15px',flexShrink:0}}>{c.name.charAt(0).toUpperCase()}</div>
                         <div style={{flex:1}}>
-                          <p style={{color:'#1a1a2e',fontSize:'13px',fontWeight:600}}>{c.name}</p>
-                          <p style={{color:'#888',fontSize:'10px',marginTop:'2px'}}>Cliente · Comprou {c.pots_bought} {c.pots_bought===1?'pote':'potes'}</p>
+                          <p style={{color:'#1a1a2e',fontSize:'15px',fontWeight:600}}>{c.name}</p>
+                          <p style={{color:'#888',fontSize:'12px',marginTop:'2px'}}>Cliente · Comprou {c.pots_bought} {c.pots_bought===1?'pote':'potes'}</p>
                         </div>
-                        <span style={{color:isOver?'#e05252':'#e08c42',fontSize:'11px',fontWeight:700}}>{isOver?'Potes acabaram!':d===0?'Acaba hoje':`${d} dias`}</span>
+                        <span style={{color:isOver?'#e05252':'#e08c42',fontSize:'15px',fontWeight:700}}>{isOver?'Potes acabaram!':d===0?'Acaba hoje':`${d} dias`}</span>
                       </div>
                       <div style={{display:'flex',alignItems:'center',gap:'8px',marginTop:'8px',paddingLeft:'42px'}}>
-                        <span style={{background:'rgba(168,159,247,0.12)',border:'1px solid rgba(168,159,247,0.2)',borderRadius:'6px',padding:'3px 8px',color:'#a89ff7',fontSize:'10px',fontWeight:600}}>📦 {c.product}</span>
+                        <span style={{background:'rgba(168,159,247,0.12)',border:'1px solid rgba(168,159,247,0.2)',borderRadius:'6px',padding:'3px 8px',color:'#a89ff7',fontSize:'12px',fontWeight:600}}>📦 {c.product}</span>
                         {prodEstoque ? (
-                          <span style={{background:temEstoque?'rgba(76,175,125,0.12)':'rgba(224,82,82,0.12)',border:`1px solid ${temEstoque?'rgba(76,175,125,0.25)':'rgba(224,82,82,0.25)'}`,borderRadius:'6px',padding:'3px 8px',color:temEstoque?'#4caf7d':'#e05252',fontSize:'10px',fontWeight:600}}>
+                          <span style={{background:temEstoque?'rgba(76,175,125,0.12)':'rgba(224,82,82,0.12)',border:`1px solid ${temEstoque?'rgba(76,175,125,0.25)':'rgba(224,82,82,0.25)'}`,borderRadius:'6px',padding:'3px 8px',color:temEstoque?'#4caf7d':'#e05252',fontSize:'12px',fontWeight:600}}>
                             {temEstoque ? `✅ ${prodEstoque.quantity} em estoque` : '❌ Sem estoque — pedir ao fornecedor'}
                           </span>
                         ) : (
-                          <span style={{background:'rgba(212,184,74,0.12)',border:'1px solid rgba(212,184,74,0.2)',borderRadius:'6px',padding:'3px 8px',color:'#d4b84a',fontSize:'10px',fontWeight:600}}>⚠️ Produto não cadastrado no estoque</span>
+                          <span style={{background:'rgba(212,184,74,0.12)',border:'1px solid rgba(212,184,74,0.2)',borderRadius:'6px',padding:'3px 8px',color:'#d4b84a',fontSize:'12px',fontWeight:600}}>⚠️ Produto não cadastrado no estoque</span>
                         )}
                       </div>
                       <div style={{display:'flex',gap:'6px',marginTop:'8px',paddingLeft:'42px'}}>
-                        {c.whatsapp && <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{padding:'5px 10px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'6px',color:'#25d366',fontSize:'11px',textDecoration:'none',fontWeight:600}}>💬 WhatsApp</a>}
-                        <Link href="/crm" style={{padding:'5px 10px',background:'rgba(168,159,247,0.1)',border:'1px solid rgba(168,159,247,0.2)',borderRadius:'6px',color:'#a89ff7',fontSize:'11px',textDecoration:'none',fontWeight:600}}>📋 Ver no CRM</Link>
+                        {c.whatsapp && <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{padding:'5px 10px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'6px',color:'#25d366',fontSize:'15px',textDecoration:'none',fontWeight:600}}>💬 WhatsApp</a>}
+                        <Link href="/crm" style={{padding:'5px 10px',background:'rgba(168,159,247,0.1)',border:'1px solid rgba(168,159,247,0.2)',borderRadius:'6px',color:'#a89ff7',fontSize:'15px',textDecoration:'none',fontWeight:600}}>📋 Ver no CRM</Link>
                       </div>
                     </div>
                   )
@@ -226,12 +226,12 @@ export default function DashboardPage() {
                 <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
                   {[...todayFollowups,...upcomingFollowups].slice(0,5).map(l => (
                     <div key={l.id} style={{display:'flex',alignItems:'center',gap:'10px',padding:'8px 10px',borderRadius:'10px',background:'rgba(91,80,214,0.05)',border:'1px solid rgba(91,80,214,0.1)'}}>
-                      <div style={{width:'28px',height:'28px',borderRadius:'50%',background:'rgba(91,80,214,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'#a89ff7',fontWeight:700,fontSize:'10px',flexShrink:0}}>{l.name.charAt(0).toUpperCase()}</div>
+                      <div style={{width:'28px',height:'28px',borderRadius:'50%',background:'rgba(91,80,214,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'#a89ff7',fontWeight:700,fontSize:'12px',flexShrink:0}}>{l.name.charAt(0).toUpperCase()}</div>
                       <div style={{flex:1,minWidth:0}}>
-                        <p style={{color:'#1a1a2e',fontSize:'11px',fontWeight:500}}>{l.name}</p>
-                        <p style={{color:'rgba(91,80,214,0.7)',fontSize:'9px',marginTop:'1px'}}>{l.next_followup===todayStr?'Hoje':formatDate(l.next_followup)}</p>
+                        <p style={{color:'#1a1a2e',fontSize:'15px',fontWeight:500}}>{l.name}</p>
+                        <p style={{color:'rgba(91,80,214,0.7)',fontSize:'11px',marginTop:'1px'}}>{l.next_followup===todayStr?'Hoje':formatDate(l.next_followup)}</p>
                       </div>
-                      {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{padding:'3px 7px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'5px',color:'#25d366',fontSize:'10px',textDecoration:'none'}}>WA</a>}
+                      {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{padding:'3px 7px',background:'rgba(37,211,102,0.12)',border:'1px solid rgba(37,211,102,0.2)',borderRadius:'5px',color:'#25d366',fontSize:'12px',textDecoration:'none'}}>WA</a>}
                     </div>
                   ))}
                 </div>
@@ -241,7 +241,7 @@ export default function DashboardPage() {
               <div>
                 <SectionTitle label="📅 Agenda — Compromissos" color="#a89ff7" count={allPending.length} />
                 {allPending.length === 0
-                  ? <p style={{color:'#bbb',fontSize:'12px'}}>Nenhum compromisso pendente 🎉</p>
+                  ? <p style={{color:'#bbb',fontSize:'15px'}}>Nenhum compromisso pendente 🎉</p>
                   : <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
                     {allPending.slice(0,15).map(t => {
                       const overdue = isOverdue(t.date)
@@ -249,30 +249,30 @@ export default function DashboardPage() {
                       return (
                         <div key={t.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'10px',background:overdue?'rgba(224,82,82,0.05)':isToday?'rgba(91,80,214,0.08)':'rgba(255,255,255,0.03)',border:`1px solid ${overdue?'rgba(224,82,82,0.12)':isToday?'rgba(91,80,214,0.2)':'rgba(255,255,255,0.06)'}`}}>
                           <div style={{width:'38px',textAlign:'center',flexShrink:0}}>
-                            <p style={{color:overdue?'#e05252':isToday?'#a89ff7':'#777',fontSize:'10px',fontWeight:600}}>{formatDate(t.date)}</p>
+                            <p style={{color:overdue?'#e05252':isToday?'#a89ff7':'#777',fontSize:'12px',fontWeight:600}}>{formatDate(t.date)}</p>
                             {t.time && <p style={{color:'#aaa',fontSize:'8px'}}>{t.time}</p>}
                           </div>
                           <div style={{width:'1px',height:'24px',background:overdue?'rgba(224,82,82,0.2)':'rgba(255,255,255,0.08)',flexShrink:0}}/>
                           <div style={{width:'5px',height:'5px',borderRadius:'50%',background:priorityColor[t.priority]||'#888',flexShrink:0}}/>
                           <div style={{flex:1,minWidth:0}}>
-                            <p style={{color:overdue?'rgba(255,255,255,0.6)':'#fff',fontSize:'11px',fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.title}</p>
-                            {t.has_financial && t.amount > 0 && <p style={{color:'#d4b84a',fontSize:'9px',marginTop:'1px'}}>R$ {Number(t.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>}
+                            <p style={{color:overdue?'rgba(255,255,255,0.6)':'#fff',fontSize:'15px',fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.title}</p>
+                            {t.has_financial && t.amount > 0 && <p style={{color:'#d4b84a',fontSize:'11px',marginTop:'1px'}}>R$ {Number(t.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>}
                           </div>
                           {overdue && <span style={{color:'#e05252',fontSize:'8px',fontWeight:600,flexShrink:0}}>ATRASADO</span>}
                           {rescheduleId === t.id ? (
                             <div style={{display:'flex',alignItems:'center',gap:'3px',flexShrink:0}}>
-                              <input type="date" value={rescheduleDate} onChange={e => setRescheduleDate(e.target.value)} style={{background:'#fff',border:'1px solid rgba(168,159,247,0.3)',borderRadius:'5px',color:'#1a1a2e',fontSize:'10px',padding:'2px 4px',outline:'none',colorScheme:'light',width:'110px'}} />
-                              <button onClick={() => rescheduleTask(t.id, rescheduleDate)} style={{padding:'3px 6px',background:'rgba(168,159,247,0.15)',border:'none',borderRadius:'5px',color:'#a89ff7',fontSize:'9px',cursor:'pointer',fontWeight:600}}>OK</button>
-                              <button onClick={() => {setRescheduleId(null);setRescheduleDate('')}} style={{padding:'3px 5px',background:'none',border:'none',color:'#999',fontSize:'9px',cursor:'pointer'}}>✕</button>
+                              <input type="date" value={rescheduleDate} onChange={e => setRescheduleDate(e.target.value)} style={{background:'#fff',border:'1px solid rgba(168,159,247,0.3)',borderRadius:'5px',color:'#1a1a2e',fontSize:'12px',padding:'2px 4px',outline:'none',colorScheme:'light',width:'110px'}} />
+                              <button onClick={() => rescheduleTask(t.id, rescheduleDate)} style={{padding:'3px 6px',background:'rgba(168,159,247,0.15)',border:'none',borderRadius:'5px',color:'#a89ff7',fontSize:'11px',cursor:'pointer',fontWeight:600}}>OK</button>
+                              <button onClick={() => {setRescheduleId(null);setRescheduleDate('')}} style={{padding:'3px 5px',background:'none',border:'none',color:'#999',fontSize:'11px',cursor:'pointer'}}>✕</button>
                             </div>
                           ) : (
-                            <button onClick={() => {setRescheduleId(t.id);setRescheduleDate(t.date)}} title="Reagendar" style={{padding:'3px 6px',background:'rgba(168,159,247,0.1)',border:'none',borderRadius:'5px',color:'#a89ff7',fontSize:'10px',cursor:'pointer',flexShrink:0}}>📅</button>
+                            <button onClick={() => {setRescheduleId(t.id);setRescheduleDate(t.date)}} title="Reagendar" style={{padding:'3px 6px',background:'rgba(168,159,247,0.1)',border:'none',borderRadius:'5px',color:'#a89ff7',fontSize:'12px',cursor:'pointer',flexShrink:0}}>📅</button>
                           )}
-                          <button onClick={(e) => {e.stopPropagation();completeTask(t.id)}} title="Marcar como concluída" style={{padding:'5px 10px',background:'rgba(76,175,125,0.15)',border:'1px solid rgba(76,175,125,0.3)',borderRadius:'6px',color:'#4caf7d',fontSize:'12px',cursor:'pointer',flexShrink:0,fontWeight:700}}>✓</button>
+                          <button onClick={(e) => {e.stopPropagation();completeTask(t.id)}} title="Marcar como concluída" style={{padding:'5px 10px',background:'rgba(76,175,125,0.15)',border:'1px solid rgba(76,175,125,0.3)',borderRadius:'6px',color:'#4caf7d',fontSize:'15px',cursor:'pointer',flexShrink:0,fontWeight:700}}>✓</button>
                         </div>
                       )
                     })}
-                    {allPending.length > 15 && <p style={{color:'rgba(168,159,247,0.5)',fontSize:'11px',textAlign:'center',marginTop:'4px'}}>+{allPending.length-15} compromissos · <Link href="/agenda" style={{color:'#a89ff7',textDecoration:'none'}}>Ver agenda →</Link></p>}
+                    {allPending.length > 15 && <p style={{color:'rgba(168,159,247,0.5)',fontSize:'15px',textAlign:'center',marginTop:'4px'}}>+{allPending.length-15} compromissos · <Link href="/agenda" style={{color:'#a89ff7',textDecoration:'none'}}>Ver agenda →</Link></p>}
                   </div>
                 }
               </div>
@@ -286,16 +286,16 @@ export default function DashboardPage() {
               <div>
                 <SectionTitle label="🔥 Pendências" color="#e08c42" count={pendencias.length} />
                 {pendencias.length === 0
-                  ? <p style={{color:'#bbb',fontSize:'12px'}}>Nenhuma pendência ativa 🎉</p>
+                  ? <p style={{color:'#bbb',fontSize:'15px'}}>Nenhuma pendência ativa 🎉</p>
                   : <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
                     {pendencias.slice(0,15).map(p => (
                       <div key={p.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'10px',background:p.priority==='CRITICAL'?'rgba(224,82,82,0.05)':p.priority==='HIGH'?'rgba(224,140,66,0.05)':'rgba(255,255,255,0.03)',border:`1px solid ${p.priority==='CRITICAL'?'rgba(224,82,82,0.12)':p.priority==='HIGH'?'rgba(224,140,66,0.1)':'rgba(255,255,255,0.06)'}`}}>
                         <div style={{width:'5px',height:'5px',borderRadius:'50%',background:priorityColor[p.priority]||'#888',flexShrink:0}}/>
-                        <p style={{flex:1,color:'#1a1a2e',fontSize:'11px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{p.title}</p>
+                        <p style={{flex:1,color:'#1a1a2e',fontSize:'15px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{p.title}</p>
                         <span style={{color:priorityColor[p.priority]||'#999',fontSize:'8px',fontWeight:600,flexShrink:0}}>{prioLabel[p.priority]||''}</span>
                       </div>
                     ))}
-                    {pendencias.length > 15 && <p style={{color:'rgba(224,140,66,0.5)',fontSize:'11px',textAlign:'center',marginTop:'4px'}}>+{pendencias.length-15} · <Link href="/pendencias" style={{color:'#e08c42',textDecoration:'none'}}>Ver todas →</Link></p>}
+                    {pendencias.length > 15 && <p style={{color:'rgba(224,140,66,0.5)',fontSize:'15px',textAlign:'center',marginTop:'4px'}}>+{pendencias.length-15} · <Link href="/pendencias" style={{color:'#e08c42',textDecoration:'none'}}>Ver todas →</Link></p>}
                   </div>
                 }
               </div>
@@ -308,10 +308,10 @@ export default function DashboardPage() {
                     {overdueBills.map(b => (
                       <div key={b.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'10px',background:'rgba(224,82,82,0.05)',border:'1px solid rgba(224,82,82,0.1)'}}>
                         <div style={{flex:1,minWidth:0}}>
-                          <p style={{color:'#1a1a2e',fontSize:'11px',fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{b.name}</p>
-                          <p style={{color:'rgba(224,82,82,0.6)',fontSize:'9px',marginTop:'1px'}}>Venceu: {new Date(b.due_date+'T12:00:00').toLocaleDateString('pt-BR')}</p>
+                          <p style={{color:'#1a1a2e',fontSize:'15px',fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{b.name}</p>
+                          <p style={{color:'rgba(224,82,82,0.6)',fontSize:'11px',marginTop:'1px'}}>Venceu: {new Date(b.due_date+'T12:00:00').toLocaleDateString('pt-BR')}</p>
                         </div>
-                        {b.amount > 0 && <span style={{color:'#e05252',fontSize:'11px',fontWeight:600}}>R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
+                        {b.amount > 0 && <span style={{color:'#e05252',fontSize:'15px',fontWeight:600}}>R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
                       </div>
                     ))}
                   </div>
@@ -326,10 +326,10 @@ export default function DashboardPage() {
                     {upcomingBills.map(b => (
                       <div key={b.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'10px',background:'rgba(212,184,74,0.05)',border:'1px solid rgba(212,184,74,0.12)'}}>
                         <div style={{flex:1,minWidth:0}}>
-                          <p style={{color:'#1a1a2e',fontSize:'11px',fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{b.name}</p>
-                          <p style={{color:'#aaa',fontSize:'9px',marginTop:'1px'}}>{formatDate(b.due_date)}</p>
+                          <p style={{color:'#1a1a2e',fontSize:'15px',fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{b.name}</p>
+                          <p style={{color:'#aaa',fontSize:'11px',marginTop:'1px'}}>{formatDate(b.due_date)}</p>
                         </div>
-                        {b.amount > 0 && <span style={{color:'#d4b84a',fontSize:'11px',fontWeight:600}}>R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
+                        {b.amount > 0 && <span style={{color:'#d4b84a',fontSize:'15px',fontWeight:600}}>R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
                       </div>
                     ))}
                   </div>

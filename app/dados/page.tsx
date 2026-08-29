@@ -92,12 +92,12 @@ function CamposEditor({ campos, onChange }: { campos: {label:string,value:string
     <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
       {campos.map((c, i) => (
         <div key={i} style={{display:'grid',gridTemplateColumns:'1fr 1.5fr auto',gap:'6px',alignItems:'center'}}>
-          <input placeholder="Campo (ex: CPF)" value={c.label} onChange={e => update(i,'label',e.target.value)} style={{...inp,fontSize:'12px',padding:'7px 10px'}} />
-          <input placeholder="Valor" value={c.value} onChange={e => update(i,'value',e.target.value)} style={{...inp,fontSize:'12px',padding:'7px 10px'}} />
-          <button onClick={() => remove(i)} style={{padding:'7px 9px',background:'rgba(224,82,82,0.1)',border:'none',borderRadius:'8px',color:'#e05252',cursor:'pointer',fontSize:'12px'}}>✕</button>
+          <input placeholder="Campo (ex: CPF)" value={c.label} onChange={e => update(i,'label',e.target.value)} style={{...inp,fontSize:'15px',padding:'7px 10px'}} />
+          <input placeholder="Valor" value={c.value} onChange={e => update(i,'value',e.target.value)} style={{...inp,fontSize:'15px',padding:'7px 10px'}} />
+          <button onClick={() => remove(i)} style={{padding:'7px 9px',background:'rgba(224,82,82,0.1)',border:'none',borderRadius:'8px',color:'#e05252',cursor:'pointer',fontSize:'15px'}}>✕</button>
         </div>
       ))}
-      <button onClick={add} style={{padding:'7px',background:'#fff',border:'1px dashed rgba(255,255,255,0.15)',borderRadius:'8px',color:'#888',cursor:'pointer',fontSize:'12px'}}>+ Adicionar campo</button>
+      <button onClick={add} style={{padding:'7px',background:'#fff',border:'1px dashed rgba(255,255,255,0.15)',borderRadius:'8px',color:'#888',cursor:'pointer',fontSize:'15px'}}>+ Adicionar campo</button>
     </div>
   )
 }
