@@ -77,9 +77,9 @@ export default function FilmesPage() {
           </div>
           {items.length > 0 && (
             <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'20px'}}>
-              <div style={{background:'rgba(124,111,247,0.08)',border:'1px solid rgba(124,111,247,0.15)',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#6d5ce0',fontSize:'22px',fontWeight:700}}>{assistindo}</p><p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Assistindo</p></div>
+              <div style={{background:'#edeaff',border:'1px solid #e0dbff',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#6d5ce0',fontSize:'22px',fontWeight:700}}>{assistindo}</p><p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Assistindo</p></div>
               <div style={{background:'#f0faf5',border:'1px solid #ddf5e8',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#4caf7d',fontSize:'22px',fontWeight:700}}>{concluidos}</p><p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Concluídos</p></div>
-              <div style={{background:'rgba(136,136,136,0.06)',border:'1px solid rgba(136,136,136,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#444',fontSize:'22px',fontWeight:700}}>{querAssistir}</p><p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Quero assistir</p></div>
+              <div style={{background:'#f5f5f5',border:'1px solid #ebebeb',borderRadius:'12px',padding:'14px',textAlign:'center'}}><p style={{color:'#444',fontSize:'22px',fontWeight:700}}>{querAssistir}</p><p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Quero assistir</p></div>
             </div>
           )}
           <div style={{display:'flex',gap:'10px',marginBottom:'16px'}}>
@@ -93,7 +93,7 @@ export default function FilmesPage() {
                 const pct = calcProgress(item)
                 const expanded = expandedId===item.id
                 return (
-                  <div key={item.id} style={{borderRadius:'14px',background:'#fff',border:`1px solid ${item.status==='Assistindo'?'rgba(124,111,247,0.2)':'rgba(255,255,255,0.07)'}`,overflow:'hidden'}}>
+                  <div key={item.id} style={{borderRadius:'14px',background:'#fff',border:`1px solid ${item.status==='Assistindo'?'#d4cdff':'#f0f0f3'}`,overflow:'hidden'}}>
                     <div style={{display:'flex',alignItems:'center',gap:'12px',padding:'14px 16px',cursor:'pointer'}} onClick={()=>setExpandedId(expanded?null:item.id)}>
                       <div style={{width:'42px',height:'42px',borderRadius:'10px',background:`${platformColor[item.platform]||'#888'}18`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'22px',flexShrink:0}}>{typeIcon[item.type]||'🎬'}</div>
                       <div style={{flex:1,minWidth:0}}>
@@ -105,7 +105,7 @@ export default function FilmesPage() {
                         <div style={{display:'flex',gap:'10px',marginTop:'4px',flexWrap:'wrap'}}>
                           <span style={{color:'#444',fontSize:'15px'}}>{item.type}</span>
                           {item.genre && <span style={{color:'#444',fontSize:'15px'}}>· {item.genre}</span>}
-                          {item.rating && <span style={{color:'#d4b84a',fontSize:'15px'}}>· {'★'.repeat(item.rating)}</span>}
+                          {item.rating && <span style={{color:'#b8960f',fontSize:'15px'}}>· {'★'.repeat(item.rating)}</span>}
                         </div>
                         {pct !== null && <div style={{marginTop:'8px',display:'flex',alignItems:'center',gap:'8px'}}><div style={{flex:1,height:'4px',background:'#fff',borderRadius:'2px',overflow:'hidden'}}><div style={{width:`${Math.min(pct,100)}%`,height:'100%',background:item.status==='Concluído'?'#4caf7d':'#7c6ff7',borderRadius:'2px'}}/></div><span style={{color:'#444',fontSize:'12px'}}>{pct}%</span></div>}
                       </div>

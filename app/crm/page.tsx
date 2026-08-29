@@ -469,7 +469,7 @@ export default function CRMPage() {
                       const isLow = days!==null&&days<=10
                       const isOver = days!==null&&days<=0
                       return (
-                        <div key={c.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'13px 15px',borderRadius:'12px',background:'#fff',border:`1px solid ${isOver?'#ffb0b0':isLow?'#ffe0e0':'rgba(255,255,255,0.07)'}`,cursor:'pointer'}} onClick={()=>openEditClient(c)}>
+                        <div key={c.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'13px 15px',borderRadius:'12px',background:'#fff',border:`1px solid ${isOver?'#ffb0b0':isLow?'#ffe0e0':'#f0f0f3'}`,cursor:'pointer'}} onClick={()=>openEditClient(c)}>
                           <div style={{width:'38px',height:'38px',borderRadius:'50%',background:'#c0ebd3',display:'flex',alignItems:'center',justifyContent:'center',color:'#4caf7d',fontWeight:700,fontSize:'15px',flexShrink:0}}>{c.name.charAt(0).toUpperCase()}</div>
                           <div style={{flex:1,minWidth:0}}>
                             <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
@@ -509,7 +509,7 @@ export default function CRMPage() {
                       const isLow = p.quantity <= p.min_quantity
                       const isOut = p.quantity === 0
                       return (
-                        <div key={p.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'13px 15px',borderRadius:'12px',background:'#fff',border:`1px solid ${isOut?'#ff9999':isLow?'#ffca90':'rgba(255,255,255,0.07)'}`,cursor:'pointer'}} onClick={()=>{setEditing(p);setEstoqueForm({name:p.name,quantity:p.quantity?.toString()||'0',min_quantity:p.min_quantity?.toString()||'5',cost_price:p.cost_price?.toString()||'',sell_price:p.sell_price?.toString()||'',location:p.location||'',expiry_date:p.expiry_date||'',notes:p.notes||''});setError('');setShowForm('estoque')}}>
+                        <div key={p.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'13px 15px',borderRadius:'12px',background:'#fff',border:`1px solid ${isOut?'#ff9999':isLow?'#ffca90':'#f0f0f3'}`,cursor:'pointer'}} onClick={()=>{setEditing(p);setEstoqueForm({name:p.name,quantity:p.quantity?.toString()||'0',min_quantity:p.min_quantity?.toString()||'5',cost_price:p.cost_price?.toString()||'',sell_price:p.sell_price?.toString()||'',location:p.location||'',expiry_date:p.expiry_date||'',notes:p.notes||''});setError('');setShowForm('estoque')}}>
                           <div style={{width:'38px',height:'38px',borderRadius:'10px',background:isOut?'#ffc8c8':isLow?'#ffd9b0':'#c0ebd3',display:'flex',alignItems:'center',justifyContent:'center',color:isOut?'#e05252':isLow?'#e08c42':'#4caf7d',fontWeight:700,fontSize:'18px',flexShrink:0}}>{p.quantity}</div>
                           <div style={{flex:1,minWidth:0}}>
                             <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
@@ -591,8 +591,8 @@ export default function CRMPage() {
             <h2 style={{color:'#111',fontSize:'18px',fontWeight:600,marginBottom:'16px'}}>{movType==='entrada'?'+ Entrada':'- Saída'}: {showMovForm.name}</h2>
             <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
               <div style={{display:'flex',gap:'8px'}}>
-                <button onClick={()=>setMovType('entrada')} style={{flex:1,padding:'8px',borderRadius:'8px',border:`1px solid ${movType==='entrada'?'#4caf7d':'rgba(255,255,255,0.1)'}`,background:movType==='entrada'?'#ddf5e8':'transparent',color:movType==='entrada'?'#4caf7d':'#999',cursor:'pointer',fontWeight:600}}>+ Entrada</button>
-                <button onClick={()=>setMovType('saida')} style={{flex:1,padding:'8px',borderRadius:'8px',border:`1px solid ${movType==='saida'?'#a89ff7':'rgba(255,255,255,0.1)'}`,background:movType==='saida'?'#e8e4ff':'transparent',color:movType==='saida'?'#a89ff7':'#999',cursor:'pointer',fontWeight:600}}>- Saída</button>
+                <button onClick={()=>setMovType('entrada')} style={{flex:1,padding:'8px',borderRadius:'8px',border:`1px solid ${movType==='entrada'?'#4caf7d':'#eaeaea)'}`,background:movType==='entrada'?'#ddf5e8':'transparent',color:movType==='entrada'?'#4caf7d':'#999',cursor:'pointer',fontWeight:600}}>+ Entrada</button>
+                <button onClick={()=>setMovType('saida')} style={{flex:1,padding:'8px',borderRadius:'8px',border:`1px solid ${movType==='saida'?'#a89ff7':'#eaeaea)'}`,background:movType==='saida'?'#e8e4ff':'transparent',color:movType==='saida'?'#a89ff7':'#999',cursor:'pointer',fontWeight:600}}>- Saída</button>
               </div>
               <Fld label="Quantidade"><input type="number" min="1" value={movQty} onChange={e=>setMovQty(e.target.value)} style={inp} /></Fld>
               <Fld label="Observação"><input placeholder="Opcional" value={movNotes} onChange={e=>setMovNotes(e.target.value)} style={inp} /></Fld>
@@ -715,7 +715,7 @@ export default function CRMPage() {
                 <Fld label="Valor total kit (R$)"><input type="number" value={leadForm.value} onChange={e=>setLeadForm(f=>({...f,value:e.target.value}))} style={inp} /></Fld>
                 <Fld label="Status"><select value={leadForm.status} onChange={e=>setLeadForm(f=>({...f,status:e.target.value}))} style={sel}>{STATUSES.map(s=><option key={s} value={s}>{s}</option>)}</select></Fld>
               </div>
-              {leadForm.status==='Ganho'&&<p style={{fontSize:'15px',color:'rgba(76,175,125,0.7)',background:'#f0faf5',borderRadius:'8px',padding:'8px 12px'}}>✓ Este lead será automaticamente adicionado como Cliente</p>}
+              {leadForm.status==='Ganho'&&<p style={{fontSize:'15px',color:'#3d9e6e',background:'#f0faf5',borderRadius:'8px',padding:'8px 12px'}}>✓ Este lead será automaticamente adicionado como Cliente</p>}
             </div>
             <Sec title="Follow-up" />
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
@@ -776,7 +776,7 @@ export default function CRMPage() {
                 <Fld label="Data compra"><input type="date" value={clientForm.purchase_date} onChange={e=>setClientForm(f=>({...f,purchase_date:e.target.value}))} style={{...inp,colorScheme:'light'}} /></Fld>
                 <Fld label="Qtd. potes"><input type="number" min="0" value={clientForm.pots_bought} onChange={e=>setClientForm(f=>({...f,pots_bought:e.target.value}))} style={inp} /></Fld>
               </div>
-              {clientForm.purchase_date&&parseInt(clientForm.pots_bought)>0&&<p style={{fontSize:'15px',color:'rgba(91,80,214,0.7)',background:'#f0edff',borderRadius:'8px',padding:'8px 12px'}}>Potes terminam em: {new Date(new Date(clientForm.purchase_date).getTime()+parseInt(clientForm.pots_bought)*30*24*60*60*1000).toLocaleDateString('pt-BR')}</p>}
+              {clientForm.purchase_date&&parseInt(clientForm.pots_bought)>0&&<p style={{fontSize:'15px',color:'#5b50d6',background:'#f0edff',borderRadius:'8px',padding:'8px 12px'}}>Potes terminam em: {new Date(new Date(clientForm.purchase_date).getTime()+parseInt(clientForm.pots_bought)*30*24*60*60*1000).toLocaleDateString('pt-BR')}</p>}
               <Fld label="Valor (R$)"><input type="number" placeholder="0,00" value={clientForm.value} onChange={e=>setClientForm(f=>({...f,value:e.target.value}))} style={inp} /></Fld>
               <Fld label="Status"><select value={clientForm.status} onChange={e=>setClientForm(f=>({...f,status:e.target.value}))} style={sel}><option value="Ativo">Ativo</option><option value="Inativo">Inativo</option><option value="Recompra">Recompra</option></select></Fld>
             </div>

@@ -147,12 +147,12 @@ export default function EducacaoPage() {
           {/* KPIs */}
           {cursos.length > 0 && (
             <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'20px'}}>
-              <div style={{background:'rgba(124,111,247,0.08)',border:'1px solid rgba(124,111,247,0.15)',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
+              <div style={{background:'#edeaff',border:'1px solid #e0dbff',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
                 <p style={{color:'#6d5ce0',fontSize:'22px',fontWeight:700}}>{emAndamento}</p>
                 <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Em andamento</p>
               </div>
-              <div style={{background:'rgba(212,184,74,0.06)',border:'1px solid rgba(212,184,74,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
-                <p style={{color:'#d4b84a',fontSize:'22px',fontWeight:700}}>{pausados}</p>
+              <div style={{background:'#fffbe6',border:'1px solid #fff0b3',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
+                <p style={{color:'#b8960f',fontSize:'22px',fontWeight:700}}>{pausados}</p>
                 <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Pausados</p>
               </div>
               <div style={{background:'#f0faf5',border:'1px solid #ddf5e8',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
@@ -179,7 +179,7 @@ export default function EducacaoPage() {
                 const pct = calcProgress(item)
                 const expanded = expandedId===item.id
                 return (
-                  <div key={item.id} style={{borderRadius:'14px',background:'#fff',border:`1px solid ${item.status==='Em andamento'?'rgba(124,111,247,0.2)':'rgba(255,255,255,0.07)'}`,overflow:'hidden'}}>
+                  <div key={item.id} style={{borderRadius:'14px',background:'#fff',border:`1px solid ${item.status==='Em andamento'?'#d4cdff':'#f0f0f3'}`,overflow:'hidden'}}>
                     {/* Cabeçalho do card */}
                     <div style={{display:'flex',alignItems:'center',gap:'12px',padding:'14px 16px',cursor:'pointer'}} onClick={()=>setExpandedId(expanded?null:item.id)}>
                       <div style={{width:'42px',height:'42px',borderRadius:'10px',background:`${platformColor[item.platform]||'#888'}22`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'18px',flexShrink:0}}>
@@ -207,7 +207,7 @@ export default function EducacaoPage() {
                         )}
                       </div>
                       <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
-                        {item.url && <a href={item.url} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'rgba(124,111,247,0.12)',border:'1px solid rgba(124,111,247,0.2)',borderRadius:'7px',color:'#6d5ce0',fontSize:'15px',textDecoration:'none'}}>Abrir</a>}
+                        {item.url && <a href={item.url} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'#e8e4ff',border:'1px solid #d4cdff',borderRadius:'7px',color:'#6d5ce0',fontSize:'15px',textDecoration:'none'}}>Abrir</a>}
                         <button onClick={e=>{e.stopPropagation();openEdit(item)}} style={{padding:'5px 9px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Editar</button>
                         <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
                         <span style={{color:'#555',fontSize:'15px'}}>{expanded?'▲':'▼'}</span>

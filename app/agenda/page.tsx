@@ -165,7 +165,7 @@ export default function AgendaPage() {
             const hasTasks = dayTasks.length > 0
             const isPast = new Date(year,month,day) < new Date(today.getFullYear(),today.getMonth(),today.getDate())
             return (
-              <div key={day} onClick={() => { if(hasTasks){ setViewingDay(day) } else { openDayForm(day) } }} style={{minHeight:'90px',borderRadius:'8px',padding:'6px',background:isToday?'rgba(124,58,237,0.08)':'#fff',border:isToday?'2px solid #7c3aed':'1px solid #e5e5ea',cursor:'pointer',overflow:'hidden',transition:'border-color 0.15s',boxShadow:hasTasks?'0 1px 3px rgba(0,0,0,0.06)':'none'}}>
+              <div key={day} onClick={() => { if(hasTasks){ setViewingDay(day) } else { openDayForm(day) } }} style={{minHeight:'90px',borderRadius:'8px',padding:'6px',background:isToday?'#f0e8ff':'#fff',border:isToday?'2px solid #7c3aed':'1px solid #e5e5ea',cursor:'pointer',overflow:'hidden',transition:'border-color 0.15s',boxShadow:hasTasks?'0 1px 3px rgba(0,0,0,0.06)':'none'}}>
                 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
                   <span style={{fontSize:'15px',color:isToday?'#7c3aed':isPast?'#aaa':'#333',fontWeight:isToday?800:600}}>{day}</span>
                   {hasTasks && <span style={{fontSize:'8px',color:'#444',fontWeight:600}}>{dayTasks.length}</span>}
@@ -186,7 +186,7 @@ export default function AgendaPage() {
 
       {viewingDay && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.75)',backdropFilter:'blur(4px)',zIndex:50,display:'flex',alignItems:'center',justifyContent:'center',padding:'16px'}}>
-          <div style={{width:'100%',maxWidth:'520px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid rgba(124,58,237,0.2)',maxHeight:'80vh',display:'flex',flexDirection:'column',boxShadow:'0 20px 60px rgba(0,0,0,0.5)'}}>
+          <div style={{width:'100%',maxWidth:'520px',background:'#ffffff',borderRadius:'16px',padding:'24px',border:'1px solid #dbc8ff',maxHeight:'80vh',display:'flex',flexDirection:'column',boxShadow:'0 20px 60px rgba(0,0,0,0.5)'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}}>
               <h2 style={{color:'#fff',fontSize:'18px',fontWeight:700}}>Dia {viewingDay} de {MONTHS[month]}</h2>
               <div style={{display:'flex',gap:'8px'}}>
@@ -196,7 +196,7 @@ export default function AgendaPage() {
             </div>
             <div style={{overflowY:'auto',display:'flex',flexDirection:'column',gap:'6px'}}>
               {getTasksForDay(viewingDay).map((t:any) => (
-                <div key={t.id} style={{borderRadius:'10px',background:'rgba(255,255,255,0.05)',border:`1px solid ${priorityColor[t.priority]}33`,overflow:'hidden'}}>
+                <div key={t.id} style={{borderRadius:'10px',background:'#f5f5f5',border:`1px solid ${priorityColor[t.priority]}33`,overflow:'hidden'}}>
                   <div onClick={() => { setViewingDay(null); openEditTask(t) }} style={{display:'flex',alignItems:'center',gap:'10px',padding:'12px 14px',cursor:'pointer'}}>
                     <div style={{width:'10px',height:'10px',borderRadius:'50%',background:priorityColor[t.priority],flexShrink:0,boxShadow:`0 0 6px ${priorityColor[t.priority]}66`}}/>
                     <div style={{flex:1,minWidth:0}}>
@@ -209,12 +209,12 @@ export default function AgendaPage() {
                     </div>
                     <div style={{display:'flex',alignItems:'center',gap:'6px',flexShrink:0}}>
                       <span style={{fontSize:'15px',padding:'3px 10px',borderRadius:'6px',background:t.status==='DONE'?'#ddf5e8':`${priorityColor[t.priority]}20`,color:t.status==='DONE'?'#4caf7d':priorityColor[t.priority],fontWeight:600}}>{t.status==='DONE'?'✓ Concluída':PRIO_LABEL[t.priority]||t.priority}</span>
-                      <button onClick={(e) => {e.stopPropagation(); setViewingDay(null); openEditTask(t)}} style={{padding:'4px 10px',background:'rgba(124,58,237,0.15)',border:'1px solid rgba(124,58,237,0.3)',borderRadius:'6px',color:'#c4b5fd',fontSize:'15px',cursor:'pointer',fontWeight:600}}>✏️</button>
+                      <button onClick={(e) => {e.stopPropagation(); setViewingDay(null); openEditTask(t)}} style={{padding:'4px 10px',background:'#e6d9ff',border:'1px solid #c9adff',borderRadius:'6px',color:'#c4b5fd',fontSize:'15px',cursor:'pointer',fontWeight:600}}>✏️</button>
                     </div>
                   </div>
                   {t.notes && (
-                    <div style={{padding:'10px 14px 12px 34px',borderTop:'1px solid #e8e8ee',background:'rgba(251,191,36,0.06)'}}>
-                      <p style={{color:'rgba(255,255,255,0.7)',fontSize:'15px',lineHeight:'1.6',whiteSpace:'pre-wrap'}} dangerouslySetInnerHTML={{__html: t.notes.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer" style="color:#c4b5fd;text-decoration:underline">$1</a>')}} />
+                    <div style={{padding:'10px 14px 12px 34px',borderTop:'1px solid #e8e8ee',background:'#fffbe6'}}>
+                      <p style={{color:'#555',fontSize:'15px',lineHeight:'1.6',whiteSpace:'pre-wrap'}} dangerouslySetInnerHTML={{__html: t.notes.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer" style="color:#c4b5fd;text-decoration:underline">$1</a>')}} />
                     </div>
                   )}
                 </div>
@@ -226,17 +226,17 @@ export default function AgendaPage() {
 
       {showTaskForm && (
         <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.75)',backdropFilter:'blur(4px)',zIndex:50,display:'flex',alignItems:'center',justifyContent:'center',padding:'16px'}}>
-          <div style={{width:'100%',maxWidth:'480px',background:'#ffffff',borderRadius:'16px',padding:'28px',border:'1px solid rgba(124,58,237,0.2)',boxShadow:'0 20px 60px rgba(0,0,0,0.5)'}}>
+          <div style={{width:'100%',maxWidth:'480px',background:'#ffffff',borderRadius:'16px',padding:'28px',border:'1px solid #dbc8ff',boxShadow:'0 20px 60px rgba(0,0,0,0.5)'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'20px'}}>
               <h2 style={{color:'#fff',fontSize:'18px',fontWeight:600}}>{editingTask?'Editar tarefa':`Tarefa — dia ${selectedDay}`}</h2>
               <button onClick={() => setShowTaskForm(false)} style={{background:'none',border:'none',color:'#444',cursor:'pointer',fontSize:'18px'}}>✕</button>
             </div>
             <div style={{display:'flex',flexDirection:'column',gap:'10px'}}>
-              <input placeholder="Título *" value={taskForm.title} onChange={e => setTaskForm(f=>({...f,title:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'15px',outline:'none'}} />
+              <input placeholder="Título *" value={taskForm.title} onChange={e => setTaskForm(f=>({...f,title:e.target.value}))} style={{width:'100%',background:'#f5f5f5',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'15px',outline:'none'}} />
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
                 <div>
                   <div style={{fontSize:'15px',color:'#444',marginBottom:'4px'}}>Horário</div>
-                  <input type="time" value={taskForm.time} onChange={e => setTaskForm(f=>({...f,time:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'8px 12px',color:'#fff',fontSize:'15px',outline:'none',colorScheme:'light'}} />
+                  <input type="time" value={taskForm.time} onChange={e => setTaskForm(f=>({...f,time:e.target.value}))} style={{width:'100%',background:'#f5f5f5',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'8px 12px',color:'#fff',fontSize:'15px',outline:'none',colorScheme:'light'}} />
                 </div>
                 <div>
                   <div style={{fontSize:'15px',color:'#444',marginBottom:'4px'}}>Prioridade</div>
@@ -248,11 +248,11 @@ export default function AgendaPage() {
                   </select>
                 </div>
               </div>
-              <textarea placeholder="Observações" value={taskForm.notes} onChange={e => setTaskForm(f=>({...f,notes:e.target.value}))} style={{width:'100%',background:'rgba(255,255,255,0.05)',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'15px',outline:'none',resize:'none',height:'100px'}} />
+              <textarea placeholder="Observações" value={taskForm.notes} onChange={e => setTaskForm(f=>({...f,notes:e.target.value}))} style={{width:'100%',background:'#f5f5f5',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'15px',outline:'none',resize:'none',height:'100px'}} />
               <div>
                 <div style={{fontSize:'15px',color:'#444',marginBottom:'4px'}}>📍 Endereço / Local</div>
                 <div style={{display:'flex',gap:'6px'}}>
-                  <input placeholder="Ex: Rua das Flores, 123 - Fortaleza" value={taskForm.location} onChange={e => setTaskForm(f=>({...f,location:e.target.value}))} style={{flex:1,background:'rgba(255,255,255,0.05)',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'15px',outline:'none'}} />
+                  <input placeholder="Ex: Rua das Flores, 123 - Fortaleza" value={taskForm.location} onChange={e => setTaskForm(f=>({...f,location:e.target.value}))} style={{flex:1,background:'#f5f5f5',border:'1px solid #d0d0d8',borderRadius:'10px',padding:'10px 12px',color:'#fff',fontSize:'15px',outline:'none'}} />
                   {taskForm.location && <a href={`https://www.google.com/maps/search/${encodeURIComponent(taskForm.location)}`} target="_blank" rel="noopener noreferrer" style={{padding:'10px 12px',background:'#ddf5e8',border:'1px solid #c0ebd3',borderRadius:'10px',color:'#4caf7d',fontSize:'15px',textDecoration:'none',fontWeight:600,flexShrink:0,display:'flex',alignItems:'center'}}>🗺️ Maps</a>}
                 </div>
               </div>
@@ -273,7 +273,7 @@ export default function AgendaPage() {
               </div>
               {taskForm.has_financial && (
                 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'8px',background:'#f0edff',borderRadius:'10px',padding:'12px',border:'1px solid #e8e4ff'}}>
-                  <input placeholder="Valor R$" type="number" value={taskForm.amount} onChange={e => setTaskForm(f=>({...f,amount:e.target.value}))} style={{background:'rgba(255,255,255,0.05)',border:'1px solid #d0d0d8',borderRadius:'8px',padding:'7px 10px',color:'#fff',fontSize:'15px',outline:'none'}} />
+                  <input placeholder="Valor R$" type="number" value={taskForm.amount} onChange={e => setTaskForm(f=>({...f,amount:e.target.value}))} style={{background:'#f5f5f5',border:'1px solid #d0d0d8',borderRadius:'8px',padding:'7px 10px',color:'#fff',fontSize:'15px',outline:'none'}} />
                   <select value={taskForm.financial_type} onChange={e => setTaskForm(f=>({...f,financial_type:e.target.value}))} style={{background:'#ffffff',border:'1px solid #d0d0d8',borderRadius:'8px',padding:'7px 10px',color:'#fff',fontSize:'15px',outline:'none'}}>
                     <option value="despesa">Despesa</option>
                     <option value="receita">Receita</option>

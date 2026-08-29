@@ -199,7 +199,7 @@ export default function DashboardPage() {
                             {temEstoque ? `✅ ${prodEstoque.quantity} em estoque` : '❌ Sem estoque — pedir ao fornecedor'}
                           </span>
                         ) : (
-                          <span style={{background:'rgba(212,184,74,0.12)',border:'1px solid rgba(212,184,74,0.2)',borderRadius:'6px',padding:'3px 8px',color:'#d4b84a',fontSize:'12px',fontWeight:600}}>⚠️ Produto não cadastrado no estoque</span>
+                          <span style={{background:'#fff0b3',border:'1px solid #ffe680',borderRadius:'6px',padding:'3px 8px',color:'#b8960f',fontSize:'12px',fontWeight:600}}>⚠️ Produto não cadastrado no estoque</span>
                         )}
                       </div>
                       <div style={{display:'flex',gap:'6px',marginTop:'8px',paddingLeft:'42px'}}>
@@ -229,7 +229,7 @@ export default function DashboardPage() {
                       <div style={{width:'28px',height:'28px',borderRadius:'50%',background:'#d4cdff',display:'flex',alignItems:'center',justifyContent:'center',color:'#6d5ce0',fontWeight:700,fontSize:'12px',flexShrink:0}}>{l.name.charAt(0).toUpperCase()}</div>
                       <div style={{flex:1,minWidth:0}}>
                         <p style={{color:'#111',fontSize:'15px',fontWeight:500}}>{l.name}</p>
-                        <p style={{color:'rgba(91,80,214,0.7)',fontSize:'11px',marginTop:'1px'}}>{l.next_followup===todayStr?'Hoje':formatDate(l.next_followup)}</p>
+                        <p style={{color:'#5b50d6',fontSize:'11px',marginTop:'1px'}}>{l.next_followup===todayStr?'Hoje':formatDate(l.next_followup)}</p>
                       </div>
                       {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{padding:'3px 7px',background:'#e0fce9',border:'1px solid #c0f5d5',borderRadius:'5px',color:'#25d366',fontSize:'12px',textDecoration:'none'}}>WA</a>}
                     </div>
@@ -247,7 +247,7 @@ export default function DashboardPage() {
                       const overdue = isOverdue(t.date)
                       const isToday = t.date === todayStr
                       return (
-                        <div key={t.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'10px',background:overdue?'#fff0f0':isToday?'#f0edff':'#f8f8fa',border:`1px solid ${overdue?'#ffe0e0':isToday?'#d4cdff':'rgba(255,255,255,0.06)'}`}}>
+                        <div key={t.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'10px',background:overdue?'#fff0f0':isToday?'#f0edff':'#f8f8fa',border:`1px solid ${overdue?'#ffe0e0':isToday?'#d4cdff':'#e8e8ee'}`}}>
                           <div style={{width:'38px',textAlign:'center',flexShrink:0}}>
                             <p style={{color:overdue?'#e05252':isToday?'#a89ff7':'#777',fontSize:'12px',fontWeight:600}}>{formatDate(t.date)}</p>
                             {t.time && <p style={{color:'#444',fontSize:'8px'}}>{t.time}</p>}
@@ -255,13 +255,13 @@ export default function DashboardPage() {
                           <div style={{width:'1px',height:'24px',background:overdue?'#ffc8c8':'#e8e8ee',flexShrink:0}}/>
                           <div style={{width:'5px',height:'5px',borderRadius:'50%',background:priorityColor[t.priority]||'#888',flexShrink:0}}/>
                           <div style={{flex:1,minWidth:0}}>
-                            <p style={{color:overdue?'rgba(255,255,255,0.6)':'#fff',fontSize:'15px',fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.title}</p>
-                            {t.has_financial && t.amount > 0 && <p style={{color:'#d4b84a',fontSize:'11px',marginTop:'1px'}}>R$ {Number(t.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>}
+                            <p style={{color:'#111',fontSize:'15px',fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.title}</p>
+                            {t.has_financial && t.amount > 0 && <p style={{color:'#b8960f',fontSize:'11px',marginTop:'1px'}}>R$ {Number(t.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>}
                           </div>
                           {overdue && <span style={{color:'#e05252',fontSize:'8px',fontWeight:600,flexShrink:0}}>ATRASADO</span>}
                           {rescheduleId === t.id ? (
                             <div style={{display:'flex',alignItems:'center',gap:'3px',flexShrink:0}}>
-                              <input type="date" value={rescheduleDate} onChange={e => setRescheduleDate(e.target.value)} style={{background:'#fff',border:'1px solid rgba(168,159,247,0.3)',borderRadius:'5px',color:'#111',fontSize:'12px',padding:'2px 4px',outline:'none',colorScheme:'light',width:'110px'}} />
+                              <input type="date" value={rescheduleDate} onChange={e => setRescheduleDate(e.target.value)} style={{background:'#fff',border:'1px solid #c4bdff',borderRadius:'5px',color:'#111',fontSize:'12px',padding:'2px 4px',outline:'none',colorScheme:'light',width:'110px'}} />
                               <button onClick={() => rescheduleTask(t.id, rescheduleDate)} style={{padding:'3px 6px',background:'#e8e4ff',border:'none',borderRadius:'5px',color:'#6d5ce0',fontSize:'11px',cursor:'pointer',fontWeight:600}}>OK</button>
                               <button onClick={() => {setRescheduleId(null);setRescheduleDate('')}} style={{padding:'3px 5px',background:'none',border:'none',color:'#444',fontSize:'11px',cursor:'pointer'}}>✕</button>
                             </div>
@@ -272,7 +272,7 @@ export default function DashboardPage() {
                         </div>
                       )
                     })}
-                    {allPending.length > 15 && <p style={{color:'rgba(168,159,247,0.5)',fontSize:'15px',textAlign:'center',marginTop:'4px'}}>+{allPending.length-15} compromissos · <Link href="/agenda" style={{color:'#6d5ce0',textDecoration:'none'}}>Ver agenda →</Link></p>}
+                    {allPending.length > 15 && <p style={{color:'#7c6ff7',fontSize:'15px',textAlign:'center',marginTop:'4px'}}>+{allPending.length-15} compromissos · <Link href="/agenda" style={{color:'#6d5ce0',textDecoration:'none'}}>Ver agenda →</Link></p>}
                   </div>
                 }
               </div>
@@ -289,13 +289,13 @@ export default function DashboardPage() {
                   ? <p style={{color:'#555',fontSize:'15px'}}>Nenhuma pendência ativa 🎉</p>
                   : <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
                     {pendencias.slice(0,15).map(p => (
-                      <div key={p.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'10px',background:p.priority==='CRITICAL'?'#fff0f0':p.priority==='HIGH'?'#fff5eb':'#f8f8fa',border:`1px solid ${p.priority==='CRITICAL'?'#ffe0e0':p.priority==='HIGH'?'#ffe8d0':'rgba(255,255,255,0.06)'}`}}>
+                      <div key={p.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'10px',background:p.priority==='CRITICAL'?'#fff0f0':p.priority==='HIGH'?'#fff5eb':'#f8f8fa',border:`1px solid ${p.priority==='CRITICAL'?'#ffe0e0':p.priority==='HIGH'?'#ffe8d0':'#e8e8ee'}`}}>
                         <div style={{width:'5px',height:'5px',borderRadius:'50%',background:priorityColor[p.priority]||'#888',flexShrink:0}}/>
                         <p style={{flex:1,color:'#111',fontSize:'15px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{p.title}</p>
                         <span style={{color:priorityColor[p.priority]||'#999',fontSize:'8px',fontWeight:600,flexShrink:0}}>{prioLabel[p.priority]||''}</span>
                       </div>
                     ))}
-                    {pendencias.length > 15 && <p style={{color:'rgba(224,140,66,0.5)',fontSize:'15px',textAlign:'center',marginTop:'4px'}}>+{pendencias.length-15} · <Link href="/pendencias" style={{color:'#e08c42',textDecoration:'none'}}>Ver todas →</Link></p>}
+                    {pendencias.length > 15 && <p style={{color:'#cc7020',fontSize:'15px',textAlign:'center',marginTop:'4px'}}>+{pendencias.length-15} · <Link href="/pendencias" style={{color:'#e08c42',textDecoration:'none'}}>Ver todas →</Link></p>}
                   </div>
                 }
               </div>
@@ -309,7 +309,7 @@ export default function DashboardPage() {
                       <div key={b.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'10px',background:'#fff0f0',border:'1px solid #ffe0e0'}}>
                         <div style={{flex:1,minWidth:0}}>
                           <p style={{color:'#111',fontSize:'15px',fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{b.name}</p>
-                          <p style={{color:'rgba(224,82,82,0.6)',fontSize:'11px',marginTop:'1px'}}>Venceu: {new Date(b.due_date+'T12:00:00').toLocaleDateString('pt-BR')}</p>
+                          <p style={{color:'#cc3333',fontSize:'11px',marginTop:'1px'}}>Venceu: {new Date(b.due_date+'T12:00:00').toLocaleDateString('pt-BR')}</p>
                         </div>
                         {b.amount > 0 && <span style={{color:'#e05252',fontSize:'15px',fontWeight:600}}>R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
                       </div>
@@ -324,12 +324,12 @@ export default function DashboardPage() {
                   <SectionTitle label="💰 Contas vencendo em breve" color="#d4b84a" count={upcomingBills.length} />
                   <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
                     {upcomingBills.map(b => (
-                      <div key={b.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'10px',background:'rgba(212,184,74,0.05)',border:'1px solid rgba(212,184,74,0.12)'}}>
+                      <div key={b.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'10px',background:'#fffbe6',border:'1px solid #fff0b3'}}>
                         <div style={{flex:1,minWidth:0}}>
                           <p style={{color:'#111',fontSize:'15px',fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{b.name}</p>
                           <p style={{color:'#444',fontSize:'11px',marginTop:'1px'}}>{formatDate(b.due_date)}</p>
                         </div>
-                        {b.amount > 0 && <span style={{color:'#d4b84a',fontSize:'15px',fontWeight:600}}>R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
+                        {b.amount > 0 && <span style={{color:'#b8960f',fontSize:'15px',fontWeight:600}}>R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
                       </div>
                     ))}
                   </div>

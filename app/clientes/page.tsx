@@ -245,7 +245,7 @@ export default function ClientesPage() {
                 <Field label="Qtd. potes"><input type="number" min="0" value={form.pots_bought} onChange={e => setForm(f=>({...f,pots_bought:e.target.value}))} style={inputStyle} /></Field>
               </div>
               {form.purchase_date && parseInt(form.pots_bought) > 0 && (
-                <p style={{fontSize:'15px',color:'rgba(91,80,214,0.7)',background:'#f0edff',borderRadius:'8px',padding:'8px 12px'}}>
+                <p style={{fontSize:'15px',color:'#5b50d6',background:'#f0edff',borderRadius:'8px',padding:'8px 12px'}}>
                   Potes terminam em: {new Date(new Date(form.purchase_date).getTime() + parseInt(form.pots_bought) * 30 * 24 * 60 * 60 * 1000).toLocaleDateString('pt-BR')} — alerta no dashboard com 10 dias
                 </p>
               )}

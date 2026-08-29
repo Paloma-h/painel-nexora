@@ -11,7 +11,7 @@ const USER_ID = 'paloma'
 const PRIOS = [
   { key:'CRITICAL', label:'🔴 Urgente', color:'#e05252' },
   { key:'HIGH',     label:'🟠 Alta',    color:'#e08c42' },
-  { key:'MEDIUM',   label:'🟡 Média',   color:'#d4b84a' },
+  { key:'MEDIUM',   label:'🟡 Média',   color:'#b8960f' },
   { key:'LOW',      label:'🟢 Depois',  color:'#4caf7d' },
 ]
 
@@ -133,7 +133,7 @@ export default function PendenciasPage() {
                 <button
                   key={p.key}
                   onClick={() => setQuickPrio(p.key)}
-                  style={{padding:'8px 4px',borderRadius:'8px',border:`1px solid ${quickPrio===p.key?p.color:'rgba(255,255,255,0.07)'}`,background:quickPrio===p.key?`${p.color}22`:'transparent',color:quickPrio===p.key?p.color:'#444',fontSize:'15px',cursor:'pointer',fontWeight:quickPrio===p.key?700:400,transition:'all 0.15s'}}
+                  style={{padding:'8px 4px',borderRadius:'8px',border:`1px solid ${quickPrio===p.key?p.color:'#f0f0f3'}`,background:quickPrio===p.key?`${p.color}22`:'transparent',color:quickPrio===p.key?p.color:'#444',fontSize:'15px',cursor:'pointer',fontWeight:quickPrio===p.key?700:400,transition:'all 0.15s'}}
                 >
                   {p.label}
                 </button>
@@ -169,7 +169,7 @@ export default function PendenciasPage() {
                         />
                         <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'6px',marginBottom:'10px'}}>
                           {PRIOS.map(p => (
-                            <button key={p.key} onClick={() => setEditPrio(p.key)} style={{padding:'7px 4px',borderRadius:'8px',border:`1px solid ${editPrio===p.key?p.color:'rgba(255,255,255,0.07)'}`,background:editPrio===p.key?`${p.color}22`:'transparent',color:editPrio===p.key?p.color:'#444',fontSize:'15px',cursor:'pointer',fontWeight:editPrio===p.key?700:400}}>{p.label}</button>
+                            <button key={p.key} onClick={() => setEditPrio(p.key)} style={{padding:'7px 4px',borderRadius:'8px',border:`1px solid ${editPrio===p.key?p.color:'#f0f0f3'}`,background:editPrio===p.key?`${p.color}22`:'transparent',color:editPrio===p.key?p.color:'#444',fontSize:'15px',cursor:'pointer',fontWeight:editPrio===p.key?700:400}}>{p.label}</button>
                           ))}
                         </div>
                         <div style={{display:'flex',gap:'8px'}}>

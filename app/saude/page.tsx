@@ -86,7 +86,7 @@ function AtividadesTab() {
               {item.notes && <p style={{color:'#555',fontSize:'15px',marginTop:'2px'}}>{item.notes}</p>}
             </div>
             <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
-              <button onClick={()=>toggleActive(item)} style={{padding:'5px 10px',background:item.active?'#ddf5e8':'rgba(255,255,255,0.05)',border:'none',borderRadius:'7px',color:item.active?'#4caf7d':'#999',fontSize:'15px',cursor:'pointer'}}>{item.active?'Ativa':'Inativa'}</button>
+              <button onClick={()=>toggleActive(item)} style={{padding:'5px 10px',background:item.active?'#ddf5e8':'#f5f5f5',border:'none',borderRadius:'7px',color:item.active?'#4caf7d':'#999',fontSize:'15px',cursor:'pointer'}}>{item.active?'Ativa':'Inativa'}</button>
               <button onClick={()=>openEdit(item)} style={{padding:'5px 10px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Editar</button>
               <button onClick={()=>remove(item.id)} style={{padding:'5px 8px',background:'#fff0f0',border:'none',borderRadius:'7px',color:'#e05252',fontSize:'15px',cursor:'pointer'}}>✕</button>
             </div>
@@ -387,7 +387,7 @@ function MedicosTab() {
           const hasUpcoming = item.next_appointment && item.next_appointment >= today
           const isToday = item.next_appointment === today
           return (
-            <div key={item.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'14px 16px',borderRadius:'12px',background:'#fff',border:`1px solid ${isToday?'rgba(91,80,214,0.3)':'rgba(255,255,255,0.07)'}`,cursor:'pointer'}} onClick={()=>openEdit(item)}>
+            <div key={item.id} style={{display:'flex',alignItems:'center',gap:'12px',padding:'14px 16px',borderRadius:'12px',background:'#fff',border:`1px solid ${isToday?'#c0b8ff':'#f0f0f3'}`,cursor:'pointer'}} onClick={()=>openEdit(item)}>
               <div style={{width:'42px',height:'42px',borderRadius:'50%',background:'#e8e4ff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'22px',flexShrink:0}}>🩺</div>
               <div style={{flex:1}}>
                 <p style={{color:'#111',fontSize:'15px',fontWeight:500}}>{item.name}</p>

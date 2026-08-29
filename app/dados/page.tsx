@@ -97,7 +97,7 @@ function CamposEditor({ campos, onChange }: { campos: {label:string,value:string
           <button onClick={() => remove(i)} style={{padding:'7px 9px',background:'#ffe0e0',border:'none',borderRadius:'8px',color:'#e05252',cursor:'pointer',fontSize:'15px'}}>✕</button>
         </div>
       ))}
-      <button onClick={add} style={{padding:'7px',background:'#fff',border:'1px dashed rgba(255,255,255,0.15)',borderRadius:'8px',color:'#333',cursor:'pointer',fontSize:'15px'}}>+ Adicionar campo</button>
+      <button onClick={add} style={{padding:'7px',background:'#fff',border:'1px dashed #e5e5e5',borderRadius:'8px',color:'#333',cursor:'pointer',fontSize:'15px'}}>+ Adicionar campo</button>
     </div>
   )
 }
@@ -260,14 +260,14 @@ export default function DadosPage() {
             <div style={{ textAlign: 'center', padding: '60px 0' }}>
               <p style={{ fontSize: '40px', marginBottom: '12px' }}>📋</p>
               <p style={{ color:'#444', fontSize: '14px' }}>Nenhum registro ainda</p>
-              <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '12px', marginTop: '4px' }}>Clique em &quot;+ Adicionar&quot; para começar</p>
+              <p style={{ color: '#ddd', fontSize: '12px', marginTop: '4px' }}>Clique em &quot;+ Adicionar&quot; para começar</p>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {filtered.map(item => {
                 const expanded = expandedId === item.id
                 return (
-                  <div key={item.id} style={{ borderRadius: '14px', background:'#fff', border: `1px solid ${expanded ? cc + '44' : 'rgba(255,255,255,0.07)'}`, overflow: 'hidden', transition: 'border-color 0.2s' }}>
+                  <div key={item.id} style={{ borderRadius: '14px', background:'#fff', border: `1px solid ${expanded ? cc + '44' : '#f0f0f3'}`, overflow: 'hidden', transition: 'border-color 0.2s' }}>
                     {/* Header do card */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 16px', cursor: 'pointer' }} onClick={() => setExpandedId(expanded ? null : item.id)}>
                       <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: `${cc}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', flexShrink: 0 }}>
@@ -280,17 +280,17 @@ export default function DadosPage() {
                           <div style={{ display: 'flex', gap: '12px', marginTop: '3px', flexWrap: 'wrap' }}>
                             {item.campos.slice(0, 3).map((c: any, i: number) => (
                               <span key={i} style={{ color:'#444', fontSize: '11px' }}>
-                                <span style={{ color: 'rgba(255,255,255,0.25)' }}>{c.label}: </span>{c.value}
+                                <span style={{ color: '#d5d5d5' }}>{c.label}: </span>{c.value}
                               </span>
                             ))}
-                            {item.campos.length > 3 && <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '11px' }}>+{item.campos.length - 3} mais</span>}
+                            {item.campos.length > 3 && <span style={{ color: '#ddd', fontSize: '11px' }}>+{item.campos.length - 3} mais</span>}
                           </div>
                         )}
                       </div>
                       <div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexShrink: 0 }}>
                         <button onClick={e => { e.stopPropagation(); openEdit(item) }} style={{ padding: '5px 10px', background:'#fff', border: 'none', borderRadius: '7px', color:'#333', fontSize: '11px', cursor: 'pointer' }}>✎</button>
                         <button onClick={e => { e.stopPropagation(); remove(item.id) }} style={{ padding: '5px 8px', background: '#fff0f0', border: 'none', borderRadius: '7px', color: '#e05252', fontSize: '11px', cursor: 'pointer' }}>✕</button>
-                        <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '12px' }}>{expanded ? '▲' : '▼'}</span>
+                        <span style={{ color: '#ddd', fontSize: '12px' }}>{expanded ? '▲' : '▼'}</span>
                       </div>
                     </div>
 
@@ -309,7 +309,7 @@ export default function DadosPage() {
                         ) : null}
                         {item.notas && (
                           <div style={{ background:'#fff', borderRadius: '10px', padding: '12px' }}>
-                            <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: '10px', marginBottom: '4px' }}>NOTAS</p>
+                            <p style={{ color: '#d5d5d5', fontSize: '10px', marginBottom: '4px' }}>NOTAS</p>
                             <p style={{ color:'#444', fontSize: '13px', whiteSpace: 'pre-wrap' }}>{item.notas}</p>
                           </div>
                         )}

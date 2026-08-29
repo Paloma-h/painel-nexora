@@ -25,12 +25,12 @@ body {
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: #f0f0f3; border-radius: 99px; }
 ::-webkit-scrollbar-thumb {
-  background: rgba(124, 111, 247, 0.35);
+  background: #b0a8f0;
   border-radius: 99px;
   min-height: 40px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(124, 111, 247, 0.55);
+  background: #8b80e0;
 }
 
 /* ── Inputs & Selects base ────────────────────────── */
@@ -129,6 +129,6 @@ input::placeholder, textarea::placeholder {
 /* ── Focus ring premium ───────────────────────────── */
 input:focus, textarea:focus, select:focus {
   outline: none;
-  border-color: rgba(124, 111, 247, 0.5) !important;
-  box-shadow: 0 0 0 3px rgba(124, 111, 247, 0.1);
+  border-color: #7c6ff7 !important;
+  box-shadow: 0 0 0 3px #e8e4ff;
 }

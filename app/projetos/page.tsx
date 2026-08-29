@@ -117,8 +117,8 @@ export default function ProjetosPage() {
           </div>
 
           {/* ⚡ Captura rápida — para TDAH */}
-          <div style={{background:'rgba(212,184,74,0.06)',border:'1px solid rgba(212,184,74,0.2)',borderRadius:'14px',padding:'18px',marginBottom:'24px'}}>
-            <p style={{color:'#d4b84a',fontSize:'15px',fontWeight:600,marginBottom:'12px',textTransform:'uppercase',letterSpacing:'1px'}}>⚡ Captura rápida — anota antes de esquecer!</p>
+          <div style={{background:'#fffbe6',border:'1px solid #ffe680',borderRadius:'14px',padding:'18px',marginBottom:'24px'}}>
+            <p style={{color:'#b8960f',fontSize:'15px',fontWeight:600,marginBottom:'12px',textTransform:'uppercase',letterSpacing:'1px'}}>⚡ Captura rápida — anota antes de esquecer!</p>
             <div style={{display:'flex',gap:'8px',marginBottom:'8px'}}>
               <input
                 placeholder="Nome da ideia ou projeto..."
@@ -143,11 +143,11 @@ export default function ProjetosPage() {
           {/* KPIs */}
           {projetos.length > 0 && (
             <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'20px'}}>
-              <div style={{background:'rgba(212,184,74,0.06)',border:'1px solid rgba(212,184,74,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
-                <p style={{color:'#d4b84a',fontSize:'22px',fontWeight:700}}>{ideias}</p>
+              <div style={{background:'#fffbe6',border:'1px solid #fff0b3',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
+                <p style={{color:'#b8960f',fontSize:'22px',fontWeight:700}}>{ideias}</p>
                 <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>💡 Ideias</p>
               </div>
-              <div style={{background:'rgba(124,111,247,0.06)',border:'1px solid rgba(124,111,247,0.12)',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
+              <div style={{background:'#f0edff',border:'1px solid #e8e4ff',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
                 <p style={{color:'#6d5ce0',fontSize:'22px',fontWeight:700}}>{desenvolvendo}</p>
                 <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>🔧 Desenvolvendo</p>
               </div>
@@ -184,7 +184,7 @@ export default function ProjetosPage() {
                 const expanded = expandedId===item.id
                 const sc = statusColor[item.status]||'#888'
                 return (
-                  <div key={item.id} style={{borderRadius:'14px',background:'#fff',border:`1px solid ${item.status==='🔧 Desenvolvendo'?'rgba(124,111,247,0.2)':item.status==='💡 Ideia'?'rgba(212,184,74,0.15)':'rgba(255,255,255,0.07)'}`,overflow:'hidden'}}>
+                  <div key={item.id} style={{borderRadius:'14px',background:'#fff',border:`1px solid ${item.status==='🔧 Desenvolvendo'?'#d4cdff':item.status==='💡 Ideia'?'#ffefb3':'#f0f0f3'}`,overflow:'hidden'}}>
                     {/* Cabeçalho do card */}
                     <div style={{display:'flex',alignItems:'center',gap:'12px',padding:'16px',cursor:'pointer'}} onClick={()=>setExpandedId(expanded?null:item.id)}>
                       <div style={{width:'44px',height:'44px',borderRadius:'12px',background:`${sc}18`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'22px',flexShrink:0}}>
@@ -198,7 +198,7 @@ export default function ProjetosPage() {
                         </div>
                         {item.description && <p style={{color:'#333',fontSize:'15px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.description}</p>}
                         {item.inspiration_url && (
-                          <a href={item.inspiration_url} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{display:'inline-flex',alignItems:'center',gap:'4px',color:'rgba(124,111,247,0.8)',fontSize:'15px',marginTop:'4px',textDecoration:'none'}}>
+                          <a href={item.inspiration_url} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{display:'inline-flex',alignItems:'center',gap:'4px',color:'#5b50d6',fontSize:'15px',marginTop:'4px',textDecoration:'none'}}>
                             🔗 Ver inspiração
                           </a>
                         )}
@@ -220,7 +220,7 @@ export default function ProjetosPage() {
                           </div>
                         )}
                         {item.inspiration_url && (
-                          <div style={{background:'rgba(124,111,247,0.06)',borderRadius:'10px',padding:'12px',marginBottom:'12px'}}>
+                          <div style={{background:'#f0edff',borderRadius:'10px',padding:'12px',marginBottom:'12px'}}>
                             <p style={{color:'#555',fontSize:'12px',marginBottom:'6px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Link de Inspiração</p>
                             <a href={item.inspiration_url} target="_blank" rel="noopener noreferrer" style={{color:'#6d5ce0',fontSize:'15px',wordBreak:'break-all'}}>{item.inspiration_url}</a>
                           </div>
@@ -234,7 +234,7 @@ export default function ProjetosPage() {
                             ))}
                           </div>
                         </div>
-                        <p style={{color:'rgba(255,255,255,0.15)',fontSize:'12px',marginTop:'12px'}}>Criado em: {new Date(item.created_at).toLocaleDateString('pt-BR')}</p>
+                        <p style={{color:'#e5e5e5',fontSize:'12px',marginTop:'12px'}}>Criado em: {new Date(item.created_at).toLocaleDateString('pt-BR')}</p>
                       </div>
                     )}
                   </div>
