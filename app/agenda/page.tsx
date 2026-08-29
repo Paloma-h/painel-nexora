@@ -62,17 +62,20 @@ export default function AgendaPage() {
     if (!taskForm.title.trim() || !selectedDay) return
     setSaving(true)
     const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(selectedDay).padStart(2,'0')}`
-    const data: any = {title:taskForm.title.trim(),date:dateStr,time:taskForm.time||null,notes:taskForm.notes||null,location:taskForm.location||null,priority:taskForm.priority,type:'task',is_recurring:taskForm.is_recurring,recurrence:taskForm.is_recurring?taskForm.recurrence:null,status:'PENDING',user_id:USER_ID}
+    const data: any = {title:taskForm.title.trim(),date:dateStr,time:taskForm.time||null,notes:taskForm.notes||null,priority:taskForm.priority,type:'task',is_recurring:taskForm.is_recurring,recurrence:taskForm.is_recurring?taskForm.recurrence:null,status:'PENDING',user_id:USER_ID}
+    if (taskForm.location) data.location = taskForm.location
     if (taskForm.has_financial && taskForm.amount) {
       data.amount = parseFloat(taskForm.amount)
       data.financial_type = taskForm.financial_type
       data.financial_category = taskForm.financial_category
     }
     if (editingTask) {
-      await supabase.from('tasks').update(data).eq('id', editingTask.id)
+      const { error: upErr } = await supabase.from('tasks').update(data).eq('id', editingTask.id)
+      if (upErr && data.location !== undefined) { delete data.location; await supabase.from('tasks').update(data).eq('id', editingTask.id) }
     } else {
       data.id = crypto.randomUUID()
-      await supabase.from('tasks').insert(data)
+      const { error: insErr } = await supabase.from('tasks').insert(data)
+      if (insErr && data.location !== undefined) { delete data.location; await supabase.from('tasks').insert(data) }
       if (taskForm.is_recurring && taskForm.recurrence) {
         const occurrences = []
         for (let i = 1; i <= 12; i++) {
