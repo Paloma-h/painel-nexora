@@ -214,7 +214,7 @@ export default function EducacaoPage() {
                       </div>
                       <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
                         {item.url && <a href={item.url} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'#fff',border:'2px solid #7c3aed',borderRadius:'7px',color:'#5b21b6',fontSize:'13px',textDecoration:'none',fontWeight:600}}>🔗 Curso</a>}
-                        {item.affiliate_url && <a href={item.affiliate_url} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'#fff',border:'2px solid #16a34a',borderRadius:'7px',color:'#166534',fontSize:'13px',textDecoration:'none',fontWeight:600}}>💰 Afiliado</a>}
+                        {item.affiliate_url && <button onClick={e=>{e.stopPropagation();setExpandedId(expanded?null:item.id)}} style={{padding:'5px 9px',background:'#fff',border:'2px solid #16a34a',borderRadius:'7px',color:'#166534',fontSize:'13px',cursor:'pointer',fontWeight:600}}>💰 Afiliados</button>}
                         <button onClick={e=>{e.stopPropagation();openEdit(item)}} style={{padding:'5px 9px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Editar</button>
                         <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'#fff',border:'none',borderRadius:'7px',color:'#dc2626',fontSize:'15px',cursor:'pointer'}}>✕</button>
                         <span style={{color:'#555',fontSize:'15px'}}>{expanded?'▲':'▼'}</span>
@@ -223,7 +223,20 @@ export default function EducacaoPage() {
 
                     {/* Detalhes expandidos */}
                     {expanded && (
-                      <div style={{borderTop:'2px solid #bbb',padding:'14px 16px',background:'rgba(0,0,0,0.2)'}}>
+                      <div style={{borderTop:'2px solid #bbb',padding:'14px 16px',background:'#f9f9fb'}}>
+                        {item.affiliate_url && (
+                          <div style={{marginBottom:'12px',background:'#fff',borderRadius:'10px',padding:'12px',border:'2px solid #16a34a'}}>
+                            <p style={{color:'#166534',fontSize:'13px',fontWeight:700,marginBottom:'8px',textTransform:'uppercase',letterSpacing:'0.5px'}}>💰 Links de Afiliados</p>
+                            <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
+                              {item.affiliate_url.split('\n').map((line:string,i:number) => {
+                                const trimmed = line.trim()
+                                if (!trimmed) return null
+                                if (trimmed.startsWith('http')) return <a key={i} href={trimmed} target="_blank" rel="noopener noreferrer" style={{color:'#7c3aed',fontSize:'14px',fontWeight:600,textDecoration:'underline',wordBreak:'break-all'}}>{trimmed}</a>
+                                return <p key={i} style={{color:'#111',fontSize:'14px',fontWeight:700,marginTop:i>0?'6px':'0'}}>{trimmed}</p>
+                              })}
+                            </div>
+                          </div>
+                        )}
                         <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'12px',marginBottom:'12px'}}>
                           <div style={{background:'#fff',borderRadius:'10px',padding:'12px',textAlign:'center'}}>
                             <p style={{color:'#444',fontSize:'12px',marginBottom:'4px'}}>Módulo atual</p>
