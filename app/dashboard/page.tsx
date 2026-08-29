@@ -121,7 +121,7 @@ export default function DashboardPage() {
   )
 
   if (loading) return (
-    <div style={{display:'flex',minHeight:'100vh',background:'#f5f5f7',fontFamily:'system-ui,sans-serif'}}>
+    <div style={{display:'flex',minHeight:'100vh',background:'#f5f5f7'}}>
       <Sidebar />
       <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center'}}>
         <p style={{color:'#999'}}>Carregando...</p>
@@ -130,7 +130,7 @@ export default function DashboardPage() {
   )
 
   return (
-    <div style={{display:'flex',minHeight:'100vh',background:'#f5f5f7',fontFamily:'system-ui,sans-serif'}}>
+    <div style={{display:'flex',minHeight:'100vh',background:'#f5f5f7'}}>
       <Sidebar />
       <div style={{flex:1,padding:'36px 40px',overflowY:'auto',minWidth:0}}>
         <div style={{maxWidth:'960px',margin:'0 auto'}}>

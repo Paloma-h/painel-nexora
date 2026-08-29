@@ -168,7 +168,7 @@ export default function FinanceiroPage() {
   const tabs = [{id:'visao',label:'Visão Geral'},{id:'lancamentos',label:'Lançamentos'},{id:'cartoes',label:'Cartões'},{id:'contas',label:'Contas a Pagar'},{id:'investimentos',label:'Investimentos'},{id:'ativos',label:'Ativos'}]
 
   return (
-    <div style={{display:'flex',minHeight:'100vh',background:'#f5f5f7',fontFamily:'system-ui,sans-serif'}}>
+    <div style={{display:'flex',minHeight:'100vh',background:'#f5f5f7'}}>
       <Sidebar />
       <div style={{flex:1,display:'flex',flexDirection:'column',overflowY:'auto'}}>
         <div style={{background:'#f8f8fa',borderBottom:'1px solid #e5e5ea',padding:'0 28px',display:'flex',gap:'4px',alignItems:'center',flexShrink:0}}>

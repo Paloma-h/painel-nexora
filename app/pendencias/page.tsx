@@ -95,7 +95,7 @@ export default function PendenciasPage() {
   const pColor: any = { CRITICAL:'#e05252', HIGH:'#e08c42', MEDIUM:'#d4b84a', LOW:'#4caf7d' }
 
   return (
-    <div style={{display:'flex',minHeight:'100vh',background:'#f5f5f7',fontFamily:'system-ui,sans-serif'}}>
+    <div style={{display:'flex',minHeight:'100vh',background:'#f5f5f7'}}>
       <Sidebar />
       <div style={{flex:1,padding:'32px',overflowY:'auto'}}>
         <div style={{maxWidth:'680px',margin:'0 auto'}}>

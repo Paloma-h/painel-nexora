@@ -64,7 +64,7 @@ export default function DesejosPage() {
     return Math.round(((item.current_price-item.target_price)/item.current_price)*100)
   }
   return (
-    <div style={{display:'flex',minHeight:'100vh',background:'#f5f5f7',fontFamily:'system-ui,sans-serif'}}>
+    <div style={{display:'flex',minHeight:'100vh',background:'#f5f5f7'}}>
       <Sidebar />
       <div style={{flex:1,padding:'28px 32px',overflowY:'auto'}}>
         <div style={{maxWidth:'860px',margin:'0 auto'}}>

@@ -450,7 +450,7 @@ export default function SaudePage() {
   const [tab, setTab] = useState('atividades')
 
   return (
-    <div style={{display:'flex',minHeight:'100vh',background:'#f5f5f7',fontFamily:'system-ui,sans-serif'}}>
+    <div style={{display:'flex',minHeight:'100vh',background:'#f5f5f7'}}>
       <Sidebar />
       <div style={{flex:1,display:'flex',flexDirection:'column',overflowY:'auto'}}>
         {/* Tabs */}

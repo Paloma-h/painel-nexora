@@ -102,7 +102,7 @@ export default function ProjetosPage() {
   const concluidos = projetos.filter(p=>p.status==='✅ Concluído').length
 
   return (
-    <div style={{display:'flex',minHeight:'100vh',background:'#f5f5f7',fontFamily:'system-ui,sans-serif'}}>
+    <div style={{display:'flex',minHeight:'100vh',background:'#f5f5f7'}}>
       <Sidebar />
       <div style={{flex:1,padding:'28px 32px',overflowY:'auto'}}>
         <div style={{maxWidth:'860px',margin:'0 auto'}}>
