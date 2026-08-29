@@ -283,7 +283,7 @@ export default function EducacaoPage() {
               </div>
 
               <Fld label="🔗 Link do curso"><input placeholder="https://..." value={form.url} onChange={e=>setForm((f:any)=>({...f,url:e.target.value}))} style={inp}/></Fld>
-              <Fld label="💰 Link de afiliados"><input placeholder="https://link-de-afiliado..." value={form.affiliate_url} onChange={e=>setForm((f:any)=>({...f,affiliate_url:e.target.value}))} style={inp}/></Fld>
+              <Fld label="💰 Links de afiliados"><textarea placeholder={"1 pote\nhttps://link...\n2 potes\nhttps://link..."} value={form.affiliate_url} onChange={e=>setForm((f:any)=>({...f,affiliate_url:e.target.value}))} style={{...inp,resize:'vertical',minHeight:'120px',lineHeight:'1.6',whiteSpace:'pre-wrap'}}/></Fld>
 
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
                 <Fld label="Instrutor"><input placeholder="Nome do instrutor" value={form.instructor} onChange={e=>setForm((f:any)=>({...f,instructor:e.target.value}))} style={inp}/></Fld>
