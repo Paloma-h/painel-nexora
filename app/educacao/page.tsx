@@ -23,6 +23,7 @@ const STATUS_LIST = ['Em andamento','Pausado','Concluído','Não iniciado']
 
 const EMPTY = {
   name:'', platform:'Udemy', category:'Marketing', url:'',
+  affiliate_url:'',
   links:[] as {label:string,url:string}[],
   instructor:'', total_modules:'', total_lessons:'',
   current_module:'', current_lesson:'', current_module_name:'',
@@ -62,7 +63,7 @@ export default function EducacaoPage() {
     setEditing(item)
     setForm({
       name:item.name, platform:item.platform||'Udemy', category:item.category||'Marketing',
-      url:item.url||'', links:item.links||[],
+      url:item.url||'', affiliate_url:item.affiliate_url||'', links:item.links||[],
       instructor:item.instructor||'',
       total_modules:item.total_modules?.toString()||'',
       total_lessons:item.total_lessons?.toString()||'',
@@ -82,7 +83,8 @@ export default function EducacaoPage() {
     const now = new Date().toISOString()
     const data: any = {
       name:form.name.trim(), platform:form.platform, category:form.category,
-      url:form.url||null, links:form.links&&form.links.length>0?form.links:null,
+      url:form.url||null, affiliate_url:form.affiliate_url||null,
+      links:form.links&&form.links.length>0?form.links:null,
       instructor:form.instructor||null,
       total_modules:form.total_modules?parseInt(form.total_modules):null,
       total_lessons:form.total_lessons?parseInt(form.total_lessons):null,
@@ -210,7 +212,8 @@ export default function EducacaoPage() {
                         )}
                       </div>
                       <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
-                        {item.url && <a href={item.url} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'#fff',border:'2px solid #7c3aed',borderRadius:'7px',color:'#5b21b6',fontSize:'15px',textDecoration:'none'}}>Abrir</a>}
+                        {item.url && <a href={item.url} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'#fff',border:'2px solid #7c3aed',borderRadius:'7px',color:'#5b21b6',fontSize:'13px',textDecoration:'none',fontWeight:600}}>🔗 Curso</a>}
+                        {item.affiliate_url && <a href={item.affiliate_url} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{padding:'5px 9px',background:'#fff',border:'2px solid #16a34a',borderRadius:'7px',color:'#166534',fontSize:'13px',textDecoration:'none',fontWeight:600}}>💰 Afiliado</a>}
                         <button onClick={e=>{e.stopPropagation();openEdit(item)}} style={{padding:'5px 9px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Editar</button>
                         <button onClick={e=>{e.stopPropagation();remove(item.id)}} style={{padding:'5px 8px',background:'#fff',border:'none',borderRadius:'7px',color:'#dc2626',fontSize:'15px',cursor:'pointer'}}>✕</button>
                         <span style={{color:'#555',fontSize:'15px'}}>{expanded?'▲':'▼'}</span>
@@ -278,12 +281,13 @@ export default function EducacaoPage() {
                 <Fld label="Categoria"><select value={form.category} onChange={e=>setForm((f:any)=>({...f,category:e.target.value}))} style={sel}>{CATEGORIES.map(c=><option key={c}>{c}</option>)}</select></Fld>
               </div>
 
+              <Fld label="🔗 Link do curso"><input placeholder="https://..." value={form.url} onChange={e=>setForm((f:any)=>({...f,url:e.target.value}))} style={inp}/></Fld>
+              <Fld label="💰 Link de afiliados"><input placeholder="https://link-de-afiliado..." value={form.affiliate_url} onChange={e=>setForm((f:any)=>({...f,affiliate_url:e.target.value}))} style={inp}/></Fld>
+
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
                 <Fld label="Instrutor"><input placeholder="Nome do instrutor" value={form.instructor} onChange={e=>setForm((f:any)=>({...f,instructor:e.target.value}))} style={inp}/></Fld>
                 <Fld label="Status"><select value={form.status} onChange={e=>setForm((f:any)=>({...f,status:e.target.value}))} style={sel}>{STATUS_LIST.map(s=><option key={s}>{s}</option>)}</select></Fld>
               </div>
-
-              <Fld label="Link do curso"><input placeholder="https://..." value={form.url} onChange={e=>setForm((f:any)=>({...f,url:e.target.value}))} style={inp}/></Fld>
 
               {/* Links extras */}
               <div style={{border:'2px solid #a78bfa',borderRadius:'12px',padding:'12px',background:'#faf8ff'}}>
