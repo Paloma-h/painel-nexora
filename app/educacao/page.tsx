@@ -296,7 +296,7 @@ export default function EducacaoPage() {
                   <p style={{color:'#5b21b6',fontSize:'13px',fontWeight:700,textTransform:'uppercase',letterSpacing:'0.5px'}}>🔗 Links adicionais</p>
                   <button type="button" onClick={()=>setForm((f:any)=>({...f,links:[...(f.links||[]),{label:'',url:''}]}))} style={{padding:'4px 12px',background:'#7c3aed',border:'none',borderRadius:'8px',color:'#fff',fontSize:'13px',fontWeight:600,cursor:'pointer'}}>+ Adicionar link</button>
                 </div>
-                {(form.links||[]).length===0 && <p style={{color:'#888',fontSize:'13px',fontStyle:'italic'}}>Nenhum link adicional. Clique em "+ Adicionar link" para incluir.</p>}
+                {(form.links||[]).length===0 && <p style={{color:'#888',fontSize:'13px',fontStyle:'italic'}}>Nenhum link adicional. Clique em &quot;+ Adicionar link&quot; para incluir.</p>}
                 {(form.links||[]).map((link:any,i:number)=>(
                   <div key={i} style={{display:'flex',gap:'8px',marginBottom:'6px',alignItems:'center'}}>
                     <input placeholder="Nome (ex: Material, Aula 5)" value={link.label} onChange={e=>{const links=[...(form.links||[])];links[i]={...links[i],label:e.target.value};setForm((f:any)=>({...f,links}))}} style={{...inp,width:'35%'}}/>
