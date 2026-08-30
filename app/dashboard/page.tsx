@@ -203,50 +203,27 @@ export default function DashboardPage() {
             </div>
           )}
 
-          {/* Alertas críticos */}
+          {/* Alertas discretos */}
           {(alertClients.length > 0 || todayFollowups.length > 0) && (
-            <div style={{marginBottom:'24px',background:'#fff',border:'2px solid #f87171',borderRadius:'14px',padding:'16px'}}>
-              <SectionTitle label="⚡ Ação necessária hoje" color="#e05252" />
-              <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
+            <div style={{marginBottom:'20px',background:'#f9f9fb',border:'1px solid #e5e5ea',borderRadius:'10px',padding:'12px 14px'}}>
+              <p style={{color:'#888',fontSize:'12px',fontWeight:700,textTransform:'uppercase',letterSpacing:'1px',marginBottom:'8px'}}>Lembretes</p>
+              <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
                 {todayFollowups.map(l => (
-                  <div key={l.id} style={{display:'flex',alignItems:'center',gap:'10px',padding:'10px 12px',borderRadius:'10px',background:'#fff',border:'2px solid #a78bfa'}}>
-                    <div style={{width:'30px',height:'30px',borderRadius:'50%',background:'#c4b5fd',display:'flex',alignItems:'center',justifyContent:'center',color:'#5b21b6',fontWeight:700,fontSize:'15px',flexShrink:0}}>{l.name.charAt(0).toUpperCase()}</div>
-                    <div style={{flex:1}}>
-                      <p style={{color:'#111',fontSize:'15px',fontWeight:500}}>{l.name}</p>
-                      <p style={{color:'#6d28d9',fontSize:'12px'}}>Follow-up CRM{l.followup_notes?` · ${l.followup_notes}`:''}</p>
-                    </div>
-                    {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{padding:'4px 9px',background:'#fff',border:'2px solid #22c55e',borderRadius:'6px',color:'#16a34a',fontSize:'15px',textDecoration:'none',fontWeight:600}}>WhatsApp</a>}
+                  <div key={l.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'6px 8px',borderRadius:'8px',background:'#fff',border:'1px solid #e5e5ea'}}>
+                    <span style={{color:'#7c3aed',fontSize:'13px',fontWeight:600}}>👥</span>
+                    <p style={{flex:1,color:'#333',fontSize:'13px'}}>Follow-up: {l.name}</p>
+                    {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'12px',textDecoration:'none',fontWeight:600}}>WhatsApp</a>}
                   </div>
                 ))}
                 {alertClients.map(c => {
                   const d = daysLeft(c)
                   const isOver = d !== null && d <= 0
-                  const prodEstoque = findEstoque(c.product)
-                  const temEstoque = prodEstoque && prodEstoque.quantity > 0
                   return (
-                    <div key={c.id} style={{padding:'12px 14px',borderRadius:'10px',background:isOver?'#fff0f0':'#fff5eb',border:`1px solid ${isOver?'#ffc8c8':'#ffe8d0'}`}}>
-                      <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
-                        <div style={{width:'32px',height:'32px',borderRadius:'50%',background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',color:'#15803d',fontWeight:700,fontSize:'15px',flexShrink:0}}>{c.name.charAt(0).toUpperCase()}</div>
-                        <div style={{flex:1}}>
-                          <p style={{color:'#111',fontSize:'15px',fontWeight:600}}>{c.name}</p>
-                          <p style={{color:'#333',fontSize:'12px',marginTop:'2px'}}>Cliente · Comprou {c.pots_bought} {c.pots_bought===1?'pote':'potes'}</p>
-                        </div>
-                        <span style={{color:isOver?'#e05252':'#e08c42',fontSize:'15px',fontWeight:700}}>{isOver?'Potes acabaram!':d===0?'Acaba hoje':`${d} dias`}</span>
-                      </div>
-                      <div style={{display:'flex',alignItems:'center',gap:'8px',marginTop:'8px',paddingLeft:'42px'}}>
-                        <span style={{background:'#fff',border:'2px solid #7c3aed',borderRadius:'6px',padding:'3px 8px',color:'#5b21b6',fontSize:'12px',fontWeight:600}}>📦 {c.product}</span>
-                        {prodEstoque ? (
-                          <span style={{background:temEstoque?'#ddf5e8':'#ffe0e0',border:`1px solid ${temEstoque?'#c0ebd3':'#ffc8c8'}`,borderRadius:'6px',padding:'3px 8px',color:temEstoque?'#4caf7d':'#e05252',fontSize:'12px',fontWeight:600}}>
-                            {temEstoque ? `✅ ${prodEstoque.quantity} em estoque` : '❌ Sem estoque — pedir ao fornecedor'}
-                          </span>
-                        ) : (
-                          <span style={{background:'#fff0b3',border:'2px solid #eab308',borderRadius:'6px',padding:'3px 8px',color:'#854d0e',fontSize:'12px',fontWeight:600}}>⚠️ Produto não cadastrado no estoque</span>
-                        )}
-                      </div>
-                      <div style={{display:'flex',gap:'6px',marginTop:'8px',paddingLeft:'42px'}}>
-                        {c.whatsapp && <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{padding:'5px 10px',background:'#fff',border:'2px solid #22c55e',borderRadius:'6px',color:'#16a34a',fontSize:'15px',textDecoration:'none',fontWeight:600}}>💬 WhatsApp</a>}
-                        <Link href="/crm" style={{padding:'5px 10px',background:'#fff',border:'2px solid #7c3aed',borderRadius:'6px',color:'#5b21b6',fontSize:'15px',textDecoration:'none',fontWeight:600}}>📋 Ver no CRM</Link>
-                      </div>
+                    <div key={c.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'6px 8px',borderRadius:'8px',background:'#fff',border:'1px solid #e5e5ea'}}>
+                      <span style={{color:isOver?'#dc2626':'#ea580c',fontSize:'13px'}}>📦</span>
+                      <p style={{flex:1,color:'#333',fontSize:'13px'}}>{c.name} — {isOver?'potes acabaram':d===0?'acaba hoje':`${d} dias restantes`} ({c.product})</p>
+                      {c.whatsapp && <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'12px',textDecoration:'none',fontWeight:600}}>WhatsApp</a>}
+                      <Link href="/crm" style={{color:'#5b21b6',fontSize:'12px',textDecoration:'none',fontWeight:600}}>CRM</Link>
                     </div>
                   )
                 })}
