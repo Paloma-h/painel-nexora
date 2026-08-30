@@ -4,11 +4,12 @@ import { usePathname, useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import {
   LayoutDashboard, Calendar, Zap, Users, DollarSign,
-  FolderOpen, Heart, BookOpen, LogOut, Shield, Tv, ShoppingCart,
+  FolderOpen, Heart, BookOpen, LogOut, Shield, Tv, ShoppingCart, Bot,
 } from 'lucide-react'
 
 const NAV_MAIN = [
   { href: '/dashboard',  label: 'Dashboard',     Icon: LayoutDashboard },
+  { href: '/ia',          label: 'NORA IA',        Icon: Bot             },
   { href: '/agenda',     label: 'Agenda',         Icon: Calendar        },
   { href: '/pendencias', label: 'Pendências',     Icon: Zap             },
   { href: '/crm',        label: 'CRM',            Icon: Users           },
