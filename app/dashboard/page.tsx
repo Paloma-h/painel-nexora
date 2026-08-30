@@ -332,14 +332,14 @@ export default function DashboardPage() {
                     {overdueBills.map(b => (
                       <div key={b.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'8px',background:'#fef2f2',border:'1px solid #fecaca'}}>
                         <span style={{fontSize:'12px'}}>🔴</span>
-                        <p style={{flex:1,color:'#111',fontSize:'14px'}}>{b.name}</p>
+                        <p style={{flex:1,color:'#111',fontSize:'14px'}}>{b.title || b.name || 'Sem nome'}</p>
                         {b.amount > 0 && <span style={{color:'#dc2626',fontSize:'14px',fontWeight:700}}>R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
                       </div>
                     ))}
                     {upcomingBills.map(b => (
                       <div key={b.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'8px',background:'#fff',border:'1px solid #f0f0f0'}}>
                         <span style={{fontSize:'12px'}}>🟡</span>
-                        <p style={{flex:1,color:'#111',fontSize:'14px'}}>{b.name} · {formatDate(b.due_date)}</p>
+                        <p style={{flex:1,color:'#111',fontSize:'14px'}}>{b.title || b.name || 'Sem nome'} · {formatDate(b.due_date)}</p>
                         {b.amount > 0 && <span style={{color:'#854d0e',fontSize:'14px',fontWeight:700}}>R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>}
                       </div>
                     ))}
