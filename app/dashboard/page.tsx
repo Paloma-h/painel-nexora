@@ -49,10 +49,12 @@ export default function DashboardPage() {
   // Todos os compromissos não cumpridos (atrasados + hoje + futuros) em ordem cronológica
   const allPending = tasks.filter(t => t.status !== 'DONE' && t.date).sort((a,b) => a.date.localeCompare(b.date))
 
-  // Próximas tarefas (próximos 7 dias)
+  // Próximas tarefas (próximos 14 dias)
   const next7 = new Date(today); next7.setDate(today.getDate() + 7)
   const next7Str = next7.toISOString().split('T')[0]
-  const upcomingTasks = tasks.filter(t => t.date > todayStr && t.date <= next7Str && t.status !== 'DONE')
+  const next14 = new Date(today); next14.setDate(today.getDate() + 14)
+  const next14Str = next14.toISOString().split('T')[0]
+  const upcomingTasks = tasks.filter(t => t.date > todayStr && t.date <= next14Str && t.status !== 'DONE').sort((a,b) => a.date.localeCompare(b.date))
 
   // Pendências urgentes (🔴 e 🟠)
   const urgentPendencias = pendencias.filter(p => p.priority === 'CRITICAL' || p.priority === 'HIGH')
@@ -161,6 +163,45 @@ export default function DashboardPage() {
               <p style={{color:todayFollowups.length>0?'#fff':'#999',fontSize:'32px',fontWeight:800,lineHeight:1}}>{todayFollowups.length}</p>
             </div>
           </div>
+
+          {/* Próximos Eventos */}
+          {upcomingTasks.length > 0 && (
+            <div style={{marginBottom:'24px'}}>
+              <SectionTitle label="📌 Próximos Eventos" color="#7c3aed" count={upcomingTasks.length} />
+              <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))',gap:'12px'}}>
+                {upcomingTasks.slice(0,8).map(t => {
+                  const d = new Date(t.date + 'T12:00:00')
+                  const diasRestantes = Math.ceil((d.getTime() - today.getTime()) / (1000*60*60*24))
+                  const diaSemana = dias[d.getDay()]
+                  const diaNum = d.getDate()
+                  const mesNome = meses[d.getMonth()]
+                  const corBorda = priorityColor[t.priority] || '#7c3aed'
+                  const isUrgent = t.priority === 'CRITICAL' || t.priority === 'HIGH'
+                  return (
+                    <div key={t.id} style={{background:'#fff',border:`2px solid ${corBorda}`,borderRadius:'14px',padding:'16px',display:'flex',gap:'14px',alignItems:'flex-start',boxShadow:isUrgent?`0 4px 16px ${corBorda}25`:'0 2px 8px rgba(0,0,0,0.04)'}}>
+                      <div style={{width:'56px',height:'56px',borderRadius:'12px',background:corBorda,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                        <span style={{color:'#fff',fontSize:'22px',fontWeight:800,lineHeight:1}}>{diaNum}</span>
+                        <span style={{color:'#fff',fontSize:'10px',fontWeight:600,opacity:0.9,textTransform:'uppercase'}}>{mesNome.slice(0,3)}</span>
+                      </div>
+                      <div style={{flex:1,minWidth:0}}>
+                        <p style={{color:'#111',fontSize:'15px',fontWeight:700,marginBottom:'4px'}}>{t.title}</p>
+                        <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
+                          <span style={{color:'#555',fontSize:'13px',fontWeight:600}}>{diaSemana}</span>
+                          {t.time && <span style={{color:'#7c3aed',fontSize:'13px',fontWeight:600}}>{t.time}</span>}
+                          <span style={{background:`${corBorda}15`,color:corBorda,fontSize:'11px',fontWeight:700,padding:'2px 8px',borderRadius:'6px'}}>
+                            {diasRestantes === 1 ? 'Amanhã' : `em ${diasRestantes} dias`}
+                          </span>
+                        </div>
+                        {t.notes && <p style={{color:'#666',fontSize:'12px',marginTop:'4px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.notes}</p>}
+                        {t.location && <p style={{color:'#16a34a',fontSize:'12px',marginTop:'2px'}}>📍 {t.location}</p>}
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+              {upcomingTasks.length > 8 && <p style={{color:'#7c3aed',fontSize:'13px',textAlign:'center',marginTop:'8px'}}>+{upcomingTasks.length-8} eventos · <Link href="/agenda" style={{color:'#5b21b6',textDecoration:'none',fontWeight:600}}>Ver agenda →</Link></p>}
+            </div>
+          )}
 
           {/* Alertas críticos */}
           {(alertClients.length > 0 || todayFollowups.length > 0) && (
