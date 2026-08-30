@@ -39,7 +39,7 @@ export default function DashboardPage() {
   }
 
   const today = new Date()
-  const todayStr = today.toISOString().split('T')[0]
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`
 
   // Tasks
   const todayTasks = tasks.filter(t => t.date === todayStr && t.status !== 'DONE')
@@ -51,9 +51,10 @@ export default function DashboardPage() {
 
   // Próximas tarefas (próximos 14 dias)
   const next7 = new Date(today); next7.setDate(today.getDate() + 7)
-  const next7Str = next7.toISOString().split('T')[0]
+  const fmtD = (d:Date) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`
+  const next7Str = fmtD(next7)
   const next14 = new Date(today); next14.setDate(today.getDate() + 14)
-  const next14Str = next14.toISOString().split('T')[0]
+  const next14Str = fmtD(next14)
   const upcomingTasks = tasks.filter(t => t.date > todayStr && t.date <= next14Str && t.status !== 'DONE').sort((a,b) => a.date.localeCompare(b.date))
 
   // Pendências urgentes (🔴 e 🟠)
@@ -109,7 +110,7 @@ export default function DashboardPage() {
     if (dateStr === todayStr) return 'Hoje'
     const d = new Date(dateStr + 'T12:00:00')
     const tomorrow = new Date(today); tomorrow.setDate(today.getDate()+1)
-    if (dateStr === tomorrow.toISOString().split('T')[0]) return 'Amanhã'
+    if (dateStr === fmtD(tomorrow)) return 'Amanhã'
     return d.toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit'})
   }
 
