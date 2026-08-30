@@ -78,7 +78,7 @@ export default function Sidebar() {
           </div>
           <span style={{ color: '#1a1a2e', fontWeight: 800, fontSize: '16px', letterSpacing: '1.5px' }}>NEXORA</span>
         </div>
-        <p style={{ color: '#999', fontSize: '10px', letterSpacing: '0.5px', paddingLeft: '36px' }}>Personal OS</p>
+{/* subtítulo removido */}
       </div>
 
       <nav style={{ flex: 1 }}>
