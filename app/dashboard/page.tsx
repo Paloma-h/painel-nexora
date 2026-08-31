@@ -54,8 +54,8 @@ export default function DashboardPage() {
   const overdueTasks = tasks.filter(t => t.date && t.date < todayStr && t.status !== 'DONE').sort((a,b) => a.date.localeCompare(b.date))
   const doneTasks = tasks.filter(t => t.date === todayStr && t.status === 'DONE')
 
-  // Foco do dia: top 3 (atrasadas urgentes > hoje > próximas)
-  const focusTasks = [...overdueTasks.filter(t=>t.priority==='CRITICAL'||t.priority==='HIGH'), ...todayTasks].slice(0,3)
+  // Foco do dia: todas de hoje + atrasadas urgentes
+  const focusTasks = [...todayTasks, ...overdueTasks.filter(t=>t.priority==='CRITICAL'||t.priority==='HIGH')]
 
   // Próximos 14 dias
   const next14 = new Date(today); next14.setDate(today.getDate() + 14)
