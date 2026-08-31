@@ -168,7 +168,7 @@ export default function AgendaPage() {
         }
       }
     }
-    load()
+    setEditingTask(null); setShowTaskForm(false); load()
   }
 
   const priorityColor: any = {CRITICAL:'#dc2626',HIGH:'#dc2626',MEDIUM:'#ca8a04',LOW:'#16a34a'}
