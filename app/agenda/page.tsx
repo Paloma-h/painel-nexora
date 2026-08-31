@@ -101,6 +101,11 @@ export default function AgendaPage() {
     setShowTaskForm(false); load()
   }
 
+  async function uncompleteTask(id: string) {
+    await supabase.from('tasks').update({status:'PENDING'}).eq('id', id)
+    setEditingTask(null); setShowTaskForm(false); load()
+  }
+
   async function completeTask(id: string) {
     const {data: task} = await supabase.from('tasks').select('*').eq('id',id).single()
     await supabase.from('tasks').update({status:'DONE'}).eq('id', id)
@@ -285,7 +290,11 @@ export default function AgendaPage() {
               )}
               <div style={{display:'flex',gap:'8px',marginTop:'4px'}}>
                 <button onClick={saveTask} disabled={!taskForm.title.trim()||saving} style={{flex:1,padding:'10px',background:'#7c3aed',border:'none',borderRadius:'10px',color:'#fff',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!taskForm.title.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
-                {editingTask && <button onClick={() => completeTask(editingTask.id)} style={{padding:'10px 14px',background:'#fff',border:'2px solid #16a34a',borderRadius:'10px',color:'#15803d',fontSize:'15px',cursor:'pointer'}}>Concluir</button>}
+                {editingTask && editingTask.status === 'DONE' ? (
+                  <button onClick={() => uncompleteTask(editingTask.id)} style={{padding:'10px 14px',background:'#fff',border:'2px solid #ca8a04',borderRadius:'10px',color:'#a16207',fontSize:'15px',cursor:'pointer'}}>Reabrir</button>
+                ) : editingTask ? (
+                  <button onClick={() => completeTask(editingTask.id)} style={{padding:'10px 14px',background:'#fff',border:'2px solid #16a34a',borderRadius:'10px',color:'#15803d',fontSize:'15px',cursor:'pointer'}}>Concluir</button>
+                ) : null}
                 {editingTask && <button onClick={() => deleteTask(editingTask.id)} style={{padding:'10px 14px',background:'#fff',border:'2px solid #ef4444',borderRadius:'10px',color:'#dc2626',fontSize:'15px',cursor:'pointer'}}>Apagar</button>}
               </div>
             </div>
