@@ -21,6 +21,44 @@ export default function DashboardPage() {
   const [showPendencias, setShowPendencias] = useState(false)
   const [showContas, setShowContas] = useState(false)
 
+  const today = new Date()
+  const fmtD = (d:Date) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`
+  const todayStr = fmtD(today)
+
+  // === CHECKLIST DIÁRIO ===
+  const checklistItems = {
+    pessoal: [
+      {id:'escova-manha',label:'Escovar dentes (manhã)',icon:'🪥'},
+      {id:'escova-almoco',label:'Escovar dentes (pós almoço)',icon:'🪥'},
+      {id:'escova-noite',label:'Escovar dentes (noite)',icon:'🪥'},
+      {id:'pentear',label:'Pentear cabelo',icon:'💇‍♀️'},
+      {id:'exercicio',label:'Exercício físico',icon:'🏋️‍♀️'},
+      {id:'agua',label:'Beber 3 litros de água',icon:'💧'},
+      {id:'skincare',label:'Skin care noturno',icon:'✨'},
+      {id:'oracao-manha',label:'Oração ao amanhecer',icon:'🙏'},
+      {id:'oracao-noite',label:'Oração ao dormir',icon:'🙏'},
+      {id:'pais',label:'Falar com pai e mãe',icon:'❤️'},
+      {id:'familia',label:'Dizer que amo esposo e filho',icon:'💕'},
+    ],
+    profissional: [
+      {id:'reel',label:'Postar 1 Reel',icon:'🎬'},
+      {id:'stories',label:'Postar 3 Stories',icon:'📱'},
+    ]
+  }
+  const checklistKey = `nexora-checklist-${todayStr}`
+  const [checklist, setChecklist] = useState<Record<string,boolean>>({})
+  useEffect(() => {
+    try { const saved = localStorage.getItem(checklistKey); if (saved) setChecklist(JSON.parse(saved)) } catch {}
+  }, [])
+  function toggleCheck(id:string) {
+    const next = {...checklist, [id]: !checklist[id]}
+    setChecklist(next)
+    try { localStorage.setItem(checklistKey, JSON.stringify(next)) } catch {}
+  }
+  const allCheckItems = [...checklistItems.pessoal,...checklistItems.profissional]
+  const checkDone = allCheckItems.filter(i=>checklist[i.id]).length
+  const checkTotal = allCheckItems.length
+
   useEffect(() => { load() }, [])
 
   async function load() {
@@ -42,9 +80,6 @@ export default function DashboardPage() {
     setLoading(false)
   }
 
-  const today = new Date()
-  const fmtD = (d:Date) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`
-  const todayStr = fmtD(today)
   const dias = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado']
   const meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro']
   const priorityColor: any = {CRITICAL:'#dc2626',HIGH:'#ea580c',MEDIUM:'#ca8a04',LOW:'#16a34a'}
@@ -284,6 +319,45 @@ export default function DashboardPage() {
               </div>
             </div>
           )}
+
+          {/* ━━━ CHECKLIST DIÁRIO ━━━ */}
+          <div style={{marginBottom:'12px',background:'#f0fdf4',borderRadius:'10px',padding:'12px',border:'1px solid #86efac'}}>
+            <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'8px'}}>
+              <h2 style={{color:'#166534',fontSize:'14px',fontWeight:800}}>✅ Checklist Diário</h2>
+              <span style={{color:'#16a34a',fontSize:'12px',fontWeight:600}}>{checkDone}/{checkTotal}</span>
+              {checkDone===checkTotal && checkTotal>0 && <span style={{background:'#16a34a',color:'#fff',fontSize:'10px',fontWeight:700,padding:'2px 8px',borderRadius:'10px'}}>🎉 Completo!</span>}
+              <div style={{flex:1}}/>
+              <div style={{width:'80px',height:'6px',background:'#dcfce7',borderRadius:'3px',overflow:'hidden'}}>
+                <div style={{width:`${checkTotal>0?(checkDone/checkTotal)*100:0}%`,height:'100%',background:'#16a34a',borderRadius:'3px',transition:'width 0.3s'}}/>
+              </div>
+            </div>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
+              {/* Pessoal */}
+              <div style={{background:'#fff',borderRadius:'8px',padding:'8px 10px',border:'1px solid #bbf7d0'}}>
+                <p style={{color:'#15803d',fontSize:'11px',fontWeight:800,marginBottom:'6px',letterSpacing:'0.5px'}}>💚 PESSOAL</p>
+                <div style={{display:'flex',flexDirection:'column',gap:'2px'}}>
+                  {checklistItems.pessoal.map(item => (
+                    <label key={item.id} onClick={()=>toggleCheck(item.id)} style={{display:'flex',alignItems:'center',gap:'6px',cursor:'pointer',padding:'3px 4px',borderRadius:'4px',background:checklist[item.id]?'#f0fdf4':'transparent',transition:'background 0.15s'}}>
+                      <span style={{width:'16px',height:'16px',borderRadius:'4px',border:checklist[item.id]?'none':'2px solid #86efac',background:checklist[item.id]?'#16a34a':'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:'10px',color:'#fff',transition:'all 0.15s'}}>{checklist[item.id]?'✓':''}</span>
+                      <span style={{fontSize:'11px',color:checklist[item.id]?'#999':'#333',textDecoration:checklist[item.id]?'line-through':'none',fontWeight:checklist[item.id]?400:500}}>{item.icon} {item.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+              {/* Profissional */}
+              <div style={{background:'#fff',borderRadius:'8px',padding:'8px 10px',border:'1px solid #c7d2fe'}}>
+                <p style={{color:'#4338ca',fontSize:'11px',fontWeight:800,marginBottom:'6px',letterSpacing:'0.5px'}}>💼 PROFISSIONAL</p>
+                <div style={{display:'flex',flexDirection:'column',gap:'2px'}}>
+                  {checklistItems.profissional.map(item => (
+                    <label key={item.id} onClick={()=>toggleCheck(item.id)} style={{display:'flex',alignItems:'center',gap:'6px',cursor:'pointer',padding:'3px 4px',borderRadius:'4px',background:checklist[item.id]?'#eef2ff':'transparent',transition:'background 0.15s'}}>
+                      <span style={{width:'16px',height:'16px',borderRadius:'4px',border:checklist[item.id]?'none':'2px solid #a5b4fc',background:checklist[item.id]?'#6366f1':'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:'10px',color:'#fff',transition:'all 0.15s'}}>{checklist[item.id]?'✓':''}</span>
+                      <span style={{fontSize:'11px',color:checklist[item.id]?'#999':'#333',textDecoration:checklist[item.id]?'line-through':'none',fontWeight:checklist[item.id]?400:500}}>{item.icon} {item.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
 
           {/* ━━━ RESUMO RÁPIDO (KPIs compactos) ━━━ */}
           <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'8px',marginBottom:'18px'}}>
