@@ -173,6 +173,33 @@ export default function DashboardPage() {
             </div>
           )}
 
+          {/* ━━━ LEMBRETES (logo abaixo do foco) ━━━ */}
+          {(alertClients.length > 0 || todayFollowups.length > 0) && (
+            <div style={{marginBottom:'16px',background:'#fff',borderRadius:'8px',padding:'10px 14px',border:'1px solid #e8e8ee'}}>
+              <p style={{color:'#888',fontSize:'11px',fontWeight:700,textTransform:'uppercase',letterSpacing:'1px',marginBottom:'6px'}}>📌 Lembretes</p>
+              <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
+                {todayFollowups.map(l => (
+                  <div key={l.id} style={{display:'flex',alignItems:'center',gap:'8px'}}>
+                    <span style={{fontSize:'13px'}}>👥</span>
+                    <p style={{flex:1,color:'#333',fontSize:'13px',fontWeight:500}}>Follow-up: {l.name}</p>
+                    {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'12px',textDecoration:'none',fontWeight:600}}>WA</a>}
+                  </div>
+                ))}
+                {alertClients.map(c => {
+                  const d = daysLeft(c)
+                  const isOver = d !== null && d <= 0
+                  return (
+                    <div key={c.id} style={{display:'flex',alignItems:'center',gap:'8px'}}>
+                      <span style={{fontSize:'13px'}}>📦</span>
+                      <p style={{flex:1,color:'#333',fontSize:'13px'}}>{c.name} — {isOver?'potes acabaram':`${d}d restantes`}</p>
+                      {c.whatsapp && <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'12px',textDecoration:'none',fontWeight:600}}>WA</a>}
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
           {/* ━━━ PRÓXIMOS EVENTOS ━━━ */}
           {upcomingTasks.length > 0 && (
             <div style={{marginBottom:'18px'}}>
@@ -230,33 +257,6 @@ export default function DashboardPage() {
 
           {/* ━━━ BLOCOS COLAPSÁVEIS ━━━ */}
           <div style={{display:'flex',flexDirection:'column',gap:'12px',marginBottom:'28px'}}>
-
-            {/* Lembretes (clientes + follow-ups) */}
-            {(alertClients.length > 0 || todayFollowups.length > 0) && (
-              <div style={{...card,padding:'14px 18px'}}>
-                <p style={{color:'#888',fontSize:'12px',fontWeight:700,textTransform:'uppercase',letterSpacing:'1px',marginBottom:'8px'}}>📌 Lembretes</p>
-                <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
-                  {todayFollowups.map(l => (
-                    <div key={l.id} style={{display:'flex',alignItems:'center',gap:'8px'}}>
-                      <span style={{fontSize:'14px'}}>👥</span>
-                      <p style={{flex:1,color:'#333',fontSize:'14px',fontWeight:500}}>Follow-up: {l.name}</p>
-                      {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'13px',textDecoration:'none',fontWeight:600}}>WhatsApp</a>}
-                    </div>
-                  ))}
-                  {alertClients.map(c => {
-                    const d = daysLeft(c)
-                    const isOver = d !== null && d <= 0
-                    return (
-                      <div key={c.id} style={{display:'flex',alignItems:'center',gap:'8px'}}>
-                        <span style={{fontSize:'14px'}}>📦</span>
-                        <p style={{flex:1,color:'#333',fontSize:'14px'}}>{c.name} — {isOver?'potes acabaram':`${d}d restantes`}</p>
-                        {c.whatsapp && <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'13px',textDecoration:'none',fontWeight:600}}>WA</a>}
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
 
             {/* Toggle: Agenda completa */}
             <div style={card}>
