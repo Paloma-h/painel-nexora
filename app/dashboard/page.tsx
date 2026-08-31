@@ -151,55 +151,6 @@ export default function DashboardPage() {
             )}
           </div>
 
-          {/* ━━━ FOCO DO DIA ━━━ */}
-          {focusTasks.length > 0 && (
-            <div style={{marginBottom:'16px'}}>
-              <p style={{color:'#888',fontSize:'11px',fontWeight:700,textTransform:'uppercase',letterSpacing:'1px',marginBottom:'6px'}}>🎯 Foco do Dia</p>
-              <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
-                {focusTasks.map(t => {
-                  const cor = priorityColor[t.priority] || '#7c3aed'
-                  const isOverdue = t.date < todayStr
-                  return (
-                    <div key={t.id} style={{background:'#fff',borderRadius:'8px',padding:'10px 14px',border:'1px solid #e8e8ee',borderLeft:`4px solid ${cor}`,display:'flex',alignItems:'center',gap:'10px'}}>
-                      <button onClick={()=>completeTask(t.id)} style={{width:'22px',height:'22px',borderRadius:'50%',border:`2px solid ${cor}`,background:'transparent',cursor:'pointer',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',color:cor,fontSize:'11px',fontWeight:700}}>✓</button>
-                      <span style={{color:'#111',fontSize:'14px',fontWeight:700,flex:1}}>{t.title}</span>
-                      {t.time && <span style={{color:'#7c3aed',fontSize:'12px',fontWeight:600}}>{t.time}</span>}
-                      <span style={{color:'#888',fontSize:'12px'}}>{formatDate(t.date)}</span>
-                      {isOverdue && <span style={{background:'#dc2626',color:'#fff',fontSize:'9px',fontWeight:700,padding:'2px 6px',borderRadius:'4px'}}>ATRASADA</span>}
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          )}
-
-          {/* ━━━ LEMBRETES (logo abaixo do foco) ━━━ */}
-          {(alertClients.length > 0 || todayFollowups.length > 0) && (
-            <div style={{marginBottom:'16px',background:'#fff',borderRadius:'8px',padding:'10px 14px',border:'1px solid #e8e8ee'}}>
-              <p style={{color:'#888',fontSize:'11px',fontWeight:700,textTransform:'uppercase',letterSpacing:'1px',marginBottom:'6px'}}>📌 Lembretes</p>
-              <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
-                {todayFollowups.map(l => (
-                  <div key={l.id} style={{display:'flex',alignItems:'center',gap:'8px'}}>
-                    <span style={{fontSize:'13px'}}>👥</span>
-                    <p style={{flex:1,color:'#333',fontSize:'13px',fontWeight:500}}>Follow-up: {l.name}</p>
-                    {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'12px',textDecoration:'none',fontWeight:600}}>WA</a>}
-                  </div>
-                ))}
-                {alertClients.map(c => {
-                  const d = daysLeft(c)
-                  const isOver = d !== null && d <= 0
-                  return (
-                    <div key={c.id} style={{display:'flex',alignItems:'center',gap:'8px'}}>
-                      <span style={{fontSize:'13px'}}>📦</span>
-                      <p style={{flex:1,color:'#333',fontSize:'13px'}}>{c.name} — {isOver?'potes acabaram':`${d}d restantes`}</p>
-                      {c.whatsapp && <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'12px',textDecoration:'none',fontWeight:600}}>WA</a>}
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          )}
-
           {/* ━━━ PRÓXIMOS EVENTOS ━━━ */}
           {upcomingTasks.length > 0 && (
             <div style={{marginBottom:'18px'}}>
@@ -235,6 +186,55 @@ export default function DashboardPage() {
                   Ver todos os {upcomingTasks.length} eventos →
                 </Link>
               )}
+            </div>
+          )}
+
+          {/* ━━━ FOCO DO DIA ━━━ */}
+          {focusTasks.length > 0 && (
+            <div style={{marginBottom:'16px'}}>
+              <p style={{color:'#888',fontSize:'11px',fontWeight:700,textTransform:'uppercase',letterSpacing:'1px',marginBottom:'6px'}}>🎯 Foco do Dia</p>
+              <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
+                {focusTasks.map(t => {
+                  const cor = priorityColor[t.priority] || '#7c3aed'
+                  const isOverdue = t.date < todayStr
+                  return (
+                    <div key={t.id} style={{background:'#fff',borderRadius:'8px',padding:'10px 14px',border:'1px solid #e8e8ee',borderLeft:`4px solid ${cor}`,display:'flex',alignItems:'center',gap:'10px'}}>
+                      <button onClick={()=>completeTask(t.id)} style={{width:'22px',height:'22px',borderRadius:'50%',border:`2px solid ${cor}`,background:'transparent',cursor:'pointer',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',color:cor,fontSize:'11px',fontWeight:700}}>✓</button>
+                      <span style={{color:'#111',fontSize:'14px',fontWeight:700,flex:1}}>{t.title}</span>
+                      {t.time && <span style={{color:'#7c3aed',fontSize:'12px',fontWeight:600}}>{t.time}</span>}
+                      <span style={{color:'#888',fontSize:'12px'}}>{formatDate(t.date)}</span>
+                      {isOverdue && <span style={{background:'#dc2626',color:'#fff',fontSize:'9px',fontWeight:700,padding:'2px 6px',borderRadius:'4px'}}>ATRASADA</span>}
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* ━━━ LEMBRETES ━━━ */}
+          {(alertClients.length > 0 || todayFollowups.length > 0) && (
+            <div style={{marginBottom:'16px',background:'#fff',borderRadius:'8px',padding:'10px 14px',border:'1px solid #e8e8ee'}}>
+              <p style={{color:'#888',fontSize:'11px',fontWeight:700,textTransform:'uppercase',letterSpacing:'1px',marginBottom:'6px'}}>📌 Lembretes</p>
+              <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
+                {todayFollowups.map(l => (
+                  <div key={l.id} style={{display:'flex',alignItems:'center',gap:'8px'}}>
+                    <span style={{fontSize:'13px'}}>👥</span>
+                    <p style={{flex:1,color:'#333',fontSize:'13px',fontWeight:500}}>Follow-up: {l.name}</p>
+                    {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'12px',textDecoration:'none',fontWeight:600}}>WA</a>}
+                  </div>
+                ))}
+                {alertClients.map(c => {
+                  const d = daysLeft(c)
+                  const isOver = d !== null && d <= 0
+                  return (
+                    <div key={c.id} style={{display:'flex',alignItems:'center',gap:'8px'}}>
+                      <span style={{fontSize:'13px'}}>📦</span>
+                      <p style={{flex:1,color:'#333',fontSize:'13px'}}>{c.name} — {isOver?'potes acabaram':`${d}d restantes`}</p>
+                      {c.whatsapp && <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'12px',textDecoration:'none',fontWeight:600}}>WA</a>}
+                    </div>
+                  )
+                })}
+              </div>
             </div>
           )}
 
