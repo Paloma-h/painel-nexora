@@ -153,30 +153,29 @@ export default function DashboardPage() {
 
           {/* ━━━ PRÓXIMOS EVENTOS ━━━ */}
           {upcomingTasks.length > 0 && (
-            <div style={{marginBottom:'18px',background:'#f0f4ff',borderRadius:'12px',padding:'16px',border:'1px solid #c7d2fe'}}>
-              <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'10px'}}>
-                <span style={{fontSize:'16px'}}>📅</span>
-                <h2 style={{color:'#3b3b8f',fontSize:'15px',fontWeight:800}}>Próximos Eventos</h2>
-                <span style={{color:'#6366f1',fontSize:'13px',fontWeight:600}}>{upcomingTasks.length} nos próximos 14 dias</span>
+            <div style={{marginBottom:'12px',background:'#f0f4ff',borderRadius:'10px',padding:'12px',border:'1px solid #c7d2fe'}}>
+              <div style={{display:'flex',alignItems:'center',gap:'6px',marginBottom:'8px'}}>
+                <h2 style={{color:'#3b3b8f',fontSize:'14px',fontWeight:800}}>📅 Próximos Eventos</h2>
+                <span style={{color:'#6366f1',fontSize:'12px',fontWeight:600}}>{upcomingTasks.length} nos próximos 14 dias</span>
               </div>
-              <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(260px,1fr))',gap:'10px'}}>
+              <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(220px,1fr))',gap:'6px'}}>
                 {upcomingTasks.slice(0,6).map(t => {
                   const d = new Date(t.date + 'T12:00:00')
                   const diasRest = Math.ceil((d.getTime() - today.getTime()) / (1000*60*60*24))
                   const cor = priorityColor[t.priority] || '#7c3aed'
                   return (
-                    <div key={t.id} style={{...card,display:'flex',gap:'12px',alignItems:'center',padding:'14px 16px'}}>
-                      <div style={{width:'48px',height:'48px',borderRadius:'10px',background:cor,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                        <span style={{color:'#fff',fontSize:'20px',fontWeight:800,lineHeight:1}}>{d.getDate()}</span>
-                        <span style={{color:'#fff',fontSize:'9px',fontWeight:600,textTransform:'uppercase'}}>{meses[d.getMonth()].slice(0,3)}</span>
+                    <div key={t.id} style={{...card,display:'flex',gap:'8px',alignItems:'center',padding:'8px 10px'}}>
+                      <div style={{width:'36px',height:'36px',borderRadius:'8px',background:cor,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                        <span style={{color:'#fff',fontSize:'15px',fontWeight:800,lineHeight:1}}>{d.getDate()}</span>
+                        <span style={{color:'#fff',fontSize:'7px',fontWeight:600,textTransform:'uppercase'}}>{meses[d.getMonth()].slice(0,3)}</span>
                       </div>
                       <div style={{flex:1,minWidth:0}}>
-                        <p style={{color:'#111',fontSize:'14px',fontWeight:700,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.title}</p>
-                        <p style={{color:'#888',fontSize:'12px',marginTop:'2px'}}>
+                        <p style={{color:'#111',fontSize:'12px',fontWeight:700,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.title}</p>
+                        <p style={{color:'#888',fontSize:'10px',marginTop:'1px'}}>
                           {dias[d.getDay()]} {t.time ? `· ${t.time}` : ''} · <span style={{color:cor,fontWeight:700}}>{diasRest === 1 ? 'Amanhã' : `${diasRest}d`}</span>
                         </p>
                       </div>
-                      <button onClick={()=>completeTask(t.id)} title="Concluir" style={{width:'28px',height:'28px',borderRadius:'50%',border:`2px solid ${cor}`,background:'transparent',cursor:'pointer',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',color:cor,fontSize:'12px',fontWeight:700}}>✓</button>
+                      <button onClick={()=>completeTask(t.id)} title="Concluir" style={{width:'22px',height:'22px',borderRadius:'50%',border:`2px solid ${cor}`,background:'transparent',cursor:'pointer',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',color:cor,fontSize:'10px',fontWeight:700}}>✓</button>
                     </div>
                   )
                 })}
@@ -191,20 +190,20 @@ export default function DashboardPage() {
 
           {/* ━━━ FOCO DO DIA ━━━ */}
           {focusTasks.length > 0 && (
-            <div style={{marginBottom:'16px',background:'#fef9ee',borderRadius:'12px',padding:'16px',border:'1px solid #fde68a'}}>
-              <h2 style={{color:'#92400e',fontSize:'15px',fontWeight:800,marginBottom:'8px'}}>🎯 Foco do Dia <span style={{color:'#b45309',fontSize:'13px',fontWeight:600}}>{focusTasks.length} tarefa{focusTasks.length>1?'s':''}</span></h2>
-              <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(200px,1fr))',gap:'8px'}}>
+            <div style={{marginBottom:'12px',background:'#fef9ee',borderRadius:'10px',padding:'12px',border:'1px solid #fde68a'}}>
+              <h2 style={{color:'#92400e',fontSize:'14px',fontWeight:800,marginBottom:'8px'}}>🎯 Foco do Dia <span style={{color:'#b45309',fontSize:'12px',fontWeight:600}}>{focusTasks.length} tarefa{focusTasks.length>1?'s':''}</span></h2>
+              <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(160px,1fr))',gap:'6px'}}>
                 {focusTasks.map(t => {
                   const cor = priorityColor[t.priority] || '#7c3aed'
                   const isOverdue = t.date < todayStr
                   return (
-                    <div key={t.id} style={{background:'#fff',borderRadius:'10px',padding:'12px 14px',border:'1px solid #e8e8ee',borderTop:`3px solid ${cor}`,position:'relative'}}>
-                      {isOverdue && <span style={{position:'absolute',top:'6px',right:'8px',background:'#dc2626',color:'#fff',fontSize:'9px',fontWeight:700,padding:'2px 6px',borderRadius:'4px'}}>ATRASADA</span>}
-                      <p style={{color:'#111',fontSize:'13px',fontWeight:700,marginBottom:'6px',lineHeight:1.3}}>{t.title}</p>
-                      <div style={{display:'flex',alignItems:'center',gap:'6px',marginBottom:'8px'}}>
-                        {t.time && <span style={{color:'#7c3aed',fontSize:'11px',fontWeight:600}}>{t.time}</span>}
+                    <div key={t.id} style={{background:'#fff',borderRadius:'8px',padding:'8px 10px',border:'1px solid #e8e8ee',borderTop:`3px solid ${cor}`,position:'relative',display:'flex',alignItems:'center',gap:'8px'}}>
+                      <button onClick={()=>completeTask(t.id)} style={{width:'20px',height:'20px',borderRadius:'50%',border:`2px solid ${cor}`,background:'transparent',cursor:'pointer',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',color:cor,fontSize:'10px',fontWeight:700}}>✓</button>
+                      <div style={{flex:1,minWidth:0}}>
+                        <p style={{color:'#111',fontSize:'12px',fontWeight:700,lineHeight:1.2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.title}</p>
+                        {t.time && <span style={{color:'#7c3aed',fontSize:'10px',fontWeight:600}}>{t.time}</span>}
                       </div>
-                      <button onClick={()=>completeTask(t.id)} style={{width:'100%',padding:'6px',background:'transparent',border:`1.5px solid ${cor}`,borderRadius:'6px',color:cor,fontSize:'12px',fontWeight:700,cursor:'pointer'}}>Concluir ✓</button>
+                      {isOverdue && <span style={{background:'#dc2626',color:'#fff',fontSize:'8px',fontWeight:700,padding:'1px 4px',borderRadius:'3px'}}>!</span>}
                     </div>
                   )
                 })}
