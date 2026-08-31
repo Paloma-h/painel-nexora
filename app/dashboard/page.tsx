@@ -189,27 +189,74 @@ export default function DashboardPage() {
           )}
 
           {/* ━━━ FOCO DO DIA ━━━ */}
-          {focusTasks.length > 0 && (
+          {focusTasks.length > 0 && (() => {
+            const periodoConfig = [
+              {label:'☀️ Manhã',bg:'#fef2f2',border:'#fca5a5',titleColor:'#991b1b',cardBorder:'#ef4444',range:[0,12]},
+              {label:'🌤️ Tarde',bg:'#fefce8',border:'#fde68a',titleColor:'#854d0e',cardBorder:'#eab308',range:[12,18]},
+              {label:'🌙 Noite',bg:'#eef2ff',border:'#a5b4fc',titleColor:'#3730a3',cardBorder:'#6366f1',range:[18,24]},
+            ]
+            function getHour(time:string|null) { if (!time) return -1; const h=parseInt(time.split(':')[0]); return isNaN(h)?-1:h }
+            function getPeriodo(time:string|null) { const h=getHour(time); if(h<0) return -1; if(h<12) return 0; if(h<18) return 1; return 2 }
+            const prioOrder:any = {CRITICAL:0,HIGH:1,MEDIUM:2,LOW:3}
+            const sortByPrio = (a:any,b:any) => (prioOrder[a.priority]??9)-(prioOrder[b.priority]??9) || (a.time||'99:99').localeCompare(b.time||'99:99')
+
+            const manha = focusTasks.filter(t=>getPeriodo(t.time)===0).sort(sortByPrio)
+            const tarde = focusTasks.filter(t=>getPeriodo(t.time)===1).sort(sortByPrio)
+            const noite = focusTasks.filter(t=>getPeriodo(t.time)===2).sort(sortByPrio)
+            const semHora = focusTasks.filter(t=>getPeriodo(t.time)===-1).sort(sortByPrio)
+            const groups = [[manha,0],[tarde,1],[noite,2]] as [any[],number][]
+
+            return (
             <div style={{marginBottom:'12px',background:'#fef9ee',borderRadius:'10px',padding:'12px',border:'1px solid #fde68a'}}>
               <h2 style={{color:'#92400e',fontSize:'14px',fontWeight:800,marginBottom:'8px'}}>🎯 Foco do Dia <span style={{color:'#b45309',fontSize:'12px',fontWeight:600}}>{focusTasks.length} tarefa{focusTasks.length>1?'s':''}</span></h2>
-              <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(160px,1fr))',gap:'6px'}}>
-                {focusTasks.map(t => {
-                  const cor = priorityColor[t.priority] || '#7c3aed'
-                  const isOverdue = t.date < todayStr
+              <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
+                {groups.filter(([arr])=>arr.length>0).map(([arr,idx]) => {
+                  const cfg = periodoConfig[idx]
                   return (
-                    <div key={t.id} style={{background:'#fff',borderRadius:'8px',padding:'8px 10px',border:'1px solid #e8e8ee',borderTop:`3px solid ${cor}`,position:'relative',display:'flex',alignItems:'center',gap:'8px'}}>
-                      <button onClick={()=>completeTask(t.id)} style={{width:'20px',height:'20px',borderRadius:'50%',border:`2px solid ${cor}`,background:'transparent',cursor:'pointer',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',color:cor,fontSize:'10px',fontWeight:700}}>✓</button>
-                      <div style={{flex:1,minWidth:0}}>
-                        <p style={{color:'#111',fontSize:'12px',fontWeight:700,lineHeight:1.2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.title}</p>
-                        {t.time && <span style={{color:'#7c3aed',fontSize:'10px',fontWeight:600}}>{t.time}</span>}
+                    <div key={idx} style={{background:cfg.bg,borderRadius:'8px',padding:'8px 10px',border:`1px solid ${cfg.border}`}}>
+                      <p style={{color:cfg.titleColor,fontSize:'11px',fontWeight:800,marginBottom:'4px',letterSpacing:'0.5px'}}>{cfg.label}</p>
+                      <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(160px,1fr))',gap:'4px'}}>
+                        {arr.map((t:any) => {
+                          const isOverdue = t.date < todayStr
+                          return (
+                            <div key={t.id} style={{background:'#fff',borderRadius:'6px',padding:'6px 8px',borderLeft:`4px solid ${cfg.cardBorder}`,display:'flex',alignItems:'center',gap:'6px'}}>
+                              <button onClick={()=>completeTask(t.id)} style={{width:'18px',height:'18px',borderRadius:'50%',border:`2px solid ${cfg.cardBorder}`,background:'transparent',cursor:'pointer',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',color:cfg.cardBorder,fontSize:'9px',fontWeight:700}}>✓</button>
+                              <div style={{flex:1,minWidth:0}}>
+                                <p style={{color:'#111',fontSize:'12px',fontWeight:700,lineHeight:1.2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.title}</p>
+                                {t.time && <span style={{color:cfg.titleColor,fontSize:'10px',fontWeight:600}}>{t.time}</span>}
+                              </div>
+                              {isOverdue && <span style={{background:'#dc2626',color:'#fff',fontSize:'8px',fontWeight:700,padding:'1px 4px',borderRadius:'3px'}}>!</span>}
+                            </div>
+                          )
+                        })}
                       </div>
-                      {isOverdue && <span style={{background:'#dc2626',color:'#fff',fontSize:'8px',fontWeight:700,padding:'1px 4px',borderRadius:'3px'}}>!</span>}
                     </div>
                   )
                 })}
+                {semHora.length > 0 && (
+                  <div style={{background:'#f5f5f5',borderRadius:'8px',padding:'8px 10px',border:'1px solid #d4d4d4'}}>
+                    <p style={{color:'#555',fontSize:'11px',fontWeight:800,marginBottom:'4px',letterSpacing:'0.5px'}}>📋 Sem horário</p>
+                    <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(160px,1fr))',gap:'4px'}}>
+                      {semHora.map((t:any) => {
+                        const cor = priorityColor[t.priority] || '#7c3aed'
+                        const isOverdue = t.date < todayStr
+                        return (
+                          <div key={t.id} style={{background:'#fff',borderRadius:'6px',padding:'6px 8px',borderLeft:`4px solid ${cor}`,display:'flex',alignItems:'center',gap:'6px'}}>
+                            <button onClick={()=>completeTask(t.id)} style={{width:'18px',height:'18px',borderRadius:'50%',border:`2px solid ${cor}`,background:'transparent',cursor:'pointer',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',color:cor,fontSize:'9px',fontWeight:700}}>✓</button>
+                            <div style={{flex:1,minWidth:0}}>
+                              <p style={{color:'#111',fontSize:'12px',fontWeight:700,lineHeight:1.2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.title}</p>
+                            </div>
+                            {isOverdue && <span style={{background:'#dc2626',color:'#fff',fontSize:'8px',fontWeight:700,padding:'1px 4px',borderRadius:'3px'}}>!</span>}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-          )}
+            )
+          })()}
 
           {/* ━━━ LEMBRETES ━━━ */}
           {(alertClients.length > 0 || todayFollowups.length > 0) && (
