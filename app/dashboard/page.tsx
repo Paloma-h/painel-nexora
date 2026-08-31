@@ -127,11 +127,11 @@ export default function DashboardPage() {
         <div style={{maxWidth:'900px',margin:'0 auto'}}>
 
           {/* ━━━ CABEÇALHO ━━━ */}
-          <div style={{marginBottom:'24px'}}>
-            <h1 style={{color:'#111',fontSize:'28px',fontWeight:800,letterSpacing:'-0.5px',marginBottom:'4px'}}>
+          <div style={{marginBottom:'16px',display:'flex',alignItems:'baseline',gap:'12px'}}>
+            <span style={{color:'#555',fontSize:'14px',fontWeight:600}}>
               Bom {today.getHours()<12?'dia':today.getHours()<18?'tarde':'noite'}, Paloma
-            </h1>
-            <p style={{color:'#888',fontSize:'14px'}}>{dias[today.getDay()]}, {today.getDate()} de {meses[today.getMonth()]}</p>
+            </span>
+            <span style={{color:'#aaa',fontSize:'12px'}}>{dias[today.getDay()]}, {today.getDate()} de {meses[today.getMonth()]}</span>
           </div>
 
           {/* ━━━ QUICK CAPTURE ━━━ */}
