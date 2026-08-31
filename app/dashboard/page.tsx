@@ -153,11 +153,11 @@ export default function DashboardPage() {
 
           {/* ━━━ PRÓXIMOS EVENTOS ━━━ */}
           {upcomingTasks.length > 0 && (
-            <div style={{marginBottom:'18px'}}>
+            <div style={{marginBottom:'18px',background:'#f0f4ff',borderRadius:'12px',padding:'16px',border:'1px solid #c7d2fe'}}>
               <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'10px'}}>
                 <span style={{fontSize:'16px'}}>📅</span>
-                <h2 style={{color:'#111',fontSize:'15px',fontWeight:800}}>Próximos Eventos</h2>
-                <span style={{color:'#888',fontSize:'13px'}}>{upcomingTasks.length} nos próximos 14 dias</span>
+                <h2 style={{color:'#3b3b8f',fontSize:'15px',fontWeight:800}}>Próximos Eventos</h2>
+                <span style={{color:'#6366f1',fontSize:'13px',fontWeight:600}}>{upcomingTasks.length} nos próximos 14 dias</span>
               </div>
               <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(260px,1fr))',gap:'10px'}}>
                 {upcomingTasks.slice(0,6).map(t => {
@@ -191,8 +191,8 @@ export default function DashboardPage() {
 
           {/* ━━━ FOCO DO DIA ━━━ */}
           {focusTasks.length > 0 && (
-            <div style={{marginBottom:'16px'}}>
-              <p style={{color:'#888',fontSize:'11px',fontWeight:700,textTransform:'uppercase',letterSpacing:'1px',marginBottom:'6px'}}>🎯 Foco do Dia</p>
+            <div style={{marginBottom:'16px',background:'#fef9ee',borderRadius:'12px',padding:'16px',border:'1px solid #fde68a'}}>
+              <h2 style={{color:'#92400e',fontSize:'15px',fontWeight:800,marginBottom:'8px'}}>🎯 Foco do Dia <span style={{color:'#b45309',fontSize:'13px',fontWeight:600}}>{focusTasks.length} tarefa{focusTasks.length>1?'s':''}</span></h2>
               <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(200px,1fr))',gap:'8px'}}>
                 {focusTasks.map(t => {
                   const cor = priorityColor[t.priority] || '#7c3aed'
@@ -214,8 +214,8 @@ export default function DashboardPage() {
 
           {/* ━━━ LEMBRETES ━━━ */}
           {(alertClients.length > 0 || todayFollowups.length > 0) && (
-            <div style={{marginBottom:'16px',background:'#fff',borderRadius:'8px',padding:'10px 14px',border:'1px solid #e8e8ee'}}>
-              <p style={{color:'#888',fontSize:'11px',fontWeight:700,textTransform:'uppercase',letterSpacing:'1px',marginBottom:'6px'}}>📌 Lembretes</p>
+            <div style={{marginBottom:'16px',background:'#fdf2f8',borderRadius:'12px',padding:'16px',border:'1px solid #f9a8d4'}}>
+              <h2 style={{color:'#9d174d',fontSize:'15px',fontWeight:800,marginBottom:'8px'}}>📌 Lembretes</h2>
               <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
                 {todayFollowups.map(l => (
                   <div key={l.id} style={{display:'flex',alignItems:'center',gap:'8px'}}>

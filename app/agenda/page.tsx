@@ -17,6 +17,7 @@ const PRIO_LABEL: any = {CRITICAL:'Urgente',HIGH:'Alta',MEDIUM:'Média',LOW:'Dep
 
 export default function AgendaPage() {
   const [tasks, setTasks] = useState<any[]>([])
+  const [gabineteEventos, setGabineteEventos] = useState<any[]>([])
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDay, setSelectedDay] = useState<number|null>(null)
   const [viewingDay, setViewingDay] = useState<number|null>(null)
@@ -25,12 +26,41 @@ export default function AgendaPage() {
   const [taskForm, setTaskForm] = useState({title:'',time:'',notes:'',location:'',priority:'MEDIUM',is_recurring:false,recurrence:'monthly',amount:'',financial_type:'despesa',financial_category:'outros',has_financial:false})
   const [saving, setSaving] = useState(false)
 
-  useEffect(() => { load() }, [])
+  useEffect(() => { load(); loadGabinete() }, [])
 
   async function load() {
     const { data } = await supabase.from('tasks').select('*').eq('user_id', USER_ID).order('created_at', {ascending:false})
     const all = data || []
     setTasks(all.filter((t:any) => t.type !== 'pendencia'))
+  }
+
+  async function loadGabinete() {
+    try {
+      const res = await fetch('/api/agenda-fabio-rubens')
+      const json = await res.json()
+      setGabineteEventos(json.eventos || [])
+    } catch {
+      setGabineteEventos([])
+    }
+  }
+
+  // Compromissos do Central Gabinete (Fábio Rubens) — só leitura aqui,
+  // gerenciados de verdade no outro app. Convertidos pro mesmo formato
+  // usado no calendário, marcados com _gabinete pra ganhar destaque visual.
+  function getGabineteParaDia(day: number) {
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`
+    return gabineteEventos
+      .filter((e:any) => e.data_hora_inicio?.startsWith(dateStr))
+      .map((e:any) => ({
+        id: 'gabinete-' + e.id,
+        title: e.titulo,
+        time: e.data_hora_inicio ? new Date(e.data_hora_inicio).toISOString().slice(11,16) : null,
+        location: e.endereco || e.local || null,
+        notes: null,
+        priority: 'MEDIUM',
+        status: 'PENDING',
+        _gabinete: true,
+      }))
   }
 
   const year = currentDate.getFullYear()
@@ -167,15 +197,22 @@ export default function AgendaPage() {
             const day = i+1
             const isToday = day===today.getDate()&&month===today.getMonth()&&year===today.getFullYear()
             const dayTasks = getTasksForDay(day)
-            const hasTasks = dayTasks.length > 0
+            const dayGabinete = getGabineteParaDia(day)
+            const hasTasks = dayTasks.length > 0 || dayGabinete.length > 0
             const isPast = new Date(year,month,day) < new Date(today.getFullYear(),today.getMonth(),today.getDate())
             return (
               <div key={day} onClick={() => { if(hasTasks){ setViewingDay(day) } else { openDayForm(day) } }} style={{minHeight:'90px',borderRadius:'8px',padding:'6px',background:isToday?'#f0e8ff':'#fff',border:isToday?'2px solid #7c3aed':'1px solid #e5e5ea',cursor:'pointer',overflow:'hidden',transition:'border-color 0.15s',boxShadow:hasTasks?'0 1px 3px rgba(0,0,0,0.06)':'none'}}>
                 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
                   <span style={{fontSize:'15px',color:isToday?'#7c3aed':isPast?'#aaa':'#333',fontWeight:isToday?800:600}}>{day}</span>
-                  {hasTasks && <span style={{fontSize:'8px',color:'#444',fontWeight:600}}>{dayTasks.length}</span>}
+                  {hasTasks && <span style={{fontSize:'8px',color:'#444',fontWeight:600}}>{dayTasks.length + dayGabinete.length}</span>}
                 </div>
                 <div style={{marginTop:'3px'}}>
+                  {dayGabinete.map((t:any) => (
+                    <div key={t.id} onClick={e => {e.stopPropagation();setViewingDay(day)}} style={{display:'flex',alignItems:'center',gap:'2px',width:'100%',fontSize:'11px',color:'#7f1d1d',background:'#fef2f2',borderLeft:'3px solid #b91c1c',borderRadius:'0 4px 4px 0',padding:'3px 5px',marginBottom:'2px',fontWeight:700}}>
+                      <span style={{flexShrink:0}} title="Central Gabinete — Fábio Rubens">🏛️</span>
+                      <span style={{whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis',minWidth:0}}>{t.time&&<span style={{marginRight:'3px'}}>{t.time}</span>}{t.title}</span>
+                    </div>
+                  ))}
                   {dayTasks.map((t:any) => (
                     <div key={t.id} onClick={e => {e.stopPropagation();openEditTask(t)}} style={{display:'flex',alignItems:'center',gap:'2px',width:'100%',fontSize:'11px',color:t.status==='DONE'?'#bbb':'#333',background:t.status==='DONE'?'#f5f5f5':`${priorityColor[t.priority]}15`,borderLeft:`3px solid ${t.status==='DONE'?'#ccc':priorityColor[t.priority]}`,borderRadius:'0 4px 4px 0',padding:'3px 5px',marginBottom:'2px',textDecoration:t.status==='DONE'?'line-through':'none',fontWeight:t.status==='DONE'?400:500}}>
                       {t.notes&&<span style={{color:'#c2410c',fontWeight:900,fontSize:'15px',lineHeight:1,flexShrink:0}} title="Tem observação">*</span>}
@@ -200,6 +237,24 @@ export default function AgendaPage() {
               </div>
             </div>
             <div style={{overflowY:'auto',display:'flex',flexDirection:'column',gap:'6px'}}>
+              {getGabineteParaDia(viewingDay).map((t:any) => (
+                <div key={t.id} style={{borderRadius:'10px',background:'#fef2f2',border:'2px solid #b91c1c',overflow:'hidden'}}>
+                  <div style={{display:'flex',alignItems:'center',gap:'10px',padding:'12px 14px'}}>
+                    <div style={{fontSize:'18px',flexShrink:0}}>🏛️</div>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{display:'flex',alignItems:'center',gap:'6px'}}>
+                        <span style={{fontSize:'11px',fontWeight:800,color:'#b91c1c',letterSpacing:'0.5px'}}>AGENDA FÁBIO RUBENS</span>
+                      </div>
+                      <p style={{color:'#111',fontSize:'15px',fontWeight:600}}>{t.title}</p>
+                      <div style={{display:'flex',alignItems:'center',gap:'10px',marginTop:'4px',flexWrap:'wrap'}}>
+                        {t.time&&<span style={{color:'#555',fontSize:'15px'}}>{'🕐'} {t.time}</span>}
+                        {t.location&&<a href={`https://www.google.com/maps/search/${encodeURIComponent(t.location)}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{color:'#34d399',fontSize:'15px',textDecoration:'none',fontWeight:500}}>{'📍'} {t.location}</a>}
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{padding:'6px 14px 10px 42px',fontSize:'12px',color:'#991b1b'}}>Gerenciado no Central Gabinete — só leitura aqui.</div>
+                </div>
+              ))}
               {getTasksForDay(viewingDay).map((t:any) => (
                 <div key={t.id} style={{borderRadius:'10px',background:'#fff',border:`1px solid ${priorityColor[t.priority]}33`,overflow:'hidden'}}>
                   <div onClick={() => { setViewingDay(null); openEditTask(t) }} style={{display:'flex',alignItems:'center',gap:'10px',padding:'12px 14px',cursor:'pointer'}}>
