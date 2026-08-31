@@ -123,15 +123,15 @@ export default function DashboardPage() {
   return (
     <div style={{display:'flex',minHeight:'100vh',background:'#fafafa'}}>
       <Sidebar />
-      <div style={{flex:1,padding:'32px 36px',overflowY:'auto',minWidth:0}}>
+      <div style={{flex:1,padding:'16px 36px',overflowY:'auto',minWidth:0}}>
         <div style={{maxWidth:'900px',margin:'0 auto'}}>
 
           {/* ━━━ CABEÇALHO ━━━ */}
-          <div style={{marginBottom:'16px',display:'flex',alignItems:'baseline',gap:'12px'}}>
-            <span style={{color:'#555',fontSize:'14px',fontWeight:600}}>
+          <div style={{marginBottom:'12px',display:'flex',alignItems:'baseline',gap:'12px'}}>
+            <span style={{color:'#555',fontSize:'13px',fontWeight:600}}>
               Bom {today.getHours()<12?'dia':today.getHours()<18?'tarde':'noite'}, Paloma
             </span>
-            <span style={{color:'#aaa',fontSize:'12px'}}>{dias[today.getDay()]}, {today.getDate()} de {meses[today.getMonth()]}</span>
+            <span style={{color:'#aaa',fontSize:'11px'}}>{dias[today.getDay()]}, {today.getDate()} de {meses[today.getMonth()]}</span>
           </div>
 
           {/* ━━━ QUICK CAPTURE ━━━ */}
@@ -211,6 +211,7 @@ export default function DashboardPage() {
                           {dias[d.getDay()]} {t.time ? `· ${t.time}` : ''} · <span style={{color:cor,fontWeight:700}}>{diasRest === 1 ? 'Amanhã' : `${diasRest}d`}</span>
                         </p>
                       </div>
+                      <button onClick={()=>completeTask(t.id)} title="Concluir" style={{width:'28px',height:'28px',borderRadius:'50%',border:`2px solid ${cor}`,background:'transparent',cursor:'pointer',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',color:cor,fontSize:'12px',fontWeight:700}}>✓</button>
                     </div>
                   )
                 })}
