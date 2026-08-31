@@ -193,17 +193,18 @@ export default function DashboardPage() {
           {focusTasks.length > 0 && (
             <div style={{marginBottom:'16px'}}>
               <p style={{color:'#888',fontSize:'11px',fontWeight:700,textTransform:'uppercase',letterSpacing:'1px',marginBottom:'6px'}}>🎯 Foco do Dia</p>
-              <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
+              <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(200px,1fr))',gap:'8px'}}>
                 {focusTasks.map(t => {
                   const cor = priorityColor[t.priority] || '#7c3aed'
                   const isOverdue = t.date < todayStr
                   return (
-                    <div key={t.id} style={{background:'#fff',borderRadius:'8px',padding:'10px 14px',border:'1px solid #e8e8ee',borderLeft:`4px solid ${cor}`,display:'flex',alignItems:'center',gap:'10px'}}>
-                      <button onClick={()=>completeTask(t.id)} style={{width:'22px',height:'22px',borderRadius:'50%',border:`2px solid ${cor}`,background:'transparent',cursor:'pointer',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',color:cor,fontSize:'11px',fontWeight:700}}>✓</button>
-                      <span style={{color:'#111',fontSize:'14px',fontWeight:700,flex:1}}>{t.title}</span>
-                      {t.time && <span style={{color:'#7c3aed',fontSize:'12px',fontWeight:600}}>{t.time}</span>}
-                      <span style={{color:'#888',fontSize:'12px'}}>{formatDate(t.date)}</span>
-                      {isOverdue && <span style={{background:'#dc2626',color:'#fff',fontSize:'9px',fontWeight:700,padding:'2px 6px',borderRadius:'4px'}}>ATRASADA</span>}
+                    <div key={t.id} style={{background:'#fff',borderRadius:'10px',padding:'12px 14px',border:'1px solid #e8e8ee',borderTop:`3px solid ${cor}`,position:'relative'}}>
+                      {isOverdue && <span style={{position:'absolute',top:'6px',right:'8px',background:'#dc2626',color:'#fff',fontSize:'9px',fontWeight:700,padding:'2px 6px',borderRadius:'4px'}}>ATRASADA</span>}
+                      <p style={{color:'#111',fontSize:'13px',fontWeight:700,marginBottom:'6px',lineHeight:1.3}}>{t.title}</p>
+                      <div style={{display:'flex',alignItems:'center',gap:'6px',marginBottom:'8px'}}>
+                        {t.time && <span style={{color:'#7c3aed',fontSize:'11px',fontWeight:600}}>{t.time}</span>}
+                      </div>
+                      <button onClick={()=>completeTask(t.id)} style={{width:'100%',padding:'6px',background:'transparent',border:`1.5px solid ${cor}`,borderRadius:'6px',color:cor,fontSize:'12px',fontWeight:700,cursor:'pointer'}}>Concluir ✓</button>
                     </div>
                   )
                 })}
