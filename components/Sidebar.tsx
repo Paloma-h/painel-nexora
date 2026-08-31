@@ -9,11 +9,11 @@ import {
 
 const NAV_MAIN = [
   { href: '/dashboard',  label: 'Dashboard',     Icon: LayoutDashboard },
-  { href: '/ia',          label: 'NORA IA',        Icon: Bot             },
   { href: '/agenda',     label: 'Agenda',         Icon: Calendar        },
   { href: '/pendencias', label: 'Pendências',     Icon: Zap             },
   { href: '/crm',        label: 'CRM',            Icon: Users           },
   { href: '/financeiro', label: 'Financeiro',     Icon: DollarSign      },
+  { href: '/ia',          label: 'NORA IA',        Icon: Bot             },
 ]
 
 const NAV_PERSONAL = [
