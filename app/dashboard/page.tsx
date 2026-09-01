@@ -208,34 +208,9 @@ export default function DashboardPage() {
             )}
           </div>
 
-          {/* ━━━ LEMBRETES + CHECKLIST lado a lado ━━━ */}
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px',marginBottom:'12px'}}>
-            {/* Lembretes */}
-            <div style={{background:'#fdf2f8',borderRadius:'8px',padding:'8px 12px',border:'1px solid #f9a8d4'}}>
-              <span style={{color:'#9d174d',fontSize:'12px',fontWeight:800}}>📌 Lembretes</span>
-              <div style={{display:'flex',flexDirection:'column',gap:'4px',marginTop:'6px'}}>
-                {todayFollowups.map(l => (
-                  <div key={l.id} style={{display:'flex',alignItems:'center',gap:'4px',padding:'3px 6px',borderRadius:'5px',background:'#fff',border:'1px solid #fbcfe8'}}>
-                    <span style={{fontSize:'11px'}}>👥</span>
-                    <span style={{color:'#333',fontSize:'11px',fontWeight:500,flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>Follow-up: {l.name}</span>
-                    {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'10px',textDecoration:'none',fontWeight:600}}>WA</a>}
-                  </div>
-                ))}
-                {alertClients.map(c => {
-                  const d = daysLeft(c)
-                  const isOver = d !== null && d <= 0
-                  return (
-                    <div key={c.id} style={{display:'flex',alignItems:'center',gap:'4px',padding:'3px 6px',borderRadius:'5px',background:'#fff',border:'1px solid #fbcfe8'}}>
-                      <span style={{fontSize:'11px'}}>📦</span>
-                      <span style={{color:'#333',fontSize:'11px',flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{c.name} — {isOver?'potes acabaram':`${d}d`}</span>
-                      {c.whatsapp && <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'10px',textDecoration:'none',fontWeight:600}}>WA</a>}
-                    </div>
-                  )
-                })}
-                {alertClients.length === 0 && todayFollowups.length === 0 && <p style={{color:'#ccc',fontSize:'11px',textAlign:'center',padding:'8px 0'}}>Nenhum lembrete hoje</p>}
-              </div>
-            </div>
-            {/* Checklist */}
+          {/* ━━━ CHECKLIST + LEMBRETES lado a lado ━━━ */}
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px',marginBottom:'12px',alignItems:'start'}}>
+            {/* Checklist (esquerda) */}
             <div style={{background:'#f0fdf4',borderRadius:'8px',padding:'8px 12px',border:'1px solid #86efac'}}>
               <div style={{display:'flex',alignItems:'center',gap:'6px',marginBottom:'6px'}}>
                 <span style={{color:'#166534',fontSize:'12px',fontWeight:800}}>✅ Checklist</span>
@@ -265,6 +240,31 @@ export default function DashboardPage() {
                     </label>
                   ))}
                 </div>
+              </div>
+            </div>
+            {/* Lembretes (direita) */}
+            <div style={{background:'#fdf2f8',borderRadius:'8px',padding:'8px 12px',border:'1px solid #f9a8d4'}}>
+              <span style={{color:'#9d174d',fontSize:'12px',fontWeight:800}}>📌 Lembretes</span>
+              <div style={{display:'flex',flexDirection:'column',gap:'4px',marginTop:'6px'}}>
+                {todayFollowups.map(l => (
+                  <div key={l.id} style={{display:'flex',alignItems:'center',gap:'4px',padding:'3px 6px',borderRadius:'5px',background:'#fff',border:'1px solid #fbcfe8'}}>
+                    <span style={{fontSize:'11px'}}>👥</span>
+                    <span style={{color:'#333',fontSize:'11px',fontWeight:500,flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>Follow-up: {l.name}</span>
+                    {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'10px',textDecoration:'none',fontWeight:600}}>WA</a>}
+                  </div>
+                ))}
+                {alertClients.map(c => {
+                  const d = daysLeft(c)
+                  const isOver = d !== null && d <= 0
+                  return (
+                    <div key={c.id} style={{display:'flex',alignItems:'center',gap:'4px',padding:'3px 6px',borderRadius:'5px',background:'#fff',border:'1px solid #fbcfe8'}}>
+                      <span style={{fontSize:'11px'}}>📦</span>
+                      <span style={{color:'#333',fontSize:'11px',flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{c.name} — {isOver?'potes acabaram':`${d}d`}</span>
+                      {c.whatsapp && <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'10px',textDecoration:'none',fontWeight:600}}>WA</a>}
+                    </div>
+                  )
+                })}
+                {alertClients.length === 0 && todayFollowups.length === 0 && <p style={{color:'#ccc',fontSize:'11px',textAlign:'center',padding:'8px 0'}}>Nenhum lembrete hoje</p>}
               </div>
             </div>
           </div>
