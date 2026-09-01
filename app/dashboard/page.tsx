@@ -161,12 +161,29 @@ export default function DashboardPage() {
       <div style={{flex:1,padding:'16px 36px',overflowY:'auto',minWidth:0}}>
         <div style={{maxWidth:'900px',margin:'0 auto'}}>
 
-          {/* ━━━ CABEÇALHO ━━━ */}
-          <div style={{marginBottom:'12px',display:'flex',alignItems:'baseline',gap:'12px'}}>
-            <span style={{color:'#555',fontSize:'13px',fontWeight:600}}>
-              Bom {today.getHours()<12?'dia':today.getHours()<18?'tarde':'noite'}, Paloma
-            </span>
-            <span style={{color:'#aaa',fontSize:'11px'}}>{dias[today.getDay()]}, {today.getDate()} de {meses[today.getMonth()]}</span>
+          {/* ━━━ CABEÇALHO + KPIs ━━━ */}
+          <div style={{marginBottom:'12px',display:'flex',alignItems:'center',gap:'12px',flexWrap:'wrap'}}>
+            <div style={{display:'flex',alignItems:'baseline',gap:'8px'}}>
+              <span style={{color:'#555',fontSize:'13px',fontWeight:600}}>
+                Bom {today.getHours()<12?'dia':today.getHours()<18?'tarde':'noite'}, Paloma
+              </span>
+              <span style={{color:'#aaa',fontSize:'11px'}}>{dias[today.getDay()]}, {today.getDate()} de {meses[today.getMonth()]}</span>
+            </div>
+            <div style={{flex:1}}/>
+            <div style={{display:'flex',gap:'6px'}}>
+              {[
+                {label:'Hoje',value:todayTasks.length,done:doneTasks.length,color:'#7c3aed'},
+                {label:'Atrasadas',value:overdueTasks.length,color:'#dc2626'},
+                {label:'Pendências',value:urgentPendencias.length,color:'#ea580c'},
+                {label:'Contas',value:overdueBills.length+upcomingBills.length,color:'#ca8a04'},
+              ].map((k,i) => (
+                <div key={i} style={{display:'flex',alignItems:'center',gap:'4px',padding:'4px 10px',borderRadius:'8px',background:'#fff',border:`1px solid ${k.value>0?k.color+'44':'#e5e5ea'}`}}>
+                  <span style={{color:k.value>0?k.color:'#ccc',fontSize:'16px',fontWeight:800,lineHeight:1}}>{k.value}</span>
+                  <span style={{color:'#888',fontSize:'10px',fontWeight:600}}>{k.label}</span>
+                  {k.done !== undefined && k.done > 0 && <span style={{color:'#16a34a',fontSize:'9px',fontWeight:600}}>✓{k.done}</span>}
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* ━━━ QUICK CAPTURE ━━━ */}
@@ -357,23 +374,6 @@ export default function DashboardPage() {
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* ━━━ RESUMO RÁPIDO (KPIs compactos) ━━━ */}
-          <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'8px',marginBottom:'18px'}}>
-            {[
-              {emoji:'📋',label:'Hoje',value:todayTasks.length,done:doneTasks.length,color:'#7c3aed'},
-              {emoji:'⚠️',label:'Atrasadas',value:overdueTasks.length,color:'#dc2626'},
-              {emoji:'🔥',label:'Pendências',value:urgentPendencias.length,color:'#ea580c'},
-              {emoji:'💰',label:'Contas',value:overdueBills.length+upcomingBills.length,color:'#ca8a04'},
-            ].map((k,i) => (
-              <div key={i} style={{...card,textAlign:'center',padding:'16px',borderTop:`3px solid ${k.value>0?k.color:'#e5e5ea'}`}}>
-                <p style={{fontSize:'18px',marginBottom:'4px'}}>{k.emoji}</p>
-                <p style={{color:k.value>0?k.color:'#ccc',fontSize:'28px',fontWeight:800,lineHeight:1}}>{k.value}</p>
-                <p style={{color:'#888',fontSize:'12px',marginTop:'4px',fontWeight:600}}>{k.label}</p>
-                {k.done !== undefined && k.done > 0 && <p style={{color:'#16a34a',fontSize:'11px',marginTop:'2px'}}>✓ {k.done} feita{k.done>1?'s':''}</p>}
-              </div>
-            ))}
           </div>
 
           {/* ━━━ BLOCOS COLAPSÁVEIS ━━━ */}
