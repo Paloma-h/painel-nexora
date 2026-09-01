@@ -180,71 +180,165 @@ export default function FinanceiroPage() {
         <div style={{flex:1,padding:'28px 32px',overflowY:'auto'}}>
           <div style={{maxWidth:'900px',margin:'0 auto'}}>
 
-            {tab==='visao' && (
+            {tab==='visao' && (() => {
+              // Despesas por categoria
+              const despPorCat: Record<string,number> = {}
+              filtered.filter(t=>t.type==='despesa').forEach(t => { despPorCat[t.category] = (despPorCat[t.category]||0) + Number(t.amount) })
+              const catSorted = Object.entries(despPorCat).sort((a,b) => b[1]-a[1])
+              const maxCat = catSorted.length > 0 ? catSorted[0][1] : 1
+              // Últimos lançamentos
+              const ultimos = filtered.slice(0, 5)
+              // Contas pendentes
+              const contasPendentes = bills.filter(b => b.status !== 'pago').sort((a,b) => (a.due_day||99)-(b.due_day||99))
+
+              return (
               <div>
-                <h1 style={{color:'#111',fontSize:'22px',fontWeight:700,marginBottom:'20px'}}>Visão Geral — {MONTHS[filterMonth]} {filterYear}</h1>
-                <div style={{display:'flex',gap:'8px',marginBottom:'20px'}}>
-                  <select value={filterMonth} onChange={e=>setFilterMonth(parseInt(e.target.value))} style={{...sel,width:'auto',fontSize:'15px',padding:'6px 10px'}}>
-                    {MONTHS.map((m,i)=><option key={i} value={i}>{m}</option>)}
-                  </select>
-                  <select value={filterYear} onChange={e=>setFilterYear(parseInt(e.target.value))} style={{...sel,width:'auto',fontSize:'15px',padding:'6px 10px'}}>
-                    {[2024,2025,2026,2027].map(y=><option key={y} value={y}>{y}</option>)}
-                  </select>
-                </div>
-
-                <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'12px',marginBottom:'24px'}}>
-                  <div style={{background:'#fff',border:'1px solid #ddf5e8',borderRadius:'14px',padding:'20px'}}>
-                    <p style={{color:'#15803d',fontSize:'15px',marginBottom:'6px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Receitas</p>
-                    <p style={{color:'#15803d',fontSize:'26px',fontWeight:700}}>R$ {receitas.toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
-                  </div>
-                  <div style={{background:'#fff',border:'2px solid #f87171',borderRadius:'14px',padding:'20px'}}>
-                    <p style={{color:'#b91c1c',fontSize:'15px',marginBottom:'6px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Despesas</p>
-                    <p style={{color:'#dc2626',fontSize:'26px',fontWeight:700}}>R$ {despesas.toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
-                  </div>
-                  <div style={{background:saldo>=0?'#f0edff':'#fff0f0',border:`1px solid ${saldo>=0?'#e8e4ff':'#ffe0e0'}`,borderRadius:'14px',padding:'20px'}}>
-                    <p style={{color:'#333',fontSize:'15px',marginBottom:'6px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Saldo</p>
-                    <p style={{color:saldo>=0?'#a89ff7':'#e05252',fontSize:'26px',fontWeight:700}}>R$ {saldo.toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}}>
+                  <h1 style={{color:'#111',fontSize:'22px',fontWeight:700}}>Visão Geral — {MONTHS[filterMonth]} {filterYear}</h1>
+                  <div style={{display:'flex',gap:'6px'}}>
+                    <select value={filterMonth} onChange={e=>setFilterMonth(parseInt(e.target.value))} style={{...sel,width:'auto',fontSize:'13px',padding:'6px 10px'}}>
+                      {MONTHS.map((m,i)=><option key={i} value={i}>{m}</option>)}
+                    </select>
+                    <select value={filterYear} onChange={e=>setFilterYear(parseInt(e.target.value))} style={{...sel,width:'auto',fontSize:'13px',padding:'6px 10px'}}>
+                      {[2024,2025,2026,2027].map(y=><option key={y} value={y}>{y}</option>)}
+                    </select>
+                    <button onClick={()=>{setEditing(null);setTForm({title:'',amount:'',type:'receita',category:'outros',date:'',notes:''});setShowForm('t')}} style={{padding:'6px 14px',background:'#16a34a',border:'none',borderRadius:'8px',color:'#fff',fontSize:'13px',fontWeight:700,cursor:'pointer'}}>+ Receita</button>
+                    <button onClick={()=>{setEditing(null);setTForm({title:'',amount:'',type:'despesa',category:'outros',date:'',notes:''});setShowForm('t')}} style={{padding:'6px 14px',background:'#dc2626',border:'none',borderRadius:'8px',color:'#fff',fontSize:'13px',fontWeight:700,cursor:'pointer'}}>+ Despesa</button>
                   </div>
                 </div>
 
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'12px',marginBottom:'24px'}}>
-                  <div style={{background:'#fff',border:'2px solid #bbb',borderRadius:'14px',padding:'20px'}}>
-                    <p style={{color:'#333',fontSize:'15px',marginBottom:'6px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Patrimônio investido</p>
-                    <p style={{color:'#854d0e',fontSize:'22px',fontWeight:700}}>R$ {totalInvested.toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
+                {/* KPIs */}
+                <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'16px'}}>
+                  <div style={{background:'#f0fdf4',border:'1px solid #bbf7d0',borderRadius:'12px',padding:'16px'}}>
+                    <p style={{color:'#15803d',fontSize:'12px',fontWeight:700,textTransform:'uppercase',letterSpacing:'0.5px'}}>Receitas</p>
+                    <p style={{color:'#15803d',fontSize:'24px',fontWeight:800,marginTop:'4px'}}>R$ {receitas.toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
                   </div>
-                  <div style={{background:'#fff',border:'2px solid #bbb',borderRadius:'14px',padding:'20px'}}>
-                    <p style={{color:'#333',fontSize:'15px',marginBottom:'6px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Patrimônio total</p>
-                    <p style={{color:'#111',fontSize:'22px',fontWeight:700}}>R$ {totalPatrimonio.toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
+                  <div style={{background:'#fef2f2',border:'1px solid #fecaca',borderRadius:'12px',padding:'16px'}}>
+                    <p style={{color:'#b91c1c',fontSize:'12px',fontWeight:700,textTransform:'uppercase',letterSpacing:'0.5px'}}>Despesas</p>
+                    <p style={{color:'#dc2626',fontSize:'24px',fontWeight:800,marginTop:'4px'}}>R$ {despesas.toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
+                  </div>
+                  <div style={{background:saldo>=0?'#f0edff':'#fff0f0',border:`1px solid ${saldo>=0?'#d8b4fe':'#fecaca'}`,borderRadius:'12px',padding:'16px'}}>
+                    <p style={{color:'#333',fontSize:'12px',fontWeight:700,textTransform:'uppercase',letterSpacing:'0.5px'}}>Saldo</p>
+                    <p style={{color:saldo>=0?'#7c3aed':'#dc2626',fontSize:'24px',fontWeight:800,marginTop:'4px'}}>R$ {saldo.toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
                   </div>
                 </div>
 
-                {(billsDuesSoon.length > 0 || cardsDueSoon.length > 0) && (
-                  <div style={{background:'#fff',border:'2px solid #f87171',borderRadius:'14px',padding:'20px',marginBottom:'20px'}}>
-                    <p style={{color:'#dc2626',fontSize:'15px',fontWeight:600,marginBottom:'12px',textTransform:'uppercase',letterSpacing:'0.5px'}}>⚠ Próximos 7 dias</p>
-                    <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
-                      {cardsDueSoon.map(c => (
-                        <div key={c.id} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 12px',background:'#fff',borderRadius:'10px'}}>
-                          <div>
-                            <p style={{color:'#111',fontSize:'15px',fontWeight:500}}>Cartão: {c.name}</p>
-                            <p style={{color:'#444',fontSize:'15px'}}>Vence dia {c.due_day}</p>
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'12px',marginBottom:'16px'}}>
+                  {/* Despesas por categoria */}
+                  <div style={{background:'#fff',border:'1px solid #e8e8ee',borderRadius:'12px',padding:'16px'}}>
+                    <h2 style={{color:'#111',fontSize:'15px',fontWeight:800,marginBottom:'12px'}}>📊 Despesas por Categoria</h2>
+                    {catSorted.length === 0 ? (
+                      <p style={{color:'#bbb',fontSize:'13px',textAlign:'center',padding:'20px 0'}}>Sem despesas neste mês</p>
+                    ) : (
+                      <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
+                        {catSorted.map(([cat, val]) => (
+                          <div key={cat}>
+                            <div style={{display:'flex',justifyContent:'space-between',marginBottom:'3px'}}>
+                              <span style={{fontSize:'13px',color:'#333',fontWeight:500,textTransform:'capitalize'}}>{cat}</span>
+                              <span style={{fontSize:'13px',color:'#dc2626',fontWeight:700}}>R$ {val.toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>
+                            </div>
+                            <div style={{height:'6px',background:'#f0f0f0',borderRadius:'3px',overflow:'hidden'}}>
+                              <div style={{height:'100%',width:`${(val/maxCat)*100}%`,background:'#dc2626',borderRadius:'3px',opacity:0.7}}/>
+                            </div>
                           </div>
-                          <span style={{color:'#dc2626',fontSize:'15px',fontWeight:600}}>Cartão</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Contas a pagar */}
+                  <div style={{background:'#fff',border:'1px solid #e8e8ee',borderRadius:'12px',padding:'16px'}}>
+                    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'12px'}}>
+                      <h2 style={{color:'#111',fontSize:'15px',fontWeight:800}}>💳 Contas Pendentes</h2>
+                      <button onClick={()=>{setEditing(null);setBForm({title:'',amount:'',category:'outros',due_day:'',due_date:'',is_recurring:false,recurrence:'monthly',notes:''});setShowForm('b')}} style={{padding:'4px 10px',background:'#7c3aed',border:'none',borderRadius:'6px',color:'#fff',fontSize:'11px',fontWeight:700,cursor:'pointer'}}>+ Nova</button>
+                    </div>
+                    {contasPendentes.length === 0 ? (
+                      <p style={{color:'#16a34a',fontSize:'13px',textAlign:'center',padding:'20px 0',fontWeight:600}}>✅ Tudo em dia!</p>
+                    ) : (
+                      <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
+                        {contasPendentes.slice(0,6).map(b => {
+                          const isOverdue = b.due_day && b.due_day < today.getDate()
+                          return (
+                            <div key={b.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'6px 8px',borderRadius:'8px',background:isOverdue?'#fef2f2':'#fafafa',border:`1px solid ${isOverdue?'#fecaca':'#e8e8ee'}`}}>
+                              <span style={{fontSize:'11px'}}>{isOverdue?'🔴':'🟡'}</span>
+                              <span style={{flex:1,fontSize:'12px',color:'#333',fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{b.title}</span>
+                              <span style={{fontSize:'11px',color:'#888'}}>dia {b.due_day||'—'}</span>
+                              <span style={{fontSize:'12px',color:'#dc2626',fontWeight:700}}>R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>
+                              <button onClick={()=>payBill(b.id)} style={{padding:'2px 8px',background:'#16a34a',border:'none',borderRadius:'5px',color:'#fff',fontSize:'10px',fontWeight:700,cursor:'pointer'}}>Pagar</button>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Últimos lançamentos */}
+                <div style={{background:'#fff',border:'1px solid #e8e8ee',borderRadius:'12px',padding:'16px',marginBottom:'16px'}}>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'12px'}}>
+                    <h2 style={{color:'#111',fontSize:'15px',fontWeight:800}}>📋 Últimos Lançamentos</h2>
+                    <button onClick={()=>setTab('lancamentos')} style={{padding:'4px 10px',background:'transparent',border:'1px solid #7c3aed',borderRadius:'6px',color:'#7c3aed',fontSize:'11px',fontWeight:700,cursor:'pointer'}}>Ver todos</button>
+                  </div>
+                  {ultimos.length === 0 ? (
+                    <p style={{color:'#bbb',fontSize:'13px',textAlign:'center',padding:'20px 0'}}>Nenhum lançamento neste mês</p>
+                  ) : (
+                    <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
+                      {ultimos.map(t => (
+                        <div key={t.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'8px',background:'#fafafa'}}>
+                          <div style={{width:'3px',height:'24px',borderRadius:'2px',background:t.type==='receita'?'#16a34a':'#dc2626',flexShrink:0}}/>
+                          <span style={{flex:1,fontSize:'13px',color:'#333',fontWeight:500}}>{t.title}</span>
+                          <span style={{fontSize:'11px',color:'#888',textTransform:'capitalize'}}>{t.category}</span>
+                          {t.date&&<span style={{fontSize:'11px',color:'#aaa'}}>{new Date(t.date+'T12:00:00').toLocaleDateString('pt-BR')}</span>}
+                          <span style={{fontSize:'13px',color:t.type==='receita'?'#16a34a':'#dc2626',fontWeight:700}}>{t.type==='receita'?'+':'-'}R$ {Number(t.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Patrimônio */}
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px',marginBottom:'16px'}}>
+                  <div style={{background:'#fffbeb',border:'1px solid #fde68a',borderRadius:'12px',padding:'16px'}}>
+                    <p style={{color:'#854d0e',fontSize:'12px',fontWeight:700,textTransform:'uppercase',letterSpacing:'0.5px'}}>Patrimônio Investido</p>
+                    <p style={{color:'#854d0e',fontSize:'22px',fontWeight:800,marginTop:'4px'}}>R$ {totalInvested.toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
+                    <button onClick={()=>setTab('investimentos')} style={{marginTop:'8px',padding:'4px 10px',background:'transparent',border:'1px solid #ca8a04',borderRadius:'6px',color:'#ca8a04',fontSize:'11px',fontWeight:600,cursor:'pointer'}}>Ver investimentos →</button>
+                  </div>
+                  <div style={{background:'#f0edff',border:'1px solid #d8b4fe',borderRadius:'12px',padding:'16px'}}>
+                    <p style={{color:'#6b21a8',fontSize:'12px',fontWeight:700,textTransform:'uppercase',letterSpacing:'0.5px'}}>Patrimônio Total</p>
+                    <p style={{color:'#6b21a8',fontSize:'22px',fontWeight:800,marginTop:'4px'}}>R$ {totalPatrimonio.toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
+                    <button onClick={()=>setTab('ativos')} style={{marginTop:'8px',padding:'4px 10px',background:'transparent',border:'1px solid #7c3aed',borderRadius:'6px',color:'#7c3aed',fontSize:'11px',fontWeight:600,cursor:'pointer'}}>Ver ativos →</button>
+                  </div>
+                </div>
+
+                {/* Alertas próx 7 dias */}
+                {(billsDuesSoon.length > 0 || cardsDueSoon.length > 0) && (
+                  <div style={{background:'#fef2f2',border:'1px solid #fecaca',borderRadius:'12px',padding:'16px'}}>
+                    <p style={{color:'#dc2626',fontSize:'13px',fontWeight:800,marginBottom:'10px',textTransform:'uppercase',letterSpacing:'0.5px'}}>⚠️ Vencendo nos Próximos 7 Dias</p>
+                    <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
+                      {cardsDueSoon.map(c => (
+                        <div key={c.id} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'8px 12px',background:'#fff',borderRadius:'8px'}}>
+                          <div>
+                            <p style={{color:'#111',fontSize:'13px',fontWeight:600}}>💳 {c.name}</p>
+                            <p style={{color:'#888',fontSize:'11px'}}>Vence dia {c.due_day}</p>
+                          </div>
+                          <span style={{color:'#dc2626',fontSize:'12px',fontWeight:700}}>Cartão</span>
                         </div>
                       ))}
                       {billsDuesSoon.map(b => (
-                        <div key={b.id} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 12px',background:'#fff',borderRadius:'10px'}}>
+                        <div key={b.id} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'8px 12px',background:'#fff',borderRadius:'8px'}}>
                           <div>
-                            <p style={{color:'#111',fontSize:'15px',fontWeight:500}}>{b.title}</p>
-                            <p style={{color:'#444',fontSize:'15px'}}>Vence dia {b.due_day} · R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
+                            <p style={{color:'#111',fontSize:'13px',fontWeight:600}}>{b.title}</p>
+                            <p style={{color:'#888',fontSize:'11px'}}>Vence dia {b.due_day} · R$ {Number(b.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
                           </div>
-                          <button onClick={() => payBill(b.id)} style={{padding:'5px 10px',background:'#fff',border:'2px solid #16a34a',borderRadius:'7px',color:'#15803d',fontSize:'15px',cursor:'pointer'}}>Pagar</button>
+                          <button onClick={() => payBill(b.id)} style={{padding:'4px 10px',background:'#16a34a',border:'none',borderRadius:'6px',color:'#fff',fontSize:'12px',fontWeight:700,cursor:'pointer'}}>Pagar</button>
                         </div>
                       ))}
                     </div>
                   </div>
                 )}
               </div>
-            )}
+              )
+            })()}
 
             {tab==='lancamentos' && (
               <div>
