@@ -191,37 +191,8 @@ export default function DashboardPage() {
               )}
             </div>
           </div>
-          {/* ━━━ LEMBRETES (topo direito) ━━━ */}
-          {(alertClients.length > 0 || todayFollowups.length > 0) && (
-            <div style={{marginBottom:'12px',background:'#fdf2f8',borderRadius:'8px',padding:'8px 12px',border:'1px solid #f9a8d4'}}>
-              <div style={{display:'flex',alignItems:'center',gap:'6px',marginBottom:'4px'}}>
-                <span style={{color:'#9d174d',fontSize:'12px',fontWeight:800}}>📌 Lembretes</span>
-              </div>
-              <div style={{display:'flex',flexWrap:'wrap',gap:'6px'}}>
-                {todayFollowups.map(l => (
-                  <div key={l.id} style={{display:'flex',alignItems:'center',gap:'4px',padding:'3px 8px',borderRadius:'6px',background:'#fff',border:'1px solid #fbcfe8'}}>
-                    <span style={{fontSize:'11px'}}>👥</span>
-                    <span style={{color:'#333',fontSize:'11px',fontWeight:500}}>Follow-up: {l.name}</span>
-                    {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'10px',textDecoration:'none',fontWeight:600}}>WA</a>}
-                  </div>
-                ))}
-                {alertClients.map(c => {
-                  const d = daysLeft(c)
-                  const isOver = d !== null && d <= 0
-                  return (
-                    <div key={c.id} style={{display:'flex',alignItems:'center',gap:'4px',padding:'3px 8px',borderRadius:'6px',background:'#fff',border:'1px solid #fbcfe8'}}>
-                      <span style={{fontSize:'11px'}}>📦</span>
-                      <span style={{color:'#333',fontSize:'11px'}}>{c.name} — {isOver?'potes acabaram':`${d}d`}</span>
-                      {c.whatsapp && <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'10px',textDecoration:'none',fontWeight:600}}>WA</a>}
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          )}
-
           {/* ━━━ QUICK CAPTURE ━━━ */}
-          <div style={{marginBottom:'16px',background:'#fff',borderRadius:'10px',padding:'2px',border:'2px solid #e5e5ea',display:'flex',alignItems:'center',gap:'6px'}}>
+          <div style={{marginBottom:'8px',background:'#fff',borderRadius:'10px',padding:'2px',border:'2px solid #e5e5ea',display:'flex',alignItems:'center',gap:'6px'}}>
             <span style={{padding:'6px 10px',color:'#bbb',fontSize:'14px',flexShrink:0}}>+</span>
             <input
               value={quickText}
@@ -235,6 +206,67 @@ export default function DashboardPage() {
                 Salvar
               </button>
             )}
+          </div>
+
+          {/* ━━━ LEMBRETES + CHECKLIST lado a lado ━━━ */}
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px',marginBottom:'12px'}}>
+            {/* Lembretes */}
+            <div style={{background:'#fdf2f8',borderRadius:'8px',padding:'8px 12px',border:'1px solid #f9a8d4'}}>
+              <span style={{color:'#9d174d',fontSize:'12px',fontWeight:800}}>📌 Lembretes</span>
+              <div style={{display:'flex',flexDirection:'column',gap:'4px',marginTop:'6px'}}>
+                {todayFollowups.map(l => (
+                  <div key={l.id} style={{display:'flex',alignItems:'center',gap:'4px',padding:'3px 6px',borderRadius:'5px',background:'#fff',border:'1px solid #fbcfe8'}}>
+                    <span style={{fontSize:'11px'}}>👥</span>
+                    <span style={{color:'#333',fontSize:'11px',fontWeight:500,flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>Follow-up: {l.name}</span>
+                    {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'10px',textDecoration:'none',fontWeight:600}}>WA</a>}
+                  </div>
+                ))}
+                {alertClients.map(c => {
+                  const d = daysLeft(c)
+                  const isOver = d !== null && d <= 0
+                  return (
+                    <div key={c.id} style={{display:'flex',alignItems:'center',gap:'4px',padding:'3px 6px',borderRadius:'5px',background:'#fff',border:'1px solid #fbcfe8'}}>
+                      <span style={{fontSize:'11px'}}>📦</span>
+                      <span style={{color:'#333',fontSize:'11px',flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{c.name} — {isOver?'potes acabaram':`${d}d`}</span>
+                      {c.whatsapp && <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'10px',textDecoration:'none',fontWeight:600}}>WA</a>}
+                    </div>
+                  )
+                })}
+                {alertClients.length === 0 && todayFollowups.length === 0 && <p style={{color:'#ccc',fontSize:'11px',textAlign:'center',padding:'8px 0'}}>Nenhum lembrete hoje</p>}
+              </div>
+            </div>
+            {/* Checklist */}
+            <div style={{background:'#f0fdf4',borderRadius:'8px',padding:'8px 12px',border:'1px solid #86efac'}}>
+              <div style={{display:'flex',alignItems:'center',gap:'6px',marginBottom:'6px'}}>
+                <span style={{color:'#166534',fontSize:'12px',fontWeight:800}}>✅ Checklist</span>
+                <span style={{color:'#16a34a',fontSize:'11px',fontWeight:600}}>{checkDone}/{checkTotal}</span>
+                {checkDone===checkTotal && checkTotal>0 && <span style={{background:'#16a34a',color:'#fff',fontSize:'9px',fontWeight:700,padding:'1px 6px',borderRadius:'8px'}}>🎉</span>}
+                <div style={{flex:1}}/>
+                <div style={{width:'60px',height:'5px',background:'#dcfce7',borderRadius:'3px',overflow:'hidden'}}>
+                  <div style={{width:`${checkTotal>0?(checkDone/checkTotal)*100:0}%`,height:'100%',background:'#16a34a',borderRadius:'3px',transition:'width 0.3s'}}/>
+                </div>
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'4px'}}>
+                <div>
+                  <p style={{color:'#15803d',fontSize:'9px',fontWeight:800,marginBottom:'3px',letterSpacing:'0.5px'}}>💚 PESSOAL</p>
+                  {checklistItems.pessoal.map(item => (
+                    <label key={item.id} onClick={()=>toggleCheck(item.id)} style={{display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',padding:'2px 3px',borderRadius:'3px',background:checklist[item.id]?'#f0fdf4':'transparent'}}>
+                      <span style={{width:'14px',height:'14px',borderRadius:'3px',border:checklist[item.id]?'none':'2px solid #86efac',background:checklist[item.id]?'#16a34a':'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:'8px',color:'#fff'}}>{checklist[item.id]?'✓':''}</span>
+                      <span style={{fontSize:'10px',color:checklist[item.id]?'#999':'#333',textDecoration:checklist[item.id]?'line-through':'none',fontWeight:checklist[item.id]?400:500}}>{item.icon} {item.label}</span>
+                    </label>
+                  ))}
+                </div>
+                <div>
+                  <p style={{color:'#4338ca',fontSize:'9px',fontWeight:800,marginBottom:'3px',letterSpacing:'0.5px'}}>💼 PROFISSIONAL</p>
+                  {checklistItems.profissional.map(item => (
+                    <label key={item.id} onClick={()=>toggleCheck(item.id)} style={{display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',padding:'2px 3px',borderRadius:'3px',background:checklist[item.id]?'#eef2ff':'transparent'}}>
+                      <span style={{width:'14px',height:'14px',borderRadius:'3px',border:checklist[item.id]?'none':'2px solid #a5b4fc',background:checklist[item.id]?'#6366f1':'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:'8px',color:'#fff'}}>{checklist[item.id]?'✓':''}</span>
+                      <span style={{fontSize:'10px',color:checklist[item.id]?'#999':'#333',textDecoration:checklist[item.id]?'line-through':'none',fontWeight:checklist[item.id]?400:500}}>{item.icon} {item.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* ━━━ PRÓXIMOS EVENTOS ━━━ */}
@@ -344,46 +376,7 @@ export default function DashboardPage() {
             )
           })()}
 
-          {/* Lembretes movidos para o cabeçalho */}
-
-          {/* ━━━ CHECKLIST DIÁRIO ━━━ */}
-          <div style={{marginBottom:'12px',background:'#f0fdf4',borderRadius:'10px',padding:'12px',border:'1px solid #86efac'}}>
-            <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'8px'}}>
-              <h2 style={{color:'#166534',fontSize:'14px',fontWeight:800}}>✅ Checklist Diário</h2>
-              <span style={{color:'#16a34a',fontSize:'12px',fontWeight:600}}>{checkDone}/{checkTotal}</span>
-              {checkDone===checkTotal && checkTotal>0 && <span style={{background:'#16a34a',color:'#fff',fontSize:'10px',fontWeight:700,padding:'2px 8px',borderRadius:'10px'}}>🎉 Completo!</span>}
-              <div style={{flex:1}}/>
-              <div style={{width:'80px',height:'6px',background:'#dcfce7',borderRadius:'3px',overflow:'hidden'}}>
-                <div style={{width:`${checkTotal>0?(checkDone/checkTotal)*100:0}%`,height:'100%',background:'#16a34a',borderRadius:'3px',transition:'width 0.3s'}}/>
-              </div>
-            </div>
-            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
-              {/* Pessoal */}
-              <div style={{background:'#fff',borderRadius:'8px',padding:'8px 10px',border:'1px solid #bbf7d0'}}>
-                <p style={{color:'#15803d',fontSize:'11px',fontWeight:800,marginBottom:'6px',letterSpacing:'0.5px'}}>💚 PESSOAL</p>
-                <div style={{display:'flex',flexDirection:'column',gap:'2px'}}>
-                  {checklistItems.pessoal.map(item => (
-                    <label key={item.id} onClick={()=>toggleCheck(item.id)} style={{display:'flex',alignItems:'center',gap:'6px',cursor:'pointer',padding:'3px 4px',borderRadius:'4px',background:checklist[item.id]?'#f0fdf4':'transparent',transition:'background 0.15s'}}>
-                      <span style={{width:'16px',height:'16px',borderRadius:'4px',border:checklist[item.id]?'none':'2px solid #86efac',background:checklist[item.id]?'#16a34a':'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:'10px',color:'#fff',transition:'all 0.15s'}}>{checklist[item.id]?'✓':''}</span>
-                      <span style={{fontSize:'11px',color:checklist[item.id]?'#999':'#333',textDecoration:checklist[item.id]?'line-through':'none',fontWeight:checklist[item.id]?400:500}}>{item.icon} {item.label}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-              {/* Profissional */}
-              <div style={{background:'#fff',borderRadius:'8px',padding:'8px 10px',border:'1px solid #c7d2fe'}}>
-                <p style={{color:'#4338ca',fontSize:'11px',fontWeight:800,marginBottom:'6px',letterSpacing:'0.5px'}}>💼 PROFISSIONAL</p>
-                <div style={{display:'flex',flexDirection:'column',gap:'2px'}}>
-                  {checklistItems.profissional.map(item => (
-                    <label key={item.id} onClick={()=>toggleCheck(item.id)} style={{display:'flex',alignItems:'center',gap:'6px',cursor:'pointer',padding:'3px 4px',borderRadius:'4px',background:checklist[item.id]?'#eef2ff':'transparent',transition:'background 0.15s'}}>
-                      <span style={{width:'16px',height:'16px',borderRadius:'4px',border:checklist[item.id]?'none':'2px solid #a5b4fc',background:checklist[item.id]?'#6366f1':'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:'10px',color:'#fff',transition:'all 0.15s'}}>{checklist[item.id]?'✓':''}</span>
-                      <span style={{fontSize:'11px',color:checklist[item.id]?'#999':'#333',textDecoration:checklist[item.id]?'line-through':'none',fontWeight:checklist[item.id]?400:500}}>{item.icon} {item.label}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* Checklist e Lembretes já estão no topo */}
 
           {/* ━━━ BLOCOS COLAPSÁVEIS ━━━ */}
           <div style={{display:'flex',flexDirection:'column',gap:'12px',marginBottom:'28px'}}>
