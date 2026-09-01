@@ -244,7 +244,7 @@ export default function DashboardPage() {
             return (
             <div style={{marginBottom:'12px',background:'#fef9ee',borderRadius:'10px',padding:'12px',border:'1px solid #fde68a'}}>
               <h2 style={{color:'#92400e',fontSize:'14px',fontWeight:800,marginBottom:'8px'}}>🎯 Foco do Dia <span style={{color:'#b45309',fontSize:'12px',fontWeight:600}}>{focusTasks.length} tarefa{focusTasks.length>1?'s':''}</span></h2>
-              <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
+              <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(200px,1fr))',gap:'8px'}}>
                 {groups.filter(([arr])=>arr.length>0).map(([arr,idx]) => {
                   const cfg = periodoConfig[idx]
                   return (
