@@ -158,8 +158,8 @@ export default function DashboardPage() {
   return (
     <div style={{display:'flex',minHeight:'100vh',background:'#fafafa'}}>
       <Sidebar />
-      <div style={{flex:1,padding:'16px 36px',overflowY:'auto',minWidth:0}}>
-        <div style={{maxWidth:'900px',margin:'0 auto'}}>
+      <div style={{flex:1,padding:'12px 16px',overflowY:'auto',minWidth:0}}>
+        <div style={{maxWidth:'100%',margin:'0 auto'}}>
 
           {/* ━━━ CABEÇALHO + KPIs ━━━ */}
           <div style={{marginBottom:'12px',display:'flex',alignItems:'center',gap:'12px',flexWrap:'wrap'}}>
@@ -183,12 +183,6 @@ export default function DashboardPage() {
                   {k.done !== undefined && k.done > 0 && <span style={{color:'#16a34a',fontSize:'9px',fontWeight:600}}>✓{k.done}</span>}
                 </div>
               ))}
-              {(alertClients.length > 0 || todayFollowups.length > 0) && (
-                <div style={{padding:'4px 10px',borderRadius:'8px',background:'#fdf2f8',border:'1px solid #f9a8d4',display:'flex',alignItems:'center',gap:'4px',position:'relative',cursor:'default'}}>
-                  <span style={{fontSize:'12px'}}>📌</span>
-                  <span style={{color:'#9d174d',fontSize:'10px',fontWeight:700}}>{alertClients.length + todayFollowups.length}</span>
-                </div>
-              )}
             </div>
           </div>
           {/* ━━━ QUICK CAPTURE ━━━ */}
@@ -207,104 +201,6 @@ export default function DashboardPage() {
               </button>
             )}
           </div>
-
-          {/* ━━━ CHECKLIST + LEMBRETES lado a lado ━━━ */}
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px',marginBottom:'12px',alignItems:'start'}}>
-            {/* Checklist (esquerda) */}
-            <div style={{background:'#f0fdf4',borderRadius:'8px',padding:'8px 12px',border:'1px solid #86efac'}}>
-              <div style={{display:'flex',alignItems:'center',gap:'6px',marginBottom:'6px'}}>
-                <span style={{color:'#166534',fontSize:'12px',fontWeight:800}}>✅ Checklist</span>
-                <span style={{color:'#16a34a',fontSize:'11px',fontWeight:600}}>{checkDone}/{checkTotal}</span>
-                {checkDone===checkTotal && checkTotal>0 && <span style={{background:'#16a34a',color:'#fff',fontSize:'9px',fontWeight:700,padding:'1px 6px',borderRadius:'8px'}}>🎉</span>}
-                <div style={{flex:1}}/>
-                <div style={{width:'60px',height:'5px',background:'#dcfce7',borderRadius:'3px',overflow:'hidden'}}>
-                  <div style={{width:`${checkTotal>0?(checkDone/checkTotal)*100:0}%`,height:'100%',background:'#16a34a',borderRadius:'3px',transition:'width 0.3s'}}/>
-                </div>
-              </div>
-              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'4px'}}>
-                <div>
-                  <p style={{color:'#15803d',fontSize:'9px',fontWeight:800,marginBottom:'3px',letterSpacing:'0.5px'}}>💚 PESSOAL</p>
-                  {checklistItems.pessoal.map(item => (
-                    <label key={item.id} onClick={()=>toggleCheck(item.id)} style={{display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',padding:'2px 3px',borderRadius:'3px',background:checklist[item.id]?'#f0fdf4':'transparent'}}>
-                      <span style={{width:'14px',height:'14px',borderRadius:'3px',border:checklist[item.id]?'none':'2px solid #86efac',background:checklist[item.id]?'#16a34a':'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:'8px',color:'#fff'}}>{checklist[item.id]?'✓':''}</span>
-                      <span style={{fontSize:'10px',color:checklist[item.id]?'#999':'#333',textDecoration:checklist[item.id]?'line-through':'none',fontWeight:checklist[item.id]?400:500}}>{item.icon} {item.label}</span>
-                    </label>
-                  ))}
-                </div>
-                <div>
-                  <p style={{color:'#4338ca',fontSize:'9px',fontWeight:800,marginBottom:'3px',letterSpacing:'0.5px'}}>💼 PROFISSIONAL</p>
-                  {checklistItems.profissional.map(item => (
-                    <label key={item.id} onClick={()=>toggleCheck(item.id)} style={{display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',padding:'2px 3px',borderRadius:'3px',background:checklist[item.id]?'#eef2ff':'transparent'}}>
-                      <span style={{width:'14px',height:'14px',borderRadius:'3px',border:checklist[item.id]?'none':'2px solid #a5b4fc',background:checklist[item.id]?'#6366f1':'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:'8px',color:'#fff'}}>{checklist[item.id]?'✓':''}</span>
-                      <span style={{fontSize:'10px',color:checklist[item.id]?'#999':'#333',textDecoration:checklist[item.id]?'line-through':'none',fontWeight:checklist[item.id]?400:500}}>{item.icon} {item.label}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            </div>
-            {/* Lembretes (direita) */}
-            <div style={{background:'#fdf2f8',borderRadius:'8px',padding:'8px 12px',border:'1px solid #f9a8d4'}}>
-              <span style={{color:'#9d174d',fontSize:'12px',fontWeight:800}}>📌 Lembretes</span>
-              <div style={{display:'flex',flexDirection:'column',gap:'4px',marginTop:'6px'}}>
-                {todayFollowups.map(l => (
-                  <div key={l.id} style={{display:'flex',alignItems:'center',gap:'4px',padding:'3px 6px',borderRadius:'5px',background:'#fff',border:'1px solid #fbcfe8'}}>
-                    <span style={{fontSize:'11px'}}>👥</span>
-                    <span style={{color:'#333',fontSize:'11px',fontWeight:500,flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>Follow-up: {l.name}</span>
-                    {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'10px',textDecoration:'none',fontWeight:600}}>WA</a>}
-                  </div>
-                ))}
-                {alertClients.map(c => {
-                  const d = daysLeft(c)
-                  const isOver = d !== null && d <= 0
-                  return (
-                    <div key={c.id} style={{display:'flex',alignItems:'center',gap:'4px',padding:'3px 6px',borderRadius:'5px',background:'#fff',border:'1px solid #fbcfe8'}}>
-                      <span style={{fontSize:'11px'}}>📦</span>
-                      <span style={{color:'#333',fontSize:'11px',flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{c.name} — {isOver?'potes acabaram':`${d}d`}</span>
-                      {c.whatsapp && <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'10px',textDecoration:'none',fontWeight:600}}>WA</a>}
-                    </div>
-                  )
-                })}
-                {alertClients.length === 0 && todayFollowups.length === 0 && <p style={{color:'#ccc',fontSize:'11px',textAlign:'center',padding:'8px 0'}}>Nenhum lembrete hoje</p>}
-              </div>
-            </div>
-          </div>
-
-          {/* ━━━ PRÓXIMOS EVENTOS ━━━ */}
-          {upcomingTasks.length > 0 && (
-            <div style={{marginBottom:'12px',background:'#f0f4ff',borderRadius:'10px',padding:'12px',border:'1px solid #c7d2fe'}}>
-              <div style={{display:'flex',alignItems:'center',gap:'6px',marginBottom:'8px'}}>
-                <h2 style={{color:'#3b3b8f',fontSize:'14px',fontWeight:800}}>📅 Próximos Eventos</h2>
-                <span style={{color:'#6366f1',fontSize:'12px',fontWeight:600}}>{upcomingTasks.length} nos próximos 14 dias</span>
-              </div>
-              <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(220px,1fr))',gap:'6px'}}>
-                {upcomingTasks.slice(0,6).map(t => {
-                  const d = new Date(t.date + 'T12:00:00')
-                  const diasRest = Math.ceil((d.getTime() - today.getTime()) / (1000*60*60*24))
-                  const cor = priorityColor[t.priority] || '#7c3aed'
-                  return (
-                    <div key={t.id} style={{...card,display:'flex',gap:'8px',alignItems:'center',padding:'8px 10px'}}>
-                      <div style={{width:'36px',height:'36px',borderRadius:'8px',background:cor,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                        <span style={{color:'#fff',fontSize:'15px',fontWeight:800,lineHeight:1}}>{d.getDate()}</span>
-                        <span style={{color:'#fff',fontSize:'7px',fontWeight:600,textTransform:'uppercase'}}>{meses[d.getMonth()].slice(0,3)}</span>
-                      </div>
-                      <div style={{flex:1,minWidth:0}}>
-                        <p style={{color:'#111',fontSize:'12px',fontWeight:700,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.title}</p>
-                        <p style={{color:'#888',fontSize:'10px',marginTop:'1px'}}>
-                          {dias[d.getDay()]} {t.time ? `· ${t.time}` : ''} · <span style={{color:cor,fontWeight:700}}>{diasRest === 1 ? 'Amanhã' : `${diasRest}d`}</span>
-                        </p>
-                      </div>
-                      <button onClick={()=>completeTask(t.id)} title="Concluir" style={{width:'22px',height:'22px',borderRadius:'50%',border:`2px solid ${cor}`,background:'transparent',cursor:'pointer',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',color:cor,fontSize:'10px',fontWeight:700}}>✓</button>
-                    </div>
-                  )
-                })}
-              </div>
-              {upcomingTasks.length > 6 && (
-                <Link href="/agenda" style={{display:'block',textAlign:'center',color:'#7c3aed',fontSize:'13px',fontWeight:600,marginTop:'10px',textDecoration:'none'}}>
-                  Ver todos os {upcomingTasks.length} eventos →
-                </Link>
-              )}
-            </div>
-          )}
 
           {/* ━━━ FOCO DO DIA ━━━ */}
           {focusTasks.length > 0 && (() => {
@@ -376,7 +272,101 @@ export default function DashboardPage() {
             )
           })()}
 
-          {/* Checklist e Lembretes já estão no topo */}
+          {/* ━━━ PRÓXIMOS EVENTOS ━━━ */}
+          {upcomingTasks.length > 0 && (
+            <div style={{marginBottom:'12px',background:'#f0f4ff',borderRadius:'10px',padding:'12px',border:'1px solid #c7d2fe'}}>
+              <div style={{display:'flex',alignItems:'center',gap:'6px',marginBottom:'8px'}}>
+                <h2 style={{color:'#3b3b8f',fontSize:'14px',fontWeight:800}}>📅 Próximos Eventos</h2>
+                <span style={{color:'#6366f1',fontSize:'12px',fontWeight:600}}>{upcomingTasks.length} nos próximos 14 dias</span>
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(220px,1fr))',gap:'6px'}}>
+                {upcomingTasks.slice(0,6).map(t => {
+                  const d = new Date(t.date + 'T12:00:00')
+                  const diasRest = Math.ceil((d.getTime() - today.getTime()) / (1000*60*60*24))
+                  const cor = priorityColor[t.priority] || '#7c3aed'
+                  return (
+                    <div key={t.id} style={{...card,display:'flex',gap:'8px',alignItems:'center',padding:'8px 10px'}}>
+                      <div style={{width:'36px',height:'36px',borderRadius:'8px',background:cor,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                        <span style={{color:'#fff',fontSize:'15px',fontWeight:800,lineHeight:1}}>{d.getDate()}</span>
+                        <span style={{color:'#fff',fontSize:'7px',fontWeight:600,textTransform:'uppercase'}}>{meses[d.getMonth()].slice(0,3)}</span>
+                      </div>
+                      <div style={{flex:1,minWidth:0}}>
+                        <p style={{color:'#111',fontSize:'12px',fontWeight:700,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.title}</p>
+                        <p style={{color:'#888',fontSize:'10px',marginTop:'1px'}}>
+                          {dias[d.getDay()]} {t.time ? `· ${t.time}` : ''} · <span style={{color:cor,fontWeight:700}}>{diasRest === 1 ? 'Amanhã' : `${diasRest}d`}</span>
+                        </p>
+                      </div>
+                      <button onClick={()=>completeTask(t.id)} title="Concluir" style={{width:'22px',height:'22px',borderRadius:'50%',border:`2px solid ${cor}`,background:'transparent',cursor:'pointer',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',color:cor,fontSize:'10px',fontWeight:700}}>✓</button>
+                    </div>
+                  )
+                })}
+              </div>
+              {upcomingTasks.length > 6 && (
+                <Link href="/agenda" style={{display:'block',textAlign:'center',color:'#7c3aed',fontSize:'13px',fontWeight:600,marginTop:'10px',textDecoration:'none'}}>
+                  Ver todos os {upcomingTasks.length} eventos →
+                </Link>
+              )}
+            </div>
+          )}
+
+          {/* ━━━ CHECKLIST + LEMBRETES ━━━ */}
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'10px',marginBottom:'12px',alignItems:'start'}}>
+            <div style={{background:'#f0fdf4',borderRadius:'8px',padding:'8px 12px',border:'1px solid #86efac'}}>
+              <div style={{display:'flex',alignItems:'center',gap:'6px',marginBottom:'6px'}}>
+                <span style={{color:'#166534',fontSize:'12px',fontWeight:800}}>✅ Checklist</span>
+                <span style={{color:'#16a34a',fontSize:'11px',fontWeight:600}}>{checkDone}/{checkTotal}</span>
+                {checkDone===checkTotal && checkTotal>0 && <span style={{background:'#16a34a',color:'#fff',fontSize:'9px',fontWeight:700,padding:'1px 6px',borderRadius:'8px'}}>🎉</span>}
+                <div style={{flex:1}}/>
+                <div style={{width:'60px',height:'5px',background:'#dcfce7',borderRadius:'3px',overflow:'hidden'}}>
+                  <div style={{width:`${checkTotal>0?(checkDone/checkTotal)*100:0}%`,height:'100%',background:'#16a34a',borderRadius:'3px',transition:'width 0.3s'}}/>
+                </div>
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'4px'}}>
+                <div>
+                  <p style={{color:'#15803d',fontSize:'9px',fontWeight:800,marginBottom:'3px',letterSpacing:'0.5px'}}>💚 PESSOAL</p>
+                  {checklistItems.pessoal.map(item => (
+                    <label key={item.id} onClick={()=>toggleCheck(item.id)} style={{display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',padding:'2px 3px',borderRadius:'3px',background:checklist[item.id]?'#f0fdf4':'transparent'}}>
+                      <span style={{width:'14px',height:'14px',borderRadius:'3px',border:checklist[item.id]?'none':'2px solid #86efac',background:checklist[item.id]?'#16a34a':'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:'8px',color:'#fff'}}>{checklist[item.id]?'✓':''}</span>
+                      <span style={{fontSize:'10px',color:checklist[item.id]?'#999':'#333',textDecoration:checklist[item.id]?'line-through':'none',fontWeight:checklist[item.id]?400:500}}>{item.icon} {item.label}</span>
+                    </label>
+                  ))}
+                </div>
+                <div>
+                  <p style={{color:'#4338ca',fontSize:'9px',fontWeight:800,marginBottom:'3px',letterSpacing:'0.5px'}}>💼 PROFISSIONAL</p>
+                  {checklistItems.profissional.map(item => (
+                    <label key={item.id} onClick={()=>toggleCheck(item.id)} style={{display:'flex',alignItems:'center',gap:'4px',cursor:'pointer',padding:'2px 3px',borderRadius:'3px',background:checklist[item.id]?'#eef2ff':'transparent'}}>
+                      <span style={{width:'14px',height:'14px',borderRadius:'3px',border:checklist[item.id]?'none':'2px solid #a5b4fc',background:checklist[item.id]?'#6366f1':'transparent',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:'8px',color:'#fff'}}>{checklist[item.id]?'✓':''}</span>
+                      <span style={{fontSize:'10px',color:checklist[item.id]?'#999':'#333',textDecoration:checklist[item.id]?'line-through':'none',fontWeight:checklist[item.id]?400:500}}>{item.icon} {item.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div style={{background:'#fdf2f8',borderRadius:'8px',padding:'8px 12px',border:'1px solid #f9a8d4'}}>
+              <span style={{color:'#9d174d',fontSize:'12px',fontWeight:800}}>📌 Lembretes</span>
+              <div style={{display:'flex',flexDirection:'column',gap:'4px',marginTop:'6px'}}>
+                {todayFollowups.map(l => (
+                  <div key={l.id} style={{display:'flex',alignItems:'center',gap:'4px',padding:'3px 6px',borderRadius:'5px',background:'#fff',border:'1px solid #fbcfe8'}}>
+                    <span style={{fontSize:'11px'}}>👥</span>
+                    <span style={{color:'#333',fontSize:'11px',fontWeight:500,flex:1}}>Follow-up: {l.name}</span>
+                    {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'10px',textDecoration:'none',fontWeight:600}}>WA</a>}
+                  </div>
+                ))}
+                {alertClients.map(c => {
+                  const d = daysLeft(c)
+                  const isOver = d !== null && d <= 0
+                  return (
+                    <div key={c.id} style={{display:'flex',alignItems:'center',gap:'4px',padding:'3px 6px',borderRadius:'5px',background:'#fff',border:'1px solid #fbcfe8'}}>
+                      <span style={{fontSize:'11px'}}>📦</span>
+                      <span style={{color:'#333',fontSize:'11px',flex:1}}>{c.name} — {isOver?'potes acabaram':`${d}d`}</span>
+                      {c.whatsapp && <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'10px',textDecoration:'none',fontWeight:600}}>WA</a>}
+                    </div>
+                  )
+                })}
+                {alertClients.length === 0 && todayFollowups.length === 0 && <p style={{color:'#ccc',fontSize:'11px',textAlign:'center',padding:'8px 0'}}>Nenhum lembrete hoje</p>}
+              </div>
+            </div>
+          </div>
 
           {/* ━━━ BLOCOS COLAPSÁVEIS ━━━ */}
           <div style={{display:'flex',flexDirection:'column',gap:'12px',marginBottom:'28px'}}>
