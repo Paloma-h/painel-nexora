@@ -170,7 +170,7 @@ export default function DashboardPage() {
               <span style={{color:'#aaa',fontSize:'11px'}}>{dias[today.getDay()]}, {today.getDate()} de {meses[today.getMonth()]}</span>
             </div>
             <div style={{flex:1}}/>
-            <div style={{display:'flex',gap:'6px'}}>
+            <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
               {[
                 {label:'Hoje',value:todayTasks.length,done:doneTasks.length,color:'#7c3aed'},
                 {label:'Atrasadas',value:overdueTasks.length,color:'#dc2626'},
@@ -183,8 +183,42 @@ export default function DashboardPage() {
                   {k.done !== undefined && k.done > 0 && <span style={{color:'#16a34a',fontSize:'9px',fontWeight:600}}>✓{k.done}</span>}
                 </div>
               ))}
+              {(alertClients.length > 0 || todayFollowups.length > 0) && (
+                <div style={{padding:'4px 10px',borderRadius:'8px',background:'#fdf2f8',border:'1px solid #f9a8d4',display:'flex',alignItems:'center',gap:'4px',position:'relative',cursor:'default'}}>
+                  <span style={{fontSize:'12px'}}>📌</span>
+                  <span style={{color:'#9d174d',fontSize:'10px',fontWeight:700}}>{alertClients.length + todayFollowups.length}</span>
+                </div>
+              )}
             </div>
           </div>
+          {/* ━━━ LEMBRETES (topo direito) ━━━ */}
+          {(alertClients.length > 0 || todayFollowups.length > 0) && (
+            <div style={{marginBottom:'12px',background:'#fdf2f8',borderRadius:'8px',padding:'8px 12px',border:'1px solid #f9a8d4'}}>
+              <div style={{display:'flex',alignItems:'center',gap:'6px',marginBottom:'4px'}}>
+                <span style={{color:'#9d174d',fontSize:'12px',fontWeight:800}}>📌 Lembretes</span>
+              </div>
+              <div style={{display:'flex',flexWrap:'wrap',gap:'6px'}}>
+                {todayFollowups.map(l => (
+                  <div key={l.id} style={{display:'flex',alignItems:'center',gap:'4px',padding:'3px 8px',borderRadius:'6px',background:'#fff',border:'1px solid #fbcfe8'}}>
+                    <span style={{fontSize:'11px'}}>👥</span>
+                    <span style={{color:'#333',fontSize:'11px',fontWeight:500}}>Follow-up: {l.name}</span>
+                    {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'10px',textDecoration:'none',fontWeight:600}}>WA</a>}
+                  </div>
+                ))}
+                {alertClients.map(c => {
+                  const d = daysLeft(c)
+                  const isOver = d !== null && d <= 0
+                  return (
+                    <div key={c.id} style={{display:'flex',alignItems:'center',gap:'4px',padding:'3px 8px',borderRadius:'6px',background:'#fff',border:'1px solid #fbcfe8'}}>
+                      <span style={{fontSize:'11px'}}>📦</span>
+                      <span style={{color:'#333',fontSize:'11px'}}>{c.name} — {isOver?'potes acabaram':`${d}d`}</span>
+                      {c.whatsapp && <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'10px',textDecoration:'none',fontWeight:600}}>WA</a>}
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
 
           {/* ━━━ QUICK CAPTURE ━━━ */}
           <div style={{marginBottom:'16px',background:'#fff',borderRadius:'10px',padding:'2px',border:'2px solid #e5e5ea',display:'flex',alignItems:'center',gap:'6px'}}>
@@ -310,32 +344,7 @@ export default function DashboardPage() {
             )
           })()}
 
-          {/* ━━━ LEMBRETES ━━━ */}
-          {(alertClients.length > 0 || todayFollowups.length > 0) && (
-            <div style={{marginBottom:'16px',background:'#fdf2f8',borderRadius:'12px',padding:'16px',border:'1px solid #f9a8d4'}}>
-              <h2 style={{color:'#9d174d',fontSize:'15px',fontWeight:800,marginBottom:'8px'}}>📌 Lembretes</h2>
-              <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
-                {todayFollowups.map(l => (
-                  <div key={l.id} style={{display:'flex',alignItems:'center',gap:'8px'}}>
-                    <span style={{fontSize:'13px'}}>👥</span>
-                    <p style={{flex:1,color:'#333',fontSize:'13px',fontWeight:500}}>Follow-up: {l.name}</p>
-                    {l.whatsapp && <a href={`https://wa.me/55${l.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'12px',textDecoration:'none',fontWeight:600}}>WA</a>}
-                  </div>
-                ))}
-                {alertClients.map(c => {
-                  const d = daysLeft(c)
-                  const isOver = d !== null && d <= 0
-                  return (
-                    <div key={c.id} style={{display:'flex',alignItems:'center',gap:'8px'}}>
-                      <span style={{fontSize:'13px'}}>📦</span>
-                      <p style={{flex:1,color:'#333',fontSize:'13px'}}>{c.name} — {isOver?'potes acabaram':`${d}d restantes`}</p>
-                      {c.whatsapp && <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#16a34a',fontSize:'12px',textDecoration:'none',fontWeight:600}}>WA</a>}
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          )}
+          {/* Lembretes movidos para o cabeçalho */}
 
           {/* ━━━ CHECKLIST DIÁRIO ━━━ */}
           <div style={{marginBottom:'12px',background:'#f0fdf4',borderRadius:'10px',padding:'12px',border:'1px solid #86efac'}}>
