@@ -13,7 +13,7 @@ const GENRES = ['Drama','Comédia','Ação','Terror','Romance','Documentário','
 const TYPES = ['Filme','Série','Documentário','Anime','Mini-série']
 const PLATFORMS = ['Netflix','Amazon Prime','Disney+','HBO Max','Globoplay','YouTube','Cinema','Outro']
 const STATUS_LIST = ['Quero assistir','Assistindo','Pausado','Concluído']
-const EMPTY = {name:'',genre:'Drama',type:'Filme',platform:'Netflix',season:'',episode:'',total_seasons:'',total_episodes:'',status:'Quero assistir',rating:'',notes:''}
+const EMPTY = {name:'',genre:'Drama',type:'Filme',platform:'Netflix',season:'',episode:'',total_seasons:'',total_episodes:'',status:'Quero assistir',rating:'',notes:'',started_date:'',watched_date:'',stopped_at:''}
 const statusColor: any = {'Assistindo':'#7c6ff7','Pausado':'#d4b84a','Concluído':'#4caf7d','Quero assistir':'#888'}
 const platformColor: any = {'Netflix':'#e05252','Amazon Prime':'#4267B2','Disney+':'#4267B2','HBO Max':'#7c6ff7','Globoplay':'#e08c42','YouTube':'#e05252','Cinema':'#4caf7d','Outro':'#888'}
 const typeIcon: any = {'Filme':'🎬','Série':'📺','Documentário':'🎥','Anime':'⛩️','Mini-série':'📽️'}
@@ -37,14 +37,14 @@ export default function FilmesPage() {
   function openNew() { setEditing(null); setForm({...EMPTY}); setShowForm(true) }
   function openEdit(item:any) {
     setEditing(item)
-    setForm({name:item.name,genre:item.genre||'Drama',type:item.type||'Filme',platform:item.platform||'Netflix',season:item.season?.toString()||'',episode:item.episode?.toString()||'',total_seasons:item.total_seasons?.toString()||'',total_episodes:item.total_episodes?.toString()||'',status:item.status||'Quero assistir',rating:item.rating?.toString()||'',notes:item.notes||''})
+    setForm({name:item.name,genre:item.genre||'Drama',type:item.type||'Filme',platform:item.platform||'Netflix',season:item.season?.toString()||'',episode:item.episode?.toString()||'',total_seasons:item.total_seasons?.toString()||'',total_episodes:item.total_episodes?.toString()||'',status:item.status||'Quero assistir',rating:item.rating?.toString()||'',notes:item.notes||'',started_date:item.started_date||'',watched_date:item.watched_date||'',stopped_at:item.stopped_at||''})
     setShowForm(true)
   }
   async function save() {
     if (!form.name.trim()) return
     setSaving(true)
     const now = new Date().toISOString()
-    const data: any = {name:form.name.trim(),genre:form.genre,type:form.type,platform:form.platform,season:form.season?parseInt(form.season):null,episode:form.episode?parseInt(form.episode):null,total_seasons:form.total_seasons?parseInt(form.total_seasons):null,total_episodes:form.total_episodes?parseInt(form.total_episodes):null,status:form.status,rating:form.rating?parseInt(form.rating):null,notes:form.notes||null,user_id:USER_ID,updated_at:now}
+    const data: any = {name:form.name.trim(),genre:form.genre,type:form.type,platform:form.platform,season:form.season?parseInt(form.season):null,episode:form.episode?parseInt(form.episode):null,total_seasons:form.total_seasons?parseInt(form.total_seasons):null,total_episodes:form.total_episodes?parseInt(form.total_episodes):null,status:form.status,rating:form.rating?parseInt(form.rating):null,notes:form.notes||null,started_date:form.started_date||null,watched_date:form.watched_date||null,stopped_at:form.stopped_at||null,user_id:USER_ID,updated_at:now}
     if (editing) { await supabase.from('educacao_filmes').update(data).eq('id',editing.id) }
     else { await supabase.from('educacao_filmes').insert({...data,id:crypto.randomUUID(),created_at:now}) }
     setSaving(false); setShowForm(false); load()
@@ -102,10 +102,12 @@ export default function FilmesPage() {
                           <span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:`${statusColor[item.status]||'#888'}22`,color:statusColor[item.status]||'#888'}}>{item.status}</span>
                           <span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:`${platformColor[item.platform]||'#888'}18`,color:platformColor[item.platform]||'#888'}}>{item.platform}</span>
                         </div>
-                        <div style={{display:'flex',gap:'10px',marginTop:'4px',flexWrap:'wrap'}}>
+                        <div style={{display:'flex',gap:'10px',marginTop:'4px',flexWrap:'wrap',alignItems:'center'}}>
                           <span style={{color:'#444',fontSize:'15px'}}>{item.type}</span>
                           {item.genre && <span style={{color:'#444',fontSize:'15px'}}>· {item.genre}</span>}
                           {item.rating && <span style={{color:'#854d0e',fontSize:'15px'}}>· {'★'.repeat(item.rating)}</span>}
+                          {item.stopped_at && <span style={{color:'#7c3aed',fontSize:'13px',fontWeight:600}}>⏱️ Parei: {item.stopped_at}</span>}
+                          {item.watched_date && <span style={{color:'#16a34a',fontSize:'13px'}}>📅 {new Date(item.watched_date+'T12:00:00').toLocaleDateString('pt-BR')}</span>}
                         </div>
                         {pct !== null && <div style={{marginTop:'8px',display:'flex',alignItems:'center',gap:'8px'}}><div style={{flex:1,height:'4px',background:'#fff',borderRadius:'2px',overflow:'hidden'}}><div style={{width:`${Math.min(pct,100)}%`,height:'100%',background:item.status==='Concluído'?'#4caf7d':'#7c6ff7',borderRadius:'2px'}}/></div><span style={{color:'#444',fontSize:'12px'}}>{pct}%</span></div>}
                       </div>
@@ -147,7 +149,15 @@ export default function FilmesPage() {
                 <Fld label="Total temporadas"><input type="number" min="0" placeholder="5" value={form.total_seasons} onChange={e=>setForm((f:any)=>({...f,total_seasons:e.target.value}))} style={inp}/></Fld>
                 <Fld label="Total episódios"><input type="number" min="0" placeholder="62" value={form.total_episodes} onChange={e=>setForm((f:any)=>({...f,total_episodes:e.target.value}))} style={inp}/></Fld>
               </div>
-              <Fld label="Notas"><textarea placeholder="Onde parei, o que achei..." value={form.notes} onChange={e=>setForm((f:any)=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'80px'}}/></Fld>
+              <div style={{background:'#faf5ff',border:'2px solid #e9d5ff',borderRadius:'10px',padding:'12px'}}>
+                <p style={{color:'#7c3aed',fontSize:'13px',fontWeight:700,marginBottom:'8px'}}>📅 Controle de progresso</p>
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'8px'}}>
+                  <Fld label="Comecei em"><input type="date" value={form.started_date} onChange={e=>setForm((f:any)=>({...f,started_date:e.target.value}))} style={{...inp,colorScheme:'light'}}/></Fld>
+                  <Fld label="Assistido em"><input type="date" value={form.watched_date} onChange={e=>setForm((f:any)=>({...f,watched_date:e.target.value}))} style={{...inp,colorScheme:'light'}}/></Fld>
+                  <Fld label="Parei em (min/ep)"><input placeholder="1:23:00 ou Ep 5" value={form.stopped_at} onChange={e=>setForm((f:any)=>({...f,stopped_at:e.target.value}))} style={inp}/></Fld>
+                </div>
+              </div>
+              <Fld label="Notas"><textarea placeholder="O que achei, recomendações..." value={form.notes} onChange={e=>setForm((f:any)=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'80px'}}/></Fld>
             </div>
             <div style={{display:'flex',gap:'8px',marginTop:'20px'}}>
               <button onClick={save} disabled={!form.name.trim()||saving} style={{flex:1,padding:'11px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer',opacity:!form.name.trim()||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>

@@ -14,7 +14,8 @@ function Fld({label,children}:{label:string,children:any}) {
 
 const CATEGORIES = ['Desenvolvimento Pessoal','Negócios','Finanças','Marketing','Tecnologia','Saúde','Espiritualidade','Ficção','Biografia','Outro']
 const STATUS_LIST = ['Quero ler','Lendo','Pausado','Concluído']
-const EMPTY = {name:'',author:'',category:'Desenvolvimento Pessoal',total_pages:'',current_page:'',status:'Quero ler',rating:'',notes:'',started_at:'',finished_at:''}
+const FORMATS = ['Livro','Audiobook','E-book','PDF']
+const EMPTY = {name:'',author:'',category:'Desenvolvimento Pessoal',total_pages:'',current_page:'',status:'Quero ler',rating:'',notes:'',started_at:'',finished_at:'',format:'Livro',audiobook_url:'',audiobook_minute:''}
 const statusColor: any = {'Lendo':'#7c6ff7','Pausado':'#d4b84a','Concluído':'#4caf7d','Quero ler':'#888'}
 
 export default function LivrosPage() {
@@ -41,7 +42,7 @@ export default function LivrosPage() {
 
   function openEdit(item:any) {
     setEditing(item)
-    setForm({name:item.name,author:item.author||'',category:item.category||'Desenvolvimento Pessoal',total_pages:item.total_pages?.toString()||'',current_page:item.current_page?.toString()||'',status:item.status||'Quero ler',rating:item.rating?.toString()||'',notes:item.notes||'',started_at:item.started_at||'',finished_at:item.finished_at||''})
+    setForm({name:item.name,author:item.author||'',category:item.category||'Desenvolvimento Pessoal',total_pages:item.total_pages?.toString()||'',current_page:item.current_page?.toString()||'',status:item.status||'Quero ler',rating:item.rating?.toString()||'',notes:item.notes||'',started_at:item.started_at||'',finished_at:item.finished_at||'',format:item.format||'Livro',audiobook_url:item.audiobook_url||'',audiobook_minute:item.audiobook_minute||''})
     setShowForm(true)
   }
 
@@ -49,7 +50,7 @@ export default function LivrosPage() {
     if (!form.name.trim()) return
     setSaving(true)
     const now = new Date().toISOString()
-    const data: any = {name:form.name.trim(),author:form.author||null,category:form.category,total_pages:form.total_pages?parseInt(form.total_pages):null,current_page:form.current_page?parseInt(form.current_page):null,status:form.status,rating:form.rating?parseInt(form.rating):null,notes:form.notes||null,started_at:form.started_at||null,finished_at:form.finished_at||null,user_id:USER_ID,updated_at:now}
+    const data: any = {name:form.name.trim(),author:form.author||null,category:form.category,total_pages:form.total_pages?parseInt(form.total_pages):null,current_page:form.current_page?parseInt(form.current_page):null,status:form.status,rating:form.rating?parseInt(form.rating):null,notes:form.notes||null,started_at:form.started_at||null,finished_at:form.finished_at||null,format:form.format||'Livro',audiobook_url:form.audiobook_url||null,audiobook_minute:form.audiobook_minute||null,user_id:USER_ID,updated_at:now}
     if (editing) { await supabase.from('educacao_livros').update(data).eq('id',editing.id) }
     else { await supabase.from('educacao_livros').insert({...data,id:crypto.randomUUID(),created_at:now}) }
     setSaving(false); setShowForm(false); load()
@@ -73,6 +74,7 @@ export default function LivrosPage() {
   const lendo = items.filter(c=>c.status==='Lendo').length
   const concluidos = items.filter(c=>c.status==='Concluído').length
   const querLer = items.filter(c=>c.status==='Quero ler').length
+  const audiobooks = items.filter(c=>c.format==='Audiobook').length
 
   return (
     <div style={{display:'flex',minHeight:'100vh',background:'#ffffff'}}>
@@ -87,18 +89,22 @@ export default function LivrosPage() {
             <button onClick={openNew} style={{padding:'8px 18px',background:'#5b50d6',border:'none',borderRadius:'10px',color:'#111',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>+ Novo Livro</button>
           </div>
           {items.length > 0 && (
-            <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'10px',marginBottom:'20px'}}>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'10px',marginBottom:'20px'}}>
               <div style={{background:'#fff',border:'1px solid #e0dbff',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
                 <p style={{color:'#5b21b6',fontSize:'22px',fontWeight:700}}>{lendo}</p>
-                <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Lendo</p>
+                <p style={{color:'#444',fontSize:'13px',marginTop:'2px'}}>Lendo</p>
               </div>
               <div style={{background:'#fff',border:'1px solid #ddf5e8',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
                 <p style={{color:'#15803d',fontSize:'22px',fontWeight:700}}>{concluidos}</p>
-                <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Concluídos</p>
+                <p style={{color:'#444',fontSize:'13px',marginTop:'2px'}}>Concluídos</p>
               </div>
               <div style={{background:'#fff',border:'1px solid #ebebeb',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
                 <p style={{color:'#444',fontSize:'22px',fontWeight:700}}>{querLer}</p>
-                <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Quero ler</p>
+                <p style={{color:'#444',fontSize:'13px',marginTop:'2px'}}>Quero ler</p>
+              </div>
+              <div style={{background:'#fff',border:'1px solid #f3e8ff',borderRadius:'12px',padding:'14px',textAlign:'center'}}>
+                <p style={{color:'#7c3aed',fontSize:'22px',fontWeight:700}}>{audiobooks}</p>
+                <p style={{color:'#444',fontSize:'13px',marginTop:'2px'}}>🎧 Audiobooks</p>
               </div>
             </div>
           )}
@@ -118,16 +124,18 @@ export default function LivrosPage() {
                 return (
                   <div key={item.id} style={{borderRadius:'14px',background:'#fff',border:`1px solid ${item.status==='Lendo'?'#d4cdff':'#f0f0f3'}`,overflow:'hidden'}}>
                     <div style={{display:'flex',alignItems:'center',gap:'12px',padding:'14px 16px',cursor:'pointer'}} onClick={()=>setExpandedId(expanded?null:item.id)}>
-                      <div style={{width:'42px',height:'42px',borderRadius:'10px',background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'22px',flexShrink:0}}>📖</div>
+                      <div style={{width:'42px',height:'42px',borderRadius:'10px',background:item.format==='Audiobook'?'#faf5ff':'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'22px',flexShrink:0}}>{item.format==='Audiobook'?'🎧':item.format==='E-book'||item.format==='PDF'?'📱':'📖'}</div>
                       <div style={{flex:1,minWidth:0}}>
                         <div style={{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}}>
                           <p style={{color:'#111',fontSize:'15px',fontWeight:600}}>{item.name}</p>
                           <span style={{fontSize:'12px',padding:'1px 7px',borderRadius:'5px',background:`${statusColor[item.status]||'#888'}22`,color:statusColor[item.status]||'#888'}}>{item.status}</span>
+                          {item.format && item.format !== 'Livro' && <span style={{fontSize:'11px',padding:'1px 7px',borderRadius:'5px',background:item.format==='Audiobook'?'#f3e8ff':'#e0f2fe',color:item.format==='Audiobook'?'#7c3aed':'#0284c7',fontWeight:600}}>{item.format}</span>}
                         </div>
                         <div style={{display:'flex',gap:'10px',marginTop:'4px',flexWrap:'wrap',alignItems:'center'}}>
                           {item.author && <span style={{color:'#444',fontSize:'15px'}}>{item.author}</span>}
                           {item.category && <span style={{color:'#444',fontSize:'15px'}}>· {item.category}</span>}
                           {item.rating && <span style={{color:'#854d0e',fontSize:'15px'}}>· {'★'.repeat(item.rating)}</span>}
+                          {item.audiobook_minute && <span style={{color:'#7c3aed',fontSize:'13px',fontWeight:600}}>⏱️ Parei: {item.audiobook_minute}</span>}
                         </div>
                         {pct !== null && (
                           <div style={{marginTop:'8px',display:'flex',alignItems:'center',gap:'8px'}}>
@@ -144,12 +152,21 @@ export default function LivrosPage() {
                         <span style={{color:'#555',fontSize:'15px'}}>{expanded?'▲':'▼'}</span>
                       </div>
                     </div>
-                    {expanded && item.notes && (
-                      <div style={{borderTop:'2px solid #bbb',padding:'14px 16px',background:'rgba(0,0,0,0.2)'}}>
-                        <div style={{background:'#fff',borderRadius:'10px',padding:'12px'}}>
-                          <p style={{color:'#555',fontSize:'12px',marginBottom:'4px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Notas</p>
-                          <p style={{color:'#444',fontSize:'15px',whiteSpace:'pre-wrap'}}>{item.notes}</p>
-                        </div>
+                    {expanded && (item.notes || item.audiobook_url) && (
+                      <div style={{borderTop:'1px solid #e5e5ea',padding:'14px 16px',background:'#fafafa'}}>
+                        {item.audiobook_url && (
+                          <div style={{background:'#faf5ff',borderRadius:'10px',padding:'12px',marginBottom:item.notes?'8px':'0',border:'1px solid #e9d5ff'}}>
+                            <p style={{color:'#7c3aed',fontSize:'12px',fontWeight:700,marginBottom:'4px'}}>🎧 Audiobook</p>
+                            <a href={item.audiobook_url} target="_blank" rel="noopener noreferrer" style={{color:'#7c3aed',fontSize:'13px',wordBreak:'break-all',textDecoration:'underline'}}>{item.audiobook_url}</a>
+                            {item.audiobook_minute && <p style={{color:'#555',fontSize:'13px',marginTop:'4px'}}>⏱️ Parei no minuto: <strong style={{color:'#7c3aed'}}>{item.audiobook_minute}</strong></p>}
+                          </div>
+                        )}
+                        {item.notes && (
+                          <div style={{background:'#fff',borderRadius:'10px',padding:'12px',border:'1px solid #e5e5ea'}}>
+                            <p style={{color:'#555',fontSize:'12px',marginBottom:'4px',textTransform:'uppercase',letterSpacing:'0.5px'}}>Notas</p>
+                            <p style={{color:'#444',fontSize:'15px',whiteSpace:'pre-wrap'}}>{item.notes}</p>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -173,12 +190,24 @@ export default function LivrosPage() {
                 <Fld label="Categoria"><select value={form.category} onChange={e=>setForm((f:any)=>({...f,category:e.target.value}))} style={sel}>{CATEGORIES.map(c=><option key={c}>{c}</option>)}</select></Fld>
               </div>
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'8px'}}>
+                <Fld label="Formato"><select value={form.format} onChange={e=>setForm((f:any)=>({...f,format:e.target.value}))} style={sel}>{FORMATS.map(f=><option key={f}>{f}</option>)}</select></Fld>
                 <Fld label="Status"><select value={form.status} onChange={e=>setForm((f:any)=>({...f,status:e.target.value}))} style={sel}>{STATUS_LIST.map(s=><option key={s}>{s}</option>)}</select></Fld>
+                <Fld label="Avaliação (1-5)"><input type="number" min="1" max="5" placeholder="5" value={form.rating} onChange={e=>setForm((f:any)=>({...f,rating:e.target.value}))} style={inp}/></Fld>
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'8px'}}>
                 <Fld label="Página atual"><input type="number" min="0" placeholder="120" value={form.current_page} onChange={e=>setForm((f:any)=>({...f,current_page:e.target.value}))} style={inp}/></Fld>
                 <Fld label="Total páginas"><input type="number" min="0" placeholder="300" value={form.total_pages} onChange={e=>setForm((f:any)=>({...f,total_pages:e.target.value}))} style={inp}/></Fld>
               </div>
-              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'8px'}}>
-                <Fld label="Avaliação (1-5)"><input type="number" min="1" max="5" placeholder="5" value={form.rating} onChange={e=>setForm((f:any)=>({...f,rating:e.target.value}))} style={inp}/></Fld>
+              {(form.format === 'Audiobook') && (
+                <div style={{background:'#faf5ff',border:'2px solid #d8b4fe',borderRadius:'10px',padding:'12px'}}>
+                  <p style={{color:'#7c3aed',fontSize:'13px',fontWeight:700,marginBottom:'8px'}}>🎧 Audiobook</p>
+                  <div style={{display:'grid',gridTemplateColumns:'2fr 1fr',gap:'8px'}}>
+                    <Fld label="Link do audiobook"><input placeholder="https://youtube.com/... ou Spotify..." value={form.audiobook_url} onChange={e=>setForm((f:any)=>({...f,audiobook_url:e.target.value}))} style={inp}/></Fld>
+                    <Fld label="Parei no minuto"><input placeholder="1:23:45 ou 83" value={form.audiobook_minute} onChange={e=>setForm((f:any)=>({...f,audiobook_minute:e.target.value}))} style={inp}/></Fld>
+                  </div>
+                </div>
+              )}
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
                 <Fld label="Início"><input type="date" value={form.started_at} onChange={e=>setForm((f:any)=>({...f,started_at:e.target.value}))} style={{...inp,colorScheme:'light'}}/></Fld>
                 <Fld label="Conclusão"><input type="date" value={form.finished_at} onChange={e=>setForm((f:any)=>({...f,finished_at:e.target.value}))} style={{...inp,colorScheme:'light'}}/></Fld>
               </div>

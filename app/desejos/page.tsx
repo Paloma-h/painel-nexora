@@ -13,7 +13,7 @@ const TYPES = ['Grande compra','Compra rotineira','Presente','Outro']
 const CATEGORIES = ['Eletrônico','Veículo','Imóvel','Roupa','Calçado','Casa','Beleza','Mercado','Farmácia','Curso','Viagem','Presente','Outro']
 const PRIORITIES = ['Urgente','Importante','Pode esperar']
 const STATUS_LIST = ['Aguardando promoção','Em observação','Comprado','Descartado']
-const EMPTY = {name:'',type:'Grande compra',category:'Eletrônico',target_price:'',current_price:'',url:'',priority:'Pode esperar',status:'Aguardando promoção',notes:''}
+const EMPTY = {name:'',type:'Grande compra',category:'Eletrônico',target_price:'',current_price:'',url:'',priority:'Pode esperar',status:'Aguardando promoção',notes:'',links:[] as {url:string,loja:string,preco:string,data:string}[]}
 const statusColor: any = {'Aguardando promoção':'#d4b84a','Em observação':'#7c6ff7','Comprado':'#4caf7d','Descartado':'#888'}
 const priorityColor: any = {'Urgente':'#e05252','Importante':'#d4b84a','Pode esperar':'#888'}
 const typeIcon: any = {'Grande compra':'💎','Compra rotineira':'🛒','Presente':'🎁','Outro':'📦'}
@@ -39,14 +39,14 @@ export default function DesejosPage() {
   function openNew() { setEditing(null); setForm({...EMPTY}); setShowForm(true) }
   function openEdit(item:any) {
     setEditing(item)
-    setForm({name:item.name,type:item.type||'Grande compra',category:item.category||'Eletrônico',target_price:item.target_price?.toString()||'',current_price:item.current_price?.toString()||'',url:item.url||'',priority:item.priority||'Pode esperar',status:item.status||'Aguardando promoção',notes:item.notes||''})
+    setForm({name:item.name,type:item.type||'Grande compra',category:item.category||'Eletrônico',target_price:item.target_price?.toString()||'',current_price:item.current_price?.toString()||'',url:item.url||'',priority:item.priority||'Pode esperar',status:item.status||'Aguardando promoção',notes:item.notes||'',links:item.links||[]})
     setShowForm(true)
   }
   async function save() {
     if (!form.name.trim()) return
     setSaving(true)
     const now = new Date().toISOString()
-    const data: any = {name:form.name.trim(),type:form.type,category:form.category,target_price:form.target_price?parseFloat(form.target_price):null,current_price:form.current_price?parseFloat(form.current_price):null,url:form.url||null,priority:form.priority,status:form.status,notes:form.notes||null,user_id:USER_ID,updated_at:now}
+    const data: any = {name:form.name.trim(),type:form.type,category:form.category,target_price:form.target_price?parseFloat(form.target_price):null,current_price:form.current_price?parseFloat(form.current_price):null,url:form.url||null,priority:form.priority,status:form.status,notes:form.notes||null,links:form.links&&form.links.length>0?form.links:null,user_id:USER_ID,updated_at:now}
     if (editing) { await supabase.from('pendencias_desejos').update(data).eq('id',editing.id) }
     else { await supabase.from('pendencias_desejos').insert({...data,id:crypto.randomUUID(),created_at:now}) }
     setSaving(false); setShowForm(false); load()
@@ -109,11 +109,22 @@ export default function DesejosPage() {
                         {diff!==null&&diff>0 && <span style={{color:'#dc2626',fontSize:'15px'}}>↑ {diff}% acima</span>}
                         {diff!==null&&diff<=0 && <span style={{color:'#15803d',fontSize:'15px'}}>✓ Dentro do alvo!</span>}
                       </div>
-                      {item.notes && <p style={{color:'#444',fontSize:'15px',marginTop:'4px'}}>{item.notes}</p>}
+                      {item.notes && <p style={{color:'#444',fontSize:'13px',marginTop:'4px'}}>{item.notes}</p>}
+                      {/* Links de lojas */}
+                      {item.links && item.links.length > 0 && (() => {
+                        const sorted = [...item.links].filter((l:any)=>l.preco).sort((a:any,b:any)=>parseFloat(a.preco)-parseFloat(b.preco))
+                        const menorPreco = sorted.length > 0 ? sorted[0] : null
+                        return (
+                          <div style={{marginTop:'6px',display:'flex',gap:'6px',flexWrap:'wrap',alignItems:'center'}}>
+                            {menorPreco && <span style={{fontSize:'12px',padding:'2px 8px',borderRadius:'5px',background:'#ecfdf5',color:'#16a34a',fontWeight:700}}>💰 Menor: R$ {parseFloat(menorPreco.preco).toLocaleString('pt-BR',{minimumFractionDigits:2})} — {menorPreco.loja||'loja'}</span>}
+                            <span style={{fontSize:'12px',color:'#7c3aed',fontWeight:600}}>🔗 {item.links.length} link{item.links.length>1?'s':''}</span>
+                          </div>
+                        )
+                      })()}
                     </div>
-                    <div style={{display:'flex',gap:'6px',flexShrink:0}}>
-                      {item.url && <a href={item.url} target="_blank" rel="noopener noreferrer" style={{padding:'5px 9px',background:'#fff',border:'2px solid #7c3aed',borderRadius:'7px',color:'#5b21b6',fontSize:'15px',textDecoration:'none'}}>Ver</a>}
-                      <button onClick={()=>openEdit(item)} style={{padding:'5px 9px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'15px',cursor:'pointer'}}>Editar</button>
+                    <div style={{display:'flex',gap:'6px',flexShrink:0,alignItems:'center'}}>
+                      {item.url && <a href={item.url} target="_blank" rel="noopener noreferrer" style={{padding:'5px 9px',background:'#fff',border:'2px solid #7c3aed',borderRadius:'7px',color:'#5b21b6',fontSize:'13px',textDecoration:'none',fontWeight:600}}>Ver</a>}
+                      <button onClick={()=>openEdit(item)} style={{padding:'5px 9px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'13px',cursor:'pointer'}}>Editar</button>
                       <button onClick={()=>remove(item.id)} style={{padding:'5px 8px',background:'#fff',border:'none',borderRadius:'7px',color:'#dc2626',fontSize:'15px',cursor:'pointer'}}>✕</button>
                     </div>
                   </div>
@@ -144,7 +155,36 @@ export default function DesejosPage() {
                 <Fld label="Preço alvo (R$)"><input type="number" min="0" step="0.01" placeholder="299,00" value={form.target_price} onChange={e=>setForm((f:any)=>({...f,target_price:e.target.value}))} style={inp}/></Fld>
                 <Fld label="Preço atual (R$)"><input type="number" min="0" step="0.01" placeholder="450,00" value={form.current_price} onChange={e=>setForm((f:any)=>({...f,current_price:e.target.value}))} style={inp}/></Fld>
               </div>
-              <Fld label="Link do produto"><input placeholder="https://..." value={form.url} onChange={e=>setForm((f:any)=>({...f,url:e.target.value}))} style={inp}/></Fld>
+              <Fld label="Link principal"><input placeholder="https://..." value={form.url} onChange={e=>setForm((f:any)=>({...f,url:e.target.value}))} style={inp}/></Fld>
+
+              {/* Múltiplos links com preços */}
+              <div style={{background:'#faf5ff',border:'2px solid #e9d5ff',borderRadius:'10px',padding:'12px'}}>
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'8px'}}>
+                  <p style={{color:'#7c3aed',fontSize:'13px',fontWeight:700}}>🔗 Links de lojas com preços</p>
+                  <button type="button" onClick={()=>setForm((f:any)=>({...f,links:[...(f.links||[]),{url:'',loja:'',preco:'',data:new Date().toISOString().split('T')[0]}]}))} style={{padding:'4px 12px',background:'#7c3aed',border:'none',borderRadius:'7px',color:'#fff',fontSize:'12px',fontWeight:700,cursor:'pointer'}}>+ Link</button>
+                </div>
+                {(form.links||[]).length === 0 && <p style={{color:'#aaa',fontSize:'12px',textAlign:'center',padding:'8px 0'}}>Adicione links de diferentes lojas para comparar preços</p>}
+                <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
+                  {(form.links||[]).map((link:any, i:number) => (
+                    <div key={i} style={{display:'flex',gap:'6px',alignItems:'flex-end'}}>
+                      <div style={{flex:2}}><label style={{fontSize:'11px',color:'#888'}}>Loja</label><input placeholder="Amazon, Shopee..." value={link.loja} onChange={e=>{const newLinks=[...(form.links||[])];newLinks[i]={...newLinks[i],loja:e.target.value};setForm((f:any)=>({...f,links:newLinks}))}} style={{...inp,fontSize:'13px',padding:'6px 8px'}}/></div>
+                      <div style={{flex:1}}><label style={{fontSize:'11px',color:'#888'}}>Preço (R$)</label><input type="number" step="0.01" placeholder="299" value={link.preco} onChange={e=>{const newLinks=[...(form.links||[])];newLinks[i]={...newLinks[i],preco:e.target.value};setForm((f:any)=>({...f,links:newLinks}))}} style={{...inp,fontSize:'13px',padding:'6px 8px'}}/></div>
+                      <div style={{flex:1}}><label style={{fontSize:'11px',color:'#888'}}>Data</label><input type="date" value={link.data} onChange={e=>{const newLinks=[...(form.links||[])];newLinks[i]={...newLinks[i],data:e.target.value};setForm((f:any)=>({...f,links:newLinks}))}} style={{...inp,fontSize:'13px',padding:'6px 8px',colorScheme:'light'}}/></div>
+                      <div style={{flex:3}}><label style={{fontSize:'11px',color:'#888'}}>Link</label><input placeholder="https://..." value={link.url} onChange={e=>{const newLinks=[...(form.links||[])];newLinks[i]={...newLinks[i],url:e.target.value};setForm((f:any)=>({...f,links:newLinks}))}} style={{...inp,fontSize:'13px',padding:'6px 8px'}}/></div>
+                      <button type="button" onClick={()=>{const newLinks=[...(form.links||[])];newLinks.splice(i,1);setForm((f:any)=>({...f,links:newLinks}))}} style={{padding:'6px 8px',background:'transparent',border:'none',color:'#dc2626',fontSize:'14px',cursor:'pointer',marginBottom:'2px'}}>✕</button>
+                    </div>
+                  ))}
+                </div>
+                {(form.links||[]).length > 1 && (() => {
+                  const precos = (form.links||[]).filter((l:any)=>l.preco).map((l:any)=>({...l,preco:parseFloat(l.preco)})).sort((a:any,b:any)=>a.preco-b.preco)
+                  if (precos.length > 0) {
+                    const menor = precos[0]
+                    return <p style={{color:'#16a34a',fontSize:'12px',fontWeight:700,marginTop:'8px',padding:'6px 10px',background:'#ecfdf5',borderRadius:'6px'}}>💰 Menor preço: R$ {menor.preco.toLocaleString('pt-BR',{minimumFractionDigits:2})} na <strong>{menor.loja||'loja sem nome'}</strong></p>
+                  }
+                  return null
+                })()}
+              </div>
+
               <Fld label="Notas"><textarea placeholder="Onde pesquisar, condições, observações..." value={form.notes} onChange={e=>setForm((f:any)=>({...f,notes:e.target.value}))} style={{...inp,resize:'none',height:'70px'}}/></Fld>
             </div>
             <div style={{display:'flex',gap:'8px',marginTop:'20px'}}>
