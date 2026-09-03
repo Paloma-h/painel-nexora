@@ -52,7 +52,7 @@ export default function FinanceiroPage() {
   const [bForm, setBForm] = useState({title:'',amount:'',category:'outros',due_day:'',due_date:'',is_recurring:false,recurrence:'monthly',notes:''})
   const [iForm, setIForm] = useState({name:'',type:'Renda Fixa',amount_invested:'',current_value:'',notes:''})
   const [aForm, setAForm] = useState({name:'',type:'Imóvel',estimated_value:'',notes:''})
-  const [rForm, setRForm] = useState({title:'',amount:'',debtor:'',due_date:'',category:'outros',is_recurring:false,installments:'',installments_paid:'0',notes:''})
+  const [rForm, setRForm] = useState({title:'',amount:'',debtor:'',due_date:'',category:'outros',is_recurring:false,installments:'',installments_paid:'0',card_name:'',card_due_day:'',notes:''})
 
   useEffect(() => { load() }, [])
 
@@ -172,7 +172,7 @@ export default function FinanceiroPage() {
   async function saveReceivable() {
     if (!rForm.title.trim()||!rForm.amount) return
     setSaving(true)
-    const data = {title:rForm.title.trim(),amount:parseFloat(rForm.amount),debtor:rForm.debtor||null,due_date:rForm.due_date||null,category:rForm.category,is_recurring:rForm.is_recurring,installments:parseInt(rForm.installments)||null,installments_paid:parseInt(rForm.installments_paid)||0,notes:rForm.notes||null,status:'pendente',user_id:USER_ID}
+    const data = {title:rForm.title.trim(),amount:parseFloat(rForm.amount),debtor:rForm.debtor||null,due_date:rForm.due_date||null,category:rForm.category,is_recurring:rForm.is_recurring,installments:parseInt(rForm.installments)||null,installments_paid:parseInt(rForm.installments_paid)||0,card_name:rForm.card_name||null,card_due_day:parseInt(rForm.card_due_day)||null,notes:rForm.notes||null,status:'pendente',user_id:USER_ID}
     if (editing) {
       await supabase.from('receivables').update(data).eq('id',editing.id)
     } else {
@@ -514,7 +514,7 @@ export default function FinanceiroPage() {
                     <h1 style={{color:'#111',fontSize:'22px',fontWeight:700}}>Contas a Receber</h1>
                     <p style={{color:'#444',fontSize:'15px',marginTop:'2px'}}>Total pendente: R$ {receivables.filter(r=>r.status!=='recebido').reduce((s:number,r:any)=>s+Number(r.amount),0).toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
                   </div>
-                  <button onClick={()=>{setEditing(null);setRForm({title:'',amount:'',debtor:'',due_date:'',category:'outros',is_recurring:false,installments:'',installments_paid:'0',notes:''});setShowForm('r')}} style={{padding:'7px 14px',background:'#16a34a',border:'none',borderRadius:'10px',color:'#fff',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>+ Nova Conta a Receber</button>
+                  <button onClick={()=>{setEditing(null);setRForm({title:'',amount:'',debtor:'',due_date:'',category:'outros',is_recurring:false,installments:'',installments_paid:'0',card_name:'',card_due_day:'',notes:''});setShowForm('r')}} style={{padding:'7px 14px',background:'#16a34a',border:'none',borderRadius:'10px',color:'#fff',fontSize:'15px',fontWeight:600,cursor:'pointer'}}>+ Nova Conta a Receber</button>
                 </div>
                 {receivables.length===0&&<p style={{color:'#555',textAlign:'center',padding:'40px'}}>Nenhuma conta a receber cadastrada</p>}
                 <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
@@ -532,6 +532,7 @@ export default function FinanceiroPage() {
                             {r.due_date&&<span style={{color:'#444',fontSize:'13px'}}>📅 {new Date(r.due_date+'T12:00:00').toLocaleDateString('pt-BR')}</span>}
                             {r.is_recurring&&<span style={{color:'#6d28d9',fontSize:'13px'}}>🔄 Recorrente</span>}
                             {hasInstallments&&<span style={{color:'#b45309',fontSize:'13px',fontWeight:600}}>📊 {paid}/{r.installments} parcelas</span>}
+                            {r.card_name&&<span style={{color:'#92400e',fontSize:'13px',fontWeight:600,background:'#fef3c7',padding:'1px 6px',borderRadius:'4px'}}>💳 {r.card_name}{r.card_due_day?` — venc. dia ${r.card_due_day}`:''}</span>}
                           </div>
                         </div>
                         <p style={{color:isReceived?'#15803d':'#16a34a',fontSize:'15px',fontWeight:600,whiteSpace:'nowrap'}}>R$ {Number(r.amount).toLocaleString('pt-BR',{minimumFractionDigits:2})}</p>
@@ -540,7 +541,7 @@ export default function FinanceiroPage() {
                         )}
                         {!isReceived&&!hasInstallments&&<button onClick={()=>receivePayment(r.id)} style={{padding:'5px 10px',background:'#fff',border:'2px solid #16a34a',borderRadius:'7px',color:'#15803d',fontSize:'13px',cursor:'pointer'}}>Recebido</button>}
                         {isReceived&&<span style={{fontSize:'13px',color:'#15803d',padding:'5px 10px'}}>✓ Recebido</span>}
-                        <button onClick={()=>{setEditing(r);setRForm({title:r.title,amount:r.amount?.toString()||'',debtor:r.debtor||'',due_date:r.due_date||'',category:r.category||'outros',is_recurring:r.is_recurring||false,installments:r.installments?.toString()||'',installments_paid:r.installments_paid?.toString()||'0',notes:r.notes||''});setShowForm('r')}} style={{padding:'5px 8px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'15px',cursor:'pointer'}}>✎</button>
+                        <button onClick={()=>{setEditing(r);setRForm({title:r.title,amount:r.amount?.toString()||'',debtor:r.debtor||'',due_date:r.due_date||'',category:r.category||'outros',is_recurring:r.is_recurring||false,installments:r.installments?.toString()||'',installments_paid:r.installments_paid?.toString()||'0',card_name:r.card_name||'',card_due_day:r.card_due_day?.toString()||'',notes:r.notes||''});setShowForm('r')}} style={{padding:'5px 8px',background:'#fff',border:'none',borderRadius:'7px',color:'#333',fontSize:'15px',cursor:'pointer'}}>✎</button>
                         <button onClick={()=>del('receivables',r.id)} style={{padding:'5px 8px',background:'#fff',border:'none',borderRadius:'7px',color:'#dc2626',fontSize:'15px',cursor:'pointer'}}>✕</button>
                       </div>
                     )
@@ -691,7 +692,18 @@ export default function FinanceiroPage() {
             <input placeholder="Valor (R$) *" type="number" step="0.01" value={rForm.amount} onChange={e=>setRForm(f=>({...f,amount:e.target.value}))} style={inp} />
             <input placeholder="Quem deve? (nome)" value={rForm.debtor} onChange={e=>setRForm(f=>({...f,debtor:e.target.value}))} style={inp} />
             <div><label style={{fontSize:'15px',color:'#444',display:'block',marginBottom:'4px'}}>Categoria</label>
-              <select value={rForm.category} onChange={e=>setRForm(f=>({...f,category:e.target.value}))} style={sel}>{['venda','serviço','aluguel','empréstimo','comissão','reembolso','outros'].map(c=><option key={c} value={c}>{c}</option>)}</select></div>
+              <select value={rForm.category} onChange={e=>setRForm(f=>({...f,category:e.target.value}))} style={sel}>{['venda','serviço','aluguel','empréstimo','comissão','reembolso','cartão emprestado','outros'].map(c=><option key={c} value={c}>{c}</option>)}</select></div>
+            {rForm.category==='cartão emprestado' && (
+              <div style={{background:'#fef3c7',borderRadius:'10px',padding:'12px',border:'1px solid #fbbf24'}}>
+                <label style={{fontSize:'14px',color:'#92400e',fontWeight:700,display:'block',marginBottom:'8px'}}>💳 Dados do Cartão Emprestado</label>
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px'}}>
+                  <div><label style={{fontSize:'13px',color:'#444',display:'block',marginBottom:'4px'}}>Qual cartão?</label>
+                    <input placeholder="Ex: Nubank, C6..." value={rForm.card_name} onChange={e=>setRForm(f=>({...f,card_name:e.target.value}))} style={inp} /></div>
+                  <div><label style={{fontSize:'13px',color:'#444',display:'block',marginBottom:'4px'}}>Dia do vencimento</label>
+                    <input type="number" min="1" max="31" placeholder="Ex: 15" value={rForm.card_due_day} onChange={e=>setRForm(f=>({...f,card_due_day:e.target.value}))} style={inp} /></div>
+                </div>
+              </div>
+            )}
             <div><label style={{fontSize:'15px',color:'#444',display:'block',marginBottom:'4px'}}>Data prevista</label>
               <input type="date" value={rForm.due_date} onChange={e=>setRForm(f=>({...f,due_date:e.target.value}))} style={{...inp,colorScheme:'light'}} /></div>
             <div style={{background:'#f0edff',borderRadius:'10px',padding:'12px',border:'1px solid #d8b4fe'}}>
