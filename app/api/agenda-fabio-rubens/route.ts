@@ -18,7 +18,7 @@ export async function GET() {
   if (!url || !chave) {
     // Ainda não configurado (chave não colada no .env.local) — devolve
     // lista vazia em vez de quebrar a agenda do Nevora.
-    return NextResponse.json({ eventos: [], debug: { temUrl: Boolean(url), temChave: Boolean(chave) } })
+    return NextResponse.json({ eventos: [] })
   }
 
   const supabaseGabinete = createClient(url, chave)
