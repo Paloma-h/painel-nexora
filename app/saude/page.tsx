@@ -1084,6 +1084,38 @@ export default function SaudePage() {
         {/* Conteúdo */}
         <div style={{flex:1,padding:'24px',overflowY:'auto'}}>
           <div style={{maxWidth:'900px',margin:'0 auto'}}>
+
+            {/* Marcos de Qualidade de Vida — Paloma */}
+            {selectedPerson==='paloma' && (() => {
+              const marcos = [
+                { label: 'Sem bebida alcoólica', emoji: '🚫🍺', startDate: '2026-04-12', color: '#16a34a', bg: '#f0fdf4', border: '#bbf7d0' },
+              ]
+              return (
+                <div style={{display:'flex',gap:'10px',marginBottom:'20px',flexWrap:'wrap'}}>
+                  {marcos.map((m,i) => {
+                    const start = new Date(m.startDate+'T00:00:00')
+                    const now = new Date()
+                    const diffDays = Math.floor((now.getTime()-start.getTime())/(1000*60*60*24))
+                    const months = Math.floor(diffDays/30)
+                    const days = diffDays % 30
+                    return (
+                      <div key={i} style={{flex:'1 1 auto',background:m.bg,border:`2px solid ${m.border}`,borderRadius:'14px',padding:'14px 20px',display:'flex',alignItems:'center',gap:'14px'}}>
+                        <span style={{fontSize:'28px'}}>{m.emoji}</span>
+                        <div>
+                          <p style={{fontSize:'13px',color:m.color,fontWeight:700,textTransform:'uppercase',letterSpacing:'0.5px'}}>{m.label}</p>
+                          <p style={{fontSize:'22px',fontWeight:800,color:m.color,marginTop:'2px'}}>
+                            {months > 0 ? `${months} ${months===1?'mês':'meses'} e ` : ''}{days} dias
+                          </p>
+                          <p style={{fontSize:'11px',color:'#888',marginTop:'2px'}}>Desde {start.toLocaleDateString('pt-BR')}</p>
+                        </div>
+                        <span style={{marginLeft:'auto',fontSize:'24px'}}>🏆</span>
+                      </div>
+                    )
+                  })}
+                </div>
+              )
+            })()}
+
             {/* Pessoa */}
             {!isPet && tab==='medicos' && <MedicosTab person={selectedPerson} isPet={false} />}
             {!isPet && tab==='medicamentos' && <MedicamentosTab person={selectedPerson} isPet={false} />}
