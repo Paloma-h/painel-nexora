@@ -912,9 +912,10 @@ function InfoPetTab({person, membros, setMembros}:{person:string, membros:any[],
   }, [person])
 
   async function loadPetInfo() {
-    const {data} = await supabase.from('saude_pets').select('*').eq('user_id',USER_ID).eq('pet_id',person).single()
+    // person é o id do membro (ex: 'pet1', uuid, etc). Busca pelo id do registro OU pelo name
+    const {data} = await supabase.from('saude_pets').select('*').eq('user_id',USER_ID).eq('id',person).maybeSingle()
     if (data) {
-      setForm({label:data.name||membro?.label||'',especie:data.especie||'Cachorro',raca:data.raca||'',nascimento:data.nascimento||'',peso:data.peso?.toString()||'',cor:data.cor||'',castrado:data.castrado||false,chip:data.chip||'',notes:data.notes||''})
+      setForm({label:data.name||membro?.label||'',especie:data.species||'Cachorro',raca:data.breed||'',nascimento:data.birth_date||'',peso:data.weight?.toString()||'',cor:data.color||'',castrado:data.neutered||false,chip:data.microchip||'',notes:data.notes||''})
     } else {
       setForm({label:membro?.label||'',especie:membro?.especie||'Cachorro',raca:'',nascimento:'',peso:'',cor:'',castrado:false,chip:'',notes:''})
     }
@@ -923,11 +924,11 @@ function InfoPetTab({person, membros, setMembros}:{person:string, membros:any[],
   async function save() {
     if (!form.label.trim()) return
     setSaving(true)
-    const data = {pet_id:person,name:form.label.trim(),especie:form.especie,raca:form.raca||null,nascimento:form.nascimento||null,peso:form.peso?parseFloat(form.peso):null,cor:form.cor||null,castrado:form.castrado,chip:form.chip||null,notes:form.notes||null,user_id:USER_ID}
+    const data = {name:form.label.trim(),species:form.especie,breed:form.raca||null,birth_date:form.nascimento||null,weight:form.peso?parseFloat(form.peso):null,color:form.cor||null,neutered:form.castrado,microchip:form.chip||null,notes:form.notes||null,user_id:USER_ID}
     // upsert
-    const {data:existing} = await supabase.from('saude_pets').select('id').eq('user_id',USER_ID).eq('pet_id',person).single()
+    const {data:existing} = await supabase.from('saude_pets').select('id').eq('id',person).maybeSingle()
     if (existing) await supabase.from('saude_pets').update(data).eq('id',existing.id)
-    else await supabase.from('saude_pets').insert({...data,id:crypto.randomUUID()})
+    else await supabase.from('saude_pets').insert({...data,id:person})
     // Atualizar label no membro local
     setMembros(membros.map(m => m.id === person ? {...m, label: form.label.trim(), especie: form.especie, emoji: form.especie==='Gato'?'🐱':form.especie==='Pássaro'?'🐦':'🐕'} : m))
     setSaving(false)
@@ -1101,11 +1102,11 @@ export default function SaudePage() {
     if (data && data.length > 0) {
       const especieEmoji: any = {Cachorro:'🐕',Gato:'🐱',Pássaro:'🐦',Coelho:'🐰',Hamster:'🐹',Peixe:'🐠',Tartaruga:'🐢',Outro:'🐾'}
       const pets = data.map(p => ({
-        id: p.pet_id,
+        id: p.id,
         label: p.name,
-        emoji: especieEmoji[p.especie] || '🐾',
+        emoji: especieEmoji[p.species] || '🐾',
         tipo: 'pet' as const,
-        especie: p.especie,
+        especie: p.species,
       }))
       setMembros([...MEMBROS, ...pets])
     }
@@ -1115,7 +1116,7 @@ export default function SaudePage() {
     if (!newPetName.trim()) return
     const petId = `pet_${Date.now()}`
     const especieEmoji: any = {Cachorro:'🐕',Gato:'🐱',Pássaro:'🐦',Coelho:'🐰',Hamster:'🐹',Peixe:'🐠',Tartaruga:'🐢',Outro:'🐾'}
-    await supabase.from('saude_pets').insert({id:crypto.randomUUID(),pet_id:petId,name:newPetName.trim(),especie:newPetEspecie,user_id:USER_ID})
+    await supabase.from('saude_pets').insert({id:petId,name:newPetName.trim(),species:newPetEspecie,user_id:USER_ID})
     setMembros(prev => [...prev.filter(m=>m.id!=='pet1'||m.label!=='Pet 1'), {id:petId,label:newPetName.trim(),emoji:especieEmoji[newPetEspecie]||'🐾',tipo:'pet',especie:newPetEspecie}])
     setSelectedPerson(petId)
     setTab('info_pet')
