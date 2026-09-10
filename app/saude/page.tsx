@@ -996,6 +996,93 @@ function InfoPetTab({person, membros, setMembros}:{person:string, membros:any[],
 // ══════════════════════════════════════════════════════════════════════
 // PÁGINA PRINCIPAL
 // ══════════════════════════════════════════════════════════════════════
+const MARCOS_PRESETS = [
+  {label:'Parar de beber',emoji:'🚫🍺',color:'#16a34a',bg:'#f0fdf4',border:'#bbf7d0'},
+  {label:'Parar de fumar',emoji:'🚭',color:'#b45309',bg:'#fffbeb',border:'#fde68a'},
+  {label:'Atividade física',emoji:'🏃‍♀️',color:'#7c3aed',bg:'#f5f3ff',border:'#ddd6fe'},
+  {label:'Dieta',emoji:'🥗',color:'#0891b2',bg:'#ecfeff',border:'#a5f3fc'},
+  {label:'Meditação',emoji:'🧘‍♀️',color:'#be185d',bg:'#fdf2f8',border:'#fbcfe8'},
+  {label:'Sem açúcar',emoji:'🚫🍬',color:'#dc2626',bg:'#fef2f2',border:'#fecaca'},
+]
+
+function MarcosQualidadeVida({person}:{person:string}) {
+  const [marcos, setMarcos] = useState<any[]>([])
+  const [showAdd, setShowAdd] = useState(false)
+  const [mForm, setMForm] = useState({label:'',emoji:'🎯',start_date:'',color:'#16a34a',bg:'#f0fdf4',border:'#bbf7d0',notes:''})
+  const [saving, setSaving] = useState(false)
+
+  useEffect(() => { loadMarcos() }, [person])
+  async function loadMarcos() {
+    const {data} = await supabase.from('saude_marcos').select('*').eq('user_id',USER_ID).eq('person',person).order('start_date',{ascending:true})
+    setMarcos(data||[])
+  }
+
+  async function saveMarco() {
+    if (!mForm.label.trim()||!mForm.start_date) return
+    setSaving(true)
+    await supabase.from('saude_marcos').insert({id:crypto.randomUUID(),label:mForm.label.trim(),emoji:mForm.emoji,start_date:mForm.start_date,color:mForm.color,bg:mForm.bg,border_color:mForm.border,notes:mForm.notes||null,person,status:'active',user_id:USER_ID})
+    setShowAdd(false); setSaving(false); setMForm({label:'',emoji:'🎯',start_date:'',color:'#16a34a',bg:'#f0fdf4',border:'#bbf7d0',notes:''}); loadMarcos()
+  }
+
+  async function delMarco(id:string) { if(!confirm('Excluir este marco?')) return; await supabase.from('saude_marcos').delete().eq('id',id); loadMarcos() }
+
+  return (
+    <div style={{marginBottom:'20px'}}>
+      {marcos.length>0 && (
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))',gap:'10px',marginBottom:'10px'}}>
+          {marcos.map((m:any) => {
+            const start = new Date(m.start_date+'T00:00:00')
+            const now = new Date()
+            const diffDays = Math.floor((now.getTime()-start.getTime())/(1000*60*60*24))
+            const months = Math.floor(diffDays/30)
+            const days = diffDays % 30
+            const trophy = diffDays>=365?'👑':diffDays>=180?'🏆':diffDays>=90?'🥇':diffDays>=30?'🥈':'🥉'
+            return (
+              <div key={m.id} style={{background:m.bg||'#f0fdf4',border:`2px solid ${m.border_color||'#bbf7d0'}`,borderRadius:'14px',padding:'14px 16px',display:'flex',alignItems:'center',gap:'12px',position:'relative'}}>
+                <span style={{fontSize:'28px'}}>{m.emoji}</span>
+                <div style={{flex:1}}>
+                  <p style={{fontSize:'12px',color:m.color||'#16a34a',fontWeight:700,textTransform:'uppercase',letterSpacing:'0.5px'}}>{m.label}</p>
+                  <p style={{fontSize:'20px',fontWeight:800,color:m.color||'#16a34a',marginTop:'2px'}}>
+                    {months > 0 ? `${months} ${months===1?'mês':'meses'} e ` : ''}{days} {days===1?'dia':'dias'}
+                  </p>
+                  <p style={{fontSize:'11px',color:'#888',marginTop:'2px'}}>Desde {start.toLocaleDateString('pt-BR')}</p>
+                </div>
+                <span style={{fontSize:'22px'}}>{trophy}</span>
+                <button onClick={()=>delMarco(m.id)} style={{position:'absolute',top:'6px',right:'8px',background:'none',border:'none',color:'#ccc',cursor:'pointer',fontSize:'12px'}}>✕</button>
+              </div>
+            )
+          })}
+        </div>
+      )}
+      {!showAdd ? (
+        <button onClick={()=>setShowAdd(true)} style={{padding:'8px 16px',background:'#f5f3ff',border:'2px dashed #d8b4fe',borderRadius:'10px',color:'#7c3aed',fontSize:'13px',fontWeight:600,cursor:'pointer',width:'100%'}}>+ Adicionar Marco de Qualidade de Vida</button>
+      ) : (
+        <div style={{background:'#f5f3ff',border:'2px solid #d8b4fe',borderRadius:'14px',padding:'16px',marginBottom:'10px'}}>
+          <p style={{fontSize:'14px',fontWeight:700,color:'#7c3aed',marginBottom:'12px'}}>🎯 Novo Marco de Qualidade de Vida</p>
+          <div style={{display:'flex',gap:'6px',flexWrap:'wrap',marginBottom:'12px'}}>
+            {MARCOS_PRESETS.map(p=>(
+              <button key={p.label} onClick={()=>setMForm(f=>({...f,label:p.label,emoji:p.emoji,color:p.color,bg:p.bg,border:p.border}))}
+                style={{padding:'6px 12px',borderRadius:'8px',border:`2px solid ${mForm.label===p.label?p.color:'#e5e5ea'}`,background:mForm.label===p.label?p.bg:'#fff',color:mForm.label===p.label?p.color:'#555',fontSize:'13px',cursor:'pointer',fontWeight:600}}>
+                {p.emoji} {p.label}
+              </button>
+            ))}
+          </div>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px',marginBottom:'8px'}}>
+            <div><label style={{fontSize:'12px',color:'#555',fontWeight:600}}>Nome da meta</label>
+              <input value={mForm.label} onChange={e=>setMForm(f=>({...f,label:e.target.value}))} placeholder="Ex: Parar de fumar" style={inp}/></div>
+            <div><label style={{fontSize:'12px',color:'#555',fontWeight:600}}>Data de início</label>
+              <input type="date" value={mForm.start_date} onChange={e=>setMForm(f=>({...f,start_date:e.target.value}))} style={{...inp,colorScheme:'light'}}/></div>
+          </div>
+          <div style={{display:'flex',gap:'8px'}}>
+            <button onClick={saveMarco} disabled={!mForm.label.trim()||!mForm.start_date||saving} style={{flex:1,padding:'10px',background:'#7c3aed',border:'none',borderRadius:'10px',color:'#fff',fontSize:'14px',fontWeight:600,cursor:'pointer',opacity:!mForm.label.trim()||!mForm.start_date||saving?0.4:1}}>{saving?'Salvando...':'Salvar'}</button>
+            <button onClick={()=>setShowAdd(false)} style={{padding:'10px 14px',background:'transparent',border:'2px solid #d8b4fe',borderRadius:'10px',color:'#7c3aed',fontSize:'14px',cursor:'pointer'}}>Cancelar</button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function SaudePage() {
   const [membros, setMembros] = useState([...MEMBROS, ...PETS_DEFAULT])
   const [selectedPerson, setSelectedPerson] = useState('paloma')
@@ -1085,36 +1172,8 @@ export default function SaudePage() {
         <div style={{flex:1,padding:'24px',overflowY:'auto'}}>
           <div style={{maxWidth:'900px',margin:'0 auto'}}>
 
-            {/* Marcos de Qualidade de Vida — Paloma */}
-            {selectedPerson==='paloma' && (() => {
-              const marcos = [
-                { label: 'Sem bebida alcoólica', emoji: '🚫🍺', startDate: '2026-04-12', color: '#16a34a', bg: '#f0fdf4', border: '#bbf7d0' },
-              ]
-              return (
-                <div style={{display:'flex',gap:'10px',marginBottom:'20px',flexWrap:'wrap'}}>
-                  {marcos.map((m,i) => {
-                    const start = new Date(m.startDate+'T00:00:00')
-                    const now = new Date()
-                    const diffDays = Math.floor((now.getTime()-start.getTime())/(1000*60*60*24))
-                    const months = Math.floor(diffDays/30)
-                    const days = diffDays % 30
-                    return (
-                      <div key={i} style={{flex:'1 1 auto',background:m.bg,border:`2px solid ${m.border}`,borderRadius:'14px',padding:'14px 20px',display:'flex',alignItems:'center',gap:'14px'}}>
-                        <span style={{fontSize:'28px'}}>{m.emoji}</span>
-                        <div>
-                          <p style={{fontSize:'13px',color:m.color,fontWeight:700,textTransform:'uppercase',letterSpacing:'0.5px'}}>{m.label}</p>
-                          <p style={{fontSize:'22px',fontWeight:800,color:m.color,marginTop:'2px'}}>
-                            {months > 0 ? `${months} ${months===1?'mês':'meses'} e ` : ''}{days} dias
-                          </p>
-                          <p style={{fontSize:'11px',color:'#888',marginTop:'2px'}}>Desde {start.toLocaleDateString('pt-BR')}</p>
-                        </div>
-                        <span style={{marginLeft:'auto',fontSize:'24px'}}>🏆</span>
-                      </div>
-                    )
-                  })}
-                </div>
-              )
-            })()}
+            {/* Marcos de Qualidade de Vida */}
+            <MarcosQualidadeVida person={selectedPerson} />
 
             {/* Pessoa */}
             {!isPet && tab==='medicos' && <MedicosTab person={selectedPerson} isPet={false} />}
