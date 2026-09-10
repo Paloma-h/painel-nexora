@@ -78,6 +78,85 @@ const sel: any = {
   outline: 'none',
 }
 
+// ══════════════════════════════════════════════════════════════════════
+// DOCUMENTOS ANEXADOS
+// ══════════════════════════════════════════════════════════════════════
+function DocumentosAnexados({pessoa, categoria}:{pessoa:string, categoria:string}) {
+  const [docs, setDocs] = useState<any[]>([])
+  const [uploading, setUploading] = useState(false)
+  const [showDocs, setShowDocs] = useState(false)
+
+  useEffect(() => { loadDocs() }, [pessoa, categoria])
+
+  async function loadDocs() {
+    const {data} = await supabase.from('dados_documentos').select('*').eq('user_id',USER_ID).eq('pessoa',pessoa).eq('categoria',categoria).order('created_at',{ascending:false})
+    setDocs(data||[])
+  }
+
+  async function handleUpload(e:any) {
+    const files = e.target.files
+    if (!files || files.length===0) return
+    setUploading(true)
+    for (let i=0;i<files.length;i++) {
+      const file = files[i]
+      const ext = file.name.split('.').pop()
+      const path = `${USER_ID}/${pessoa}/${categoria}/${crypto.randomUUID()}.${ext}`
+      const {error:uploadErr} = await supabase.storage.from('documentos').upload(path, file)
+      if (uploadErr) { alert('Erro no upload: '+uploadErr.message); continue }
+      const {data:urlData} = supabase.storage.from('documentos').getPublicUrl(path)
+      await supabase.from('dados_documentos').insert({
+        id:crypto.randomUUID(), pessoa, categoria, filename:file.name, filepath:path,
+        url:urlData.publicUrl, size:file.size, mimetype:file.type, user_id:USER_ID
+      })
+    }
+    setUploading(false)
+    e.target.value=''
+    loadDocs()
+  }
+
+  async function delDoc(doc:any) {
+    if (!confirm(`Apagar "${doc.filename}"?`)) return
+    await supabase.storage.from('documentos').remove([doc.filepath])
+    await supabase.from('dados_documentos').delete().eq('id',doc.id)
+    loadDocs()
+  }
+
+  function fmtSize(bytes:number) {
+    if (bytes<1024) return bytes+'B'
+    if (bytes<1048576) return (bytes/1024).toFixed(1)+'KB'
+    return (bytes/1048576).toFixed(1)+'MB'
+  }
+
+  return (
+    <div style={{marginBottom:'16px'}}>
+      <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'8px'}}>
+        <button onClick={()=>setShowDocs(!showDocs)} style={{background:'none',border:'none',color:'#7c3aed',fontSize:'13px',fontWeight:700,cursor:'pointer',display:'flex',alignItems:'center',gap:'4px'}}>
+          📎 Documentos ({docs.length}) {showDocs?'▲':'▼'}
+        </button>
+        <label style={{padding:'5px 12px',background:'#7c3aed',border:'none',borderRadius:'8px',color:'#fff',fontSize:'12px',fontWeight:600,cursor:'pointer'}}>
+          {uploading?'Enviando...':'+ Anexar'}
+          <input type="file" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onChange={handleUpload} style={{display:'none'}} />
+        </label>
+      </div>
+      {showDocs && docs.length>0 && (
+        <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
+          {docs.map(doc=>(
+            <div key={doc.id} style={{display:'flex',alignItems:'center',gap:'10px',padding:'8px 12px',background:'#f5f3ff',border:'1px solid #e9e5ff',borderRadius:'10px'}}>
+              <span style={{fontSize:'18px'}}>{doc.mimetype?.includes('pdf')?'📄':doc.mimetype?.includes('image')?'🖼️':'📋'}</span>
+              <div style={{flex:1,minWidth:0}}>
+                <p style={{fontSize:'13px',color:'#111',fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{doc.filename}</p>
+                <p style={{fontSize:'11px',color:'#888'}}>{fmtSize(doc.size||0)} · {new Date(doc.created_at).toLocaleDateString('pt-BR')}</p>
+              </div>
+              <a href={doc.url} target="_blank" rel="noopener" style={{padding:'4px 10px',background:'#fff',border:'1px solid #d8b4fe',borderRadius:'6px',color:'#7c3aed',fontSize:'11px',fontWeight:600,textDecoration:'none',cursor:'pointer'}}>Abrir</a>
+              <button onClick={()=>delDoc(doc)} style={{padding:'4px 8px',background:'none',border:'none',color:'#dc2626',cursor:'pointer',fontSize:'13px'}}>✕</button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 // Campo dinâmico: lista de {label, value}
 function CamposEditor({ campos, onChange }: { campos: {label:string,value:string}[], onChange: (c:{label:string,value:string}[]) => void }) {
   function update(i: number, key: 'label'|'value', val: string) {
@@ -239,6 +318,9 @@ export default function DadosPage() {
 
         {/* ── Conteúdo ── */}
         <div style={{ flex: 1, padding: '24px 32px', maxWidth: '960px', margin: '0 auto', width: '100%' }}>
+
+          {/* Documentos anexados */}
+          <DocumentosAnexados pessoa={pessoa} categoria={categoria} />
 
           {/* Barra de ações */}
           <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
