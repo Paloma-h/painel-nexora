@@ -17,6 +17,105 @@ const PRIOS = [
 
 
 
+const EMP_TIPOS = ['Emprestei','Me emprestaram','Cedi','Me cederam']
+
+function EmprestadosPanel() {
+  const [items, setItems] = useState<any[]>([])
+  const [showForm, setShowForm] = useState(false)
+  const [form, setForm] = useState({item:'',pessoa:'',tipo:'Emprestei',data:'',valor:'',notas:''})
+  const [saving, setSaving] = useState(false)
+
+  useEffect(() => { loadEmp() }, [])
+  async function loadEmp() {
+    const {data} = await supabase.from('emprestados').select('*').eq('user_id',USER_ID).eq('status','pendente').order('created_at',{ascending:false})
+    setItems(data||[])
+  }
+
+  async function saveEmp() {
+    if (!form.item.trim()||!form.pessoa.trim()) return
+    setSaving(true)
+    await supabase.from('emprestados').insert({id:crypto.randomUUID(),item:form.item.trim(),pessoa:form.pessoa.trim(),tipo:form.tipo,data:form.data||null,valor:form.valor?parseFloat(form.valor):null,notas:form.notas||null,status:'pendente',user_id:USER_ID})
+    setShowForm(false); setSaving(false); setForm({item:'',pessoa:'',tipo:'Emprestei',data:'',valor:'',notas:''}); loadEmp()
+  }
+
+  async function devolver(id:string) {
+    await supabase.from('emprestados').update({status:'devolvido'}).eq('id',id); loadEmp()
+  }
+
+  async function delEmp(id:string) {
+    if (!confirm('Apagar?')) return
+    await supabase.from('emprestados').delete().eq('id',id); loadEmp()
+  }
+
+  const emprestei = items.filter(i=>i.tipo==='Emprestei'||i.tipo==='Cedi')
+  const meEmprestaram = items.filter(i=>i.tipo==='Me emprestaram'||i.tipo==='Me cederam')
+
+  return (
+    <div style={{background:'#fff',border:'2px solid #e5e5ea',borderRadius:'16px',padding:'18px',height:'fit-content'}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'14px'}}>
+        <h2 style={{color:'#111',fontSize:'16px',fontWeight:700}}>🤝 Emprestados / Cedidos</h2>
+        <button onClick={()=>setShowForm(!showForm)} style={{padding:'5px 12px',background:'#7c3aed',border:'none',borderRadius:'8px',color:'#fff',fontSize:'12px',fontWeight:600,cursor:'pointer'}}>+ Novo</button>
+      </div>
+
+      {showForm && (
+        <div style={{background:'#f5f3ff',border:'1px solid #e9e5ff',borderRadius:'12px',padding:'12px',marginBottom:'12px'}}>
+          <div style={{display:'flex',flexDirection:'column',gap:'6px'}}>
+            <input placeholder="O que? *" value={form.item} onChange={e=>setForm(f=>({...f,item:e.target.value}))} style={{background:'#fff',border:'1px solid #ddd',borderRadius:'8px',padding:'8px 10px',fontSize:'13px',color:'#111',outline:'none'}} />
+            <input placeholder="Quem? *" value={form.pessoa} onChange={e=>setForm(f=>({...f,pessoa:e.target.value}))} style={{background:'#fff',border:'1px solid #ddd',borderRadius:'8px',padding:'8px 10px',fontSize:'13px',color:'#111',outline:'none'}} />
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'4px'}}>
+              {EMP_TIPOS.map(t=>(
+                <button key={t} onClick={()=>setForm(f=>({...f,tipo:t}))} style={{padding:'6px',borderRadius:'6px',border:`1px solid ${form.tipo===t?'#7c3aed':'#e5e5ea'}`,background:form.tipo===t?'#f5f3ff':'#fff',color:form.tipo===t?'#7c3aed':'#666',fontSize:'11px',cursor:'pointer',fontWeight:form.tipo===t?700:400}}>{t}</button>
+              ))}
+            </div>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'6px'}}>
+              <input type="date" value={form.data} onChange={e=>setForm(f=>({...f,data:e.target.value}))} style={{background:'#fff',border:'1px solid #ddd',borderRadius:'8px',padding:'8px',fontSize:'12px',color:'#111',outline:'none',colorScheme:'light'}} />
+              <input placeholder="Valor R$" type="number" value={form.valor} onChange={e=>setForm(f=>({...f,valor:e.target.value}))} style={{background:'#fff',border:'1px solid #ddd',borderRadius:'8px',padding:'8px',fontSize:'12px',color:'#111',outline:'none'}} />
+            </div>
+            <div style={{display:'flex',gap:'6px'}}>
+              <button onClick={saveEmp} disabled={!form.item.trim()||!form.pessoa.trim()||saving} style={{flex:1,padding:'8px',background:'#7c3aed',border:'none',borderRadius:'8px',color:'#fff',fontSize:'12px',fontWeight:600,cursor:'pointer',opacity:!form.item.trim()||!form.pessoa.trim()||saving?0.4:1}}>{saving?'...':'Salvar'}</button>
+              <button onClick={()=>setShowForm(false)} style={{padding:'8px 12px',background:'#fff',border:'1px solid #ddd',borderRadius:'8px',color:'#666',fontSize:'12px',cursor:'pointer'}}>✕</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {items.length===0 && !showForm && <p style={{color:'#aaa',fontSize:'13px',textAlign:'center',padding:'20px 0'}}>Nenhum item</p>}
+
+      {emprestei.length>0 && (
+        <div style={{marginBottom:'12px'}}>
+          <p style={{fontSize:'11px',color:'#dc2626',fontWeight:700,textTransform:'uppercase',letterSpacing:'0.5px',marginBottom:'6px'}}>📤 Eu emprestei / cedi</p>
+          {emprestei.map((i:any)=>(
+            <div key={i.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',background:'#fef2f2',border:'1px solid #fecaca',borderRadius:'10px',marginBottom:'4px'}}>
+              <div style={{flex:1,minWidth:0}}>
+                <p style={{fontSize:'13px',color:'#111',fontWeight:600}}>{i.item}</p>
+                <p style={{fontSize:'11px',color:'#666'}}>→ {i.pessoa}{i.valor?` · R$ ${Number(i.valor).toFixed(2)}`:''}{i.data?` · ${new Date(i.data+'T12:00:00').toLocaleDateString('pt-BR')}`:''}</p>
+              </div>
+              <button onClick={()=>devolver(i.id)} style={{padding:'4px 8px',background:'#16a34a',border:'none',borderRadius:'6px',color:'#fff',fontSize:'10px',fontWeight:700,cursor:'pointer'}}>Devolveu</button>
+              <button onClick={()=>delEmp(i.id)} style={{background:'none',border:'none',color:'#ccc',cursor:'pointer',fontSize:'12px'}}>✕</button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {meEmprestaram.length>0 && (
+        <div>
+          <p style={{fontSize:'11px',color:'#0891b2',fontWeight:700,textTransform:'uppercase',letterSpacing:'0.5px',marginBottom:'6px'}}>📥 Me emprestaram / cederam</p>
+          {meEmprestaram.map((i:any)=>(
+            <div key={i.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',background:'#ecfeff',border:'1px solid #a5f3fc',borderRadius:'10px',marginBottom:'4px'}}>
+              <div style={{flex:1,minWidth:0}}>
+                <p style={{fontSize:'13px',color:'#111',fontWeight:600}}>{i.item}</p>
+                <p style={{fontSize:'11px',color:'#666'}}>← {i.pessoa}{i.valor?` · R$ ${Number(i.valor).toFixed(2)}`:''}{i.data?` · ${new Date(i.data+'T12:00:00').toLocaleDateString('pt-BR')}`:''}</p>
+              </div>
+              <button onClick={()=>devolver(i.id)} style={{padding:'4px 8px',background:'#0891b2',border:'none',borderRadius:'6px',color:'#fff',fontSize:'10px',fontWeight:700,cursor:'pointer'}}>Devolvi</button>
+              <button onClick={()=>delEmp(i.id)} style={{background:'none',border:'none',color:'#ccc',cursor:'pointer',fontSize:'12px'}}>✕</button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function PendenciasPage() {
   const [tasks, setTasks] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -98,7 +197,8 @@ export default function PendenciasPage() {
     <div style={{display:'flex',minHeight:'100vh',background:'#ffffff'}}>
       <Sidebar />
       <div style={{flex:1,padding:'32px',overflowY:'auto'}}>
-        <div style={{maxWidth:'680px',margin:'0 auto'}}>
+        <div style={{maxWidth:'1100px',margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 340px',gap:'28px',alignItems:'start'}}>
+        <div>
 
           {/* Título */}
           <div style={{marginBottom:'28px'}}>
@@ -230,6 +330,10 @@ export default function PendenciasPage() {
               )}
             </div>
           )}
+        </div>
+
+        {/* Painel lateral: Emprestados */}
+        <EmprestadosPanel />
         </div>
       </div>
     </div>
