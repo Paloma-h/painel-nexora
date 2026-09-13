@@ -33,7 +33,7 @@ const CAMPOS_SUGERIDOS: any = {
   cadastrais:  ['CPF','RG','Data Nascimento','Título Eleitoral','CNH','PIS','CTPS','SUS','Tipo Sanguíneo','Certidão','C.Cidadão'],
   financeiros: ['Banco','Agência','Conta','Cartão','Validade','CVV','Limite','Vencimento Fatura','Senha','PIX','App Usuário','App Senha'],
   redes:       ['Plataforma','Usuário','E-mail','Senha','Perfil'],
-  logins:      ['Plataforma','E-mail/Usuário','Senha','Observação'],
+  logins:      ['Plataforma','E-mail/Usuário','Telefone','Senha','Observação'],
   veiculos:    ['Modelo','Placa','RENAVAM','Chassi','Cor','Ano','Seguro'],
   enderecos:   ['Rua','Número','Bairro','Cidade','CEP','Referência'],
   cnpj:        ['Razão Social','CNPJ','Titular','Situação','Abertura','Atividade'],
