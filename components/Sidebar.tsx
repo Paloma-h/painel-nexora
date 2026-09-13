@@ -39,20 +39,25 @@ export default function Sidebar() {
 
   function NavItem({ href, label, Icon }: { href: string; label: string; Icon: any }) {
     const active = path === href
+    const isCampanha = href === '/campanha-2026'
+    const campanhaActive = isCampanha && active
+    const campanhaInactive = isCampanha && !active
     return (
       <Link href={href} style={{
         display: 'flex', alignItems: 'center', gap: '8px',
-        padding: '7px 12px', borderRadius: '8px', fontSize: '14px',
-        fontWeight: active ? 800 : 600,
-        color: active ? '#ffffff' : '#222',
-        background: active ? '#7c3aed' : 'transparent',
+        padding: isCampanha ? '8px 12px' : '7px 12px', borderRadius: '8px', fontSize: isCampanha ? '13.5px' : '14px',
+        fontWeight: active || isCampanha ? 800 : 600,
+        color: campanhaActive ? '#ffffff' : campanhaInactive ? '#b45309' : active ? '#ffffff' : '#222',
+        background: campanhaActive ? 'linear-gradient(135deg, #d97706 0%, #b45309 100%)' : campanhaInactive ? 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)' : active ? '#7c3aed' : 'transparent',
         textDecoration: 'none', marginBottom: '1px',
         transition: 'all 0.15s ease',
-        boxShadow: active ? '0 3px 12px rgba(124,58,237,0.35)' : 'none',
-        border: active ? 'none' : '1px solid transparent',
+        boxShadow: campanhaActive ? '0 3px 12px rgba(217,119,6,0.45)' : campanhaInactive ? '0 2px 8px rgba(217,119,6,0.15)' : active ? '0 3px 12px rgba(124,58,237,0.35)' : 'none',
+        border: campanhaInactive ? '1.5px solid #d97706' : active ? 'none' : '1px solid transparent',
+        letterSpacing: isCampanha ? '0.3px' : undefined,
       }}>
-        <Icon size={16} strokeWidth={active ? 2.2 : 1.8} style={{ color: active ? '#fff' : '#7c3aed', flexShrink: 0 }} />
+        <Icon size={isCampanha ? 17 : 16} strokeWidth={active || isCampanha ? 2.5 : 1.8} style={{ color: campanhaActive ? '#fff' : campanhaInactive ? '#b45309' : active ? '#fff' : '#7c3aed', flexShrink: 0 }} />
         <span>{label}</span>
+        {isCampanha && <span style={{fontSize:'10px',marginLeft:'auto'}}>🔥</span>}
       </Link>
     )
   }
