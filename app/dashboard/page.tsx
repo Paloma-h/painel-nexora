@@ -20,6 +20,10 @@ export default function DashboardPage() {
   const [showAgenda, setShowAgenda] = useState(false)
   const [showPendencias, setShowPendencias] = useState(false)
   const [showContas, setShowContas] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchResults, setSearchResults] = useState<any[]>([])
+  const [searching, setSearching] = useState(false)
+  const [showSearch, setShowSearch] = useState(false)
 
   const today = new Date()
   const fmtD = (d:Date) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`
@@ -133,6 +137,29 @@ export default function DashboardPage() {
     load()
   }
 
+  async function globalSearch(q: string) {
+    if (!q.trim()) { setSearchResults([]); return }
+    setSearching(true)
+    const term = `%${q.trim()}%`
+    const [rTasks, rLeads, rClients, rBills, rDados, rCampanha] = await Promise.all([
+      supabase.from('tasks').select('id,title,date,type,status,priority').eq('user_id',USER_ID).ilike('title',term).limit(15),
+      supabase.from('leads').select('id,name,status,phone,product').eq('user_id',USER_ID).or(`name.ilike.${term},phone.ilike.${term},product.ilike.${term}`).limit(10),
+      supabase.from('clients').select('id,name,phone,product').eq('user_id',USER_ID).or(`name.ilike.${term},phone.ilike.${term},product.ilike.${term}`).limit(10),
+      supabase.from('bills').select('id,title,amount,due_date,status').eq('user_id',USER_ID).ilike('title',term).limit(10),
+      supabase.from('dados_pessoais').select('id,titulo,categoria,pessoa').eq('user_id',USER_ID).ilike('titulo',term).limit(10),
+      supabase.from('tasks').select('id,title,date,status,priority').eq('user_id',USER_ID).eq('type','campanha').ilike('title',term).limit(10),
+    ])
+    const results: any[] = []
+    ;(rTasks.data||[]).forEach((r:any) => results.push({...r, _source: r.type==='pendencia'?'Pendências':'Agenda', _link: r.type==='pendencia'?'/pendencias':'/agenda', _icon: r.type==='pendencia'?'⚡':'📅'}))
+    ;(rLeads.data||[]).forEach((r:any) => results.push({...r, title:r.name, _source:'CRM (Lead)', _link:'/crm', _icon:'👤'}))
+    ;(rClients.data||[]).forEach((r:any) => results.push({...r, title:r.name, _source:'CRM (Cliente)', _link:'/crm', _icon:'🤝'}))
+    ;(rBills.data||[]).forEach((r:any) => results.push({...r, _source:'Financeiro', _link:'/financeiro', _icon:'💰'}))
+    ;(rDados.data||[]).forEach((r:any) => results.push({...r, title:r.titulo, _source:`Dados (${r.pessoa||''})`, _link:'/dados', _icon:'📋'}))
+    ;(rCampanha.data||[]).forEach((r:any) => results.push({...r, _source:'Campanha 2026', _link:'/campanha-2026', _icon:'🚩'}))
+    setSearchResults(results)
+    setSearching(false)
+  }
+
   function formatDate(dateStr: string) {
     if (dateStr === todayStr) return 'Hoje'
     const d = new Date(dateStr + 'T12:00:00')
@@ -199,6 +226,48 @@ export default function DashboardPage() {
               <button onClick={quickCapture} style={{marginRight:'6px',padding:'4px 12px',background:'#7c3aed',border:'none',borderRadius:'6px',color:'#fff',fontSize:'12px',fontWeight:700,cursor:'pointer'}}>
                 Salvar
               </button>
+            )}
+          </div>
+
+          {/* ━━━ BUSCA GLOBAL ━━━ */}
+          <div style={{marginBottom:'8px'}}>
+            <div style={{background:'#fff',borderRadius:'10px',padding:'2px',border: showSearch ? '2px solid #7c3aed' : '2px solid #e5e5ea',display:'flex',alignItems:'center',gap:'6px',transition:'border 0.2s'}}>
+              <span onClick={()=>{setShowSearch(!showSearch);if(!showSearch)setTimeout(()=>{const el=document.getElementById('global-search');if(el)el.focus()},100)}} style={{padding:'6px 10px',color: showSearch ? '#7c3aed' : '#bbb',fontSize:'16px',flexShrink:0,cursor:'pointer'}}>🔍</span>
+              {showSearch && (
+                <>
+                  <input
+                    id="global-search"
+                    value={searchQuery}
+                    onChange={e=>{setSearchQuery(e.target.value);globalSearch(e.target.value)}}
+                    onKeyDown={e=>{if(e.key==='Escape'){setShowSearch(false);setSearchQuery('');setSearchResults([])}}}
+                    placeholder="Buscar em todas as abas... (agenda, pendências, CRM, financeiro, dados...)"
+                    style={{flex:1,border:'none',outline:'none',fontSize:'13px',color:'#111',background:'transparent',padding:'8px 0'}}
+                  />
+                  {searchQuery && <button onClick={()=>{setSearchQuery('');setSearchResults([])}} style={{marginRight:'6px',background:'none',border:'none',color:'#bbb',cursor:'pointer',fontSize:'16px'}}>✕</button>}
+                </>
+              )}
+              {!showSearch && <span onClick={()=>{setShowSearch(true);setTimeout(()=>{const el=document.getElementById('global-search');if(el)el.focus()},100)}} style={{flex:1,color:'#bbb',fontSize:'13px',cursor:'pointer',padding:'8px 0'}}>Buscar em todas as abas...</span>}
+            </div>
+            {showSearch && searchQuery && (
+              <div style={{background:'#fff',borderRadius:'10px',border:'1px solid #e5e5ea',marginTop:'4px',maxHeight:'400px',overflowY:'auto',boxShadow:'0 4px 20px rgba(0,0,0,0.08)'}}>
+                {searching && <p style={{padding:'12px',color:'#888',fontSize:'13px',textAlign:'center'}}>Buscando...</p>}
+                {!searching && searchResults.length === 0 && <p style={{padding:'12px',color:'#888',fontSize:'13px',textAlign:'center'}}>Nenhum resultado para &quot;{searchQuery}&quot;</p>}
+                {!searching && searchResults.map((r,i) => (
+                  <div key={i} onClick={()=>router.push(r._link)} style={{display:'flex',alignItems:'center',gap:'10px',padding:'10px 14px',borderBottom:'1px solid #f3f3f3',cursor:'pointer',transition:'background 0.1s'}}
+                    onMouseEnter={e=>(e.currentTarget.style.background='#f8f6ff')} onMouseLeave={e=>(e.currentTarget.style.background='transparent')}>
+                    <span style={{fontSize:'16px'}}>{r._icon}</span>
+                    <div style={{flex:1,minWidth:0}}>
+                      <p style={{fontSize:'13px',fontWeight:600,color:'#111',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{r.title}</p>
+                      <div style={{display:'flex',gap:'6px',alignItems:'center'}}>
+                        <span style={{fontSize:'10px',fontWeight:700,color:'#7c3aed',background:'#f3f0ff',padding:'1px 6px',borderRadius:'4px'}}>{r._source}</span>
+                        {r.date && <span style={{fontSize:'10px',color:'#999'}}>{r.date}</span>}
+                        {r.status && <span style={{fontSize:'10px',color:r.status==='DONE'?'#16a34a':'#ca8a04'}}>{r.status}</span>}
+                        {r.amount && <span style={{fontSize:'10px',color:'#16a34a'}}>R${r.amount}</span>}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
 
