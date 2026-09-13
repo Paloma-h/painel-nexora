@@ -137,6 +137,7 @@ export default function PendenciasPage() {
   const [editingId, setEditingId] = useState<string|null>(null)
   const [editTitle, setEditTitle] = useState('')
   const [editPrio, setEditPrio] = useState('CRITICAL')
+  const [editGrupo, setEditGrupo] = useState('geral')
 
   const [collapsedGroups, setCollapsedGroups] = useState<Record<string,boolean>>({})
   const [showDone, setShowDone] = useState(false)
@@ -163,7 +164,7 @@ export default function PendenciasPage() {
 
   async function saveEdit(id:string) {
     if (!editTitle.trim()) return
-    await supabase.from('tasks').update({title:editTitle.trim(),priority:editPrio}).eq('id',id)
+    await supabase.from('tasks').update({title:editTitle.trim(),priority:editPrio,category:editGrupo}).eq('id',id)
     setEditingId(null); load()
   }
 
@@ -235,6 +236,11 @@ export default function PendenciasPage() {
                               <div>
                                 <input autoFocus value={editTitle} onChange={e=>setEditTitle(e.target.value)} onKeyDown={e=>{if(e.key==='Enter')saveEdit(t.id);if(e.key==='Escape')setEditingId(null)}}
                                   style={{width:'100%',background:'#fff',border:'1px solid #ddd',borderRadius:'6px',padding:'7px 10px',color:'#111',fontSize:'13px',outline:'none',marginBottom:'6px',boxSizing:'border-box'}} />
+                                <div style={{display:'flex',gap:'3px',flexWrap:'wrap',marginBottom:'4px'}}>
+                                  {GRUPOS.map(g=>(
+                                    <button key={g.id} onClick={()=>setEditGrupo(g.id)} style={{padding:'3px 8px',borderRadius:'5px',border:`1px solid ${editGrupo===g.id?g.color:'#eee'}`,background:editGrupo===g.id?`${g.color}15`:'#fff',color:editGrupo===g.id?g.color:'#aaa',fontSize:'10px',cursor:'pointer',fontWeight:editGrupo===g.id?700:400}}>{g.emoji} {g.label}</button>
+                                  ))}
+                                </div>
                                 <div style={{display:'flex',gap:'4px'}}>
                                   {PRIOS.map(p=>(
                                     <button key={p.key} onClick={()=>setEditPrio(p.key)} style={{flex:1,padding:'4px',borderRadius:'5px',border:`1px solid ${editPrio===p.key?p.color:'#eee'}`,background:editPrio===p.key?`${p.color}22`:'#fff',color:editPrio===p.key?p.color:'#aaa',fontSize:'10px',cursor:'pointer',fontWeight:editPrio===p.key?700:400}}>{p.label.split(' ')[1]}</button>
@@ -256,7 +262,7 @@ export default function PendenciasPage() {
                                   </div>
                                   <p style={{fontSize:'13px',color:'#111',fontWeight:500,lineHeight:1.3}}>{t.title}</p>
                                 </div>
-                                <button onClick={()=>{setEditingId(t.id);setEditTitle(t.title);setEditPrio(t.priority||'MEDIUM')}} style={{background:'none',border:'none',color:'#bbb',cursor:'pointer',fontSize:'13px',flexShrink:0}}>✎</button>
+                                <button onClick={()=>{setEditingId(t.id);setEditTitle(t.title);setEditPrio(t.priority||'MEDIUM');setEditGrupo(t.category||'geral')}} style={{background:'none',border:'none',color:'#bbb',cursor:'pointer',fontSize:'13px',flexShrink:0}}>✎</button>
                               </div>
                             )}
                           </div>
@@ -282,16 +288,45 @@ export default function PendenciasPage() {
                     <span style={{color:'#ccc',fontSize:'12px'}}>{collapsed?'▼':'▲'}</span>
                   </div>
                   {!collapsed && (
-                    <div style={{padding:'8px',maxHeight:'400px',overflowY:'auto'}}>
+                    <div style={{padding:'8px',maxHeight:'500px',overflowY:'auto'}}>
                       {semGrupo.map(t => {
                         const pc = pColor[t.priority]||'#888'
+                        const isEditing = editingId===t.id
                         return (
-                          <div key={t.id} style={{display:'flex',alignItems:'center',gap:'8px',padding:'8px 10px',borderRadius:'10px',background:'#fafafa',border:`1px solid ${pc}22`,marginBottom:'4px'}}>
-                            <div onClick={()=>complete(t.id)} style={{width:'20px',height:'20px',borderRadius:'6px',border:`2px solid ${pc}`,flexShrink:0,cursor:'pointer'}} />
-                            <div style={{flex:1,minWidth:0}}>
-                              <p style={{fontSize:'13px',color:'#111',fontWeight:500}}>{t.title}</p>
-                            </div>
-                            <button onClick={()=>{setEditingId(t.id);setEditTitle(t.title);setEditPrio(t.priority||'MEDIUM')}} style={{background:'none',border:'none',color:'#bbb',cursor:'pointer',fontSize:'13px'}}>✎</button>
+                          <div key={t.id} style={{padding:'8px 10px',borderRadius:'10px',background:'#fafafa',border:`1px solid ${pc}22`,marginBottom:'4px'}}>
+                            {isEditing ? (
+                              <div>
+                                <input autoFocus value={editTitle} onChange={e=>setEditTitle(e.target.value)} onKeyDown={e=>{if(e.key==='Enter')saveEdit(t.id);if(e.key==='Escape')setEditingId(null)}}
+                                  style={{width:'100%',background:'#fff',border:'1px solid #ddd',borderRadius:'6px',padding:'7px 10px',color:'#111',fontSize:'13px',outline:'none',marginBottom:'6px',boxSizing:'border-box'}} />
+                                <div style={{display:'flex',gap:'3px',flexWrap:'wrap',marginBottom:'4px'}}>
+                                  {GRUPOS.map(g=>(
+                                    <button key={g.id} onClick={()=>setEditGrupo(g.id)} style={{padding:'3px 8px',borderRadius:'5px',border:`1px solid ${editGrupo===g.id?g.color:'#eee'}`,background:editGrupo===g.id?`${g.color}15`:'#fff',color:editGrupo===g.id?g.color:'#aaa',fontSize:'10px',cursor:'pointer',fontWeight:editGrupo===g.id?700:400}}>{g.emoji} {g.label}</button>
+                                  ))}
+                                </div>
+                                <div style={{display:'flex',gap:'4px'}}>
+                                  {PRIOS.map(p=>(
+                                    <button key={p.key} onClick={()=>setEditPrio(p.key)} style={{flex:1,padding:'4px',borderRadius:'5px',border:`1px solid ${editPrio===p.key?p.color:'#eee'}`,background:editPrio===p.key?`${p.color}22`:'#fff',color:editPrio===p.key?p.color:'#aaa',fontSize:'10px',cursor:'pointer',fontWeight:editPrio===p.key?700:400}}>{p.label.split(' ')[1]}</button>
+                                  ))}
+                                </div>
+                                <div style={{display:'flex',gap:'4px',marginTop:'6px'}}>
+                                  <button onClick={()=>saveEdit(t.id)} style={{flex:1,padding:'6px',background:'#5b50d6',border:'none',borderRadius:'6px',color:'#fff',fontSize:'11px',fontWeight:600,cursor:'pointer'}}>Salvar</button>
+                                  <button onClick={()=>setEditingId(null)} style={{padding:'6px 10px',background:'#fff',border:'1px solid #ddd',borderRadius:'6px',color:'#666',fontSize:'11px',cursor:'pointer'}}>✕</button>
+                                  <button onClick={()=>{remove(t.id);setEditingId(null)}} style={{padding:'6px 10px',background:'#fff',border:'1px solid #fca5a5',borderRadius:'6px',color:'#dc2626',fontSize:'11px',cursor:'pointer'}}>🗑</button>
+                                </div>
+                              </div>
+                            ) : (
+                              <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
+                                <div onClick={()=>complete(t.id)} style={{width:'20px',height:'20px',borderRadius:'6px',border:`2px solid ${pc}`,flexShrink:0,cursor:'pointer'}} />
+                                <div style={{flex:1,minWidth:0}}>
+                                  <div style={{display:'flex',alignItems:'center',gap:'4px'}}>
+                                    <div style={{width:'6px',height:'6px',borderRadius:'50%',background:pc,flexShrink:0}} />
+                                    <span style={{fontSize:'11px',color:pc}}>{PRIOS.find(p=>p.key===t.priority)?.label.split(' ')[1]}</span>
+                                  </div>
+                                  <p style={{fontSize:'13px',color:'#111',fontWeight:500}}>{t.title}</p>
+                                </div>
+                                <button onClick={()=>{setEditingId(t.id);setEditTitle(t.title);setEditPrio(t.priority||'MEDIUM');setEditGrupo(t.category||'geral')}} style={{background:'none',border:'none',color:'#bbb',cursor:'pointer',fontSize:'13px'}}>✎</button>
+                              </div>
+                            )}
                           </div>
                         )
                       })}
