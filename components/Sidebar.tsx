@@ -167,8 +167,9 @@ export default function Sidebar() {
           </div>
 
           {/* Mini stats */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '4px', marginTop: '10px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px', marginTop: '10px' }}>
             {[
+              { n: (() => { const e = new Date(2026,9,4); const h = new Date(); return Math.max(0, Math.ceil((e.getTime()-h.getTime())/(1000*60*60*24))) })(), l: '🗳️ Eleição', color: '#fbbf24' },
               { n: stats.hoje, l: 'Hoje' },
               { n: stats.pendencias, l: 'Pendênc.' },
               { n: stats.atrasadas, l: 'Atrasadas' },
@@ -177,7 +178,7 @@ export default function Sidebar() {
                 background: 'rgba(255,255,255,0.15)', borderRadius: '8px',
                 padding: '5px 4px', textAlign: 'center', backdropFilter: 'blur(4px)',
               }}>
-                <span style={{ fontSize: '15px', fontWeight: 800, display: 'block', lineHeight: 1.2 }}>{s.n}</span>
+                <span style={{ fontSize: i===0?'17px':'15px', fontWeight: 800, display: 'block', lineHeight: 1.2, color: (s as any).color || '#fff' }}>{s.n}</span>
                 <span style={{ fontSize: '8px', fontWeight: 600, opacity: 0.8, textTransform: 'uppercase', letterSpacing: '0.3px' }}>{s.l}</span>
               </div>
             ))}
