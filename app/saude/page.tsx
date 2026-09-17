@@ -26,6 +26,7 @@ const TABS_PESSOA = [
   {id:'atividades',label:'💪 Atividades'},
   {id:'medidas',label:'⚖️ Medidas'},
   {id:'dietas',label:'🥗 Dietas'},
+  {id:'ciclo',label:'🩸 Ciclo'},
 ]
 
 const TABS_PET = [
@@ -1084,6 +1085,212 @@ function MarcosQualidadeVida({person}:{person:string}) {
   )
 }
 
+// ══════════════════════════════════════════════════════════════════════
+// CICLO MENSTRUAL
+// ══════════════════════════════════════════════════════════════════════
+function CicloTab({person}:{person:string}) {
+  const [registros, setRegistros] = useState<any[]>([])
+  const [showForm, setShowForm] = useState(false)
+  const [form, setForm] = useState({inicio:'',fim:'',fluxo:'medio',sintomas:'',humor:'',notas:''})
+  const [saving, setSaving] = useState(false)
+  const [mesAtual, setMesAtual] = useState(() => {const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`})
+
+  useEffect(() => { load() }, [person])
+  async function load() {
+    const {data} = await supabase.from('saude_ciclo').select('*').eq('user_id',USER_ID).eq('person',person).order('inicio',{ascending:false})
+    setRegistros(data||[])
+  }
+
+  async function save() {
+    if (!form.inicio) return
+    setSaving(true)
+    const data = {inicio:form.inicio,fim:form.fim||null,fluxo:form.fluxo,sintomas:form.sintomas||null,humor:form.humor||null,notas:form.notas||null,person,user_id:USER_ID}
+    await supabase.from('saude_ciclo').insert({id:crypto.randomUUID(),...data})
+    setForm({inicio:'',fim:'',fluxo:'medio',sintomas:'',humor:'',notas:''})
+    setShowForm(false)
+    setSaving(false)
+    load()
+  }
+
+  async function remove(id:string) {
+    await supabase.from('saude_ciclo').delete().eq('id',id)
+    load()
+  }
+
+  // Calcular previsão do próximo ciclo
+  const ciclosComDuracao = registros.filter(r => {
+    const idx = registros.indexOf(r)
+    return idx < registros.length - 1
+  }).map((r, i) => {
+    const next = registros[i + 1]
+    if (!next) return null
+    const d1 = new Date(r.inicio + 'T12:00:00')
+    const d2 = new Date(next.inicio + 'T12:00:00')
+    return Math.round((d1.getTime() - d2.getTime()) / (1000*60*60*24))
+  }).filter(Boolean) as number[]
+
+  const mediaCiclo = ciclosComDuracao.length > 0 ? Math.round(ciclosComDuracao.reduce((a,b)=>a+b,0)/ciclosComDuracao.length) : 28
+  const ultimoCiclo = registros[0]
+  const proximoInicio = ultimoCiclo ? (() => {
+    const d = new Date(ultimoCiclo.inicio + 'T12:00:00')
+    d.setDate(d.getDate() + mediaCiclo)
+    return d
+  })() : null
+
+  // Gerar dias do calendário
+  const [anoMes] = [mesAtual.split('-').map(Number)]
+  const ano = anoMes[0], mes = anoMes[1]
+  const primeiroDia = new Date(ano, mes-1, 1).getDay()
+  const diasNoMes = new Date(ano, mes, 0).getDate()
+  const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']
+
+  // Mapear dias com menstruação
+  const diasMenstruacao = new Set<string>()
+  const diasPrevisao = new Set<string>()
+  registros.forEach(r => {
+    const ini = new Date(r.inicio + 'T12:00:00')
+    const fim = r.fim ? new Date(r.fim + 'T12:00:00') : new Date(ini); if(!r.fim) fim.setDate(fim.getDate()+4)
+    for (let d = new Date(ini); d <= fim; d.setDate(d.getDate()+1)) {
+      diasMenstruacao.add(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`)
+    }
+  })
+  if (proximoInicio) {
+    for (let i = 0; i < 5; i++) {
+      const d = new Date(proximoInicio)
+      d.setDate(d.getDate() + i)
+      diasPrevisao.add(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`)
+    }
+  }
+
+  function mudarMes(dir: number) {
+    const d = new Date(ano, mes - 1 + dir, 1)
+    setMesAtual(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`)
+  }
+
+  const fluxoEmoji: any = {leve:'💧',medio:'💧💧',intenso:'💧💧💧'}
+  const humorEmoji: any = {otimo:'😊',bom:'🙂',normal:'😐',irritada:'😤',triste:'😢',ansiosa:'😰'}
+
+  return (
+    <div>
+      {/* Previsão */}
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'12px',marginBottom:'20px'}}>
+        <div style={{background:'linear-gradient(135deg,#fce4ec,#f8bbd0)',borderRadius:'14px',padding:'16px',textAlign:'center'}}>
+          <p style={{fontSize:'11px',fontWeight:700,color:'#c2185b',textTransform:'uppercase',margin:'0 0 4px'}}>Ciclo médio</p>
+          <p style={{fontSize:'28px',fontWeight:800,color:'#880e4f',margin:0}}>{mediaCiclo} <span style={{fontSize:'14px'}}>dias</span></p>
+        </div>
+        <div style={{background:'linear-gradient(135deg,#e8eaf6,#c5cae9)',borderRadius:'14px',padding:'16px',textAlign:'center'}}>
+          <p style={{fontSize:'11px',fontWeight:700,color:'#283593',textTransform:'uppercase',margin:'0 0 4px'}}>Último ciclo</p>
+          <p style={{fontSize:'16px',fontWeight:800,color:'#1a237e',margin:0}}>{ultimoCiclo ? new Date(ultimoCiclo.inicio+'T12:00:00').toLocaleDateString('pt-BR') : '—'}</p>
+        </div>
+        <div style={{background:'linear-gradient(135deg,#fff3e0,#ffe0b2)',borderRadius:'14px',padding:'16px',textAlign:'center'}}>
+          <p style={{fontSize:'11px',fontWeight:700,color:'#e65100',textTransform:'uppercase',margin:'0 0 4px'}}>Próximo previsto</p>
+          <p style={{fontSize:'16px',fontWeight:800,color:'#bf360c',margin:0}}>{proximoInicio ? proximoInicio.toLocaleDateString('pt-BR') : '—'}</p>
+        </div>
+      </div>
+
+      {/* Calendário */}
+      <div style={{background:'#fff',borderRadius:'16px',padding:'20px',border:'2px solid #e5e5ea',marginBottom:'20px'}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px'}}>
+          <button onClick={()=>mudarMes(-1)} style={{background:'#f3f0ff',border:'none',borderRadius:'8px',padding:'6px 12px',cursor:'pointer',fontSize:'16px',fontWeight:700,color:'#7c3aed'}}>◀</button>
+          <h3 style={{fontSize:'18px',fontWeight:800,color:'#111',margin:0}}>{meses[mes-1]} {ano}</h3>
+          <button onClick={()=>mudarMes(1)} style={{background:'#f3f0ff',border:'none',borderRadius:'8px',padding:'6px 12px',cursor:'pointer',fontSize:'16px',fontWeight:700,color:'#7c3aed'}}>▶</button>
+        </div>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:'4px',textAlign:'center'}}>
+          {['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'].map(d => (
+            <div key={d} style={{fontSize:'11px',fontWeight:700,color:'#999',padding:'4px'}}>{d}</div>
+          ))}
+          {Array.from({length:primeiroDia}).map((_,i) => <div key={`e${i}`} />)}
+          {Array.from({length:diasNoMes}).map((_,i) => {
+            const dia = i + 1
+            const dateStr = `${ano}-${String(mes).padStart(2,'0')}-${String(dia).padStart(2,'0')}`
+            const isMenstruacao = diasMenstruacao.has(dateStr)
+            const isPrevisao = diasPrevisao.has(dateStr)
+            const isHoje = dateStr === `${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}-${String(new Date().getDate()).padStart(2,'0')}`
+            return (
+              <div key={dia} style={{
+                padding:'8px 4px',borderRadius:'8px',fontSize:'14px',fontWeight:isHoje?800:500,
+                background: isMenstruacao ? '#e91e63' : isPrevisao ? '#ff9800' : isHoje ? '#ede9fe' : 'transparent',
+                color: isMenstruacao ? '#fff' : isPrevisao ? '#fff' : isHoje ? '#7c3aed' : '#333',
+                border: isHoje ? '2px solid #7c3aed' : '1px solid transparent',
+                position:'relative',
+              }}>
+                {dia}
+                {isMenstruacao && <span style={{position:'absolute',bottom:'2px',left:'50%',transform:'translateX(-50%)',fontSize:'6px'}}>🩸</span>}
+                {isPrevisao && !isMenstruacao && <span style={{position:'absolute',bottom:'2px',left:'50%',transform:'translateX(-50%)',fontSize:'6px'}}>⏳</span>}
+              </div>
+            )
+          })}
+        </div>
+        <div style={{display:'flex',gap:'16px',marginTop:'12px',justifyContent:'center'}}>
+          <span style={{fontSize:'12px',color:'#555',display:'flex',alignItems:'center',gap:'4px'}}><span style={{width:'12px',height:'12px',borderRadius:'4px',background:'#e91e63',display:'inline-block'}} /> Menstruação</span>
+          <span style={{fontSize:'12px',color:'#555',display:'flex',alignItems:'center',gap:'4px'}}><span style={{width:'12px',height:'12px',borderRadius:'4px',background:'#ff9800',display:'inline-block'}} /> Previsão</span>
+          <span style={{fontSize:'12px',color:'#555',display:'flex',alignItems:'center',gap:'4px'}}><span style={{width:'12px',height:'12px',borderRadius:'4px',background:'#ede9fe',border:'2px solid #7c3aed',display:'inline-block'}} /> Hoje</span>
+        </div>
+      </div>
+
+      {/* Botão adicionar */}
+      <button onClick={()=>setShowForm(true)} style={{width:'100%',padding:'12px',background:'linear-gradient(135deg,#e91e63,#c2185b)',border:'none',borderRadius:'12px',color:'#fff',fontSize:'15px',fontWeight:700,cursor:'pointer',marginBottom:'16px'}}>
+        + Registrar Ciclo
+      </button>
+
+      {/* Formulário */}
+      {showForm && (
+        <div style={{background:'#fff',borderRadius:'16px',padding:'20px',border:'2px solid #e91e63',marginBottom:'20px'}}>
+          <h3 style={{fontSize:'16px',fontWeight:700,color:'#c2185b',marginBottom:'16px'}}>🩸 Registrar Ciclo</h3>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'12px',marginBottom:'12px'}}>
+            <Fld label="Início *"><input type="date" value={form.inicio} onChange={e=>setForm({...form,inicio:e.target.value})} style={inp} /></Fld>
+            <Fld label="Fim (opcional)"><input type="date" value={form.fim} onChange={e=>setForm({...form,fim:e.target.value})} style={inp} /></Fld>
+          </div>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'12px',marginBottom:'12px'}}>
+            <Fld label="Fluxo">
+              <div style={{display:'flex',gap:'4px'}}>
+                {[{k:'leve',l:'💧 Leve'},{k:'medio',l:'💧💧 Médio'},{k:'intenso',l:'💧💧💧 Intenso'}].map(f => (
+                  <button key={f.k} onClick={()=>setForm({...form,fluxo:f.k})} style={{flex:1,padding:'8px',borderRadius:'8px',border:`2px solid ${form.fluxo===f.k?'#e91e63':'#e5e5ea'}`,background:form.fluxo===f.k?'#fce4ec':'#fff',color:form.fluxo===f.k?'#c2185b':'#666',fontSize:'11px',fontWeight:700,cursor:'pointer'}}>{f.l}</button>
+                ))}
+              </div>
+            </Fld>
+            <Fld label="Humor">
+              <div style={{display:'flex',gap:'4px',flexWrap:'wrap'}}>
+                {Object.entries(humorEmoji).map(([k,v]) => (
+                  <button key={k} onClick={()=>setForm({...form,humor:k})} style={{padding:'6px 8px',borderRadius:'8px',border:`2px solid ${form.humor===k?'#e91e63':'#e5e5ea'}`,background:form.humor===k?'#fce4ec':'#fff',fontSize:'16px',cursor:'pointer'}} title={k}>{v as string}</button>
+                ))}
+              </div>
+            </Fld>
+          </div>
+          <Fld label="Sintomas"><input value={form.sintomas} onChange={e=>setForm({...form,sintomas:e.target.value})} placeholder="cólica, dor de cabeça, inchaço..." style={{...inp,marginBottom:'12px'}} /></Fld>
+          <Fld label="Observações"><textarea value={form.notas} onChange={e=>setForm({...form,notas:e.target.value})} placeholder="Anotações livres..." style={{...inp,minHeight:'60px',resize:'vertical',marginBottom:'12px'}} /></Fld>
+          <div style={{display:'flex',gap:'8px'}}>
+            <button onClick={save} disabled={saving} style={{flex:1,padding:'10px',background:'#e91e63',border:'none',borderRadius:'10px',color:'#fff',fontSize:'14px',fontWeight:700,cursor:'pointer'}}>{saving?'Salvando...':'Salvar'}</button>
+            <button onClick={()=>setShowForm(false)} style={{padding:'10px 16px',background:'#fff',border:'1px solid #ddd',borderRadius:'10px',color:'#666',fontSize:'14px',cursor:'pointer'}}>Cancelar</button>
+          </div>
+        </div>
+      )}
+
+      {/* Histórico */}
+      <h3 style={{fontSize:'16px',fontWeight:700,color:'#111',marginBottom:'12px'}}>📋 Histórico</h3>
+      {registros.length === 0 && <p style={{color:'#999',fontSize:'14px'}}>Nenhum registro ainda. Clique em &quot;Registrar Ciclo&quot; para começar.</p>}
+      {registros.map(r => (
+        <div key={r.id} style={{background:'#fff',borderRadius:'12px',padding:'14px 16px',border:'1px solid #f3e5f5',marginBottom:'8px',display:'flex',alignItems:'center',gap:'12px'}}>
+          <div style={{width:'40px',height:'40px',borderRadius:'10px',background:'#fce4ec',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'18px',flexShrink:0}}>🩸</div>
+          <div style={{flex:1,minWidth:0}}>
+            <p style={{fontSize:'14px',fontWeight:700,color:'#111',margin:'0 0 2px'}}>
+              {new Date(r.inicio+'T12:00:00').toLocaleDateString('pt-BR')}
+              {r.fim && ` → ${new Date(r.fim+'T12:00:00').toLocaleDateString('pt-BR')}`}
+            </p>
+            <div style={{display:'flex',gap:'8px',flexWrap:'wrap'}}>
+              <span style={{fontSize:'11px',color:'#c2185b',fontWeight:600}}>{fluxoEmoji[r.fluxo]||''} {r.fluxo}</span>
+              {r.humor && <span style={{fontSize:'11px',color:'#555'}}>{humorEmoji[r.humor]||''} {r.humor}</span>}
+              {r.sintomas && <span style={{fontSize:'11px',color:'#888'}}>{r.sintomas}</span>}
+            </div>
+            {r.notas && <p style={{fontSize:'12px',color:'#888',margin:'4px 0 0',fontStyle:'italic'}}>{r.notas}</p>}
+          </div>
+          <button onClick={()=>remove(r.id)} style={{background:'none',border:'none',color:'#ddd',cursor:'pointer',fontSize:'14px'}}>🗑</button>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export default function SaudePage() {
   const [membros, setMembros] = useState([...MEMBROS, ...PETS_DEFAULT])
   const [selectedPerson, setSelectedPerson] = useState('paloma')
@@ -1184,6 +1391,7 @@ export default function SaudePage() {
             {!isPet && tab==='atividades' && <AtividadesTab person={selectedPerson} />}
             {!isPet && tab==='medidas' && <MedidasTab person={selectedPerson} />}
             {!isPet && tab==='dietas' && <DietasTab person={selectedPerson} />}
+            {!isPet && tab==='ciclo' && <CicloTab person={selectedPerson} />}
             {/* Pet */}
             {isPet && tab==='veterinarios' && <MedicosTab person={selectedPerson} isPet={true} />}
             {isPet && tab==='vacinas_pet' && <VacinasPetTab person={selectedPerson} />}
