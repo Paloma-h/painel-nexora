@@ -4,31 +4,38 @@ import type { NextRequest } from 'next/server'
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next()
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return req.cookies.getAll() },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            req.cookies.set(name, value)
-            res.cookies.set(name, value, options)
-          })
+
+  try {
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() { return req.cookies.getAll() },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              req.cookies.set(name, value)
+              res.cookies.set(name, value, options)
+            })
+          },
         },
-      },
+      }
+    )
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session && req.nextUrl.pathname !== '/login') {
+      return NextResponse.redirect(new URL('/login', req.url))
     }
-  )
-  const { data: { session } } = await supabase.auth.getSession()
-  if (!session && req.nextUrl.pathname !== '/login') {
-    return NextResponse.redirect(new URL('/login', req.url))
+    if (session && req.nextUrl.pathname === '/login') {
+      return NextResponse.redirect(new URL('/agenda', req.url))
+    }
+  } catch {
+    // Se o Supabase demorar ou falhar, deixa passar sem travar
+    if (req.nextUrl.pathname === '/login') return res
   }
-  if (session && req.nextUrl.pathname === '/login') {
-    return NextResponse.redirect(new URL('/agenda', req.url))
-  }
+
   return res
 }
 
 export const config = {
-  matcher: ['/agenda', '/crm', '/financeiro', '/login', '/saude', '/educacao', '/pendencias', '/dashboard', '/dados', '/projetos']
+  matcher: ['/agenda', '/crm', '/financeiro', '/login', '/saude', '/educacao', '/pendencias', '/dashboard', '/dados', '/projetos', '/ia', '/livros', '/filmes', '/desejos', '/produtividade']
 }

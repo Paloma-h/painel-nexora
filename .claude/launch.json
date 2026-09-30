@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "posta-pronto",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "C:/Users/palom/Downloads/posta-pronto", "run", "dev", "--", "-p", "3100"],
+      "port": 3100
+    }
+  ]
+}
